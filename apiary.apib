@@ -1,0 +1,157 @@
+FORMAT: 1A
+HOST: https://tenant.acrolinx.cloud
+
+# acrolinx
+Acrolinx API is a *short texts saving* service similar to its physical paper presence on your table.
+
+# Group Capabilities
+
+## Index [/api/v1]
+### List all [GET]
++ Response 200 (application/json)
+
+        {
+            "server": {
+                "version": "5.2.1",
+            },
+            "links": [
+                "checking": "https://host:port/api/v1/checking",
+                "terminology": "https://host:port/api/v1/terminology",
+                "findability": "https://host:port/api/v1/findability",
+            ],
+            "locales": {}.
+            "settings": {
+                "useLegacyResultDialog": true
+            }
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "message": "Bla",
+            "type": "com.acrolinx.faults.NoSuchAuthTokenFault",
+            "links": [
+                "login": "https://host:port/api/v1/authenticate"
+            ]
+        }
+      
+# Group User Metadata
+Might be handled via unified authentication, plese check AEM / Apple proxy case.
+
+
+# Group Checking
+## Checking Index [/api/v1/checking]
+### List all checking methods [GET]
+* Response 200 (application/json)
+
+        {
+            "inputFormats
+            "links": [
+                "submit": "https://host:port/api/v1/checking/submit",
+                "capabilities": "https://host:port/api/v1/checking/capabilities",
+            ]
+        }
+        
+
+
+## Checking Capabilities [/api/v1/checking/capabilities]
+### List checking capabilities [GET]
+* Response 200 (application/json)
+        
+        {
+            "audiences": [{
+                "id": "aud-1",
+                "displayName": "Tom the Technical Type",
+                "language": "en_GB",
+                "goals": ["spelling", "readability", "formality"]
+            }],
+            "languages": [{
+                "id": "en_GB", 
+                "displayName": "English (Great Britain)",
+                "fdfkldkflkfs": "",
+            }],
+            "goals": [{
+                "id": "spelling",
+                "displayName": "Spelling",
+                "col": "#f21"
+            }],
+            "requestFormats": [{
+                "id": "markdown",
+                "displayName": "Markdown",
+                "extensions": ["md"]}
+            }, {
+                "id": "xml",
+                "displayName": "XML",
+                "extension": ["xml", "dita", "docbook"]
+            }],
+            "contentFormats": [
+            ],
+            "checkTypes": []
+            "reportTypes: ["scorecard/xml", "scorecard/html", "debug", "termharvesting", "FIXMETOBEDONE"]
+        }
+
+##  Checking text [/api/v1/checking/submit]
+### Check [POST]
+
+* Request (application/json)
+
+        {
+            "audience": "aud-1",
+            "checkType": "batch", // batch, cayt, interactive
+            "reportTypes": ["debug", "termharvesting"],
+            "content": {
+                "request": "text to check",
+                "encoding": "base64+zip",
+                "format": "markdown",
+                "reference": "filename",
+                "author": "Ralf",
+                "mimeType": "application/vnd.adobe.cc" // still valid?
+            }
+        }
+
+* Response 200 (application/json)
+
+        {
+
+        }
+
+
+
+## Notes Collection [/api/v1/collections]
+### List all Notes [GET]
++ Response 200 (application/json)
+
+        [{
+          "id": 1, "title": "Jogging in park"
+        }, {
+          "id": 2, "title": "Pick-up posters from post-office"
+        }]
+
+### Create a Note [POST]
++ Request (application/json)
+
+        { "title": "Buy cheese and bread for breakfast." }
+
++ Response 201 (application/json)
+
+        { "id": 3, "title": "Buy cheese and bread for breakfast." }
+
+## Note [/notes/{id}]
+A single Note object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+
+### Retrieve a Note [GET]
++ Response 200 (application/json)
+
+    + Header
+
+            X-My-Header: The Value
+
+    + Body
+
+            { "id": 2, "title": "Pick-up posters from post-office" }
+
+### Remove a Note [DELETE]
++ Response 204
