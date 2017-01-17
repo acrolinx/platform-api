@@ -8,6 +8,7 @@ Acrolinx API is the new REST API for accessing all functionality of the Acrolinx
 
 ## Index [/api/v1]
 ### List all [GET]
+
 + Response 200 (application/json)
 
         {
@@ -40,8 +41,8 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
 
 # Group Checking
-## Checking Index [/api/v1/checking]
-### List all checking methods [GET]
+## List all checking methods [GET /api/v1/checking]
+
 * Response 200 (application/json)
 
         {
@@ -54,56 +55,54 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
 
 
-## Checking Capabilities [/api/v1/checking/capabilities]
-### List checking capabilities [GET]
+## List checking capabilities [GET /api/v1/checking/capabilities]
+
 * Response 200 (application/json)
 
         {
             "audiences": [
-              {
-                "id": "aud-1",
-                "displayName": "Tom the Technical Type",
-                "language": "en_GB",
-                "goals": ["spelling", "readability", "formality"]
-              }
+                {
+                    "id": "aud-1",
+                    "displayName": "Tom the Technical Type",
+                    "language": "en_GB",
+                    "goals": ["spelling", "readability", "formality"]
+                }
             ],
             "languages": [
-              {
-                "id": "en_GB",
-                "displayName": "English (Great Britain)",
-                "fdfkldkflkfs": "",
-              }
+                {
+                    "id": "en_GB",
+                    "displayName": "English (Great Britain)"
+                }
             ],
             "goals": [
-              {
-                "id": "spelling",
-                "displayName": "Spelling",
-                "col": "#f21"
-              }
+                {
+                    "id": "spelling",
+                    "displayName": "Spelling",
+                    "col": "#f21"
+                }
             ],
             "contentFormats": [
-              {
-                "id": "markdown",
-                "displayName": "Markdown",
-                "extensions": ["md"]
-              },
-              {
-                "id": "xml",
-                "displayName": "XML",
-                "extension": ["xml", "dita", "docbook"]
-              }
+                {
+                    "id": "markdown",
+                    "displayName": "Markdown",
+                    "extensions": ["md"]
+                },
+                {
+                    "id": "xml",
+                    "displayName": "XML",
+                    "extension": ["xml", "dita", "docbook"]
+                }
             ],
             "contentEncodings": [
-              {
-                "id": "base64+zip", "base64"
-              }
+                {
+                    "id": "base64+zip", "base64"
+                }
             ],
             "checkTypes": [ "batch", "cayt", "interactive" ],
             "reportTypes": ["scorecard/xml", "scorecard/html", "debug", "termharvesting", "FIXMETOBEDONE"]
         }
 
-##  Checking text [/api/v1/checking/submit]
-### Check [POST]
+##  Submit a check [POST /api/v1/checking/submit]
 
 * Request (application/json)
 
@@ -124,32 +123,33 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 * Response 200 (application/json)
 
         {
-          "id": 153,
-          "links": [
-              "status": "https://host:port/api/v1/checking/153/status",
-              "cancel": "https://host:port/api/v1/checking/153"   // should be DELETE...
-          ]
+            "id": 153,
+            "links": [
+                "status": "https://host:port/api/v1/checking/153/status",
+                "cancel": "https://host:port/api/v1/checking/153"   // should be DELETE...
+            ]
         }
 
 
-## Check status [/api/v1/checking/{id}/status]
-### Get status [GET]
+## Get check status [GET /api/v1/checking/{id}/status]
 
 * Parameters
-    * id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
-
+    * id (required, number, `1`) ... the check id
+    
 * Response 200 (application/json)
 
-    {
-        "id": 153,
-        "state": "done",
-        "percent": 100,
-        "message": "(10/10) Done."
-        "links": [
-          "result": "https://host:port/api/v1/checking/153/result",
-          "cancel": "https://host:port/api/v1/checking/153"   // should be DELETE...
-        ]
-    }
+        {
+            "id": 153,
+            "state": "done",
+            "percent": 100,
+            "message": "(10/10) Done."
+            "links": [
+                "result": "https://host:port/api/v1/checking/153/result",
+                "cancel": "https://host:port/api/v1/checking/153"   // should be DELETE...
+            ]
+        }
+
+# Group Unused stuff
 
 ## Notes Collection [/api/v1/collections]
 ### List all Notes [GET]
