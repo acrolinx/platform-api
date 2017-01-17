@@ -2,7 +2,7 @@ FORMAT: 1A
 HOST: https://tenant.acrolinx.cloud
 
 # acrolinx
-Acrolinx API is a *short texts saving* service similar to its physical paper presence on your table.
+Acrolinx API is the new REST API for accessing all functionality of the Acrolinx server.
 
 # Group Capabilities
 
@@ -19,22 +19,22 @@ Acrolinx API is a *short texts saving* service similar to its physical paper pre
                 "terminology": "https://host:port/api/v1/terminology",
                 "findability": "https://host:port/api/v1/findability",
             ],
-            "locales": {}.
+            "locales": {},
             "settings": {
                 "useLegacyResultDialog": true
             }
         }
-        
+
 + Response 401 (application/json)
 
         {
             "message": "Bla",
             "type": "com.acrolinx.faults.NoSuchAuthTokenFault",
-            "links": [
+            "links": {
                 "login": "https://host:port/api/v1/authenticate"
-            ]
+            }
         }
-      
+
 # Group User Metadata
 Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
@@ -45,49 +45,61 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 * Response 200 (application/json)
 
         {
-            "inputFormats": [],
+            "inputFormats": [], // why is this here again?
             "links": [
                 "submit": "https://host:port/api/v1/checking/submit",
                 "capabilities": "https://host:port/api/v1/checking/capabilities",
             ]
         }
-        
+
 
 
 ## Checking Capabilities [/api/v1/checking/capabilities]
 ### List checking capabilities [GET]
 * Response 200 (application/json)
-        
+
         {
-            "audiences": [{
+            "audiences": [
+              {
                 "id": "aud-1",
                 "displayName": "Tom the Technical Type",
                 "language": "en_GB",
                 "goals": ["spelling", "readability", "formality"]
-            }],
-            "languages": [{
-                "id": "en_GB", 
+              }
+            ],
+            "languages": [
+              {
+                "id": "en_GB",
                 "displayName": "English (Great Britain)",
                 "fdfkldkflkfs": "",
-            }],
-            "goals": [{
+              }
+            ],
+            "goals": [
+              {
                 "id": "spelling",
                 "displayName": "Spelling",
                 "col": "#f21"
-            }],
-            "requestFormats": [{
+              }
+            ],
+            "contentFormats": [
+              {
                 "id": "markdown",
                 "displayName": "Markdown",
-                "extensions": ["md"]}
-            }, {
+                "extensions": ["md"]
+              },
+              {
                 "id": "xml",
                 "displayName": "XML",
                 "extension": ["xml", "dita", "docbook"]
-            }],
-            "contentFormats": [
+              }
             ],
-            "checkTypes": []
-            "reportTypes: ["scorecard/xml", "scorecard/html", "debug", "termharvesting", "FIXMETOBEDONE"]
+            "contentEncodings": [
+              {
+                "id": "base64+zip", "base64"
+              }
+            ],
+            "checkTypes": [ "batch", "cayt", "interactive" ],
+            "reportTypes": ["scorecard/xml", "scorecard/html", "debug", "termharvesting", "FIXMETOBEDONE"]
         }
 
 ##  Checking text [/api/v1/checking/submit]
@@ -97,7 +109,7 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
         {
             "audience": "aud-1",
-            "checkType": "batch", // batch, cayt, interactive
+            "checkType": "batch",
             "reportTypes": ["debug", "termharvesting"],
             "content": {
                 "request": "text to check",
@@ -112,10 +124,32 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 * Response 200 (application/json)
 
         {
-
+          "id": 153,
+          "links": [
+              "status": "https://host:port/api/v1/checking/153/status",
+              "cancel": "https://host:port/api/v1/checking/153"   // should be DELETE...
+          ]
         }
 
 
+## Check status [/api/v1/checking/{id}/status]
+### Get status [GET]
+
+* Parameters
+    * id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+
+* Response 200 (application/json)
+
+    {
+        "id": 153,
+        "state": "done",
+        "percent": 100,
+        "message": "(10/10) Done."
+        "links": [
+          "result": "https://host:port/api/v1/checking/153/result",
+          "cancel": "https://host:port/api/v1/checking/153"   // should be DELETE...
+        ]
+    }
 
 ## Notes Collection [/api/v1/collections]
 ### List all Notes [GET]
