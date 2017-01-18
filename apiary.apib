@@ -36,6 +36,10 @@ Acrolinx API is the new REST API for accessing all functionality of the Acrolinx
             }
         }
 
+# Group Authentication
+
+TODO....
+
 # Group User Metadata
 Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
@@ -47,10 +51,10 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
         {
             "inputFormats": [], // why is this here again?
-            "links": [
+            "links": {
                 "submit": "https://host:port/api/v1/checking/submit",
                 "capabilities": "https://host:port/api/v1/checking/capabilities",
-            ]
+            }
         }
 
 
@@ -93,11 +97,7 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                     "extension": ["xml", "dita", "docbook"]
                 }
             ],
-            "contentEncodings": [
-                {
-                    "id": "base64+zip", "base64"
-                }
-            ],
+            "contentEncodings": [ "base64+zip", "base64" ],
             "checkTypes": [ "batch", "cayt", "interactive" ],
             "reportTypes": ["scorecard/xml", "scorecard/html", "debug", "termharvesting", "FIXMETOBEDONE"]
         }
@@ -116,7 +116,7 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                 "format": "markdown",
                 "reference": "filename",
                 "author": "Ralf",
-                "mimeType": "application/vnd.adobe.cc" // still valid?
+                "mimeType": "application/vnd.adobe.cc" // TODO: still valid?
             }
         }
 
@@ -124,10 +124,10 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
         {
             "id": 153,
-            "links": [
+            "links": {
                 "status": "https://host:port/api/v1/checking/153/status",
-                "cancel": "https://host:port/api/v1/checking/153"   // should be DELETE...
-            ]
+                "cancel": "https://host:port/api/v1/checking/153"   // TODO: should be DELETE
+            }
         }
 
 
@@ -143,11 +143,57 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
             "state": "done",
             "percent": 100,
             "message": "(10/10) Done."
-            "links": [
+            "links": {
                 "result": "https://host:port/api/v1/checking/153/result",
-                "cancel": "https://host:port/api/v1/checking/153"   // should be DELETE...
+                "cancel": "https://host:port/api/v1/checking/153"   // TODO: should be DELETE
+            }
+        }
+
+## Get check result [GET /api/v1/checking/{id}/result{?includeReport}]
+
+TODO: how to handle the "JSON report"? Is this a "report" or something else? What if the integration is
+not interested in the JSON result, but in the scorecard only?
+
+* Parameters
+    * id: `1` (required, number) ... the check id
+    * includeReport: `json` (optional, enum[string])
+        The type of the report to include as a string in the response. 
+        Must be one of 'reportTypes'. The query parameter can appear multiple times to include multiple reports.
+
+* Response 200 (application/json)
+
+        {
+            "id": 153,
+            "quality": {
+                "score": 57,
+                "status": "red"   // TODO: which values are allowed?
+            },
+            "counts": {
+                "sentences": 10,
+                "words": 121,
+                "issues": 13
+            },
+            "issueOverview": [
+                {
+                    "goalId": "spelling",
+                    "count": 13
+                }, {
+                    "goalId": "grammar",
+                    "count": 0
+                }
+            ],
+            "reports": [
+                {
+                    "reportType": "html",
+                    "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html"
+                }, {
+                    "reportType": "json",
+                    "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.json",
+                    "contents": "{ \"report\": {\"flags\"[ ...... "                
+                }
             ]
         }
+
 
 # Group Unused stuff
 
