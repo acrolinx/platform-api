@@ -182,15 +182,26 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
             "counts": {
                 "sentences": 10,
                 "words": 121,
-                "issues": 13
+                "issues": 15
             },
-            "issueOverview": [
+            "goals": [
                 {
-                    "goalId": "spelling",
-                    "count": 13
-                }, {
-                    "goalId": "grammar",
-                    "count": 0
+                    "id": "spelling",
+                    "displayName": "Spelling",
+                    "col": "#f21",
+                    "issueCount": 13,
+                },
+                {
+                    "id": "voice.readability",
+                    "displayName": "Clarity",
+                    "col": "#f22"
+                    "issueCount": 2,
+                },
+                {
+                    "id": "term.unsuitable",
+                    "displayName": "Unsuitable Term",
+                    "col": "#f23",
+                    "issueCount": 0
                 }
             ],
             "issues": [
@@ -200,10 +211,8 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                     "displayName": "Use Chicago style for the title case?",
                     "guidance": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
                     "extractedSurface": "zentense"
-                    "groupId": "spelling|||zentense",
-                    "key": "zentense", // TODO: needed?
                     "positionalInformation": {
-                        "hashes": {           // TODO: positional info? subsumes groupId?
+                        "hashes": {           // TODO: positional info? groupId grouped flags based on type (e.g. all flags of a rule), but issue hash just groups internalName+extractedSurface
                             "issue": "BhKh3iaGBjB7Cw6M/GwrLQ==",
                             "environment": "vJ9eCVViEpIdM76h+5K/nA==",
                             "index": "hjlRLT0K+LlvlslKdNUlhw==1"
@@ -248,21 +257,35 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                                 2: "nce"
                             }
                     ],
-                    "links": [
-                        "help": "https://tenant.acrolinx.cloud/htmldata/en/rules/help/title_case_chicago.html",
-                        "termContributionForm": "https://tenant.acrolinx.cloud/termcontribution.html?surface=@@base64:cXdlcnR5dWlvcA==&locale=en&language=en&userid=admin&context=@@base64:VGhpcyBzZW50ZW5jZSBoYXMgYSBxd2VydHl1aW9wLg==#"
-                    ]                    
+                    "actions": [
+                        {
+                            "id": "help",
+                            "url": "https://tenant.acrolinx.cloud/htmldata/en/rules/help/title_case_chicago.html",
+                            "displayName": "Help",
+                            "icon": "help-icon"
+                        }, 
+                        {
+                            "id": "termContributionForm",
+                            "url": "https://tenant.acrolinx.cloud/termcontribution.html?surface=@@base64:cXdlcnR5dWlvcA==&locale=en&language=en&userid=admin&context=@@base64:VGhpcyBzZW50ZW5jZSBoYXMgYSBxd2VydHl1aW9wLg==#",
+                            "displayName": "Add as Term",
+                            "icon": "icon-term-contribute",
+                            "replacedBy": "termContribution"
+                        }
+                    ],
+                    "links":
+                        {
+                            "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
+                            "addToDictionary": "..."
+                        }                    
                 },
                 {
-                    "issueId": "412", // needed?
                     "goalId": "term.unsuitable",
                     "internalName": "term_flag",
-                    "displayName": "Unsuitable term",
+                    "displayName": "<b>Illegal sublanguage variant</b> of preferred term",
                     "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>RA-Terms</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
                     "extractedSurface": "Please"
-                    "groupId": "5681",
                     "positionalInformation": {
-                        "hashes": {           // positional info? subsumes groupId?
+                        "hashes": {           
                             "issue": "3qyt/AVxwNTOUQSuMA7brw==",
                             "environment": "TiwIFBwA6X920mDAezJTyQ==",
                             "index": "Lm9PqBGGm+tj21rt3pkpjA==1"
@@ -277,41 +300,35 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                         }],
                     },
                     "readonly": false,
-                    "issueLocations": [
-                      // TODO
-                    ],
+                    "issueLocations": [],
                     "suggestions": [
                         {
                             "surface": "blablub",
+                            "icon": "https://tenant.acrolinx.cloud/tng/icons/preferred.svg" // TODO: icon class+url?
                             "groupId": "2653",
                             "replacements": {
                                 0: "blablub"
                             },
-                            "term": {  // TODO: needed?
-                                "id": "4214",
-                                "surface": "blablub",
-                                "status": "PREFERRED",
-                                "termSets": ["RA-Terms"],
-                                "domains": ["RA-Terms"]
-                            }
+                        }
                     ],
-                    "term": {
-                        "id": "5681",
-                        "surface": "please",
-                        "status": "DEPRECATED",
-                        "termSets": ["RA-Terms"],
-                        "domains": ["RA-Terms"]
-                    },                        
-                    "termVariant": "legal", // one of exact, legal, admitted, illegal, sublanguage.illegal
-                    "termConflicts": [{
-                        "issueId": "123",
-                        "termId": "4215"
-                    }],
-                    "links": [
-                        "help": "https://tenant.acrolinx.cloud/termhelp?termUniversalId=9c2e9ffb-a314-4b61-94b2-d62db3c18945&locale=en"
-                    ]
+                    "actions": [
+                        {
+                            "id": "help",
+                            "url": "https://tenant.acrolinx.cloud/termhelp?termUniversalId=9c2e9ffb-a314-4b61-94b2-d62db3c18945&locale=en",
+                            "displayName": "Help",
+                            "icon": "help-icon"
+                        }
+                    ],
+                    "debug": {
+                        "term": {
+                            "surface": "please",
+                            "status": "DEPRECATED",
+                            "termSets": ["RA-Terms"],
+                            "domains": ["RA-Terms"]
+                            "variant": "legalVariantIllegal",
+                        }
+                    }
                 },
-                
             ],
             {
                 "goalId": "voice.readability",
@@ -319,7 +336,6 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                 "displayName": "Too complex? Your readers need a medium level of clarity. ",                
                 "guidance": "",
                 "extractedSurface": "Reports ... length",
-                "groupId": "",
                 "positionalInformation": {
                     "hashes": {
                         "flag": "E3OxJ3bFcfWLyAisUxufAA==",
@@ -345,14 +361,15 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                 "suggestions": [],
                 "issueLocations": [],
                 "readonly": false,
-                "penalty": 1234.0967741949999,
+                "debug": {
+                    "penalty": 1234.0967741949999                    
+                },
                 "subFlags": [{
                     "goalId": "voice.readability",
                     "internalName": "phenomenon_embedded_or_complex_sentence",
                     "displayName": "Try to split up this sentence.",
                     "guidance": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
                     "extractedSurface": "Reports ... length",
-                    "groupId": "",
                     "positionalInformation": {
                         "hashes": {
                             "flag": "7s1nqUN96X+P6VY4FlfSQQ==",
@@ -378,14 +395,15 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                     "suggestions": [],
                     "issueLocations": [],
                     "readonly": false,
-                    "penalty": 320.0
+                    "debug": {
+                        "penalty": 320.0
+                    }
                 }, {
                     "goalId": "voice.readability",
                     "internalName": "phenomenon_passive",
                     "displayName": "The active voice is usually clearer.",
                     "guidance": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
                     "extractedSurface": "was first seen",
-                    "groupId": "",
                     "positionalInformation": {
                         "hashes": {
                             "flag": "dg+ih1XodWeL7lJ/wo17QQ==",
@@ -415,7 +433,9 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                     "suggestions": [],
                     "issueLocations": [],
                     "readonly": false,
-                    "penalty": 40.0
+                    "debug": {
+                        "penalty": 40.0
+                    }
                 }]
             },
             "keywords": [
@@ -438,21 +458,39 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                 }],
                 "target": []
             ],
-            "extraInfos": {
-                "links": [
-                    {
-                        "rioseo": "https://kis.example.com/info?projectId=52351235
-                    } 
-            },
+            "extraInfos": [
+                {
+                    "id": "rioseo",
+                    "title": "IBM KIS",
+                    "iconClass": "search-icon",
+                    "iconUrl": "...",
+                    "url": "https://kis.example.com/info?projectId=52351235
+                } 
+            ],
             "reports": [
                 {
                     "reportType": "scorecard.html",
                     "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html"
-                }, {
+                }, 
+                {
                     "reportType": "scorecard.xml",
                     "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.xml"
                 }
-            ]
+            ],
+            "actions": [
+                {
+                    "id": "termContributionForm",
+                    "url": "https://tenant.acrolinx.cloud/termcontribution.html",
+                    "displayName": "Add as Term",
+                    "icon": "icon-term-contribute",
+                    "replacedBy": "termContribution"
+                }
+            ],
+            "links":
+                {
+                    "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
+                    "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
+                }            
         }
 
 
