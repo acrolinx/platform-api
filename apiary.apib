@@ -43,11 +43,83 @@ See unified authentication: DEV-10327
 # Group User Metadata
 Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
+# Group Document ID
+## Create or retrieve document ID [POST /api/v1/document{?forceNew}]
+
+* Parameters
+    * forceNew: `true` (optional, boolean) ... create a new document ID even if there is a matching existing document
+        
+        Default: false
+
++ Request (application/json)
+
+        {
+            "reference": "abc.docx",
+            "mimeType": "application/word",            
+            "author": "Ralf",
+            "contentType": "E-Mail" // TODO...
+        }
+
++ Response 200 (application/json)
+
+        {
+            "id": "283ab1e075f21a",
+            "reference": "abc.docx",
+            "mimeType": "application/word",            
+            "author": "Ralf",
+            "contentType": "E-Mail"
+            "metadata": [
+                {
+                    "displayName": "Project ID",
+                    "key": "projectId",
+                    "value": null,
+                    "required": true
+                }
+            ]                    
+        }
+
+## Put/update document information [PUT /api/v1/document/{id}]
+
++ Request (application/json)
+
+        {
+            "reference": "abc.docx",
+            "mimeType": "application/word",            
+            "author": "Ralf",
+            "contentType": "E-Mail",
+            "metadata": [
+                {
+                    "key": "projectId",
+                    "value": "Marketing Campaign"
+                }
+            ]                    
+        }
+
+
++ Response 200 (application/json)
+
+        {
+            "id": "283ab1e075f21a",
+            "reference": "abc.docx",
+            "mimeType": "application/word",            
+            "author": "Ralf",
+            "contentType": "E-Mail",
+            "metadata": [
+                {
+                    "displayName": "Project ID",
+                    "key": "projectId",
+                    "value": "Marketing Campaign",
+                    "required": true
+                }
+            ]
+        }
+
+
 
 # Group Checking
 ## List all checking methods [GET /api/v1/checking]
 
-* Response 200 (application/json)
++ Response 200 (application/json)
 
         {
             "inputFormats": [], // why is this here again?
@@ -63,7 +135,7 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
 // TODO: term sets
 
-* Response 200 (application/json)
++ Response 200 (application/json)
 
         {
             "audiences": [
@@ -121,42 +193,83 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
 ##  Submit a check [POST /api/v1/checking/submit]
 
-* Request (application/json)
+Client can send document ID only if known, other fields only to get/create document ID, document ID plus other fields to update info about document.
+
++ Request (application/json)
 
         {
-            "audience": "aud-1",
+            "audienceId": "aud-1",
             "checkType": "batch",
             "reportTypes": ["debug", "termharvesting"],
             "content": {
                 "request": "text to check",
                 "encoding": "zip,base64",
-                "format": "markdown",
+                "format": "markdown"
+            },
+            "document": {
+                "id": "283ab1e075f21a",
                 "reference": "README.md",
                 "author": "Ralf",
-                "mimeType": "application/vnd.adobe.cc" // TODO: still valid?
+                "mimeType": "application/word", // TODO: still valid?
+                "contentType": "E-Mail"
             }
         }
 
-* Response 200 (application/json)
++ Response 200 (application/json)
 
         {
-            "id": 153,
+            "id": "153",
+            "documentId": "283ab1e075f21a",            
             "links": {
                 "status": "https://host:port/api/v1/checking/153/status",
                 "cancel": "https://host:port/api/v1/checking/153"   // TODO: should be DELETE
             }
         }
 
++ Response 400 (application/json)
+
+        {
+            "message": "Document Metadata required",
+            "type": "com.acrolinx.faults.DocumentMetadataRequired",
+            "document": {
+                "id": "283ab1e075f21a",
+                "reference": "abc.docx",
+                "mimeType": "application/word",            
+                "author": "Ralf",
+                "contentType": "E-Mail",
+                "metadata": [
+                    {
+                        "displayName": "Project ID",
+                        "key": "projectId",
+                        "value": null,
+                        "required": true
+                    }
+                ]                    
+            }
+            "links": {
+                "submitMetadata": "https://host:port/api/v1/document/283ab1e075f21a/metadata"                
+            },
+            "actions": [
+                {
+                    "id": "submitMetadataForm",
+                    "url": "https://host:8031/documentMetadata.html?documentId=283ab1e075f21a",
+                    "displayName": "Add required document metadata",
+                    "icon": "..."
+                }   
+            ]
+        }
+
 
 ## Get check status [GET /api/v1/checking/{id}/status]
 
-* Parameters
-    * id (required, number, `1`) ... the check id
++ Parameters
+    + id: `153` (required, number) ... the check id
     
-* Response 200 (application/json)
++ Response 200 (application/json)
 
         {
-            "id": 153,
+            "id": "153",
+            "documentId": "283ab1e075f21a",            
             "state": "done",
             "percent": 100,
             "message": "(10/10) Done."
@@ -168,13 +281,28 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
 ## Get check result [GET /api/v1/checking/{id}/result]
 
-* Parameters
-    * id: `153` (required, number) ... the check id
++ Parameters
+    + id: `153` (required, number) ... the check id
 
-* Response 200 (application/json)
++ Response 200 (application/json)
 
         {
             "id": "153",
+            "document": {
+                "id": "283ab1e075f21a",
+                "reference": "abc.docx",
+                "mimeType": "application/word",            
+                "author": "Ralf",
+                "contentType": "E-Mail",
+                "metadata": [
+                    {
+                        "displayName": "Project ID",
+                        "key": "projectId",
+                        "value": "Marketing Campaign",
+                        "required": true
+                    }
+                ]
+            },            
             "quality": {
                 "score": 57,
                 "status": "red"   // TODO: which values are allowed?
@@ -329,52 +457,17 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                         }
                     }
                 },
-            ],
-            {
-                "goalId": "voice.readability",
-                "internalName": "en-clarity-medium",
-                "displayName": "Too complex? Your readers need a medium level of clarity. ",                
-                "guidance": "",
-                "extractedSurface": "Reports ... length",
-                "positionalInformation": {
-                    "hashes": {
-                        "flag": "E3OxJ3bFcfWLyAisUxufAA==",
-                        "environment": "XVYQZVyCoFOr1TDeyXuMgg==",
-                        "index": "accsS0dbn/3rafcbT9NJGw==1"
-                    },
-                    "matches": [{
-                        "extractedPart": "Reports",
-                        "extractedBegin": 1360,
-                        "extractedEnd": 1367
-                        "originalPart": "Reports",
-                        "originalBegin": 33173,
-                        "originalEnd": 33180,
-                    }, {
-                        "extractedPart": "length",
-                        "extractedBegin": 1749,
-                        "extractedEnd": 1755
-                        "originalPart": "length",
-                        "originalBegin": 33562,
-                        "originalEnd": 33568,
-                    }]
-                },
-                "suggestions": [],
-                "issueLocations": [],
-                "readonly": false,
-                "debug": {
-                    "penalty": 1234.0967741949999                    
-                },
-                "subFlags": [{
+                {
                     "goalId": "voice.readability",
-                    "internalName": "phenomenon_embedded_or_complex_sentence",
-                    "displayName": "Try to split up this sentence.",
-                    "guidance": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
+                    "internalName": "en-clarity-medium",
+                    "displayName": "Too complex? Your readers need a medium level of clarity. ",                
+                    "guidance": "",
                     "extractedSurface": "Reports ... length",
                     "positionalInformation": {
                         "hashes": {
-                            "flag": "7s1nqUN96X+P6VY4FlfSQQ==",
+                            "issue": "E3OxJ3bFcfWLyAisUxufAA==",
                             "environment": "XVYQZVyCoFOr1TDeyXuMgg==",
-                            "index": "++0c1Z/OQu1Mwzt0KpkYYA==1"
+                            "index": "accsS0dbn/3rafcbT9NJGw==1"
                         },
                         "matches": [{
                             "extractedPart": "Reports",
@@ -396,48 +489,83 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                     "issueLocations": [],
                     "readonly": false,
                     "debug": {
-                        "penalty": 320.0
-                    }
-                }, {
-                    "goalId": "voice.readability",
-                    "internalName": "phenomenon_passive",
-                    "displayName": "The active voice is usually clearer.",
-                    "guidance": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
-                    "extractedSurface": "was first seen",
-                    "positionalInformation": {
-                        "hashes": {
-                            "flag": "dg+ih1XodWeL7lJ/wo17QQ==",
-                            "environment": "XVYQZVyCoFOr1TDeyXuMgg==",
-                            "index": "fOJLASZHiwnwcJWcfbkXnw==1"
-                        },
-                        "matches": [{
-                            "part": "was",
-                            "begin": 33219,
-                            "end": 33222,
-                            "extractedBegin": 1406,
-                            "extractedEnd": 1409
-                        }, {
-                            "part": "first",
-                            "begin": 33223,
-                            "end": 33228,
-                            "extractedBegin": 1410,
-                            "extractedEnd": 1415
-                        }, {
-                            "part": "seen",
-                            "begin": 33229,
-                            "end": 33233,
-                            "extractedBegin": 1416,
-                            "extractedEnd": 1420
-                        }]
+                        "penalty": 1234.0967741949999                    
                     },
-                    "suggestions": [],
-                    "issueLocations": [],
-                    "readonly": false,
-                    "debug": {
-                        "penalty": 40.0
+                    "subIssues": [{
+                        "goalId": "voice.readability",
+                        "internalName": "phenomenon_embedded_or_complex_sentence",
+                        "displayName": "Try to split up this sentence.",
+                        "guidance": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
+                        "extractedSurface": "Reports ... length",
+                        "positionalInformation": {
+                            "hashes": {
+                                "issue": "7s1nqUN96X+P6VY4FlfSQQ==",
+                                "environment": "XVYQZVyCoFOr1TDeyXuMgg==",
+                                "index": "++0c1Z/OQu1Mwzt0KpkYYA==1"
+                            },
+                            "matches": [{
+                                "extractedPart": "Reports",
+                                "extractedBegin": 1360,
+                                "extractedEnd": 1367
+                                "originalPart": "Reports",
+                                "originalBegin": 33173,
+                                "originalEnd": 33180,
+                            }, {
+                                "extractedPart": "length",
+                                "extractedBegin": 1749,
+                                "extractedEnd": 1755
+                                "originalPart": "length",
+                                "originalBegin": 33562,
+                                "originalEnd": 33568,
+                            }]
+                        },
+                        "suggestions": [],
+                        "issueLocations": [],
+                        "readonly": false,
+                        "debug": {
+                            "penalty": 320.0
+                        }
+                    }, {
+                        "goalId": "voice.readability",
+                        "internalName": "phenomenon_passive",
+                        "displayName": "The active voice is usually clearer.",
+                        "guidance": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
+                        "extractedSurface": "was first seen",
+                        "positionalInformation": {
+                            "hashes": {
+                                "flag": "dg+ih1XodWeL7lJ/wo17QQ==",
+                                "environment": "XVYQZVyCoFOr1TDeyXuMgg==",
+                                "index": "fOJLASZHiwnwcJWcfbkXnw==1"
+                            },
+                            "matches": [{
+                                "part": "was",
+                                "begin": 33219,
+                                "end": 33222,
+                                "extractedBegin": 1406,
+                                "extractedEnd": 1409
+                            }, {
+                                "part": "first",
+                                "begin": 33223,
+                                "end": 33228,
+                                "extractedBegin": 1410,
+                                "extractedEnd": 1415
+                            }, {
+                                "part": "seen",
+                                "begin": 33229,
+                                "end": 33233,
+                                "extractedBegin": 1416,
+                                "extractedEnd": 1420
+                            }]
+                        },
+                        "suggestions": [],
+                        "issueLocations": [],
+                        "readonly": false,
+                        "debug": {
+                            "penalty": 40.0
+                        }
                     }
-                }]
-            },
+                }
+            ],
             "keywords": [
                 "links": {
                     "getTargetKeywords": "/iq/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx",
