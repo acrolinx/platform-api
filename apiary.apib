@@ -9,42 +9,169 @@ Acrolinx API is the new REST API for accessing all functionality of the Acrolinx
 ## Index [/api/v1]
 ### List all [GET]
 
++ Request
+
+    + Header
+
+            Auth-Token: ""
+
+
 + Response 200 (application/json)
 
         {
             "server": {
                 "version": "5.2.1",
             },
-            "links": [
+            "links": {
+                "login": "https://host:port/api/v1/login/authenticate"
+            },
+            "locales": [ "en" ]
+        }
+
+
++ Request
+
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
+
++ Response 200 (application/json)
+
+        {
+            "server": {
+                "version": "5.2.1",
+            },
+            "links": {
                 "checking": "https://host:port/api/v1/checking",
                 "terminology": "https://host:port/api/v1/terminology",
                 "findability": "https://host:port/api/v1/findability",
-            ],
-            "locales": {},
+            },
+            "locales": {
+                "en"
+            },
             "settings": {
                 "useLegacyResultDialog": true
             }
         }
 
+
 + Response 401 (application/json)
 
-        {
+        {  // Response can happen at any time
             "message": "Bla",
             "type": "com.acrolinx.faults.NoSuchAuthTokenFault",
             "links": {
-                "login": "https://host:port/api/v1/authenticate"
+                "login": "https://host:port/api/v1/login/authenticate"
             }
         }
 
 # Group Authentication
 
-See unified authentication: DEV-10327
-TODO: client signature...
+## Authenticate [POST /api/v1/login/authenticate]
+
++ Request (application/json)
+
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
+    + Body
+
+            {
+                "clientInfo": {   // TODO: required for authentication? which fields?
+                    "signature": "QWNyb2xpbnhGb3JJbkZvckFkb2JlSW5EZXNpZ24",
+                    "displayName": "Acrolinx Plug-in for Adobe InDesign",
+                    "version": "1.2",
+                    "build": "4201"
+                }
+            }
+
+
++ Response 200 (application/json)
+
+        {
+            "authToken": "123579080a8d1fee12490a90dc3",
+            "privileges": [ "checking" ],
+            "user": {
+              // ...
+            }
+        }
+
+
+
++ Request (application/json)
+
+    + Header
+
+            Auth-Token: ""
+
+    + Body
+
+            {
+                "privileges": [ "checking" ],
+                "clientInfo": {   // TODO: required for authentication? which fields?
+                    "signature": "QWNyb2xpbnhGb3JJbkZvckFkb2JlSW5EZXNpZ24",
+                    "displayName": "Acrolinx Plug-in for Adobe InDesign",
+                    "version": "1.2",
+                    "build": "4201"
+                }
+            }
+
++ Response 401 (application/json)
+
+            {
+                "message": "Authentication required",
+                "type": "com.acrolinx.faults.AuthenticationRequired",
+                "links": {
+                    "openInBrowser": "http://host.com:8031/dashboard.html?login=19901-2-8412998412"
+                    "pollAuthToken": "http://host.com:8031/api/v1/login/poll?id=185-0ijfgklejt2390tui"
+                }
+            }
+
+
+## Poll for Auth token [GET /api/v1/login/poll{?id}]
+
++ Response 401 (application/json)
+
+            {
+                "message": "Authentication pending",
+                "type": "com.acrolinx.faults.AuthenticationPending",
+            }
+
++ Response 401 (application/json)
+
+            {
+                "message": "Unknown poll ID",
+                "type": "com.acrolinx.faults.NoSuchPollID",
+            }
+
+
++ Response 200 (application/json)
+
+            {
+                "authToken": "123579080a8d1fee12490a90dc3",
+                "privileges": [ "checking" ],
+                "user": {
+                // ...
+                }
+            }
+
+
+
 
 # Group User Metadata
 
-Might be handled via unified authentication, plese check AEM / Apple proxy case.
-TODO: what does this mean?
+* There will be an API to manage/update user metadata for the logged in user, similar to the one we have today.
+* In case user metadata is _required_:
+** Interactive integrations: This will already be handled via unified authentication. Immediately before granting
+access to an integration, the user needs to fill out his/her user metadata. It is thus impossible to obtain an
+auth token for a user with incomplete required user metadata. 
+** Headless (API key-based) integations: This will be handled by dashboard access. After logging in to the dashboard,
+the user needs to fill out his/her user metadata before getting to the actual dashboard. API keys can only be obtained
+in the dashboard for the logged-in user. It is thus impossible to obtain an API key for a user with incomplete required user metadata.
+
+TBD: If you enable 'require UMD' in the dashboard, should this invalidate all API keys and auth tokens?
 
 # Group Document ID
 ## Create or retrieve document ID [POST /api/v1/document{?forceNew}]
@@ -218,8 +345,6 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
 
 Client can send document ID only if known, other fields only to get/create document ID, document ID plus other fields to update info about document.
 
-TODO: client information/signature? needed for CSD and maybe reporting
-
 + Request (application/json)
 
         {
@@ -239,6 +364,12 @@ TODO: client information/signature? needed for CSD and maybe reporting
                 "mimeType": "application/word",
                 "contentType": "E-Mail",
                 "metadata": []                           // update all provided metadata, keep all other existing metadata
+            },
+            "clientInfo": {                              // optional, used for CSD selection and reporting
+                "signature": "QWNyb2xpbnhGb3JJbkZvckFkb2JlSW5EZXNpZ24",
+                "displayName": "Acrolinx Plug-in for Adobe InDesign",
+                "version": "1.2",
+                "build": "4201"
             }
         }
 
