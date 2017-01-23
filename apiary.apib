@@ -39,12 +39,18 @@ Acrolinx API is the new REST API for accessing all functionality of the Acrolinx
 # Group Authentication
 
 See unified authentication: DEV-10327
+TODO: client signature...
 
 # Group User Metadata
+
 Might be handled via unified authentication, plese check AEM / Apple proxy case.
+TODO: what does this mean?
 
 # Group Document ID
 ## Create or retrieve document ID [POST /api/v1/document{?forceNew}]
+
+Document information fields are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
+For searching: All fields are optional. A missing field means "unknown". "unknown" matches only "unknown". If "reference" is missing, forceNew is implicitly true (=no searching).
 
 * Parameters
     * forceNew: `true` (optional, boolean) ... create a new document ID even if there is a matching existing document
@@ -57,7 +63,7 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
             "reference": "abc.docx",
             "mimeType": "application/word",            
             "author": "Ralf",
-            "contentType": "E-Mail" // TODO...
+            "contentType": "E-Mail"
         }
 
 + Response 200 (application/json)
@@ -133,7 +139,7 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
 
 ## List checking capabilities [GET /api/v1/checking/capabilities]
 
-// TODO: term sets
+// TODO: term sets as proper objects?
 
 + Response 200 (application/json)
 
@@ -144,6 +150,7 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                     "displayName": "Tom the Technical Type",
                     "language": "en_GB",
                     "goals": ["spelling", "voice.readability", "term.unsuitable", "term.admitted"],
+                    "termSets": ["Switches", "Acrolinx"]
                 }
             ],
             "languages": [
@@ -176,6 +183,16 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
             ],
             "contentFormats": [
                 {
+                    "id": "auto",
+                    "displayName": "Automatic Detection",   // TODO: what do we do with this again?
+                    "extensions": ["*"]                     // TODO: what do we do with this again?
+                },
+                {
+                    "id": "text",
+                    "displayName": "Plain Text",
+                    "extensions": ["txt"]
+                },
+                {
                     "id": "markdown",
                     "displayName": "Markdown",
                     "extensions": ["md"]
@@ -184,34 +201,44 @@ Might be handled via unified authentication, plese check AEM / Apple proxy case.
                     "id": "xml",
                     "displayName": "XML",
                     "extension": ["xml", "dita", "docbook"]
+                },
+                {
+                    "id": "word_xml",
+                    "displayName": "XML (MS Word 2003)",
+                    "extension": ["xml"]
                 }
+                
             ],
-            "contentEncodings": [ "zip,base64", "base64" ],
+            "contentEncodings": [ "none", "zip,base64", "base64" ],
             "checkTypes": [ "batch", "cayt", "interactive" ],
-            "reportTypes": ["scorecard.xml", "scorecard.html", "debug", "termharvesting", "FIXMETOBEDONE"]
+            "reportTypes": ["scorecard.xml", "scorecard.html", "debug", "termharvesting"]
         }
 
 ##  Submit a check [POST /api/v1/checking/submit]
 
 Client can send document ID only if known, other fields only to get/create document ID, document ID plus other fields to update info about document.
 
+TODO: client information/signature? needed for CSD and maybe reporting
+
 + Request (application/json)
 
         {
-            "audienceId": "aud-1",
-            "checkType": "batch",
-            "reportTypes": ["debug", "termharvesting"],
-            "content": {
-                "request": "text to check",
-                "encoding": "zip,base64",
-                "format": "markdown"
+            "content": "text to check",                  // required
+            "contentEncoding": "zip,base64",             // optional, default: none = HTTP request encoding
+            "checkOptions": {
+                "audienceId": "aud-1",                       // optional, default: first audience
+                "termSets": ["Acrolinx"],                    // optional, default: all available for audience
+                "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard.html
+                "contentFormat": "word_xml",                 // optional, default: auto
+                "checkType": "batch"                         // optional, default: interactive
             },
-            "document": {
-                "id": "283ab1e075f21a",
-                "reference": "README.md",
+            "document": {                                // optional, default: empty "document" object
+                "id": "283ab1e075f21a",                  // optional, default: search for or create ID with following infos; if present: update ID with following infos
+                "reference": "abc.docx",                 // optional, default: do not search for ID, always create
                 "author": "Ralf",
-                "mimeType": "application/word", // TODO: still valid?
-                "contentType": "E-Mail"
+                "mimeType": "application/word",
+                "contentType": "E-Mail",
+                "metadata": []                           // update all provided metadata, keep all other existing metadata
             }
         }
 
@@ -219,7 +246,28 @@ Client can send document ID only if known, other fields only to get/create docum
 
         {
             "id": "153",
-            "documentId": "283ab1e075f21a",            
+            "checkOptions": {
+                "audienceId": "aud_1",
+                "termSets": ["Acrolinx"],
+                "reportTypes": ["debug", "termharvesting"],
+                "contentFormat": "word_xml",
+                "checkType": "batch"
+            },            
+            "document": {                                
+                "id": "283ab1e075f21a",
+                "reference": "abc.docx",
+                "author": "Ralf",
+                "mimeType": "application/word",
+                "contentType": "E-Mail",
+                "metadata": [
+                    {
+                        "displayName": "Project ID",
+                        "key": "projectId",
+                        "value": "Marketing Campaign",
+                        "required": true
+                    }
+                ]           
+            },
             "links": {
                 "status": "https://host:port/api/v1/checking/153/status",
                 "cancel": "https://host:port/api/v1/checking/153"   // TODO: should be DELETE
@@ -288,6 +336,13 @@ Client can send document ID only if known, other fields only to get/create docum
 
         {
             "id": "153",
+            "checkOptions": {
+                "audienceId": "aud_1",
+                "termSets": ["Acrolinx"],
+                "reportTypes": ["debug", "termharvesting"],
+                "contentFormat": "word_xml",
+                "checkType": "batch"
+            },            
             "document": {
                 "id": "283ab1e075f21a",
                 "reference": "abc.docx",
@@ -620,45 +675,3 @@ Client can send document ID only if known, other fields only to get/create docum
                     "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
                 }            
         }
-
-
-# Group Unused stuff
-
-## Notes Collection [/api/v1/collections]
-### List all Notes [GET]
-+ Response 200 (application/json)
-
-        [{
-          "id": 1, "title": "Jogging in park"
-        }, {
-          "id": 2, "title": "Pick-up posters from post-office"
-        }]
-
-### Create a Note [POST]
-+ Request (application/json)
-
-        { "title": "Buy cheese and bread for breakfast." }
-
-+ Response 201 (application/json)
-
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
-
-## Note [/notes/{id}]
-A single Note object with all its details
-
-+ Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
-
-### Retrieve a Note [GET]
-+ Response 200 (application/json)
-
-    + Header
-
-            X-My-Header: The Value
-
-    + Body
-
-            { "id": 2, "title": "Pick-up posters from post-office" }
-
-### Remove a Note [DELETE]
-+ Response 204
