@@ -4,10 +4,17 @@ HOST: https://tenant.acrolinx.cloud
 # acrolinx
 Acrolinx API is the new REST API for accessing all functionality of the Acrolinx server.
 
-# Group Capabilities
+# Group Index
+
+All methods with the exception of "index" and "poll auth token" 
+require a valid auth token, otherwise a 401 response is returned, see 401 response of "index".
+
 
 ## Index [/api/v1]
 ### List all [GET]
+
+Note: This is the only web service method that provides a 200 response if no auth token was sent.
+If an invalid auth token was sent, the response is still a 401, though.
 
 + Request
 
@@ -20,12 +27,16 @@ Acrolinx API is the new REST API for accessing all functionality of the Acrolinx
 
         {
             "server": {
-                "version": "5.2.1",
+                "version": "5.1.0",
+                "build": "12175"
+            },
+            "locales": [ "en" ],
+            "settings": {
+                "useLegacyResultDialog": true
             },
             "links": {
-                "login": "https://host:port/api/v1/login/authenticate"
-            },
-            "locales": [ "en" ]
+                "login": "https://tenant.acrolinx.cloud/api/v1/auth/login"
+            }            
         }
 
 
@@ -40,45 +51,49 @@ Acrolinx API is the new REST API for accessing all functionality of the Acrolinx
 
         {
             "server": {
-                "version": "5.2.1",
-            },
-            "links": {
-                "checking": "https://host:port/api/v1/checking",
-                "terminology": "https://host:port/api/v1/terminology",
-                "findability": "https://host:port/api/v1/findability",
+                "version": "5.1.0",
+                "build": "12175"
             },
             "locales": {
                 "en"
             },
             "settings": {
                 "useLegacyResultDialog": true
+            },
+            "links": {
+                "login": "https://tenant.acrolinx.cloud/api/v1/auth/login",  // TODO: scoped/name-spaced link keys?
+                "logoff": "https://tenant.acrolinx.cloud/api/v1/auth/logoff",
+                "checking": "https://tenant.acrolinx.cloud/api/v1/checking",
+                "terminology": "https://tenant.acrolinx.cloud/api/v1/terminology",
+                "findability": "https://tenant.acrolinx.cloud/api/v1/findability"
             }
         }
 
 
 + Response 401 (application/json)
 
-        {  // Response can happen at any time
-            "message": "Bla",
-            "type": "com.acrolinx.faults.NoSuchAuthTokenFault",
+        {  // if provided auth token became invalid
+            "message": "The provided auth token is invalid or has expired.",
+            "type": "com.acrolinx.faults.InvalidAuthTokenFault",
             "links": {
-                "login": "https://host:port/api/v1/login/authenticate"
+                "login": "https://tenant.acrolinx.cloud/api/v1/auth/login"
             }
         }
 
 # Group Authentication
 
-## Authenticate [POST /api/v1/login/authenticate]
+## Login [POST /api/v1/auth/login]
 
 + Request (application/json)
 
     + Header
 
-            Auth-Token: 123579080a8d1fee12490a90dc3
-
+            Auth-Token: 123579080a8d1fee12490a90dc3 (valid) OR (invalid/expired auth token) OR (no auth token)
+            
     + Body
 
             {
+                "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
                 "clientInfo": {   // TODO: required for authentication? which fields?
                     "signature": "QWNyb2xpbnhGb3JJbkZvckFkb2JlSW5EZXNpZ24",
                     "displayName": "Acrolinx Plug-in for Adobe InDesign",
@@ -86,83 +101,76 @@ Acrolinx API is the new REST API for accessing all functionality of the Acrolinx
                     "build": "4201"
                 }
             }
+
++ Response 200 (application/json)
+
+        // sent if auth token was valid _and_ covers requested privileges
+        {
+            "authToken": "123579080a8d1fee12490a90dc3",
+            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
+            "userId": "fred",
+            "links": {
+                "userInfo": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+            }
+        }
+
++ Response 401 (application/json)
+
+        // sent if auth token was empty, expired, or did not cover requested privileges
+        {
+            "message": "Authentication required",
+            "type": "com.acrolinx.faults.AuthenticationRequired",
+            "links": {
+                "openInBrowser": "https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412"
+                "pollAuthToken": "https://tenant.acrolinx.cloud/api/v1/auth/poll?id=185-0ijfgklejt2390tui"
+            }
+        }
+
+
+## Poll for Auth token [GET /api/v1/auth/poll{?id}]
+
++ Response 401 (application/json)
+
+        {
+            "message": "Authentication pending",
+            "type": "com.acrolinx.faults.AuthenticationPending",
+            "links": {
+                "pollAuthToken": "https://tenant.acrolinx.cloud/api/v1/auth/poll?id=185-0ijfgklejt2390tui"
+            }                
+        }
+
++ Response 404 (application/json)
+
+        {
+            "message": "Unknown poll ID",
+            "type": "com.acrolinx.faults.NoSuchPollID",
+        }
 
 
 + Response 200 (application/json)
 
         {
             "authToken": "123579080a8d1fee12490a90dc3",
-            "privileges": [ "checking" ],
-            "user": {
-              // ...
+            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
+            "userId": "fred",
+            "links": {
+                "userInfo": "https://tenant.acrolinx.cloud/api/v1/user/fred"
             }
         }
 
+## Logoff [POST /api/v1/auth/logoff]
 
-
-+ Request (application/json)
++ Request
 
     + Header
 
-            Auth-Token: ""
+            Auth-Token: 123579080a8d1fee12490a90dc3
 
-    + Body
-
-            {
-                "privileges": [ "checking" ],
-                "clientInfo": {   // TODO: required for authentication? which fields?
-                    "signature": "QWNyb2xpbnhGb3JJbkZvckFkb2JlSW5EZXNpZ24",
-                    "displayName": "Acrolinx Plug-in for Adobe InDesign",
-                    "version": "1.2",
-                    "build": "4201"
-                }
-            }
-
-+ Response 401 (application/json)
-
-            {
-                "message": "Authentication required",
-                "type": "com.acrolinx.faults.AuthenticationRequired",
-                "links": {
-                    "openInBrowser": "http://host.com:8031/dashboard.html?login=19901-2-8412998412"
-                    "pollAuthToken": "http://host.com:8031/api/v1/login/poll?id=185-0ijfgklejt2390tui"
-                }
-            }
++ Response 204
 
 
-## Poll for Auth token [GET /api/v1/login/poll{?id}]
+# Group User
 
-+ Response 401 (application/json)
-
-            {
-                "message": "Authentication pending",
-                "type": "com.acrolinx.faults.AuthenticationPending",
-            }
-
-+ Response 401 (application/json)
-
-            {
-                "message": "Unknown poll ID",
-                "type": "com.acrolinx.faults.NoSuchPollID",
-            }
-
-
-+ Response 200 (application/json)
-
-            {
-                "authToken": "123579080a8d1fee12490a90dc3",
-                "privileges": [ "checking" ],
-                "user": {
-                // ...
-                }
-            }
-
-
-
-
-# Group User Metadata
-
-* There will be an API to manage/update user metadata for the logged in user, similar to the one we have today.
 * In case user metadata is _required_:
 ** Interactive integrations: This will already be handled via unified authentication. Immediately before granting
 access to an integration, the user needs to fill out his/her user metadata. It is thus impossible to obtain an
@@ -172,6 +180,92 @@ the user needs to fill out his/her user metadata before getting to the actual da
 in the dashboard for the logged-in user. It is thus impossible to obtain an API key for a user with incomplete required user metadata.
 
 TBD: If you enable 'require UMD' in the dashboard, should this invalidate all API keys and auth tokens?
+
+## User Info [/api/v1/user/{id}]
+
++ Parameters
+    + id: `fred` (required, string) ... the user ID
+
+### Get User Info [GET]
+
++ Response 200 (application/json)
+
+        {
+            "id": "fred",
+            "name": "fred",  // Acrolinx login name (user ID) - TODO: is this already a suitable ID?
+            "firstName": "Fred",   // 
+            "lastName": "Freelancer", // 
+            "tenantId": "smarttech",
+            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
+            "properties" : {
+                "customkey": "customvalue",
+            }
+            "metadata": 
+            {
+                "displayName": "Department",
+                "key": "department",
+                "value": "IT",
+                "possibleValues": [],
+                "default": null
+            }
+        }
+
++ Response 403 (application/json)
+
+        // if auth token does not permit to show the user's data
+        {
+            "message": "You are not allowed to perform this operation.",
+            "type": "com.acrolinx.faults.InsufficientPrivileges",
+        }
+
+### Update User Info [PUT]
+
++ Request (application/json)
+
+        {
+            "firstName": "Freddy",    
+            "lastName": "McFredFace", 
+            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
+            "properties" : {
+                "customkeynew": "customvaluenew",
+            }
+            "metadata": 
+            {
+                "key": "department",
+                "value": "Manager",
+            }
+        }
+
+
++ Response 200 (application/json)
+
+        {
+            "id": "fred",
+            "name": "fred",  
+            "firstName": "Freddy",    
+            "lastName": "McFredFace", 
+            "tenantId": "smarttech",
+            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
+            "properties" : {
+                "customkeynew": "customvaluenew",
+            }
+            "metadata": 
+            {
+                "displayName": "Department",
+                "key": "department",
+                "value": "Manager",
+                "possibleValues": [],
+                "default": null
+            }
+        }
+
++ Response 403 (application/json)
+
+        // if client tried to change certain fields and the auth token does not permit it
+        {
+            "message": "You are not allowed to perform this operation.",
+            "type": "com.acrolinx.faults.InsufficientPrivileges",
+        }
 
 # Group Document ID
 ## Create or retrieve document ID [POST /api/v1/document{?forceNew}]
@@ -257,8 +351,8 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
         {
             "inputFormats": [], // why is this here again?
             "links": {
-                "submit": "https://host:port/api/v1/checking/submit",
-                "capabilities": "https://host:port/api/v1/checking/capabilities",
+                "submit": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
+                "capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities",
             }
         }
 
@@ -400,8 +494,8 @@ Client can send document ID only if known, other fields only to get/create docum
                 ]           
             },
             "links": {
-                "status": "https://host:port/api/v1/checking/153/status",
-                "cancel": "https://host:port/api/v1/checking/153"   // TODO: should be DELETE
+                "status": "https://tenant.acrolinx.cloud/api/v1/checking/153/status",
+                "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/153"   // TODO: should be DELETE
             }
         }
 
@@ -426,7 +520,7 @@ Client can send document ID only if known, other fields only to get/create docum
                 ]                    
             }
             "links": {
-                "submitMetadata": "https://host:port/api/v1/document/283ab1e075f21a/metadata"                
+                "submitMetadata": "https://tenant.acrolinx.cloud/api/v1/document/283ab1e075f21a/metadata"                
             },
             "actions": [
                 {
@@ -453,8 +547,8 @@ Client can send document ID only if known, other fields only to get/create docum
             "percent": 100,
             "message": "(10/10) Done."
             "links": {
-                "result": "https://host:port/api/v1/checking/153/result",
-                "cancel": "https://host:port/api/v1/checking/153"   // TODO: should be DELETE
+                "result": "https://tenant.acrolinx.cloud/api/v1/checking/153/result",
+                "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/153"
             }         
         }
 
