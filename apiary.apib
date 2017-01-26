@@ -459,6 +459,7 @@ Client can send document ID only if known, other fields only to get/create docum
                 "contentType": "E-Mail",
                 "metadata": []                           // update all provided metadata, keep all other existing metadata
             },
+            // TODO (asked by ska): needed if already sent during authentication? can we store this with auth token?
             "clientInfo": {                              // optional, used for CSD selection and reporting
                 "signature": "QWNyb2xpbnhGb3JJbkZvckFkb2JlSW5EZXNpZ24",
                 "displayName": "Acrolinx Plug-in for Adobe InDesign",
@@ -900,3 +901,37 @@ Client can send document ID only if known, other fields only to get/create docum
                     "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
                 }            
         }
+
+
+# Group Other methods in existing API
+
+Checking API:
+* Add to Dictionary
+* Contribute as Term (may be moved to Terminology API)
+
+Core Service:
+* get broadcast messages - integrate into "index" call?
+* is user self reg enabled - integrate into "index" call?
+* create user - not needed right now? should be part of User API 
+
+Findability:
+* get/update target keywords - may link to existing methods?
+* get keyword info - may link to existing method?
+
+ExtraInfo API:
+* get extra info tab infos - may link to existing methods in "index" call?
+
+Checking Profiles:
+* get and update user settings? get and update profile user settings? what is this?
+
+Feedback API
+* submit flag feedback - will be reimplemented anyway
+
+Reuse API
+* deprecated anyway
+
+Debug API
+* not needed for now - special use case
+
+Monitoring API
+* not needed for now - special use case
