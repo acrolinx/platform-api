@@ -1,17 +1,18 @@
 FORMAT: 1A
 HOST: https://tenant.acrolinx.cloud
 
-# acrolinx
-Acrolinx API is the new REST API for accessing all functionality of the Acrolinx server.
+# Acrolinx REST API
+
+The Acrolinx API is the new REST API for accessing all functionality of the Acrolinx server.
+
+Open points are marked with a TODO annotation.
+
+All methods with the exception of "index" and "poll auth token" require a valid auth token in the Auth-Token header even if not explicitly mentioned below.
+If the token is invalid, a 401 response is returned (see 401 response of "index") even if this response is not explicitly mentioned below.
 
 # Group Index
 
-All methods with the exception of "index" and "poll auth token" 
-require a valid auth token, otherwise a 401 response is returned, see 401 response of "index".
-
-
-## Index [/api/v1]
-### List all [GET]
+## Index [GET /api/v1]
 
 Note: This is the only web service method that provides a 200 response if no auth token was sent.
 If an invalid auth token was sent, the response is still a 401, though.
@@ -61,7 +62,7 @@ If an invalid auth token was sent, the response is still a 401, though.
                 "useLegacyResultDialog": true
             },
             "links": {
-                "login": "https://tenant.acrolinx.cloud/api/v1/auth/login",  // TODO: scoped/name-spaced link keys?
+                "login": "https://tenant.acrolinx.cloud/api/v1/auth/login",  // TODO: scoped/namespaced link keys to address Stefan's fears of URL overload?
                 "logoff": "https://tenant.acrolinx.cloud/api/v1/auth/logoff",
                 "checking": "https://tenant.acrolinx.cloud/api/v1/checking",
                 "terminology": "https://tenant.acrolinx.cloud/api/v1/terminology",
@@ -80,7 +81,10 @@ If an invalid auth token was sent, the response is still a 401, though.
             }
         }
 
-# Group Authentication
+# Group Authentication API
+
+Authentication is handled in a semi-interactive fashion as described in DEV-10327 ("unified authentication").
+For headless/non-interactive integrations, an alternative is to create an API key in the dashboard.
 
 ## Login [POST /api/v1/auth/login]
 
@@ -110,7 +114,7 @@ If an invalid auth token was sent, the response is still a 401, though.
             "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
             "userId": "fred",
             "links": {
-                "userInfo": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+                "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
             }
         }
 
@@ -154,7 +158,7 @@ If an invalid auth token was sent, the response is still a 401, though.
             "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
             "userId": "fred",
             "links": {
-                "userInfo": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+                "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
             }
         }
 
@@ -169,24 +173,26 @@ If an invalid auth token was sent, the response is still a 401, though.
 + Response 204
 
 
-# Group User
+# Group User API
 
-* In case user metadata is _required_:
-** Interactive integrations: This will already be handled via unified authentication. Immediately before granting
+Here, a user is an entity that has a login name, first/last name, privileges, custom properties (set by client), and user metadata.
+TODO: This may throw together too many concepts at once?
+
+In case user metadata is _required_:
+* Interactive integrations: This will already be handled via unified authentication. Immediately before granting
 access to an integration, the user needs to fill out his/her user metadata. It is thus impossible to obtain an
 auth token for a user with incomplete required user metadata. 
-** Headless (API key-based) integations: This will be handled by dashboard access. After logging in to the dashboard,
+* Headless (API key-based) integations: This will be handled by dashboard access. After logging in to the dashboard,
 the user needs to fill out his/her user metadata before getting to the actual dashboard. API keys can only be obtained
 in the dashboard for the logged-in user. It is thus impossible to obtain an API key for a user with incomplete required user metadata.
+* TODO: If you enable 'require UMD' in the dashboard, should this invalidate all API keys and auth tokens at that point?
 
-TBD: If you enable 'require UMD' in the dashboard, should this invalidate all API keys and auth tokens?
-
-## User Info [/api/v1/user/{id}]
+## User resource [/api/v1/user/{id}]
 
 + Parameters
     + id: `fred` (required, string) ... the user ID
 
-### Get User Info [GET]
+### Get User [GET]
 
 + Response 200 (application/json)
 
@@ -218,7 +224,9 @@ TBD: If you enable 'require UMD' in the dashboard, should this invalidate all AP
             "type": "com.acrolinx.faults.InsufficientPrivileges",
         }
 
-### Update User Info [PUT]
+### Update User [PUT]
+
+TODO: Which user information can be updated with this call? Are partial updates allowed?
 
 + Request (application/json)
 
@@ -267,11 +275,13 @@ TBD: If you enable 'require UMD' in the dashboard, should this invalidate all AP
             "type": "com.acrolinx.faults.InsufficientPrivileges",
         }
 
-# Group Document ID
-## Create or retrieve document ID [POST /api/v1/document{?forceNew}]
+# Group Document API
 
-Document information fields are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
-For searching: All fields are optional. A missing field means "unknown". "unknown" matches only "unknown". If "reference" is missing, forceNew is implicitly true (=no searching).
+Here, a document is an entity that associates names/characteristics which identify a document with an ID. It also contains the document metadata.
+
+## Create or retrieve document ID [POST /api/v1/document/_search{?forceNew}]
+
+In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
 
 * Parameters
     * forceNew: `true` (optional, boolean) ... create a new document ID even if there is a matching existing document
@@ -281,10 +291,10 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
 + Request (application/json)
 
         {
-            "reference": "abc.docx",
-            "mimeType": "application/word",            
-            "author": "Ralf",
-            "contentType": "E-Mail"
+            "reference": "abc.docx",            // optional; if absent, forceNew is implicitly true (=no searching)
+            "mimeType": "application/word",     // optional; absent means "unknown" and matches only "unknown"
+            "author": "Ralf",                   // optional; absent means "unknown" and matches only "unknown"
+            "contentType": "E-Mail"             // optional; absent means "unknown" and matches only "unknown"
         }
 
 + Response 200 (application/json)
@@ -305,7 +315,7 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
             ]                    
         }
 
-## Put/update document information [PUT /api/v1/document/{id}]
+## Put/update document [PUT /api/v1/document/{id}]
 
 + Request (application/json)
 
@@ -343,13 +353,18 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
 
 
 
-# Group Checking
+# Group Checking API
+
+The API for checking documents.
+
 ## List all checking methods [GET /api/v1/checking]
+
+TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' to the index.
 
 + Response 200 (application/json)
 
         {
-            "inputFormats": [], // why is this here again?
+            "inputFormats": [], // TODO: why is this here again?
             "links": {
                 "submit": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
                 "capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities",
@@ -402,7 +417,7 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
             ],
             "termSets": [
                 {
-                    "id": "c58f3889-9466-4fb4-82c7-973a0b4644d9",
+                    "id": "c58f3889-9466-4fb4-82c7-973a0b4644d9",   // actually the T+ term filter UUID
                     "displayName": "Switches"
                 },
                 {
@@ -445,7 +460,7 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
 
 ##  Submit a check [POST /api/v1/checking/submit]
 
-Client can send document ID only if known, other fields only to get/create document ID, document ID plus other fields to update info about document.
+This call includes an implicit "create/search for document" (in case no document ID was given) and "update document" (in case document ID was given).
 
 + Request (application/json)
 
@@ -460,12 +475,12 @@ Client can send document ID only if known, other fields only to get/create docum
                 "checkType": "batch"                         // optional, default: interactive
             },
             "document": {                                // optional, default: empty "document" object
-                "id": "283ab1e075f21a",                  // optional, default: search for or create ID with following infos; if present: update ID with following infos
+                "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
                 "reference": "abc.docx",                 // optional, default: do not search for ID, always create
                 "author": "Ralf",
                 "mimeType": "application/word",
                 "contentType": "E-Mail",
-                "metadata": []                           // update all provided metadata, keep all other existing metadata
+                "metadata": null
             },
             // TODO (asked by ska): needed if already sent during authentication? can we store this with auth token?
             "clientInfo": {                              // optional, used for CSD selection and reporting
@@ -504,7 +519,7 @@ Client can send document ID only if known, other fields only to get/create docum
             },
             "links": {
                 "status": "https://tenant.acrolinx.cloud/api/v1/checking/153/status",
-                "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/153"   // TODO: should be DELETE
+                "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/153"
             }
         }
 
@@ -542,6 +557,13 @@ Client can send document ID only if known, other fields only to get/create docum
         }
 
 
+## Cancel check [DELETE /api/v1/checking/{id}/cancel]
+
++ Parameters
+    + id: `153` (required, number) ... the check id
+
++ Response 204
+
 ## Get check status [GET /api/v1/checking/{id}/status]
 
 + Parameters
@@ -556,8 +578,7 @@ Client can send document ID only if known, other fields only to get/create docum
             "percent": 100,
             "message": "(10/10) Done."
             "links": {
-                "result": "https://tenant.acrolinx.cloud/api/v1/checking/153/result",
-                "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/153"
+                "result": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
             }         
         }
 
@@ -691,7 +712,7 @@ Client can send document ID only if known, other fields only to get/create docum
                     ],
                     "links":
                         {
-                            "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
+                            "termContribution": "https://tenant.acrolinx.cloud/terminology/v7/rest/contribute",
                             "addToDictionary": "..."
                         }                    
                 },
@@ -857,8 +878,8 @@ Client can send document ID only if known, other fields only to get/create docum
             ],
             "keywords": [
                 "links": {
-                    "getTargetKeywords": "/iq/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx",
-                    "putTargetKeywords": "/iq/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx"
+                    "getTargetKeywords": "https://tenant.acrolinx.cloud/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx",
+                    "putTargetKeywords": "https://tenant.acrolinx.cloud/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx"
                 },
                 "discovered": [{
                     "keyword": "Clarity card",
@@ -911,7 +932,7 @@ Client can send document ID only if known, other fields only to get/create docum
         }
 
 
-# Group Other methods in existing API
+# Group Other methods in existing API - TODO
 
 Checking API:
 * Add to Dictionary
@@ -924,10 +945,10 @@ Core Service:
 
 Findability:
 * get/update target keywords - may link to existing methods?
-* get keyword info - may link to existing method?
+* get keyword info - maybe link to existing method for now?
 
 ExtraInfo API:
-* get extra info tab infos - may link to existing methods in "index" call?
+* get extra info tab infos - maybe link to existing methods in "index" call for now?
 
 Checking Profiles:
 * get and update user settings? get and update profile user settings? what is this?
