@@ -360,8 +360,6 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
 
 ## List checking capabilities [GET /api/v1/checking/capabilities]
 
-// TODO: term sets as proper objects?
-
 + Response 200 (application/json)
 
         {
@@ -371,7 +369,7 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
                     "displayName": "Tom the Technical Type",
                     "language": "en_GB",
                     "goals": ["spelling", "voice.readability", "term.unsuitable", "term.admitted"],
-                    "termSets": ["Switches", "Acrolinx"]
+                    "termSets": ["c58f3889-9466-4fb4-82c7-973a0b4644d9", "e57bf41b-c706-495c-8664-1020fac9cffb"]
                 }
             ],
             "languages": [
@@ -402,6 +400,16 @@ For searching: All fields are optional. A missing field means "unknown". "unknow
                     "col": "#f24"
                 }
             ],
+            "termSets": [
+                {
+                    "id": "c58f3889-9466-4fb4-82c7-973a0b4644d9",
+                    "displayName": "Switches"
+                },
+                {
+                    "id": "e57bf41b-c706-495c-8664-1020fac9cffb",
+                    "displayName": "Acrolinx"
+                }
+            ]
             "contentFormats": [
                 {
                     "id": "auto",
@@ -446,7 +454,7 @@ Client can send document ID only if known, other fields only to get/create docum
             "contentEncoding": "zip,base64",             // optional, default: none = HTTP request encoding
             "checkOptions": {
                 "audienceId": "aud-1",                       // optional, default: first audience
-                "termSets": ["Acrolinx"],                    // optional, default: all available for audience
+                "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],    // optional, default: all available for audience
                 "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard.html
                 "contentFormat": "word_xml",                 // optional, default: auto
                 "checkType": "batch"                         // optional, default: interactive
@@ -474,7 +482,7 @@ Client can send document ID only if known, other fields only to get/create docum
             "id": "153",
             "checkOptions": {
                 "audienceId": "aud_1",
-                "termSets": ["Acrolinx"],
+                "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
                 "reportTypes": ["debug", "termharvesting"],
                 "contentFormat": "word_xml",
                 "checkType": "batch"
@@ -564,7 +572,7 @@ Client can send document ID only if known, other fields only to get/create docum
             "id": "153",
             "checkOptions": {
                 "audienceId": "aud_1",
-                "termSets": ["Acrolinx"],
+                "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
                 "reportTypes": ["debug", "termharvesting"],
                 "contentFormat": "word_xml",
                 "checkType": "batch"
@@ -691,7 +699,7 @@ Client can send document ID only if known, other fields only to get/create docum
                     "goalId": "term.unsuitable",
                     "internalName": "term_flag",
                     "displayName": "<b>Illegal sublanguage variant</b> of preferred term",
-                    "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>RA-Terms</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
+                    "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
                     "extractedSurface": "Please"
                     "positionalInformation": {
                         "hashes": {           
