@@ -676,7 +676,7 @@ This call includes an implicit "create/search for document" (in case no document
                             "originalPart": "nse",
                             "originalBegin": 19254,
                             "originalEnd": 19257
-                        }],
+                        }]
                     },
                     "readonly": true,
                     "issueLocations": [
@@ -694,6 +694,7 @@ This call includes an implicit "create/search for document" (in case no document
                                 0: "sen",
                                 2: "nce"
                             }
+                        }
                     ],
                     "actions": [
                         {
@@ -713,7 +714,7 @@ This call includes an implicit "create/search for document" (in case no document
                     "links":
                         {
                             "termContribution": "https://tenant.acrolinx.cloud/terminology/v7/rest/contribute",
-                            "addToDictionary": "..."
+                            "addToDictionary": "https://tenant.acrolinx.cloud/api/v1/dictionary/submit"
                         }                    
                 },
                 {
@@ -746,7 +747,7 @@ This call includes an implicit "create/search for document" (in case no document
                             "groupId": "2653",
                             "replacements": {
                                 0: "blablub"
-                            },
+                            }
                         }
                     ],
                     "actions": [
@@ -873,7 +874,7 @@ This call includes an implicit "create/search for document" (in case no document
                         "debug": {
                             "penalty": 40.0
                         }
-                    }
+                    }]
                 }
             ],
             "keywords": [
@@ -930,12 +931,91 @@ This call includes an implicit "create/search for document" (in case no document
                     "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
                 }            
         }
+# Group Dictionary API
+
+This API handles the spelling dictionary, i.e. words that are ignored by the spell checker.
+Here, a dictionary entry is a surface string and a language, optionally further restricted
+by either an audience ID, a document ID or a user ID.
+
+## Get dictionary capabilities [GET /api/v1/dictionary/capabilities]
+
+This method enables the client to discover the supported dictionary scopes. 
+
++ Response 200 (application/json)
+
+        {
+            "scopes": [ "audience", "document", "user", "language" ]
+        }
+
+## Add to dictionary [POST /api/v1/dictionary/submit]
+
+Create a dictionary entry for the specified scope. Depending on the scope, more information is required -
+the client needs to know which information it is. The response is the created dictionary entry.
+
++ Request (application/json)
+
+        {
+            "surface": "wiruwaruwolz",                  // required
+            "scope": "document"                         // required, one of the scopes above  
+            "languageId": "en_GB",                      // required if scope!=audience
+            "audienceId": "aud-1",                      // required if scope=audience
+            "documentId": "283ab1e075f21a"              // required if scope=document
+            "userId": "fred"                            // optional, default: user from auth token
+        }
+
++ Response 200
+
+        {
+            "surface": "wiruwaruwolz",            
+            "scope": "document"                     
+            "languageId": "en_GB",
+            "audienceId": null,
+            "documentId": "283ab1e075f21a",
+            "userId": null
+        }
+
+# Search for dictionary entries [POST /api/v1/dictionary/search]
+
+This is new functionality intended to make the contents of the spelling dictionary transparent for the first time.
+The dictionary entry in the request payload is used as the search criteria, where "null" fields mean "any".
+The response is a list of all entries across all dictionaries where the entry fields match the non-null criteria exactly.
+
++ Request (application/json)
+
+        {
+            "surface": "wiruwaruwolz",
+            "scope": null,
+            "languageId": "en_GB",
+            "audienceId": null,
+            "documentId": null
+            "userId": null
+        }
+
++ Response 200
+
+        [
+            {
+                "surface": "wiruwaruwolz",            
+                "scope": "document"                     
+                "languageId": "en_GB",
+                "audienceId": null,
+                "documentId": "283ab1e075f21a",
+                "userId": null
+            },
+            {
+                "surface": "wiruwaruwolz",            
+                "scope": "user"                     
+                "languageId": "en_GB",
+                "audienceId": null,
+                "documentId": null,
+                "userId": "fred"
+            }            
+        ]
 
 
 # Group Other methods in existing API - TODO
 
 Checking API:
-* Add to Dictionary
 * Contribute as Term (may be moved to Terminology API)
 
 Core Service:
