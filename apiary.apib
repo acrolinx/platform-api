@@ -279,6 +279,8 @@ TODO: Which user information can be updated with this call? Are partial updates 
 
 Here, a document is an entity that associates names/characteristics which identify a document with an ID. It also contains the document metadata.
 
+TODO: What about the document display title? Set by client here? Extracted by server here? Extracted by server later during check, i.e. not part of document entity?
+
 ## Create or retrieve document ID [POST /api/v1/document/_search{?forceNew}]
 
 In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
@@ -374,6 +376,8 @@ TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' 
 
 
 ## List checking capabilities [GET /api/v1/checking/capabilities]
+
+TODO: what about sublanguages? Part of the audience, or selectable by client?
 
 + Response 200 (application/json)
 
