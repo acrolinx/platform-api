@@ -1017,6 +1017,441 @@ The response is a list of all entries across all dictionaries where the entry fi
         ]
 
 
+# Data Structures
+
+## View (object)
++ id: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string)
++ displayName: `Hello World` (string, required)
++ useForChecking: false (boolean) - marks that this view is used to generate term sets
++ query: `name=match(batman)` (string, required) - a query string that may be appended to the terms resource to fetch terms in this view
++ links: (optional)
+    + *terms/en*: `[link to the terms collection]` (string, optional) - for each check language with terms matching the query there will be a link to the terms resource that returns these terms
++ NOT_UP_TO_DATE: yes (string, optional)
+
+## Term (object)
++ `id`: `B4B198A5-459C-4CF9-A574-22A22F611B8A` (string)
++ `name`: `Gàidhlig` (string)
++ `languageCode`: `gd` (string)
++ `status`: `39718e03-55b5-4874-a9c2-05edd83d58cb` (string)
++ `concept`: `589E1B07-34BE-4308-A6E9-40731DCFD30A` (string)
++ NOT_UP_TO_DATE: yes (string, optional)
+
+## ErrorResponse (object)
++ TODO: `Not yet documented` (string, optional)
+
+## PaginationMetadata (object)
++ `page`: `1` (number)
++ `pages`: `1` (number)
++ `limit`: `10` (number)
++ `records`: `2` (number) - total number of records in query, independent of pagination
+
+## `Language` (object)
+- `id`: `bf2b3b68-c3c2-4924-aaa3-e755f5cfd3d3` (string)
+- checkedAs: en de zh (array[string], optional) - language codes that this language is checked as (not final)
+- `parentLanguage`: `b0a5f8d9-9fb3-4c4d-90ea-15acad32ca11` (string)
+- `name`: `hup` (string)
+- `displayName`: `Hupa` (string) - use this string to represent this language in your UI
+- `order`: `33` (number) - represents the visual order between siblings, not necessary continous or complete
+
+# Group Terminology API
+
+This API allows access to the terminology database.
+
+## Get terminology index - not implemented [GET /api/v1/terminology]
+
+Basic hints about what is available where in the api. Links may appear/disappear based on the authorizations in the token provided.
+
+TODO:
++ put more stuff into the object, such as
+    + languages
+    + statuses (???)
+    + custom fields
+    + (maybe: views)
++ put more links into the object:
+    + links to collections?
+    + link to download all picklist options?
+
+Not implemented!!!
+
++ Request
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+            
++ Response 200 (application/json)
+
+        {
+            "links": {
+                "termsets": "https://tenant.acrolinx.cloud/api/v1/terminology/views?useForChecking=match(true)"
+            }  
+        }
+
+## View resource [/api/v1/terminology/views/{id}]
+
+asdfsdf
+
+## Get views [GET /api/v1/terminology/views{?useForChecking,sort,p,limit}]
+
+Returns a list of stored views, visible to the authenticated client.
+
++ Parameters
+    + useForChecking: `match(true)` (enum[string], optional)
+        Filters views by their "useForChecking" attribute. 
+        
+        See XXX for a general description on how filtering works in Acrolinx REST-APIs.
+        + Members
+            + `match(true)`
+            + `match(false)`
+    + sort: `displayName` (enum[string], optional)
+        Specifies the order in which the views appear in the result.
+        
+        See XXX for a general description on how sorting works in Acrolinx REST-APIs.
+        + Members
+            + `displayName`
+    + p: `1` (number, optional) - Result page if a limit is given. Starts with 1.
+    + limit: `10` (number, optional) - Maximum number of results per page.
+    
++ Request
+    + Header
+    
+            Auth-Token: 123579080a8d1fee12490a90dc3
+            
++ Response 200 (application/json)
+
+        {
+            "view": [
+            {
+                "id": "850ec0e3-9dd2-48f0-bb9c-8ade80316584",
+                "displayName": "Marketing",
+                "useForChecking": true,
+                "query": "[some query params]",
+                "links": {
+                    "terms/en": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(en)",
+                    "terms/de": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(de)",
+                    "terms/zh": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(zh)"
+                 }
+            }, {
+                "id": "850ec0e3-9dd2-48f0-bb9c-8ade80316585",
+                "displayName": "Documentation",
+                "useForChecking": true,
+                "query": "[other query params]",
+                "links": {
+                    "terms/en": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(en)",
+                    "terms/de": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(de)",
+                    "terms/zh": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(zh)"
+                }
+            }],
+            
+            "meta": {
+            }
+        }
+
+## Get view [GET /api/v1/terminology/views/{uuid}]
+
+Returns a stored view, visible to the authenticated client.
+
+TODO: 
++ More errors
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the returned view
+
++ Request
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 200 (application/json)
+    + Attributes
+        + view (View)
+
++ Response 404
+
+## Create view [POST /api/v1/terminology/views]
+
+Creates a new view. Note that the id send with the request is ignored and a new one is generated.
+
+TODO: 
++ More errors
+
++ Attributes
+    + view (View)
+
++ Request (application/json)
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: https://tenant.acrolinx.cloud/api/v1/terminology/views/{uuid}
+
+    + Attributes
+        + view (View)
+
+## Update view [PUT /api/v1/terminology/views/{uuid}]
+
+Updates a view.
+
+TODO: 
++ More errors
+
++ Attributes
+    + view (View)
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the returned view
+
++ Request (application/json)
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 200 (application/json)
+    + Attributes
+        + view (View)
+
++ Response 400 (application/json)
+    + Attributes
+        + error (ErrorResponse)
+
++ Response 404
+
+## Delete view [DELETE /api/v1/terminology/views/{uuid}]
+
+Deletes a view.
+
+TODO: 
++ More errors (authorization)
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the returned view
+
++ Request
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 204
++ Response 404
+
+## Terms resource [/api/v1/terminology/terms/{uuid}{?name,language,status,p,limit}]
+
+## Get terms [GET]
+Returns a list of stored terms.
+
++ Parameters
+    + name: `match(true)` (enum[string], optional)
+        Filters terms by their surface. 
+        
+        See XXX for a general description on how filtering works in Acrolinx REST-APIs.
+        + Members
+            + `match(true)`
+            + `match(false)`
+    + language: `match([language-id})` (string, optional)
+        Filters terms by their language. 
+        
+        See XXX for a general description on how filtering works in Acrolinx REST-APIs.
+    + status: `match([status-id})` (string, optional)
+        Filters terms by their status. 
+        
+        See XXX for a general description on how filtering works in Acrolinx REST-APIs.
+    + p: `1` (number, optional) - Result page if a limit is given. Starts with 1.
+    + limit: `10` (number, optional) - Maximum number of results per page.
+    
++ Request
+    + Header
+    
+            Auth-Token: 123579080a8d1fee12490a90dc3
+            
++ Response 200 (application/json)
+    + Attributes
+        + term (array[Term])
+        + meta (PaginationMetadata)
+
+# Get a term [GET]
+
+Returns a single term.
+
+TODO: 
++ More errors (authorization)
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the requested term
+
++ Request
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 200 (application/json)
+    + Attributes
+        + term (Term)
+
++ Response 404
+
+# Create a term [POST]
+
+Creates a new term.
+
+TODO: 
++ More errors (authorization, validation)
+
++ Attributes
+    + term (Term)
+
++ Request (application/json)
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: https://tenant.acrolinx.cloud/api/v1/terminology/terms/{uuid}
+
+# Update a term [PUT]
+
+Updates a term.
+
+TODO: 
++ More errors (authorization, validation)
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the updated term
+
++ Attributes
+    + term (Term)
+
++ Request (application/json)
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 200 (application/json)
+    + Attributes
+        + term (Term)
+
++ Response 404
+
+# Delete a term [DELETE]
+
+Deletes a term.
+
+TODO: 
++ More errors (authorization)
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the deleted term
+
++ Request
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 204
++ Response 404
+
+## Languages resource [/api/v1/terminology/languages/{uuid}]
+
+
+## Get languages [GET]
+Returns a list of all defined languages.
+            
++ Request
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 200 (application/json)
+    + Attributes
+        + language (array[Language])
+        + meta (PaginationMetadata)
+
+# Get a language [GET]
+
+Returns a single language.
+
+TODO: 
++ More errors (authorization)
+
++ Request
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the requested language
+
++ Response 200 (application/json)
+    + Attributes
+        + language (Language)
+
++ Response 404
+
+# Create a language [POST]
+
+Creates a new language.
+
+TODO: 
++ More errors (authorization, validation)
+
++ Attributes
+    + language (Language)
+
++ Request (application/json)
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: https://tenant.acrolinx.cloud/api/v1/terminology/languages/{uuid}
+
+# Update a language [PUT]
+
+Updates a language.
+
+TODO: 
++ More errors (authorization, validation)
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the updated language
+
++ Attributes
+    + language (Language)
+
++ Request (application/json)
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 200 (application/json)
+    + Attributes
+        + language (Language)
+
++ Response 404
+
+# Not implemented [DELETE]
+
+Deletes a language.
+
+TODO: 
++ More errors (authorization)
+
++ Parameters
+    + uuid: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string, required) - id of the deleted language
+
++ Request
+    + Header
+
+            Auth-Token: 123579080a8d1fee12490a90dc3
+
++ Response 204
++ Response 404
+
 # Group Other methods in existing API - TODO
 
 Checking API:
