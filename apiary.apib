@@ -131,36 +131,75 @@ For headless/non-interactive integrations, an alternative is to create an API ke
         }
 
 
-## Poll for Auth token [GET /api/v1/auth/poll{?id}]
+## Poll for Auth token [GET /api/v1/auth/poll/{id}]
 
-+ Response 401 (application/json)
+This resource lets a client wait for a user to login and authorize it to use the priviliged pars of the Acrolinx API. Once the user
+has completed the login process it will return a new *Auth Token* that can be send with each API call to prove the privileges
+requested during the initiating [POST to `/api/v1/auth/login`](#authentication-api-login-post).
 
-        {
-            "message": "Authentication pending",
-            "type": "com.acrolinx.faults.AuthenticationPending",
-            "links": {
-                "pollAuthToken": "https://tenant.acrolinx.cloud/api/v1/auth/poll?id=185-0ijfgklejt2390tui"
-            }                
-        }
+This action supports long polling. A request may be kept open for a "long" duration and will only return on a timeout or when
+the login process has reached a final state.
 
-+ Response 404 (application/json)
+ALSO: once polling returned a final result (`GONE`/`UNAUTHORIZED`/`OK`) the polling endpoint will dissapear with `GONE` or `404`.
 
-        {
-            "message": "Unknown poll ID",
-            "type": "com.acrolinx.faults.NoSuchPollID",
-        }
-
+TODO:
+- 404 and 410 are too similar. Im considering using tombstones to block poll ids for longer than the process timeout to prevent collisions.
+    This could lead to a more meaningful 404.
+    
+    410 could provide more information where the resource has gone (collected/timed out) if this
+    seems like a good idea.
+- The error responses need to be finalized.
 
 + Response 200 (application/json)
+   A user has completed the login process and the server has created a new *Auth Token*.
+   
+   Note that this resource will dissapear after this response. 
 
-        {
-            "authToken": "123579080a8d1fee12490a90dc3",
-            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
-            "userId": "fred",
-            "links": {
-                "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+    + Body
+
+            {
+                "authToken": "123579080a8d1fee12490a90dc3",
+                "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
+                "userId": "fred",
+                "links": {
+                    "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+                }
             }
-        }
+
++ Response 401 (application/json)
+    A user completed the login process but could not provide the requested privileges.
+
+    Note that this resource will dissapear after this response. 
+
+    TODO: Response body not final.
+
+    + Body
+
+            {
+                "message": "Authentication pending",
+                "type": "com.acrolinx.faults.AuthenticationPending",
+                "links": {
+                    "pollAuthToken": "https://tenant.acrolinx.cloud/api/v1/auth/poll?id=185-0ijfgklejt2390tui"
+                }                
+            }
+
++ Response 404 (application/json)
+    The server has no knowledge of the polling token. This may be caused by a timeout or by antoher poll request that consumed the credentials already.
+
+    TODO: Response body not final.
+
+    + Body
+
+            {
+                "message": "Unknown poll ID",
+                "type": "com.acrolinx.faults.NoSuchPollID",
+            }
+
++ Response 410 (application/json)
+    Returned when the requested login process has timed out or when another request has consumed the login token.
+
+    + Attributes
+        + error (ErrorResponse)
 
 ## Logoff [POST /api/v1/auth/logoff]
 
@@ -1238,7 +1277,7 @@ TODO:
 
 ## Terms resource [/api/v1/terminology/terms/{uuid}{?name,language,status,p,limit}]
 
-## Get terms [GET]
+### Get terms [GET]
 Returns a list of stored terms.
 
 + Parameters
@@ -1249,11 +1288,11 @@ Returns a list of stored terms.
         + Members
             + `match(true)`
             + `match(false)`
-    + language: `match([language-id})` (string, optional)
+    + language: `match([language-id])` (string, optional)
         Filters terms by their language. 
         
         See XXX for a general description on how filtering works in Acrolinx REST-APIs.
-    + status: `match([status-id})` (string, optional)
+    + status: `match([status-id])` (string, optional)
         Filters terms by their status. 
         
         See XXX for a general description on how filtering works in Acrolinx REST-APIs.
@@ -1270,7 +1309,7 @@ Returns a list of stored terms.
         + term (array[Term])
         + meta (PaginationMetadata)
 
-# Get a term [GET]
+### Get a term [GET]
 
 Returns a single term.
 
@@ -1291,7 +1330,7 @@ TODO:
 
 + Response 404
 
-# Create a term [POST]
+### Create a term [POST]
 
 Creates a new term.
 
@@ -1311,7 +1350,7 @@ TODO:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/terms/{uuid}
 
-# Update a term [PUT]
+### Update a term [PUT]
 
 Updates a term.
 
@@ -1335,7 +1374,7 @@ TODO:
 
 + Response 404
 
-# Delete a term [DELETE]
+### Delete a term [DELETE]
 
 Deletes a term.
 
