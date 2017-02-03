@@ -86,69 +86,86 @@ If an invalid auth token was sent, the response is still a 401, though.
 Authentication is handled in a semi-interactive fashion as described in DEV-10327 ("unified authentication").
 For headless/non-interactive integrations, an alternative is to create an API key in the dashboard.
 
-## Login [POST /api/v1/auth/login]
+## Request a new login [POST /api/v1/auth/login]
+
+The login resource allows Acrolinx API clients to request user authentication and to check
+the validity and privileges of exisiting *Auth Tokens*. 
 
 + Request (application/json)
 
     + Header
 
-            Auth-Token: 123579080a8d1fee12490a90dc3 (valid) OR (invalid/expired auth token) OR (no auth token)
+            X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3 (valid) OR (invalid/expired auth token) OR (no auth token)
             
     + Body
 
             {
-                "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
-                "clientInfo": {   // TODO: required for authentication? which fields?
-                    "signature": "QWNyb2xpbnhGb3JJbkZvckFkb2JlSW5EZXNpZ24",
-                    "displayName": "Acrolinx Plug-in for Adobe InDesign",
-                    "version": "1.2",
-                    "build": "4201"
-                }
+                "clientName": "My Test Client"
             }
 
 + Response 200 (application/json)
+    If the `X-Acrolinx-Auth` header contained a valid token, the login resource
+    produces the login result immediately.
 
-        // sent if auth token was valid _and_ covers requested privileges
-        {
-            "authToken": "123579080a8d1fee12490a90dc3",
-            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
-            "userId": "fred",
-            "links": {
-                "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+    The token returned in the body is the same as the one provided in the header.
+
+    + Body
+
+            {
+                "authToken": "123579080a8d1fee12490a90dc3",
+                "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
+                "userId": "fred",
+                "links": {
+                    "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+                    }
+             }
+
++ Response 201 (application/json)
+    If the `X-Acrolinx-Auth` header was absent a
+    new authorization process is started. The response body to the login request
+    will contain two links that allow the user to complete the login process and
+    the client to acquire the session data:
+
+    - `interactive` a link to a website that allows the user to authenticate and 
+          permit the client to log in.
+
+    - `poll` a link to a resource that will return an *Auth Token* and information
+          about the user after login. (see [GET `api/v1/auth/poll`](#authentication-api-poll-for-auth-token-get))
+
+    + Body
+
+            {
+                "links": {
+                    "interactive": "https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412",
+                    "poll": "https://tenant.acrolinx.cloud/api/v1/auth/poll/185-0ijfgklejt2390tui"
+                }
             }
-        }
 
 + Response 401 (application/json)
+    If the `X-Acrolinx-Auth` header was did not contain a valid *Auth Token* the
+    request is rejected.
 
-        // sent if auth token was empty, expired, or did not cover requested privileges
-        {
-            "message": "Authentication required",
-            "type": "com.acrolinx.faults.AuthenticationRequired",
-            "links": {
-                "openInBrowser": "https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412"
-                "pollAuthToken": "https://tenant.acrolinx.cloud/api/v1/auth/poll?id=185-0ijfgklejt2390tui"
-            }
-        }
+    + Header
 
+            WWW-Authenticate: ACROLINX_TOKEN_AUTH (, ...)
+
+    + Attributes
+        + error (ErrorResponse)
 
 ## Poll for Auth token [GET /api/v1/auth/poll/{id}]
 
-This resource lets a client wait for a user to login and authorize it to use the priviliged pars of the Acrolinx API. Once the user
-has completed the login process it will return a new *Auth Token* that can be send with each API call to prove the privileges
-requested during the initiating [POST to `/api/v1/auth/login`](#authentication-api-login-post).
+This resource lets a client wait for a user to login and authorize it to use the
+priviliged parts of the Acrolinx API. Once the user has completed the login process
+it will return a new *Auth Token* that can be send with each API call to prove
+the privileges requested during the initiating [POST to `/api/v1/auth/login`](#authentication-api-request-a-new-login-post).
 
-This action supports long polling. A request may be kept open for a "long" duration and will only return on a timeout or when
-the login process has reached a final state.
+This action supports long polling. A request may be kept open for a "long" duration
+and will only return on a timeout or when the login process has reached a final state.
+Once polling returned a final result (`GONE`/`UNAUTHORIZED`/`OK`) the polling
+endpoint will dissapear with `GONE` or `NOT FOUND`.
 
-ALSO: once polling returned a final result (`GONE`/`UNAUTHORIZED`/`OK`) the polling endpoint will dissapear with `GONE` or `404`.
-
-TODO:
-- 404 and 410 are too similar. Im considering using tombstones to block poll ids for longer than the process timeout to prevent collisions.
-    This could lead to a more meaningful 404.
-    
-    410 could provide more information where the resource has gone (collected/timed out) if this
-    seems like a good idea.
-- The error responses need to be finalized.
++ Parameters
+    + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
 
 + Response 200 (application/json)
    A user has completed the login process and the server has created a new *Auth Token*.
@@ -166,37 +183,20 @@ TODO:
                 }
             }
 
-+ Response 401 (application/json)
-    A user completed the login process but could not provide the requested privileges.
++ Response 202 (application/json)
+   Another poll request was started an has replaced this one before the user completed the authorization or
+   the server decided to drop the poll request. Request the same URI again to continue polling.
+ 
+    + Attributes
+        + error (ErrorResponse)
 
-    Note that this resource will dissapear after this response. 
-
-    TODO: Response body not final.
-
-    + Body
-
-            {
-                "message": "Authentication pending",
-                "type": "com.acrolinx.faults.AuthenticationPending",
-                "links": {
-                    "pollAuthToken": "https://tenant.acrolinx.cloud/api/v1/auth/poll?id=185-0ijfgklejt2390tui"
-                }                
-            }
-
-+ Response 404 (application/json)
++ Response 404
     The server has no knowledge of the polling token. This may be caused by a timeout or by antoher poll request that consumed the credentials already.
 
-    TODO: Response body not final.
-
     + Body
 
-            {
-                "message": "Unknown poll ID",
-                "type": "com.acrolinx.faults.NoSuchPollID",
-            }
-
 + Response 410 (application/json)
-    Returned when the requested login process has timed out or when another request has consumed the login token.
+    Returned when the requested login process has timed out.
 
     + Attributes
         + error (ErrorResponse)
@@ -1076,7 +1076,10 @@ The response is a list of all entries across all dictionaries where the entry fi
 + NOT_UP_TO_DATE: yes (string, optional)
 
 ## ErrorResponse (object)
-+ TODO: `Not yet documented` (string, optional)
++ `message`: `Error message` (string)
++ `errors`: (required)
+    + `exception_type`: `com.acrolinx.services.faults.Unauthorized` (string, required)
+    + `exception_message`: `Invalid credentials` (string, required)
 
 ## PaginationMetadata (object)
 + `page`: `1` (number)
