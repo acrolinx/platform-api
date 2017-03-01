@@ -91,6 +91,9 @@ For headless/non-interactive integrations, an alternative is to create an API ke
 The login resource allows Acrolinx API clients to request user authentication and to check
 the validity and privileges of exisiting *Auth Tokens*. 
 
+If the Acrolinx server is configured for Single Sign-on this enpoint will accept the configured sso credentials
+to authenticate the request.
+
 + Request (application/json)
 
     + Header
@@ -105,7 +108,8 @@ the validity and privileges of exisiting *Auth Tokens*.
 
 + Response 200 (application/json)
     If the `X-Acrolinx-Auth` header contained a valid token, the login resource
-    produces the login result immediately.
+    produces the login result immediately. This will also happen if Single Sign-on
+    is configured and valid credentials are supplied.
 
     The token returned in the body is the same as the one provided in the header.
 
