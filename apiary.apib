@@ -142,7 +142,7 @@ to authenticate the request.
 
     + Header
 
-            WWW-Authenticate: ACROLINX_TOKEN_AUTH (, ...)
+            WWW-Authenticate: ACROLINX_TOKEN, ACROLINX_SIGN_IN (, ACROLINX_SSO)
 
     + Attributes
         + error (ErrorResponse)
@@ -1061,6 +1061,11 @@ The response is a list of all entries across all dictionaries where the entry fi
 
 ## LoginResponse (object)
 + `authToken`: `123579080a8d1fee12490a90dc3` (string, required)
++ `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], required)
+    + Members
+        + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sing-in website.
+        + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
+        + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
 + `privileges`: CheckingAndClients.checkingApplications, CheckingAndClients.submitDictionaryEntry (array[string], required)
 + `userId`: `fred` (string, optional)
 + `links` (optional)
