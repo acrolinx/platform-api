@@ -581,6 +581,7 @@ This call includes an implicit "create/search for document" (in case no document
 
 + Response 400 (application/json)
 
+        // TODO: non-interactive/batch clients should be able to check without required DMD
         {
             "message": "Document Metadata required",
             "type": "com.acrolinx.faults.DocumentMetadataRequired",
