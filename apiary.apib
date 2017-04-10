@@ -7,8 +7,37 @@ The Acrolinx API is the new REST API for accessing all functionality of the Acro
 
 Open points are marked with a TODO annotation.
 
-All methods with the exception of "index" and "poll auth token" require a valid auth token in the Auth-Token header even if not explicitly mentioned below.
+# General headers
+
+## Authorization token
+
+All methods with the exception of "index" and "poll auth token" require a valid auth token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
 If the token is invalid, a 401 response is returned (see 401 response of "index") even if this response is not explicitly mentioned below.
+
+Example:
+
+```
+    X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3
+```
+
+## Client locale
+
+All methods accept a header `X-Acrolinx-Client-Locale`, with which the client can identify its own locale (e.g. UI language).
+The value of the header field must be a single language tag that is compliant to BCP 47. The server will try to return message strings
+and other locale-specific parts of the response in the requested language.
+
+Example:
+
+```
+    X-Acrolinx-Client-Locale: de-CH
+```
+
+The server tries to match the sent locale to the closest locale which it is able to support, for example, "de". 
+The list of supported locales is returned by the "index" request. The server falls back to the default "en" locale in the following cases:
+
+* no X-Acrolinx-Client-Locale header is sent
+* there is no matching supported locale
+* for the given response messages etc., there is no appropriate localization available
 
 # Group Index
 
@@ -21,7 +50,7 @@ If an invalid auth token was sent, the response is still a 401, though.
 
     + Header
 
-            Auth-Token: ""
+            X-Acrolinx-Auth: ""
 
 
 + Response 200 (application/json)
@@ -45,7 +74,7 @@ If an invalid auth token was sent, the response is still a 401, though.
 
     + Header
 
-            Auth-Token: 123579080a8d1fee12490a90dc3
+            X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3
 
 
 + Response 200 (application/json)
@@ -122,7 +151,9 @@ to authenticate the request.
     the client to acquire the session data:
 
     - `interactive` a link to a website that allows the user to authenticate and 
-          permit the client to log in.
+          permit the client to log in. If a language was provided in the
+          `X-Acrolinx-Client-Locale` header, the link will point to a localized
+          version of that website if available and technically possible.
 
     - `poll` a link to a resource that will return an *Auth Token* and information
           about the user after login. (see [GET `api/v1/auth/poll`](#authentication-api-poll-for-auth-token-get))
@@ -208,7 +239,7 @@ endpoint will dissapear with `GONE` or `NOT FOUND`.
 
     + Header
 
-            Auth-Token: 123579080a8d1fee12490a90dc3
+            X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3
 
 + Response 204
 
