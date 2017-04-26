@@ -115,7 +115,7 @@ If an invalid auth token was sent, the response is still a 401, though.
 Authentication is handled in a semi-interactive fashion as described in DEV-10327 ("unified authentication").
 For headless/non-interactive integrations, an alternative is to create an API key in the dashboard.
 
-## Request a new login [POST /api/v1/auth/login]
+## Request a new login [POST /api/v1/auth/login{?locale}]
 
 The login resource allows Acrolinx API clients to request user authentication and to check
 the validity and privileges of exisiting *Auth Tokens*. 
@@ -128,6 +128,7 @@ to authenticate the request.
     + Header
 
             X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3 (valid) OR (invalid/expired auth token) OR (no auth token)
+            X-Acrolinx-Client-Locale: ja
             
     + Body
 
@@ -168,8 +169,8 @@ to authenticate the request.
             }
 
 + Response 401 (application/json)
-    If the `X-Acrolinx-Auth` header was did not contain a valid *Auth Token* the
-    request is rejected.
+    If invalid SSO credentials are supplied (a user name is present but the SSO password is wrong or
+    missing or the user could not be created) the request is rejected.
 
     + Header
 
