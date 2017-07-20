@@ -562,6 +562,7 @@ This call includes an implicit "create/search for document" (in case no document
                 "contentFormat": "word_xml",                 // optional, default: auto
                 "checkType": "batch"                         // optional, default: interactive
             },
+            "batchId": "159203590",                      // only when checkType=batch; optional; if absent: server creates new batchId (sent in response)
             "document": {                                // optional, default: empty "document" object
                 "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
                 "reference": "abc.docx",                 // optional, default: do not search for ID, always create
@@ -583,6 +584,7 @@ This call includes an implicit "create/search for document" (in case no document
 
         {
             "id": "153",
+            "batchId": "159203590",
             "checkOptions": {
                 "audienceId": "aud_1",
                 "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
