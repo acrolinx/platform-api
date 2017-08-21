@@ -12,12 +12,24 @@ Open points are marked with a TODO annotation.
 ## Authorization token
 
 All methods with the exception of "index" and "poll auth token" require a valid auth token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
-If the token is invalid, a 401 response is returned (see 401 response of "index") even if this response is not explicitly mentioned below.
+If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response is not explicitly mentioned below.
 
 Example:
 
 ```
     X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3
+```
+
+## Base URL
+
+To support reverse proxies a client may provide the `X-Acrolinx-Base-Url` header with each request. If the response body to the rquest
+contains links into the Acrolinx API, the server will prefix them with the given value. The provided value will be parsed as an URI. 
+Malformed values will result in a `400` status code.
+
+Example:
+
+```
+    X-Acrolinx-Base-Url: https://example.com/path/
 ```
 
 ## Client locale
