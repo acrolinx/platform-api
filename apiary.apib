@@ -23,7 +23,7 @@ Example:
 ## Base URL
 
 To support reverse proxies a client may provide the `X-Acrolinx-Base-Url` header with each request. If the response body to the rquest
-contains links into the Acrolinx API, the server will prefix them with the given value. The provided value will be parsed as an URI. 
+contains links into the Acrolinx API, the server will prefix them with the given value. The provided value will be parsed as an URI.
 Malformed values will result in a `400` status code.
 
 Example:
@@ -44,7 +44,7 @@ Example:
     X-Acrolinx-Client-Locale: de-CH
 ```
 
-The server tries to match the sent locale to the closest locale which it is able to support, for example, "de". 
+The server tries to match the sent locale to the closest locale which it is able to support, for example, "de".
 The list of supported locales is returned by the "index" request. The server falls back to the default "en" locale in the following cases:
 
 * no X-Acrolinx-Client-Locale header is sent
@@ -78,7 +78,7 @@ If an invalid auth token was sent, the response is still a 401, though.
             },
             "links": {
                 "login": "https://tenant.acrolinx.cloud/api/v1/auth/login"
-            }            
+            }
         }
 
 
@@ -130,7 +130,7 @@ For headless/non-interactive integrations, an alternative is to create an API ke
 ## Request a new login [POST /api/v1/auth/login{?locale}]
 
 The login resource allows Acrolinx API clients to request user authentication and to check
-the validity and privileges of exisiting *Auth Tokens*. 
+the validity and privileges of exisiting *Auth Tokens*.
 
 If the Acrolinx server is configured for Single Sign-on this enpoint will accept the configured sso credentials
 to authenticate the request.
@@ -141,7 +141,7 @@ to authenticate the request.
 
             X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3 (valid) OR (invalid/expired auth token) OR (no auth token)
             X-Acrolinx-Client-Locale: ja
-            
+
     + Body
 
             {
@@ -163,7 +163,7 @@ to authenticate the request.
     will contain two links that allow the user to complete the login process and
     the client to acquire the session data:
 
-    - `interactive` a link to a website that allows the user to authenticate and 
+    - `interactive` a link to a website that allows the user to authenticate and
           permit the client to log in. If a language was provided in the
           `X-Acrolinx-Client-Locale` header, the link will point to a localized
           version of that website if available and technically possible.
@@ -218,15 +218,15 @@ endpoint will dissapear with `GONE` or `NOT FOUND`.
 
 + Response 200 (application/json)
    A user has completed the login process and the server has created a new *Auth Token*.
-   
-   Note that this resource will dissapear after this response. 
+
+   Note that this resource will dissapear after this response.
 
    + Attributes (LoginResponse)
 
 + Response 202 (application/json)
    Another poll request was started an has replaced this one before the user completed the authorization or
    the server decided to drop the poll request. Request the same URI again to continue polling.
- 
+
     + Header
 
             Retry-After: 2
@@ -265,7 +265,7 @@ TODO: This may throw together too many concepts at once?
 In case user metadata is _required_:
 * Interactive integrations: This will already be handled via unified authentication. Immediately before granting
 access to an integration, the user needs to fill out his/her user metadata. It is thus impossible to obtain an
-auth token for a user with incomplete required user metadata. 
+auth token for a user with incomplete required user metadata.
 * Headless (API key-based) integations: This will be handled by dashboard access. After logging in to the dashboard,
 the user needs to fill out his/her user metadata before getting to the actual dashboard. API keys can only be obtained
 in the dashboard for the logged-in user. It is thus impossible to obtain an API key for a user with incomplete required user metadata.
@@ -283,14 +283,14 @@ in the dashboard for the logged-in user. It is thus impossible to obtain an API 
         {
             "id": "fred",
             "name": "fred",  // Acrolinx login name (user ID) - TODO: is this already a suitable ID?
-            "firstName": "Fred",   // 
-            "lastName": "Freelancer", // 
+            "firstName": "Fred",   //
+            "lastName": "Freelancer", //
             "tenantId": "smarttech",
             "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
             "properties" : {
                 "customkey": "customvalue",
             }
-            "metadata": 
+            "metadata":
             {
                 "displayName": "Department",
                 "key": "department",
@@ -315,13 +315,13 @@ TODO: Which user information can be updated with this call? Are partial updates 
 + Request (application/json)
 
         {
-            "firstName": "Freddy",    
-            "lastName": "McFredFace", 
+            "firstName": "Freddy",
+            "lastName": "McFredFace",
             "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
             "properties" : {
                 "customkeynew": "customvaluenew",
             }
-            "metadata": 
+            "metadata":
             {
                 "key": "department",
                 "value": "Manager",
@@ -333,15 +333,15 @@ TODO: Which user information can be updated with this call? Are partial updates 
 
         {
             "id": "fred",
-            "name": "fred",  
-            "firstName": "Freddy",    
-            "lastName": "McFredFace", 
+            "name": "fred",
+            "firstName": "Freddy",
+            "lastName": "McFredFace",
             "tenantId": "smarttech",
             "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
             "properties" : {
                 "customkeynew": "customvaluenew",
             }
-            "metadata": 
+            "metadata":
             {
                 "displayName": "Department",
                 "key": "department",
@@ -373,7 +373,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
 * Parameters
     * forceNew: `true` (optional, boolean) ... create a new document ID even if there is a matching existing document
-        
+
         Default: false
 
 + Request (application/json)
@@ -390,7 +390,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
         {
             "id": "283ab1e075f21a",
             "reference": "abc.docx",
-            "mimeType": "application/word",            
+            "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail"
             "metadata": [
@@ -400,7 +400,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
                     "value": null,
                     "required": true
                 }
-            ]                    
+            ]
         }
 
 ## Put/update document [PUT /api/v1/document/{id}]
@@ -409,7 +409,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
         {
             "reference": "abc.docx",
-            "mimeType": "application/word",            
+            "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
             "metadata": [
@@ -417,7 +417,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
                     "key": "projectId",
                     "value": "Marketing Campaign"
                 }
-            ]                    
+            ]
         }
 
 
@@ -426,7 +426,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
         {
             "id": "283ab1e075f21a",
             "reference": "abc.docx",
-            "mimeType": "application/word",            
+            "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
             "metadata": [
@@ -443,7 +443,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
 # Group Content Encodings - DEV-11069
 
-In the proposal below, the document is embedded as a JSON string in the "content" field. The "contentEncoding" field determines how the field is used. With "contentEncoding=none", the document text is embedded as-is. It needs to be encoded in the same way as the entire HTTP request, and it must not contain BOMs. Use any of the other contentEncodings (e.g. base64) for binary documents or plain text documents that have a different encoding than the HTTP request encoding and/or that have a BOM. In this case, it is up to the server to preserve the byte stream (for binary formats), and to guess the charset correctly (for text formats). 
+In the proposal below, the document is embedded as a JSON string in the "content" field. The "contentEncoding" field determines how the field is used. With "contentEncoding=none", the document text is embedded as-is. It needs to be encoded in the same way as the entire HTTP request, and it must not contain BOMs. Use any of the other contentEncodings (e.g. base64) for binary documents or plain text documents that have a different encoding than the HTTP request encoding and/or that have a BOM. In this case, it is up to the server to preserve the byte stream (for binary formats), and to guess the charset correctly (for text formats).
 
 TODO: For text documents (plain text/HTML/XML), we may need a way for the client to specify the charset explicitly instead letting the server guess it, because the returned offsets refer to the (decoded) content string.
 
@@ -551,7 +551,6 @@ TODO: what about sublanguages? Part of the audience, or selectable by client?
                     "displayName": "XML (MS Word 2003)",
                     "extension": ["xml"]
                 }
-                
             ],
             "contentEncodings": [ "none", "zip,base64", "base64" ],
             "checkTypes": [ "batch", "cayt", "interactive" ],
@@ -603,8 +602,8 @@ This call includes an implicit "create/search for document" (in case no document
                 "reportTypes": ["debug", "termharvesting"],
                 "contentFormat": "word_xml",
                 "checkType": "batch"
-            },            
-            "document": {                                
+            },
+            "document": {
                 "id": "283ab1e075f21a",
                 "reference": "abc.docx",
                 "author": "Ralf",
@@ -617,7 +616,7 @@ This call includes an implicit "create/search for document" (in case no document
                         "value": "Marketing Campaign",
                         "required": true
                     }
-                ]           
+                ]
             },
             "links": {
                 "status": "https://tenant.acrolinx.cloud/api/v1/checking/153/status",
@@ -634,7 +633,7 @@ This call includes an implicit "create/search for document" (in case no document
             "document": {
                 "id": "283ab1e075f21a",
                 "reference": "abc.docx",
-                "mimeType": "application/word",            
+                "mimeType": "application/word",
                 "author": "Ralf",
                 "contentType": "E-Mail",
                 "metadata": [
@@ -644,10 +643,10 @@ This call includes an implicit "create/search for document" (in case no document
                         "value": null,
                         "required": true
                     }
-                ]                    
+                ]
             }
             "links": {
-                "submitMetadata": "https://tenant.acrolinx.cloud/api/v1/document/283ab1e075f21a/metadata"                
+                "submitMetadata": "https://tenant.acrolinx.cloud/api/v1/document/283ab1e075f21a/metadata"
             },
             "actions": [
                 {
@@ -655,7 +654,7 @@ This call includes an implicit "create/search for document" (in case no document
                     "url": "https://host:8031/documentMetadata.html?documentId=283ab1e075f21a",
                     "displayName": "Add required document metadata",
                     "icon": "..."
-                }   
+                }
             ]
         }
 
@@ -671,18 +670,18 @@ This call includes an implicit "create/search for document" (in case no document
 
 + Parameters
     + id: `153` (required, number) ... the check id
-    
+
 + Response 200 (application/json)
 
         {
             "id": "153",
-            "documentId": "283ab1e075f21a",            
+            "documentId": "283ab1e075f21a",
             "state": "done",
             "percent": 100,
             "message": "(10/10) Done."
             "links": {
                 "result": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
-            }         
+            }
         }
 
 ## Get check result [GET /api/v1/checking/{id}/result]
@@ -700,11 +699,11 @@ This call includes an implicit "create/search for document" (in case no document
                 "reportTypes": ["debug", "termharvesting"],
                 "contentFormat": "word_xml",
                 "checkType": "batch"
-            },            
+            },
             "document": {
                 "id": "283ab1e075f21a",
                 "reference": "abc.docx",
-                "mimeType": "application/word",            
+                "mimeType": "application/word",
                 "author": "Ralf",
                 "contentType": "E-Mail",
                 "metadata": [
@@ -715,7 +714,7 @@ This call includes an implicit "create/search for document" (in case no document
                         "required": true
                     }
                 ]
-            },            
+            },
             "quality": {
                 "score": 57,
                 "status": "red"   // TODO: which values are allowed?
@@ -805,7 +804,7 @@ This call includes an implicit "create/search for document" (in case no document
                             "url": "https://tenant.acrolinx.cloud/htmldata/en/rules/help/title_case_chicago.html",
                             "displayName": "Help",
                             "icon": "help-icon"
-                        }, 
+                        },
                         {
                             "id": "termContributionForm",
                             "url": "https://tenant.acrolinx.cloud/termcontribution.html?surface=@@base64:cXdlcnR5dWlvcA==&locale=en&language=en&userid=admin&context=@@base64:VGhpcyBzZW50ZW5jZSBoYXMgYSBxd2VydHl1aW9wLg==#",
@@ -818,7 +817,7 @@ This call includes an implicit "create/search for document" (in case no document
                         {
                             "termContribution": "https://tenant.acrolinx.cloud/terminology/v7/rest/contribute",
                             "addToDictionary": "https://tenant.acrolinx.cloud/api/v1/dictionary/submit"
-                        }                    
+                        }
                 },
                 {
                     "goalId": "term.unsuitable",
@@ -827,7 +826,7 @@ This call includes an implicit "create/search for document" (in case no document
                     "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
                     "extractedSurface": "Please"
                     "positionalInformation": {
-                        "hashes": {           
+                        "hashes": {
                             "issue": "3qyt/AVxwNTOUQSuMA7brw==",
                             "environment": "TiwIFBwA6X920mDAezJTyQ==",
                             "index": "Lm9PqBGGm+tj21rt3pkpjA==1"
@@ -874,7 +873,7 @@ This call includes an implicit "create/search for document" (in case no document
                 {
                     "goalId": "voice.readability",
                     "internalName": "en-clarity-medium",
-                    "displayName": "Too complex? Your readers need a medium level of clarity. ",                
+                    "displayName": "Too complex? Your readers need a medium level of clarity. ",
                     "guidance": "",
                     "extractedSurface": "Reports ... length",
                     "positionalInformation": {
@@ -903,7 +902,7 @@ This call includes an implicit "create/search for document" (in case no document
                     "issueLocations": [],
                     "readonly": false,
                     "debug": {
-                        "penalty": 1234.0967741949999                    
+                        "penalty": 1234.0967741949999
                     },
                     "subIssues": [{
                         "goalId": "voice.readability",
@@ -1007,13 +1006,13 @@ This call includes an implicit "create/search for document" (in case no document
                     "iconClass": "search-icon",
                     "iconUrl": "...",
                     "url": "https://kis.example.com/info?projectId=52351235"
-                } 
+                }
             ],
             "reports": [
                 {
                     "reportType": "scorecard.html",
                     "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html"
-                }, 
+                },
                 {
                     "reportType": "scorecard.xml",
                     "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.xml"
@@ -1032,18 +1031,10 @@ This call includes an implicit "create/search for document" (in case no document
                 {
                     "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
                     "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
-                }            
+                }
         }
 
 ## Get link to aggregated report [GET /api/v1/checking/aggregation/{batchId}]
-
-+ Request
-
-    + Header
-
-            Auth-Token: 123579080a8d1fee12490a90dc3
-            X-Acrolinx-Client-Locale: en
-            X-Acrolinx-Base-URL: https://tenant.acrolinx.cloud
 
 + Parameters
     + batchId: `XYZ-10-22-33` (required, string) ... the batch check id
@@ -1051,13 +1042,17 @@ This call includes an implicit "create/search for document" (in case no document
 + Response 200 (application/json)
 
         {
-            "links":
+            "reports": [
                 {
-                    "report": "https://tenant.acrolinx.cloud/analytics/dashboard/app/entry/run.jsp?jrd_resext=%7Bactive%3A0%2Creslst%3A%5B%7Bname%3A%22%2FAcrolinxReports%2Fstandard%2FContent+Analysis.dsh%22%2C%22param_page%22%3Afalse%2Cver%3A-1%2C%22dsh_params%22%3A%5B%7B%22jrd_params%22%3A%7B%22BatchId%22%3A%22_nice_batch_id_88-xyz%22%2C%22CsBaseUrl%22%3A%22http%3A%2F%2Flocalhost%3A8031%22%2C%22CsOutputPath%22%3A%22%2Foutput%22%7D%7D%5D%7D%5D%7D&jrd_userinfo=%7B%22prefer%22%3A%7B%22rpt_lang%22%3A%22en%22%2C%22enableNLS%22%3Atrue%7D%7D&jrs.language=en"
-                    "reportWithApiKey": "https://tenant.acrolinx.cloud/analytics/dashboard/app/entry/run.jsp?jrd_resext=%7Bactive%3A0%2Creslst%3A%5B%7Bname%3A%22%2FAcrolinxReports%2Fstandard%2FContent+Analysis.dsh%22%2C%22param_page%22%3Afalse%2Cver%3A-1%2C%22dsh_params%22%3A%5B%7B%22jrd_params%22%3A%7B%22BatchId%22%3A%22_nice_batch_id_88-xyz%22%2C%22CsBaseUrl%22%3A%22http%3A%2F%2Flocalhost%3A8031%22%2C%22CsOutputPath%22%3A%22%2Foutput%22%7D%7D%5D%7D%5D%7D&jrd_userinfo=%7B%22prefer%22%3A%7B%22rpt_lang%22%3A%22en%22%2C%22enableNLS%22%3Atrue%7D%7D&jrs.language=en&apikey=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6ImFjcm9saW54OjA4MTEwYThjNzI3MjQzYTMiLCJuYmYiOjE1MDM5MjcyMzksImlzcyI6ImFjcm9saW54OjA4MTEwYThjNzI3MjQzYTM6NWQyNTQ2NWI5ZTA3NDNiZiIsImV4cCI6MTUwNjYwNTYzOSwidG9rZW5UeXBlIjoidXNlciIsImlhdCI6MTUwNDAxMzYzOSwianRpIjoiMmFmOTQzOWIzZDgyNzMwODAyMzMyMzEyMGRiZmRlMmYifQ.Lj0chsnnRTX7IevJNyWMMlCviA6ecYAQ0kacy5EGQz0"
+                    "reportType": "withoutApiKey",
+                    "link": "https://tenant.acrolinx.cloud/analytics/dashboard/app/entry/run.jsp?jrd_resext=%7Bactive%3A0%2Creslst%3A%5B%7Bname%3A%22%2FAcrolinxReports%2Fstandard%2FContent+Analysis.dsh%22%2C%22param_page%22%3Afalse%2Cver%3A-1%2C%22dsh_params%22%3A%5B%7B%22jrd_params%22%3A%7B%22BatchId%22%3A%22_nice_batch_id_88-xyz%22%2C%22CsBaseUrl%22%3A%22http%3A%2F%2Flocalhost%3A8031%22%2C%22CsOutputPath%22%3A%22%2Foutput%22%7D%7D%5D%7D%5D%7D&jrd_userinfo=%7B%22prefer%22%3A%7B%22rpt_lang%22%3A%22en%22%2C%22enableNLS%22%3Atrue%7D%7D&jrs.language=en"
+                },
+                {
+                    "reportType": "withApiKey",
+                    "link": "https://tenant.acrolinx.cloud/analytics/dashboard/app/entry/run.jsp?jrd_resext=%7Bactive%3A0%2Creslst%3A%5B%7Bname%3A%22%2FAcrolinxReports%2Fstandard%2FContent+Analysis.dsh%22%2C%22param_page%22%3Afalse%2Cver%3A-1%2C%22dsh_params%22%3A%5B%7B%22jrd_params%22%3A%7B%22BatchId%22%3A%22_nice_batch_id_88-xyz%22%2C%22CsBaseUrl%22%3A%22http%3A%2F%2Flocalhost%3A8031%22%2C%22CsOutputPath%22%3A%22%2Foutput%22%7D%7D%5D%7D%5D%7D&jrd_userinfo=%7B%22prefer%22%3A%7B%22rpt_lang%22%3A%22en%22%2C%22enableNLS%22%3Atrue%7D%7D&jrs.language=en&apikey=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1ZCI6ImFjcm9saW54OjA4MTEwYThjNzI3MjQzYTMiLCJuYmYiOjE1MDM5MjcyMzksImlzcyI6ImFjcm9saW54OjA4MTEwYThjNzI3MjQzYTM6NWQyNTQ2NWI5ZTA3NDNiZiIsImV4cCI6MTUwNjYwNTYzOSwidG9rZW5UeXBlIjoidXNlciIsImlhdCI6MTUwNDAxMzYzOSwianRpIjoiMmFmOTQzOWIzZDgyNzMwODAyMzMyMzEyMGRiZmRlMmYifQ.Lj0chsnnRTX7IevJNyWMMlCviA6ecYAQ0kacy5EGQz0"
                 }
+            ]
         }
-
 
 # Group Dictionary API
 
@@ -1067,7 +1062,7 @@ by either an audience ID, a document ID or a user ID.
 
 ## Get dictionary capabilities [GET /api/v1/dictionary/capabilities]
 
-This method enables the client to discover the supported dictionary scopes. 
+This method enables the client to discover the supported dictionary scopes.
 
 + Response 200 (application/json)
 
@@ -1084,7 +1079,7 @@ the client needs to know which information it is. The response is the created di
 
         {
             "surface": "wiruwaruwolz",                  // required
-            "scope": "document"                         // required, one of the scopes above  
+            "scope": "document"                         // required, one of the scopes above
             "languageId": "en_GB",                      // required if scope!=audience
             "audienceId": "aud-1",                      // required if scope=audience
             "documentId": "283ab1e075f21a"              // required if scope=document
@@ -1094,8 +1089,8 @@ the client needs to know which information it is. The response is the created di
 + Response 200
 
         {
-            "surface": "wiruwaruwolz",            
-            "scope": "document"                     
+            "surface": "wiruwaruwolz",
+            "scope": "document"
             "languageId": "en_GB",
             "audienceId": null,
             "documentId": "283ab1e075f21a",
@@ -1123,21 +1118,21 @@ The response is a list of all entries across all dictionaries where the entry fi
 
         [
             {
-                "surface": "wiruwaruwolz",            
-                "scope": "document"                     
+                "surface": "wiruwaruwolz",
+                "scope": "document"
                 "languageId": "en_GB",
                 "audienceId": null,
                 "documentId": "283ab1e075f21a",
                 "userId": null
             },
             {
-                "surface": "wiruwaruwolz",            
-                "scope": "user"                     
+                "surface": "wiruwaruwolz",
+                "scope": "user"
                 "languageId": "en_GB",
                 "audienceId": null,
                 "documentId": null,
                 "userId": "fred"
-            }            
+            }
         ]
 
 
@@ -1216,13 +1211,13 @@ Not implemented!!!
     + Header
 
             Auth-Token: 123579080a8d1fee12490a90dc3
-            
+
 + Response 200 (application/json)
 
         {
             "links": {
                 "termsets": "https://tenant.acrolinx.cloud/api/v1/terminology/views?useForChecking=match(true)"
-            }  
+            }
         }
 
 ## View resource [/api/v1/terminology/views/{id}]
@@ -1235,52 +1230,52 @@ Returns a list of stored views, visible to the authenticated client.
 
 + Parameters
     + useForChecking: `match(true)` (enum[string], optional)
-        Filters views by their "useForChecking" attribute. 
-        
+        Filters views by their "useForChecking" attribute.
+
         See XXX for a general description on how filtering works in Acrolinx REST-APIs.
         + Members
             + `match(true)`
             + `match(false)`
     + sort: `displayName` (enum[string], optional)
         Specifies the order in which the views appear in the result.
-        
+
         See XXX for a general description on how sorting works in Acrolinx REST-APIs.
         + Members
             + `displayName`
     + p: `1` (number, optional) - Result page if a limit is given. Starts with 1.
     + limit: `10` (number, optional) - Maximum number of results per page.
-    
+
 + Request
     + Header
-    
+
             Auth-Token: 123579080a8d1fee12490a90dc3
-            
+
 + Response 200 (application/json)
 
         {
             "view": [
-            {
-                "id": "850ec0e3-9dd2-48f0-bb9c-8ade80316584",
-                "displayName": "Marketing",
-                "useForChecking": true,
-                "query": "[some query params]",
-                "links": {
-                    "terms/en": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(en)",
-                    "terms/de": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(de)",
-                    "terms/zh": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(zh)"
-                 }
-            }, {
-                "id": "850ec0e3-9dd2-48f0-bb9c-8ade80316585",
-                "displayName": "Documentation",
-                "useForChecking": true,
-                "query": "[other query params]",
-                "links": {
-                    "terms/en": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(en)",
-                    "terms/de": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(de)",
-                    "terms/zh": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(zh)"
+                {
+                    "id": "850ec0e3-9dd2-48f0-bb9c-8ade80316584",
+                    "displayName": "Marketing",
+                    "useForChecking": true,
+                    "query": "[some query params]",
+                    "links": {
+                        "terms/en": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(en)",
+                        "terms/de": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(de)",
+                        "terms/zh": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[some query params]&language=checkedAs(zh)"
+                    }
+                }, {
+                    "id": "850ec0e3-9dd2-48f0-bb9c-8ade80316585",
+                    "displayName": "Documentation",
+                    "useForChecking": true,
+                    "query": "[other query params]",
+                    "links": {
+                        "terms/en": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(en)",
+                        "terms/de": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(de)",
+                        "terms/zh": "https://tenant.acrolinx.cloud/api/v1/terminology/terms?[other query params]&language=checkedAs(zh)"
+                    }
                 }
-            }],
-            
+            ],
             "meta": {
             }
         }
@@ -1289,7 +1284,7 @@ Returns a list of stored views, visible to the authenticated client.
 
 Returns a stored view, visible to the authenticated client.
 
-TODO: 
+TODO:
 + More errors
 
 + Parameters
@@ -1310,7 +1305,7 @@ TODO:
 
 Creates a new view. Note that the id send with the request is ignored and a new one is generated.
 
-TODO: 
+TODO:
 + More errors
 
 + Attributes
@@ -1333,7 +1328,7 @@ TODO:
 
 Updates a view.
 
-TODO: 
+TODO:
 + More errors
 
 + Attributes
@@ -1361,7 +1356,7 @@ TODO:
 
 Deletes a view.
 
-TODO: 
+TODO:
 + More errors (authorization)
 
 + Parameters
@@ -1382,28 +1377,28 @@ Returns a list of stored terms.
 
 + Parameters
     + name: `match(true)` (enum[string], optional)
-        Filters terms by their surface. 
-        
+        Filters terms by their surface.
+
         See XXX for a general description on how filtering works in Acrolinx REST-APIs.
         + Members
             + `match(true)`
             + `match(false)`
     + language: `match([language-id])` (string, optional)
-        Filters terms by their language. 
-        
+        Filters terms by their language.
+
         See XXX for a general description on how filtering works in Acrolinx REST-APIs.
     + status: `match([status-id])` (string, optional)
-        Filters terms by their status. 
-        
+        Filters terms by their status.
+
         See XXX for a general description on how filtering works in Acrolinx REST-APIs.
     + p: `1` (number, optional) - Result page if a limit is given. Starts with 1.
     + limit: `10` (number, optional) - Maximum number of results per page.
-    
+
 + Request
     + Header
-    
+
             Auth-Token: 123579080a8d1fee12490a90dc3
-            
+
 + Response 200 (application/json)
     + Attributes
         + term (array[Term])
@@ -1413,7 +1408,7 @@ Returns a list of stored terms.
 
 Returns a single term.
 
-TODO: 
+TODO:
 + More errors (authorization)
 
 + Parameters
@@ -1434,7 +1429,7 @@ TODO:
 
 Creates a new term.
 
-TODO: 
+TODO:
 + More errors (authorization, validation)
 
 + Attributes
@@ -1454,7 +1449,7 @@ TODO:
 
 Updates a term.
 
-TODO: 
+TODO:
 + More errors (authorization, validation)
 
 + Parameters
@@ -1478,7 +1473,7 @@ TODO:
 
 Deletes a term.
 
-TODO: 
+TODO:
 + More errors (authorization)
 
 + Parameters
@@ -1497,7 +1492,7 @@ TODO:
 
 ## Get languages [GET]
 Returns a list of all defined languages.
-            
+
 + Request
     + Header
 
@@ -1512,7 +1507,7 @@ Returns a list of all defined languages.
 
 Returns a single language.
 
-TODO: 
+TODO:
 + More errors (authorization)
 
 + Request
@@ -1533,7 +1528,7 @@ TODO:
 
 Creates a new language.
 
-TODO: 
+TODO:
 + More errors (authorization, validation)
 
 + Attributes
@@ -1553,7 +1548,7 @@ TODO:
 
 Updates a language.
 
-TODO: 
+TODO:
 + More errors (authorization, validation)
 
 + Parameters
@@ -1577,7 +1572,7 @@ TODO:
 
 Deletes a language.
 
-TODO: 
+TODO:
 + More errors (authorization)
 
 + Parameters
@@ -1599,7 +1594,7 @@ Checking API:
 Core Service:
 * get broadcast messages - integrate into "index" call?
 * is user self reg enabled - integrate into "index" call?
-* create user - not needed right now? should be part of User API 
+* create user - not needed right now? should be part of User API
 
 Findability:
 * get/update target keywords - may link to existing methods?
