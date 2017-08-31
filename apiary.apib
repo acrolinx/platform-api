@@ -1036,6 +1036,8 @@ This call includes an implicit "create/search for document" (in case no document
 
 ## Get link to aggregated report [GET /api/v1/checking/aggregation/{batchId}]
 
+Returns the links to a human readable Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API key contains a new privilege token with the right Reporting.read.
+
 + Parameters
     + batchId: `XYZ-10-22-33` (required, string) ... the batch check id
 
