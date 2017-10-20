@@ -553,7 +553,7 @@ TODO: what about sublanguages? Part of the audience, or selectable by client?
                 }
             ],
             "contentEncodings": [ "none", "zip,base64", "base64" ],
-            "checkTypes": [ "batch", "cayt", "interactive" ],
+            "checkTypes": [ "batch", "partial", "interactive" ],
             "reportTypes": ["scorecard.xml", "scorecard.html", "debug", "termharvesting"]
         }
 
@@ -571,7 +571,8 @@ This call includes an implicit "create/search for document" (in case no document
                 "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],    // optional, default: all available for audience
                 "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard.html
                 "contentFormat": "word_xml",                 // optional, default: auto
-                "checkType": "batch"                         // optional, default: interactive
+                "checkType": "partial",                      // optional, default: interactive
+                "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]   // only used when checkType=partial
             },
             "batchId": "159203590",                      // only when checkType=batch; optional; if absent: server creates new batchId (sent in response)
             "document": {                                // optional, default: empty "document" object
@@ -601,7 +602,8 @@ This call includes an implicit "create/search for document" (in case no document
                 "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
                 "reportTypes": ["debug", "termharvesting"],
                 "contentFormat": "word_xml",
-                "checkType": "batch"
+                "checkType": "partial",
+                "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]
             },
             "document": {
                 "id": "283ab1e075f21a",
@@ -698,7 +700,8 @@ This call includes an implicit "create/search for document" (in case no document
                 "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
                 "reportTypes": ["debug", "termharvesting"],
                 "contentFormat": "word_xml",
-                "checkType": "batch"
+                "checkType": "partial",
+                "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]
             },
             "document": {
                 "id": "283ab1e075f21a",
