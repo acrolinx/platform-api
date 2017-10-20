@@ -485,7 +485,13 @@ TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' 
 
 ## List checking capabilities [GET /api/v1/checking/capabilities]
 
-TODO: what about sublanguages? Part of the audience, or selectable by client?
+The new checking API replaces writing guides and content profiles with a flat list of "audiences". Each audience corresponds to a
+writing guide or a checking profile. If sublanguages are activated, they are folded into the list of audiences.
+
+For each audience, the server provides information about the language, activated goals and term sets. The client may use this
+for filtering purposes, but they can only select one (complete) audience for checking (e.g. not deselect goals).
+
+TODO: do clients need to be able to select individual term sets, or can this configuration be moved to the server-side?
 
 + Response 200 (application/json)
 
