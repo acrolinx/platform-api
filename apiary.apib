@@ -379,17 +379,20 @@ In this method, fields in payload are used to (a) associate ID with document inf
 + Request (application/json)
 
         {
-            "reference": "abc.docx",            // optional; if absent, forceNew is implicitly true (=no searching)
+            "reference": "C:\\abc.docx",        // optional; if absent, forceNew is implicitly true (=no searching)
             "mimeType": "application/word",     // optional; absent means "unknown" and matches only "unknown"
             "author": "Ralf",                   // optional; absent means "unknown" and matches only "unknown"
-            "contentType": "E-Mail"             // optional; absent means "unknown" and matches only "unknown"
+            "contentType": "E-Mail",            // optional; absent means "unknown" and matches only "unknown"
+            "displayInfo": {                    // optional information about the document; stored but not used for identification
+                "reference": "abc.docx"         // optional, default: document.reference
+            }
         }
 
 + Response 200 (application/json)
 
         {
             "id": "283ab1e075f21a",
-            "reference": "abc.docx",
+            "reference": "C:\\abc.docx",
             "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail"
@@ -400,7 +403,10 @@ In this method, fields in payload are used to (a) associate ID with document inf
                     "value": null,
                     "required": true
                 }
-            ]
+            ],
+            "displayInfo": {
+                "reference": "abc.docx"
+            }
         }
 
 ## Put/update document [PUT /api/v1/document/{id}]
@@ -408,7 +414,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 + Request (application/json)
 
         {
-            "reference": "abc.docx",
+            "reference": "C:\\abc.docx",
             "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
@@ -417,7 +423,10 @@ In this method, fields in payload are used to (a) associate ID with document inf
                     "key": "projectId",
                     "value": "Marketing Campaign"
                 }
-            ]
+            ],
+            "displayInfo": {
+                "reference": "abc.docx"
+            }
         }
 
 
@@ -425,7 +434,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
         {
             "id": "283ab1e075f21a",
-            "reference": "abc.docx",
+            "reference": "C:\\abc.docx",
             "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
@@ -436,7 +445,10 @@ In this method, fields in payload are used to (a) associate ID with document inf
                     "value": "Marketing Campaign",
                     "required": true
                 }
-            ]
+            ],
+            "displayInfo": {
+                "reference": "abc.docx"
+            }
         }
 
 
@@ -577,11 +589,14 @@ This call includes an implicit "create/search for document" (in case no document
             "batchId": "159203590",                      // only when checkType=batch; optional; if absent: server creates new batchId (sent in response)
             "document": {                                // optional, default: empty "document" object
                 "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
-                "reference": "abc.docx",                 // optional, default: do not search for ID, always create
+                "reference": "C:\\abc.docx",              // optional, default: do not search for ID, always create
                 "author": "Ralf",
                 "mimeType": "application/word",
                 "contentType": "E-Mail",
                 "metadata": null
+                "displayInfo": {                          // optional information about the document; stored but not used for identification
+                    "reference": "abc.docx"               // optional, default: document.reference
+                }
             },
             // TODO (asked by ska): needed if already sent during authentication? can we store this with auth token?
             "clientInfo": {                              // optional, used for CSD selection and reporting
@@ -607,7 +622,7 @@ This call includes an implicit "create/search for document" (in case no document
             },
             "document": {
                 "id": "283ab1e075f21a",
-                "reference": "abc.docx",
+                "reference": "C:\\abc.docx",
                 "author": "Ralf",
                 "mimeType": "application/word",
                 "contentType": "E-Mail",
@@ -618,7 +633,10 @@ This call includes an implicit "create/search for document" (in case no document
                         "value": "Marketing Campaign",
                         "required": true
                     }
-                ]
+                ],
+                "displayInfo": {
+                    "reference": "abc.docx"
+                }
             },
             "links": {
                 "status": "https://tenant.acrolinx.cloud/api/v1/checking/153/status",
@@ -634,7 +652,7 @@ This call includes an implicit "create/search for document" (in case no document
             "type": "com.acrolinx.faults.DocumentMetadataRequired",
             "document": {
                 "id": "283ab1e075f21a",
-                "reference": "abc.docx",
+                "reference": "C:\\abc.docx",
                 "mimeType": "application/word",
                 "author": "Ralf",
                 "contentType": "E-Mail",
@@ -645,7 +663,10 @@ This call includes an implicit "create/search for document" (in case no document
                         "value": null,
                         "required": true
                     }
-                ]
+                ],
+                "displayInfo": {
+                    "reference": "abc.docx"
+                }
             }
             "links": {
                 "submitMetadata": "https://tenant.acrolinx.cloud/api/v1/document/283ab1e075f21a/metadata"
@@ -705,7 +726,7 @@ This call includes an implicit "create/search for document" (in case no document
             },
             "document": {
                 "id": "283ab1e075f21a",
-                "reference": "abc.docx",
+                "reference": "C:\\abc.docx",
                 "mimeType": "application/word",
                 "author": "Ralf",
                 "contentType": "E-Mail",
@@ -716,7 +737,10 @@ This call includes an implicit "create/search for document" (in case no document
                         "value": "Marketing Campaign",
                         "required": true
                     }
-                ]
+                ],
+                "displayInfo": {
+                    "reference": "abc.docx"
+                }
             },
             "quality": {
                 "score": 57,
