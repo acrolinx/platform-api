@@ -93,7 +93,7 @@ If an invalid auth token was sent, the response is still a 401, though.
 
         {
             "server": {
-                "version": "5.1.0",
+                "version": "5.4.0",
                 "build": "12175"
             },
             "locales": {
@@ -289,7 +289,7 @@ in the dashboard for the logged-in user. It is thus impossible to obtain an API 
             "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
             "properties" : {
                 "customkey": "customvalue",
-            }
+            },
             "metadata":
             {
                 "displayName": "Department",
@@ -320,7 +320,7 @@ TODO: Which user information can be updated with this call? Are partial updates 
             "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
             "properties" : {
                 "customkeynew": "customvaluenew",
-            }
+            },
             "metadata":
             {
                 "key": "department",
@@ -340,7 +340,7 @@ TODO: Which user information can be updated with this call? Are partial updates 
             "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
             "properties" : {
                 "customkeynew": "customvaluenew",
-            }
+            },
             "metadata":
             {
                 "displayName": "Department",
@@ -395,7 +395,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
             "reference": "C:\\abc.docx",
             "mimeType": "application/word",
             "author": "Ralf",
-            "contentType": "E-Mail"
+            "contentType": "E-Mail",
             "metadata": [
                 {
                     "displayName": "Project ID",
@@ -542,7 +542,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
                     "id": "e57bf41b-c706-495c-8664-1020fac9cffb",
                     "displayName": "Acrolinx"
                 }
-            ]
+            ],
             "contentFormats": [
                 {
                     "id": "auto",
@@ -599,7 +599,7 @@ This call includes an implicit "create/search for document" (in case no document
                 "author": "Ralf",
                 "mimeType": "application/word",
                 "contentType": "E-Mail",
-                "metadata": null
+                "metadata": null,
                 "displayInfo": {                          // optional information about the document; stored but not used for identification
                     "reference": "abc.docx"               // optional, default: document.reference
                 }
@@ -673,7 +673,7 @@ This call includes an implicit "create/search for document" (in case no document
                 "displayInfo": {
                     "reference": "abc.docx"
                 }
-            }
+            },
             "links": {
                 "submitMetadata": "https://tenant.acrolinx.cloud/api/v1/document/283ab1e075f21a/metadata"
             },
@@ -707,7 +707,7 @@ This call includes an implicit "create/search for document" (in case no document
             "documentId": "283ab1e075f21a",
             "state": "done",
             "percent": 100,
-            "message": "(10/10) Done."
+            "message": "(10/10) Done.",
             "links": {
                 "result": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
             }
@@ -767,7 +767,7 @@ This call includes an implicit "create/search for document" (in case no document
                 {
                     "id": "voice.readability",
                     "displayName": "Clarity",
-                    "col": "#f22"
+                    "col": "#f22",
                     "issueCount": 2,
                 },
                 {
@@ -783,7 +783,7 @@ This call includes an implicit "create/search for document" (in case no document
                     "internalName": "title_case_chicago",
                     "displayName": "Use Chicago style for the title case?",
                     "guidance": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
-                    "extractedSurface": "zentense"
+                    "extractedSurface": "zentense",
                     "positionalInformation": {
                         "hashes": {           // TODO: positional info? groupId grouped flags based on type (e.g. all flags of a rule), but issue hash just groups internalName+extractedSurface
                             "issue": "BhKh3iaGBjB7Cw6M/GwrLQ==",
@@ -826,8 +826,8 @@ This call includes an implicit "create/search for document" (in case no document
                             "surface": "sentence",
                             "groupId": "sentence",
                             "replacements": {
-                                0: "sen",
-                                2: "nce"
+                                "0": "sen",
+                                "2": "nce"
                             }
                         }
                     ],
@@ -857,7 +857,7 @@ This call includes an implicit "create/search for document" (in case no document
                     "internalName": "term_flag",
                     "displayName": "<b>Illegal sublanguage variant</b> of preferred term",
                     "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
-                    "extractedSurface": "Please"
+                    "extractedSurface": "Please",
                     "positionalInformation": {
                         "hashes": {
                             "issue": "3qyt/AVxwNTOUQSuMA7brw==",
@@ -867,7 +867,7 @@ This call includes an implicit "create/search for document" (in case no document
                         "matches": [{
                             "extractedPart": "Please",
                             "extractedBegin": 766,
-                            "extractedEnd": 772
+                            "extractedEnd": 772,
                             "originalPart": "Please",
                             "originalBegin": 28223,
                             "originalEnd": 28229,
@@ -878,10 +878,10 @@ This call includes an implicit "create/search for document" (in case no document
                     "suggestions": [
                         {
                             "surface": "blablub",
-                            "icon": "https://tenant.acrolinx.cloud/tng/icons/preferred.svg" // TODO: icon class+url?
+                            "icon": "https://tenant.acrolinx.cloud/tng/icons/preferred.svg", // TODO: icon class+url?
                             "groupId": "2653",
                             "replacements": {
-                                0: "blablub"
+                                "0": "blablub"
                             }
                         }
                     ],
@@ -898,7 +898,7 @@ This call includes an implicit "create/search for document" (in case no document
                             "surface": "please",
                             "status": "DEPRECATED",
                             "termSets": ["RA-Terms"],
-                            "domains": ["RA-Terms"]
+                            "domains": ["RA-Terms"],
                             "variant": "legalVariantIllegal",
                         }
                     }
@@ -918,14 +918,14 @@ This call includes an implicit "create/search for document" (in case no document
                         "matches": [{
                             "extractedPart": "Reports",
                             "extractedBegin": 1360,
-                            "extractedEnd": 1367
+                            "extractedEnd": 1367,
                             "originalPart": "Reports",
                             "originalBegin": 33173,
                             "originalEnd": 33180,
                         }, {
                             "extractedPart": "length",
                             "extractedBegin": 1749,
-                            "extractedEnd": 1755
+                            "extractedEnd": 1755,
                             "originalPart": "length",
                             "originalBegin": 33562,
                             "originalEnd": 33568,
@@ -952,14 +952,14 @@ This call includes an implicit "create/search for document" (in case no document
                             "matches": [{
                                 "extractedPart": "Reports",
                                 "extractedBegin": 1360,
-                                "extractedEnd": 1367
+                                "extractedEnd": 1367,
                                 "originalPart": "Reports",
                                 "originalBegin": 33173,
                                 "originalEnd": 33180,
                             }, {
                                 "extractedPart": "length",
                                 "extractedBegin": 1749,
-                                "extractedEnd": 1755
+                                "extractedEnd": 1755,
                                 "originalPart": "length",
                                 "originalBegin": 33562,
                                 "originalEnd": 33568,
@@ -1012,8 +1012,8 @@ This call includes an implicit "create/search for document" (in case no document
                     }]
                 }
             ],
-            "keywords": [
-                "links": {
+            "keywords": {
+                "links":{
                     "getTargetKeywords": "https://tenant.acrolinx.cloud/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx",
                     "putTargetKeywords": "https://tenant.acrolinx.cloud/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx"
                 },
@@ -1025,13 +1025,13 @@ This call includes an implicit "create/search for document" (in case no document
                     "prominence": 0.0,
                     "occurrences": [{
                         "matches": [
-                          // ...
+                        // ...
                         ]
                     }],
                     "warnings": []
                 }],
                 "target": []
-            ],
+            },
             "extraInfos": [
                 {
                     "id": "rioseo",
@@ -1114,10 +1114,10 @@ the client needs to know which information it is. The response is the created di
 
         {
             "surface": "wiruwaruwolz",                  // required
-            "scope": "document"                         // required, one of the scopes above
+            "scope": "document",                        // required, one of the scopes above
             "languageId": "en_GB",                      // required if scope!=audience
             "audienceId": "aud-1",                      // required if scope=audience
-            "documentId": "283ab1e075f21a"              // required if scope=document
+            "documentId": "283ab1e075f21a",             // required if scope=document
             "userId": "fred"                            // optional, default: user from auth token
         }
 
@@ -1125,7 +1125,7 @@ the client needs to know which information it is. The response is the created di
 
         {
             "surface": "wiruwaruwolz",
-            "scope": "document"
+            "scope": "document",
             "languageId": "en_GB",
             "audienceId": null,
             "documentId": "283ab1e075f21a",
@@ -1145,7 +1145,7 @@ The response is a list of all entries across all dictionaries where the entry fi
             "scope": null,
             "languageId": "en_GB",
             "audienceId": null,
-            "documentId": null
+            "documentId": null,
             "userId": null
         }
 
@@ -1154,7 +1154,7 @@ The response is a list of all entries across all dictionaries where the entry fi
         [
             {
                 "surface": "wiruwaruwolz",
-                "scope": "document"
+                "scope": "document",
                 "languageId": "en_GB",
                 "audienceId": null,
                 "documentId": "283ab1e075f21a",
@@ -1162,7 +1162,7 @@ The response is a list of all entries across all dictionaries where the entry fi
             },
             {
                 "surface": "wiruwaruwolz",
-                "scope": "user"
+                "scope": "user",
                 "languageId": "en_GB",
                 "audienceId": null,
                 "documentId": null,
