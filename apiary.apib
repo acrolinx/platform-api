@@ -502,13 +502,26 @@ TODO: do clients need to be able to select individual term sets, or can this con
                     "displayName": "Tom the Technical Type",
                     "language": "en_GB",
                     "goals": ["spelling", "voice.readability", "term.unsuitable", "term.admitted"],
-                    "termSets": ["c58f3889-9466-4fb4-82c7-973a0b4644d9", "e57bf41b-c706-495c-8664-1020fac9cffb"]
+                    "termSets": ["c58f3889-9466-4fb4-82c7-973a0b4644d9", "e57bf41b-c706-495c-8664-1020fac9cffb"],
+                    "status": "ready"   // possible status values: ready | loading | unavailable
+                },
+                {
+                    "id": "aud-2",
+                    "displayName": "Randolf Redakteur",
+                    "language": "de",
+                    "goals": ["spelling", "grammar"],
+                    "termSets": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
+                    "status": "loading"
                 }
             ],
             "languages": [
                 {
                     "id": "en_GB",
                     "displayName": "English (Great Britain)"
+                },
+                {
+                    "id": "de",
+                    "displayName": "German"
                 }
             ],
             "goals": [
@@ -685,6 +698,24 @@ This call includes an implicit "create/search for document" (in case no document
                     "icon": "..."
                 }
             ]
+        }
+
++ Response 400 (application/json)
+
+        {
+            "message": "The specified audience is currently not available.",
+            "type": "com.acrolinx.faults.AudienceUnavailable",
+            "capabilities": {
+                // "audiences": { ... },
+                // "languages": { ... },
+                // etc.
+                // i.e. exactly the response of the "get capabilities" web service method
+                // when calling it with same credentials
+            },
+            "links": {
+                "submit": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
+                "capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities"
+            }
         }
 
 
