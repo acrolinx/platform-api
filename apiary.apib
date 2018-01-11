@@ -1,18 +1,18 @@
 FORMAT: 1A
 HOST: https://tenant.acrolinx.cloud
 
-# Acrolinx REST API
+# Acrolinx Core Platform API
 
-The Acrolinx API is the new REST API for accessing all functionality of the Acrolinx server.
+The Acrolinx Core Platform API is the new REST API for accessing all functionality of the Core Platform.
 
 Open points are marked with a TODO annotation.
 
-# General headers
+# General Headers
 
-## Authorization token
+## Authorization Token
 
-All methods with the exception of "index" and "poll auth token" require a valid auth token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
-If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response is not explicitly mentioned below.
+All methods except "index" and "poll auth token" require a valid auth token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
+If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response isn’t explicitly mentioned below.
 
 Example:
 
@@ -22,7 +22,7 @@ Example:
 
 ## Base URL
 
-To support reverse proxies a client may provide the `X-Acrolinx-Base-Url` header with each request. If the response body to the rquest
+To support reverse proxies, a client may provide the `X-Acrolinx-Base-Url` header with each request. If the response body to the request
 contains links into the Acrolinx API, the server will prefix them with the given value. The provided value will be parsed as an URI.
 Malformed values will result in a `400` status code.
 
@@ -32,9 +32,9 @@ Example:
     X-Acrolinx-Base-Url: https://example.com/path/
 ```
 
-## Client locale
+## Client Locale
 
-All methods accept a header `X-Acrolinx-Client-Locale`, with which the client can identify its own locale (e.g. UI language).
+All methods accept a header `X-Acrolinx-Client-Locale`, with which the client can identify its own locale (for example, UI language).
 The value of the header field must be a single language tag that is compliant to BCP 47. The server will try to return message strings
 and other locale-specific parts of the response in the requested language.
 
@@ -44,12 +44,12 @@ Example:
     X-Acrolinx-Client-Locale: de-CH
 ```
 
-The server tries to match the sent locale to the closest locale which it is able to support, for example, "de".
-The list of supported locales is returned by the "index" request. The server falls back to the default "en" locale in the following cases:
+The server tries to match the sent locale to the closest locale that it’s able to support, for example, `de`.
+The "index" request returns the list of supported locales. The server falls back to the default `en` locale in the following cases:
 
 * no X-Acrolinx-Client-Locale header is sent
-* there is no matching supported locale
-* for the given response messages etc., there is no appropriate localization available
+* there’s no matching supported locale
+* for the given response messages etc., there’s no appropriate localization available
 
 # Group Index
 
@@ -126,15 +126,15 @@ If an invalid auth token was sent, the response is still a 401, though.
 
 # Group Authentication API
 
-Authentication is handled in a semi-interactive fashion as described in DEV-10327 ("unified authentication").
-For headless/non-interactive integrations, an alternative is to create an API key in the dashboard.
+Authentication is handled in a semi-interactive fashion as described in DEV-10327 (Acrolinx sign-in).
+For headless/non-interactive clients, an alternative is to create an API token in the dashboard.
 
-## Request a new login [POST /api/v1/auth/login{?locale}]
+## Request a New Login [POST /api/v1/auth/login{?locale}]
 
-The login resource allows Acrolinx API clients to request user authentication and to check
-the validity and privileges of exisiting *Auth Tokens*.
+The sign-in resource allows Acrolinx API clients to request user authentication and to check
+the validity and privileges of existing *Auth Tokens*.
 
-If the Acrolinx server is configured for Single Sign-on this enpoint will accept the configured sso credentials
+If the Core Platform is configured for Single Sign-on, this endpoint will accept the configured credentials
 to authenticate the request.
 
 + Request (application/json)
@@ -151,8 +151,8 @@ to authenticate the request.
             }
 
 + Response 200 (application/json)
-    If the `X-Acrolinx-Auth` header contained a valid token, the login resource
-    produces the login result immediately. This will also happen if Single Sign-on
+    If the `X-Acrolinx-Auth` header contained a valid token, the sign-in resource
+    produces the sign-in result immediately. This will also happen if Single Sign-on
     is configured and valid credentials are supplied.
 
     The token returned in the body is the same as the one provided in the header.
@@ -160,18 +160,18 @@ to authenticate the request.
     + Attributes (LoginResponse)
 
 + Response 201 (application/json)
-    If the `X-Acrolinx-Auth` header was absent a
-    new authorization process is started. The response body to the login request
-    will contain two links that allow the user to complete the login process and
-    the client to acquire the session data:
+    If the `X-Acrolinx-Auth` header is absent a
+    new authorization process is started. The response body to the sign-in request
+    will contain two links. One allows the user to complete the sign-in process. The
+    other helps the client to acquire the session data:
 
     - `interactive` a link to a website that allows the user to authenticate and
-          permit the client to log in. If a language was provided in the
+          permit the client to access the server. If a language was provided in the
           `X-Acrolinx-Client-Locale` header, the link will point to a localized
           version of that website if available and technically possible.
 
     - `poll` a link to a resource that will return an *Auth Token* and information
-          about the user after login. (see [GET `api/v1/auth/poll`](#authentication-api-poll-for-auth-token-get))
+          about the user after sign-in. (see [GET `api/v1/auth/poll`](#authentication-api-poll-for-auth-token-get))
 
     + Body
 
@@ -183,8 +183,8 @@ to authenticate the request.
             }
 
 + Response 401 (application/json)
-    If invalid SSO credentials are supplied (a user name is present but the SSO password is wrong or
-    missing or the user could not be created) the request is rejected.
+    If invalid SSO credentials are supplied the request is rejected. This occurs when an SSO username
+    is present but the SSO password is wrong or missing or the user couldn’t be created. 
 
     + Header
 
@@ -194,7 +194,7 @@ to authenticate the request.
         + error (ErrorResponse)
 
 + Response 503
-    The server is unable to start a login process at this time.
+    The server is unable to start a sign-in process at this time.
 
     + Header
 
@@ -203,30 +203,30 @@ to authenticate the request.
     + Attributes
         + error (ErrorResponse)
 
-## Poll for Auth token [GET /api/v1/auth/poll/{id}]
+## Poll for Auth Token [GET /api/v1/auth/poll/{id}]
 
-This resource lets a client wait for a user to login and authorize it to use the
-priviliged parts of the Acrolinx API. Once the user has completed the login process
-it will return a new *Auth Token* that can be send with each API call to prove
-the privileges requested during the initiating [POST to `/api/v1/auth/login`](#authentication-api-request-a-new-login-post).
+This resource lets a client wait for a user to authenticate and authorize it to use the
+privileged parts of the Acrolinx API. Once the user has completed the sign-in process,
+it will return a new *Auth Token*. Send with each API call to prove the privileges and identity
+owned by the user that signed in.
 
-This action supports long polling. A request may be kept open for a "long" duration
-and will only return on a timeout or when the login process has reached a final state.
-Once polling returned a final result (`GONE`/`UNAUTHORIZED`/`OK`) the polling
-endpoint will dissapear with `GONE` or `NOT FOUND`.
+This action supports long polling. A request may be kept open for a "long" duration.
+It will only return on a timeout or when the sign-in process has reached a final state.
+When polling returned a final result (`GONE`/`UNAUTHORIZED`/`OK`), the polling
+endpoint will disappear with `GONE` or `NOT FOUND`.
 
 + Parameters
     + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
 
 + Response 200 (application/json)
-   A user has completed the login process and the server has created a new *Auth Token*.
+   A user has completed the sign-in process and the server has created a new *Auth Token*.
 
-   Note that this resource will dissapear after this response.
+   Note that this resource will disappear after this response.
 
    + Attributes (LoginResponse)
 
 + Response 202 (application/json)
-   Another poll request was started an has replaced this one before the user completed the authorization or
+   Another poll request was started and has replaced this one or
    the server decided to drop the poll request. Request the same URI again to continue polling.
 
     + Header
@@ -237,13 +237,14 @@ endpoint will dissapear with `GONE` or `NOT FOUND`.
         + error (ErrorResponse)
 
 + Response 404
-    The server has no knowledge of the polling token. This may be caused by a timeout or by antoher poll request that consumed the credentials already.
+    The server has no knowledge of the polling token. The cause for this is a timeout or
+    another poll request that consumed the credentials.
 
     + Attributes
         + error (ErrorResponse)
 
 + Response 410 (application/json)
-    Returned when the requested login process has timed out.
+    Returned when the requested sign-in process has timed out.
 
     + Attributes
         + error (ErrorResponse)
@@ -261,19 +262,19 @@ endpoint will dissapear with `GONE` or `NOT FOUND`.
 
 # Group User API
 
-Here, a user is an entity that has a login name, first/last name, privileges, custom properties (set by client), and user metadata.
+Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
 TODO: This may throw together too many concepts at once?
 
-In case user metadata is _required_:
-* Interactive integrations: This will already be handled via unified authentication. Immediately before granting
-access to an integration, the user needs to fill out his/her user metadata. It is thus impossible to obtain an
-auth token for a user with incomplete required user metadata.
-* Headless (API key-based) integations: This will be handled by dashboard access. After logging in to the dashboard,
-the user needs to fill out his/her user metadata before getting to the actual dashboard. API keys can only be obtained
-in the dashboard for the logged-in user. It is thus impossible to obtain an API key for a user with incomplete required user metadata.
-* TODO: If you enable 'require UMD' in the dashboard, should this invalidate all API keys and auth tokens at that point?
+When custom user information is _required_:
+* Interactive clients: This will already be handled via Acrolinx sign-in. Immediately before granting
+access to client, the user needs to fill out their custom user information. It’s thus impossible to obtain an
+auth token for a user with incomplete required custom user information.
+* Headless (API key-based) clients: Dashboard access handles this. After logging in to the dashboard,
+the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
+in the dashboard for the logged-in user. It’s thus impossible to obtain an API token for a user with incomplete required custom user information.
+* TODO: If you enable 'require UMD' in the dashboard, should this invalidate all API tokens and auth tokens at that point?
 
-## User resource [/api/v1/user/{id}]
+## User Resource [/api/v1/user/{id}]
 
 + Parameters
     + id: `fred` (required, string) ... the user ID
@@ -363,18 +364,18 @@ TODO: Which user information can be updated with this call? Are partial updates 
 
 # Group Document API
 
-Here, a document is an entity that associates names/characteristics which identify a document with an ID. It also contains the document metadata.
+Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
 
-TODO: What about the document display title? Set by client here? Extracted by server here? Extracted by server later during check, i.e. not part of document entity?
+TODO: What about the document display title? Set by client here? Extracted by server here? Extracted by server later during check, that is, not part of document entity?
 
-TODO: How does this relate to the content repositories in the reporting DB? Is it orthogonal?
+TODO: How does this relate to the Content Groups in the reporting database? Is it orthogonal?
 
-## Create or retrieve document ID [POST /api/v1/document/_search{?forceNew}]
+## Create or Retrieve Document ID [POST /api/v1/document/_search{?forceNew}]
 
 In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
 
 * Parameters
-    * forceNew: `true` (optional, boolean) ... create a new document ID even if there is a matching existing document
+    * forceNew: `true` (optional, boolean) ... create a new document ID even if there’s a matching existing document
 
         Default: false
 
@@ -411,7 +412,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
             }
         }
 
-## Put/update document [PUT /api/v1/document/{id}]
+## Put/Update Document [PUT /api/v1/document/{id}]
 
 + Request (application/json)
 
@@ -457,13 +458,13 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
 # Group Content Encodings - DEV-11069
 
-In the proposal below, the document is embedded as a JSON string in the "content" field. The "contentEncoding" field determines how the field is used. With "contentEncoding=none", the document text is embedded as-is. It needs to be encoded in the same way as the entire HTTP request, and it must not contain BOMs. Use any of the other contentEncodings (e.g. base64) for binary documents or plain text documents that have a different encoding than the HTTP request encoding and/or that have a BOM. In this case, it is up to the server to preserve the byte stream (for binary formats), and to guess the charset correctly (for text formats).
+In the proposal below, the document is embedded as a JSON string in the "content" field. The `contentEncoding` field determines how the field is used. With `contentEncoding=none`, the document text is embedded as-is. It needs to be encoded in the same way as the entire HTTP request, and it must not contain BOMs. Use any of the other contentEncodings (for example, base64) for binary documents or plain text documents that have a different encoding than the HTTP request encoding and/or that have a BOM. In this case, it’s up to the server to preserve the byte stream (for binary formats), and to guess the charset correctly (for text formats).
 
 TODO: For text documents (plain text/HTML/XML), we may need a way for the client to specify the charset explicitly instead letting the server guess it, because the returned offsets refer to the (decoded) content string.
 
 TODO: XML documents can include their own charset in the header - not sure whether we want to respect that, and what happens if this contradicts the BOM and/or the charset explicitly sent by the client.
 
-TODO: An alternative approach would be to offer multipart/mixed requests, such that the client can just send the request as byte stream in a second part (first part contains the JSON request entity without the document contents). Advantage: could send more files at once in the future; can rely on HTTP standards for specifying the encoding etc. Disadvantages:  multipart/mixed may be more difficult for some clients, and HTTP does not support sending compressed requests.
+TODO: An alternative approach would be to offer multipart/mixed requests, such that the client can just send the request as byte stream in a second part (first part contains the JSON request entity without the document contents). Advantage: could send more files at once in the future; can rely on HTTP standards for specifying the encoding etc. Disadvantages:  multipart/mixed may be more difficult for some clients, and HTTP doesn’t support sending compressed requests.
 
 TODO: For the record: The current 5.2 server expects the document contents to be embedded as JSON string, with the same encoding as the request encoding, and without any BOMs. Exception: for inputFormat=PDF, the (binary) document contents must be sent base64-encoded.
 
@@ -471,7 +472,7 @@ TODO: For the record: The current 5.2 server expects the document contents to be
 
 The API for checking documents.
 
-## List all checking methods [GET /api/v1/checking]
+## List All Checking Methods [GET /api/v1/checking]
 
 TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' to the index.
 
@@ -485,10 +486,10 @@ TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' 
             }
         }
 
-## List checking capabilities [GET /api/v1/checking/capabilities]
+## List Checking Capabilities [GET /api/v1/checking/capabilities]
 
-The new checking API replaces writing guides and content profiles with a flat list of "audiences". Each audience corresponds to a
-writing guide or a checking profile. If sublanguages are activated, they are folded into the list of audiences.
+The new checking API replaces writing guides and Content Profiles with a flat list of "audiences". Each audience corresponds to a
+writing guide or a Checking Profile. If sublanguages are activated, they are folded into the list of audiences.
 
 For each audience, the server provides information about the language, activated goals and term sets. The client may use this
 for filtering purposes, but they can only select one (complete) audience for checking (e.g. not deselect goals).
@@ -590,7 +591,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
             "reportTypes": ["scorecard.xml", "scorecard.html", "debug", "termharvesting"]
         }
 
-##  Submit a check [POST /api/v1/checking/submit]
+##  Submit a Check [POST /api/v1/checking/submit]
 
 This call includes an implicit "create/search for document" (in case no document ID was given) and "update document" (in case document ID was given).
 
@@ -721,14 +722,14 @@ This call includes an implicit "create/search for document" (in case no document
         }
 
 
-## Cancel check [DELETE /api/v1/checking/{id}/cancel]
+## Cancel Check [DELETE /api/v1/checking/{id}/cancel]
 
 + Parameters
     + id: `153` (required, number) ... the check id
 
 + Response 204
 
-## Get check status [GET /api/v1/checking/{id}/status]
+## Get Checking Status [GET /api/v1/checking/{id}/status]
 
 + Parameters
     + id: `153` (required, number) ... the check id
@@ -746,7 +747,7 @@ This call includes an implicit "create/search for document" (in case no document
             }
         }
 
-## Get check result [GET /api/v1/checking/{id}/result]
+## Get Check Result [GET /api/v1/checking/{id}/result]
 
 + Parameters
     + id: `153` (required, number) ... the check id
@@ -1100,7 +1101,7 @@ This call includes an implicit "create/search for document" (in case no document
                 }
         }
 
-## Get link to aggregated report [GET /api/v1/checking/aggregation/{batchId}]
+## Get Link to Aggregated Report [GET /api/v1/checking/aggregation/{batchId}]
 
 Returns the links to a human readable Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API key contains a new privilege token with the right Reporting.read.
 
@@ -1128,7 +1129,7 @@ This API handles the spelling dictionary, i.e. words that are ignored by the spe
 Here, a dictionary entry is a surface string and a language, optionally further restricted
 by either an audience ID, a document ID or a user ID.
 
-## Get dictionary capabilities [GET /api/v1/dictionary/capabilities]
+## Get Dictionary Capabilities [GET /api/v1/dictionary/capabilities]
 
 This method enables the client to discover the supported dictionary scopes.
 
@@ -1138,7 +1139,7 @@ This method enables the client to discover the supported dictionary scopes.
             "scopes": [ "audience", "document", "user", "language" ]
         }
 
-## Add to dictionary [POST /api/v1/dictionary/submit]
+## Add to Dictionary [POST /api/v1/dictionary/submit]
 
 Create a dictionary entry for the specified scope. Depending on the scope, more information is required -
 the client needs to know which information it is. The response is the created dictionary entry.
@@ -1165,7 +1166,7 @@ the client needs to know which information it is. The response is the created di
             "userId": null
         }
 
-# Search for dictionary entries [POST /api/v1/dictionary/search]
+# Search for Dictionary Entries [POST /api/v1/dictionary/search]
 
 This is new functionality intended to make the contents of the spelling dictionary transparent for the first time.
 The dictionary entry in the request payload is used as the search criteria, where "null" fields mean "any".
@@ -1290,9 +1291,9 @@ Not implemented!!!
 
 ## View resource [/api/v1/terminology/views/{id}]
 
-asdfsdf
+TODO
 
-## Get views [GET /api/v1/terminology/views{?useForChecking,sort,p,limit}]
+## Get Views [GET /api/v1/terminology/views{?useForChecking,sort,p,limit}]
 
 Returns a list of stored views, visible to the authenticated client.
 
@@ -1369,7 +1370,7 @@ TODO:
 
 + Response 404
 
-## Create view [POST /api/v1/terminology/views]
+## Create View [POST /api/v1/terminology/views]
 
 Creates a new view. Note that the id send with the request is ignored and a new one is generated.
 
@@ -1392,7 +1393,7 @@ TODO:
     + Attributes
         + view (View)
 
-## Update view [PUT /api/v1/terminology/views/{uuid}]
+## Update View [PUT /api/v1/terminology/views/{uuid}]
 
 Updates a view.
 
@@ -1420,7 +1421,7 @@ TODO:
 
 + Response 404
 
-## Delete view [DELETE /api/v1/terminology/views/{uuid}]
+## Delete View [DELETE /api/v1/terminology/views/{uuid}]
 
 Deletes a view.
 
@@ -1438,9 +1439,9 @@ TODO:
 + Response 204
 + Response 404
 
-## Terms resource [/api/v1/terminology/terms/{uuid}{?name,language,status,p,limit}]
+## Terms Resource [/api/v1/terminology/terms/{uuid}{?name,language,status,p,limit}]
 
-### Get terms [GET]
+### Get Terms [GET]
 Returns a list of stored terms.
 
 + Parameters
@@ -1472,7 +1473,7 @@ Returns a list of stored terms.
         + term (array[Term])
         + meta (PaginationMetadata)
 
-### Get a term [GET]
+### Get a Term [GET]
 
 Returns a single term.
 
@@ -1493,7 +1494,7 @@ TODO:
 
 + Response 404
 
-### Create a term [POST]
+### Create a Term [POST]
 
 Creates a new term.
 
@@ -1513,7 +1514,7 @@ TODO:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/terms/{uuid}
 
-### Update a term [PUT]
+### Update a Term [PUT]
 
 Updates a term.
 
@@ -1537,7 +1538,7 @@ TODO:
 
 + Response 404
 
-### Delete a term [DELETE]
+### Delete a Term [DELETE]
 
 Deletes a term.
 
@@ -1555,10 +1556,10 @@ TODO:
 + Response 204
 + Response 404
 
-## Languages resource [/api/v1/terminology/languages/{uuid}]
+## Languages Resource [/api/v1/terminology/languages/{uuid}]
 
 
-## Get languages [GET]
+## Get Languages [GET]
 Returns a list of all defined languages.
 
 + Request
@@ -1571,7 +1572,7 @@ Returns a list of all defined languages.
         + language (array[Language])
         + meta (PaginationMetadata)
 
-# Get a language [GET]
+# Get a Language [GET]
 
 Returns a single language.
 
@@ -1592,7 +1593,7 @@ TODO:
 
 + Response 404
 
-# Create a language [POST]
+# Create a Language [POST]
 
 Creates a new language.
 
@@ -1612,7 +1613,7 @@ TODO:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/languages/{uuid}
 
-# Update a language [PUT]
+# Update a Language [PUT]
 
 Updates a language.
 
@@ -1636,7 +1637,7 @@ TODO:
 
 + Response 404
 
-# Not implemented [DELETE]
+# Not Implemented [DELETE]
 
 Deletes a language.
 
@@ -1654,7 +1655,7 @@ TODO:
 + Response 204
 + Response 404
 
-# Group Other methods in existing API - TODO
+# Group Other Methods in Existing API - TODO
 
 Checking API:
 * Contribute as Term (may be moved to Terminology API)
@@ -1675,7 +1676,7 @@ Checking Profiles:
 * get and update user settings? get and update profile user settings? what is this?
 
 Feedback API
-* submit flag feedback - will be reimplemented anyway
+* submit issue feedback - will be reimplemented anyway
 
 Reuse API
 * deprecated anyway
