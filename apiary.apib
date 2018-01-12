@@ -1230,7 +1230,7 @@ The response is a list of all entries across all dictionaries where the entry fi
 + displayName: `Hello World` (string, required)
 + useForChecking: false (boolean) - marks that this view is used to generate term sets
 + query: `name=match(batman)` (string, required) - a query string that may be appended to the terms resource to fetch terms in this view
-+ links: (optional)
++ links (optional)
     + *terms/en*: `[link to the terms collection]` (string, optional) - for each check language with terms matching the query there will be a link to the terms resource that returns these terms
 + NOT_UP_TO_DATE: yes (string, optional)
 
@@ -1244,7 +1244,7 @@ The response is a list of all entries across all dictionaries where the entry fi
 
 ## ErrorResponse (object)
 + `message`: `Error message` (string)
-+ `errors`: (required)
++ `errors` (required)
     + `exception_type`: `com.acrolinx.services.faults.Unauthorized` (string, required)
     + `exception_message`: `Invalid credentials` (string, required)
 
@@ -1445,9 +1445,9 @@ TODO:
 + Response 204
 + Response 404
 
-## Terms Resource [/api/v1/terminology/terms/{uuid}{?name,language,status,p,limit}]
+## Terms Resource [/api/v1/terminology/terms/{uuid}]
 
-### Get Terms [GET]
+### Get Terms [GET /api/v1/terminology/terms/{?name,language,status,p,limit}]
 Returns a list of stored terms.
 
 + Parameters
@@ -1479,7 +1479,7 @@ Returns a list of stored terms.
         + term (array[Term])
         + meta (PaginationMetadata)
 
-### Get a Term [GET]
+### Get a Term [GET /api/v1/terminology/terms/{uuid}]
 
 Returns a single term.
 
@@ -1500,7 +1500,7 @@ TODO:
 
 + Response 404
 
-### Create a Term [POST]
+### Create a Term [POST /api/v1/terminology/terms/]
 
 Creates a new term.
 
@@ -1520,7 +1520,7 @@ TODO:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/terms/{uuid}
 
-### Update a Term [PUT]
+### Update a Term [PUT /api/v1/terminology/terms/{uuid}]
 
 Updates a term.
 
@@ -1544,7 +1544,7 @@ TODO:
 
 + Response 404
 
-### Delete a Term [DELETE]
+### Delete a Term [DELETE /api/v1/terminology/terms/{uuid}]
 
 Deletes a term.
 
@@ -1565,7 +1565,7 @@ TODO:
 ## Languages Resource [/api/v1/terminology/languages/{uuid}]
 
 
-## Get Languages [GET]
+## Get Languages [GET /api/v1/terminology/languages/]
 Returns a list of all defined languages.
 
 + Request
@@ -1578,7 +1578,7 @@ Returns a list of all defined languages.
         + language (array[Language])
         + meta (PaginationMetadata)
 
-# Get a Language [GET]
+# Get a Language [GET /api/v1/terminology/languages/{uuid}]
 
 Returns a single language.
 
@@ -1599,7 +1599,7 @@ TODO:
 
 + Response 404
 
-# Create a Language [POST]
+# Create a Language [POST /api/v1/terminology/languages/]
 
 Creates a new language.
 
@@ -1619,7 +1619,7 @@ TODO:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/languages/{uuid}
 
-# Update a Language [PUT]
+# Update a Language [PUT /api/v1/terminology/languages/{uuid}]
 
 Updates a language.
 
@@ -1643,7 +1643,7 @@ TODO:
 
 + Response 404
 
-# Not Implemented [DELETE]
+# Not Implemented [DELETE /api/v1/terminology/languages/{uuid}]
 
 Deletes a language.
 
