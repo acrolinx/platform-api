@@ -176,14 +176,26 @@ to authenticate the request.
     - `poll` a link to a resource that will return an *Auth Token* and information
           about the user after sign-in. (see [GET `api/v1/auth/sign-ins/{id}`](#authentication-api-poll-for-a-new-api-token-get))
 
+    Note that the sing-in process will time out. The `interactiveLinkTimeout` field
+    contains the duration in seconds, that the `interactive` link will stay valid. If the
+    Sign-in page was loaded before this time, the server will extend
+    the timeout. To detect timeouts after opening the Sign-in page use the `poll` link.
+
     + Body
 
             {
+                "interactiveLinkTimeout": 900,
                 "links": {
                     "interactive": "https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412",
                     "poll": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui"
                 }
             }
+
+    + Attributes
+        + `interactiveLinkTimeout`: 900 (number) 
+        + links
+            + `interactive`: `https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412` (string, required)
+            + `poll`: `https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui` (string, required)
 
 + Response 401 (application/json)
     If invalid SSO credentials are supplied the request is rejected. This occurs when an SSO username
