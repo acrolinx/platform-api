@@ -225,10 +225,7 @@ privileged parts of the Acrolinx API. Once the user has completed the sign-in pr
 it will return a new authorization token. It can be sent with each API call to prove the
 privileges and identity owned by the user that signed in.
 
-This action supports long polling. A request may be kept open for a "long" duration.
-It will only return on a timeout or when the sign-in process has reached a final state.
-When polling returned a final result (`GONE`/`UNAUTHORIZED`/`OK`), the polling
-endpoint will disappear with `GONE` or `NOT FOUND`.
+When polling returned a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
 
 + Parameters
     + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
@@ -241,9 +238,8 @@ endpoint will disappear with `GONE` or `NOT FOUND`.
    + Attributes (Authorization Response)
 
 + Response 202 (application/json)
-   Another poll request was started and has replaced this one or
-   the server decided to drop the poll request. Request the same URI again to continue polling.
-   Note that clients should pace themself by respecting the `Retry-After` header.
+   The user has not authorized the sing-in yet. Request the same URI again to continue polling.
+   Note that clients should pace themselfs by respecting the `Retry-After` header.
 
     + Header
 
@@ -253,14 +249,8 @@ endpoint will disappear with `GONE` or `NOT FOUND`.
         + error (ErrorResponse)
 
 + Response 404
-    The server has no knowledge of the polling token. The cause for this is a timeout or
-    another poll request that consumed the credentials.
-
-    + Attributes
-        + error (ErrorResponse)
-
-+ Response 410 (application/json)
-    Returned when the requested sign-in process has timed out.
+    The server has no knowledge of the polling token. If a valid poll URI was used, the cause for this is
+    a timeout or another poll request may have consumed the credentials.
 
     + Attributes
         + error (ErrorResponse)
