@@ -51,6 +51,36 @@ The "index" request returns the list of supported locales. The server falls back
 * there’s no matching supported locale
 * for the given response, there’s no appropriate localization available
 
+# Error responses
+
+## General format
+
+The API provides a consistent format for errors, which is based on [RFC7807](https://datatracker.ietf.org/doc/rfc7807/?include_text=1).
+The format is JSON and the API guarantees to send the fields `type`, `title`, `detail`, `status` with each error response.
+
+Example:
+
+```
+HTTP/1.1 403 Forbidden
+Content-Type: application/problem+json
+
+{
+    "type": "https://acrolinx.com/apispec/v1/errors/invalid_token",
+    "title": "Invalid auth token",
+    "detail": "The provided token for authorization is expired.",
+    "status": 403
+}
+```
+
+* `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
+* `title` is a short description of the error. It can be displayed to the user as title of the error.
+* `detail` is a more verbose description of the error. It is suitable to be displayed to the user.
+* `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response. 
+
+Depending on `type` additional fields may be part of the response providing more detailled information.
+
+Additional fields may be added in future. A client must not break because of unexpected fields.
+
 # Group Index
 
 ## Index [GET /api/v1]
