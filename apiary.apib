@@ -197,7 +197,20 @@ to authenticate the request.
     - The `X-Acrolinx-Auth` header contained a valid token.
     - Single Sign-on is configured and valid credentials are supplied.
 
-    + Attributes (Authorization Response)
+    + Body
+    + Attributes
+        + `state`:`Success` (string,required)
+        + `authToken`: `123579080a8d1fee12490a90dc3` (string, required)
+        + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], required)
+            + Members
+                + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sing-in website.
+                + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
+                + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
+        + `privileges`: CheckingAndClients.checkingApplications, CheckingAndClients.submitDictionaryEntry (array[string], required)
+        + `userId`: `fred` (string, required)
+        + `links` (optional)
+            + `user`: `https://tenant.acrolinx.cloud/api/v1/user/fred` (string, optional)
+
 
 + Response 201 (application/json)
     If the `X-Acrolinx-Auth` header is absent a
@@ -229,7 +242,8 @@ to authenticate the request.
             }
 
     + Attributes
-        + `interactiveLinkTimeout`: 900 (number)
+        + `state`:`Started` (string,required)
+        + `interactiveLinkTimeout`: 900 (number,required)
         + links
             + `interactive`: `https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412` (string, required)
             + `poll`: `https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui` (string, required)
@@ -283,7 +297,8 @@ When polling returned a final result, the polling endpoint will disappear and re
             Retry-After: 2
 
     + Attributes
-        + error (ErrorResponse)
+        + `state`:`Retry` (string,required)
+        + `retryAfter`: 2 (number,required)
 
 + Response 404
     The server has no knowledge of the polling token. If a valid poll URI was used, the cause for this is
@@ -1253,13 +1268,19 @@ The response is a list of all entries across all dictionaries where the entry fi
 # Data Structures
 
 ## Authorization Response (object)
-+ `authToken`: `123579080a8d1fee12490a90dc3` (string, required)
-+ `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], required)
++ `state`:`Success` (enum[string],required)
+    + Members
+        + `Success`
+        + `Started`
+        + `Retry`
++ `authToken`: `123579080a8d1fee12490a90dc3` (string, optional)
++ `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], optional)
     + Members
         + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sing-in website.
         + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
         + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
-+ `privileges`: CheckingAndClients.checkingApplications, CheckingAndClients.submitDictionaryEntry (array[string], required)
++ `privileges`: CheckingAndClients.checkingApplications, CheckingAndClients.submitDictionaryEntry (array[string], optional)
++ `retryAfter`: 1 (number, optional)
 + `userId`: `fred` (string, optional)
 + `links` (optional)
     + `user`: `https://tenant.acrolinx.cloud/api/v1/user/fred` (string, optional)
