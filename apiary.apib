@@ -75,11 +75,18 @@ Content-Type: application/problem+json
 * `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
 * `title` is a short description of the error. It can be displayed to the user as title of the error.
 * `detail` is a more verbose description of the error. It is suitable to be displayed to the user.
-* `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response. 
+* `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
 
 Depending on `type` additional fields may be part of the response providing more detailled information.
 
 Additional fields may be added in future. A client must not break because of unexpected fields.
+
+## Error types
+
+Type | Description| What to do
+-----|------------|------------
+https://acrolinx.com/apispec/v1/errors/client | Unspecific error caused by the client's request | Check logs and configuration or the client code.
+https://acrolinx.com/apispec/v1/errors/server | Unspecific error during processing of a request in Acrolinx | Check logs and configuration.
 
 # Group Index
 
@@ -222,14 +229,14 @@ to authenticate the request.
             }
 
     + Attributes
-        + `interactiveLinkTimeout`: 900 (number) 
+        + `interactiveLinkTimeout`: 900 (number)
         + links
             + `interactive`: `https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412` (string, required)
             + `poll`: `https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui` (string, required)
 
 + Response 401 (application/json)
     If invalid SSO credentials are supplied the request is rejected. This occurs when an SSO username
-    is present but the SSO password is wrong or missing or the user couldn’t be created. 
+    is present but the SSO password is wrong or missing or the user couldn’t be created.
 
     + Header
 
