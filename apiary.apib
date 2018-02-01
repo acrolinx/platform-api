@@ -267,8 +267,7 @@ to authenticate the request.
 
             WWW-Authenticate: ACROLINX_TOKEN, ACROLINX_SIGN_IN (, ACROLINX_SSO)
 
-    + Attributes
-        + error (ErrorResponse)
+    + Attributes (ErrorResponse)
 
 + Response 503
     The server is unable to start a sign-in process at this time.
@@ -321,21 +320,7 @@ When polling returned a final result, the polling endpoint will disappear and re
     The server has no knowledge of the polling token. If a valid poll URI was used, the cause for this is
     a timeout or another poll request may have consumed the credentials.
 
-    + Attributes
-        + error (ErrorResponse)
-
-## Logoff [POST /api/v1/auth/logoff]
-
-TODO: This method isn’t implemented.
-
-+ Request
-
-    + Header
-
-            X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3
-
-+ Response 204
-
+    + Attributes (ErrorResponse)
 
 # Group User API
 
@@ -433,11 +418,7 @@ TODO: Which user information can be updated with this call? Are partial updates 
 
 + Response 403 (application/json)
 
-        // if client tried to change certain fields and the auth token does not permit it
-        {
-            "message": "You are not allowed to perform this operation.",
-            "type": "com.acrolinx.faults.InsufficientPrivileges",
-        }
+   + Attributes (ErrorResponse)
 
 # Group Document API
 
@@ -1320,10 +1301,10 @@ The response is a list of all entries across all dictionaries where the entry fi
 + NOT_UP_TO_DATE: yes (string, optional)
 
 ## ErrorResponse (object)
-+ `message`: `Error message` (string)
-+ `errors` (required)
-    + `exception_type`: `com.acrolinx.services.faults.Unauthorized` (string, required)
-    + `exception_message`: `Invalid credentials` (string, required)
+- `type`: `https://acrolinx.com/apispec/v1/errors/client` (string,required)
+- `title`: `Unspecified client error` (string,required)
+- `detail`: `This is a detailled explanation, that can be displayed to the user.` (string,required)
+- `status`: `403` (string,required)
 
 ## PaginationMetadata (object)
 + `page`: `1` (number)
