@@ -51,6 +51,20 @@ The "index" request returns the list of supported locales. The server falls back
 * there’s no matching supported locale
 * for the given response, there’s no appropriate localization available
 
+## Client signature
+
+If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid client signature. The request
+returns an error, if the header is omitted or the given signature is not valid.
+
+The format of the signature is `clientSignature;clientVersion`, where `clientSignature` is the signature as configured in the Acrolinx license and
+`clientVersion` is the version number of the client.
+
+Example:
+
+```
+    X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45
+```
+
 # Error responses
 
 ## General format
@@ -87,6 +101,7 @@ Type | Description| What to do
 -----|------------|------------
 https://acrolinx.com/apispec/v1/errors/client | Unspecific error caused by the client's request | Check logs and configuration or the client code.
 https://acrolinx.com/apispec/v1/errors/server | Unspecific error during processing of a request in Acrolinx | Check logs and configuration.
+https://acrolinx.com/apispec/v1/errors/client_signature_missing | The `X-Acrolinx-Client` header was either missing or the given signature is invalid | Contact Acrolinx, how to aquire a valid license
 
 # Group Index
 
