@@ -56,13 +56,13 @@ The "index" request returns the list of supported locales. The server falls back
 If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid client signature. The request
 returns an error, if the header is omitted or the given signature is not valid.
 
-The format of the signature is `clientSignature;clientVersion`, where `clientSignature` is the signature as configured in the Acrolinx license and
-`clientVersion` is the version number of the client.
+The format of the signature is `clientSignature;clientVersion;buildNumber`, where `clientSignature` is the signature as configured in the Acrolinx license and
+`clientVersion` is the version number of the client and `buildNumber` the build number of the client.
 
 Example:
 
 ```
-    X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45
+    X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45; 12345
 ```
 
 # Error responses
@@ -99,9 +99,10 @@ Additional fields may be added in future. A client must not break because of une
 
 Type | Description| What to do
 -----|------------|------------
-https://acrolinx.com/apispec/v1/errors/client | Unspecific error caused by the client's request | Check logs and configuration or the client code.
-https://acrolinx.com/apispec/v1/errors/server | Unspecific error during processing of a request in Acrolinx | Check logs and configuration.
-https://acrolinx.com/apispec/v1/errors/client_signature_missing | The `X-Acrolinx-Client` header was either missing or the given signature is invalid | Contact Acrolinx, how to aquire a valid license
+https://acrolinx.com/apispec/v1/errors/client | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
+https://acrolinx.com/apispec/v1/errors/server | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
+https://acrolinx.com/apispec/v1/errors/client_signature_missing | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to aquire a valid license.
+https://acrolinx.com/apispec/v1/errors/client_signature_rejected | The given signature in the `X-Acrolinx-Client` header was is invalid. | Contact Acrolinx, how to aquire a valid license.
 
 # Group Index
 
@@ -195,12 +196,7 @@ to authenticate the request.
 
             X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3 (valid) OR (invalid/expired auth token) OR (no auth token)
             X-Acrolinx-Client-Locale: ja
-
-    + Body
-
-            {
-                "clientName": "My Test Client"
-            }
+            X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45; 12345
 
 + Response 200 (application/json)
     No sign-in needed, the response body will contain valid authorization tokens.
@@ -293,6 +289,12 @@ privileges and identity owned by the user that signed in.
 
 When polling returned a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
 
++ Request
+
+    + Header
+
+            X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45
+
 + Parameters
     + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
 
@@ -315,7 +317,7 @@ When polling returned a final result, the polling endpoint will disappear and re
         + `state`:`Retry` (string,required)
         + `retryAfter`: 2 (number,required)
 
-+ Response 404
++ Response 404 (application/json)
     The server has no knowledge of the polling token. If a valid poll URI was used, the cause for this is
     a timeout or another poll request may have consumed the credentials.
 
