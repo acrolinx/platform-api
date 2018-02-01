@@ -90,6 +90,7 @@ Content-Type: application/problem+json
 * `title` is a short description of the error. It can be displayed to the user as title of the error.
 * `detail` is a more verbose description of the error. It is suitable to be displayed to the user.
 * `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
+* An optional `reference` field with an id may be present. If there, this id can be found in the Acrolinx log files to support better problem analysis.
 
 Depending on `type` additional fields may be part of the response providing more detailled information.
 
@@ -1307,6 +1308,7 @@ The response is a list of all entries across all dictionaries where the entry fi
 - `title`: `Unspecified client error` (string,required)
 - `detail`: `This is a detailled explanation, that can be displayed to the user.` (string,required)
 - `status`: `403` (string,required)
+- `reference`: `4fd78a6b-7ed2-473e-89f5-ef9562742ecb` (string,optional)
 
 ## PaginationMetadata (object)
 + `page`: `1` (number)
