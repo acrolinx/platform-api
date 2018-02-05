@@ -649,7 +649,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
             ],
             "contentEncodings": [ "none", "zip,base64", "base64" ],
             "checkTypes": [ "batch", "partial", "interactive" ],
-            "reportTypes": ["scorecard.xml", "scorecard.html", "debug", "termharvesting"]
+            "reportTypes": ["scorecard_xml", "scorecard_html", "debug", "termharvesting"]
         }
 
 ##  Submit a Check [POST /api/v1/checking/submit]
@@ -664,7 +664,7 @@ This call includes an implicit "create/search for document" (in case no document
             "checkOptions": {
                 "audienceId": "aud-1",                       // optional, default: first audience
                 "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],    // optional, default: all available for audience
-                "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard.html
+                "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard_html
                 "contentFormat": "word_xml",                 // optional, default: auto
                 "checkType": "partial",                      // optional, default: interactive
                 "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]   // only used when checkType=partial
@@ -1138,11 +1138,11 @@ This call includes an implicit "create/search for document" (in case no document
             ],
             "reports": [
                 {
-                    "reportType": "scorecard.html",
+                    "reportType": "scorecard_html",
                     "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html"
                 },
                 {
-                    "reportType": "scorecard.xml",
+                    "reportType": "scorecard_xml",
                     "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.xml"
                 }
             ],
