@@ -661,20 +661,14 @@ This call includes an implicit "create/search for document" (in case no document
             "document": {                                // optional, default: empty "document" object
                 "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
                 "reference": "C:\\abc.docx",              // optional, default: do not search for ID, always create
-                "author": "Ralf",
                 "mimeType": "application/word",
-                "contentType": "E-Mail",
-                "customFields": null,
+                "customFields": {                        // optional
+                    "field1": "value",
+                    "field2": "value"
+                },
                 "displayInfo": {                          // optional information about the document; stored but not used for identification
-                    "reference": "abc.docx"               // optional, default: document.reference
+                    "reference": "abc.docx"               // optional, default: document.reference, used to choose file names
                 }
-            },
-            // TODO (asked by ska): needed if already sent during authentication? can we store this with auth token?
-            "clientInfo": {                              // optional, used for CSD selection and reporting
-                "signature": "QWNyb2xpbnhGb3JJbkZvckFkb2JlSW5EZXNpZ24",
-                "displayName": "Acrolinx Plug-in for Adobe InDesign",
-                "version": "1.2",
-                "build": "4201"
             }
         }
 
