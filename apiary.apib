@@ -655,7 +655,7 @@ This call includes an implicit "create/search for document" (in case no document
                 "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard_html
                 "contentFormat": "word_xml",                 // optional, default: auto
                 "checkType": "partial",                      // optional, default: interactive
-                "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]   // only used when checkType=partial
+                "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }]   // only used when checkType=partial
             },
             "batchId": "159203590",                      // only when checkType=batch; optional; if absent: server creates new batchId (sent in response)
             "document": {                                // optional, default: empty "document" object
