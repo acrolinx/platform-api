@@ -79,7 +79,7 @@ HTTP/1.1 403 Forbidden
 Content-Type: application/problem+json
 
 {
-    "type": "https://acrolinx.com/apispec/v1/errors/invalid_token",
+    "type": "invalid_token",
     "title": "Invalid auth token",
     "detail": "The provided token for authorization is expired.",
     "status": 403
@@ -100,12 +100,12 @@ Additional fields may be added in future. A client must not break because of une
 
 Type | Description| What to do
 -----|------------|------------
-`https://acrolinx.com/apispec/v1/errors/client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
-`https://acrolinx.com/apispec/v1/errors/server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
-`https://acrolinx.com/apispec/v1/errors/client_signature_missing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to aquire a valid license.
-`https://acrolinx.com/apispec/v1/errors/client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was is invalid. | Contact Acrolinx, how to aquire a valid license.
-`https://acrolinx.com/apispec/v1/errors/sso` | Returned for any Single Sign On errors. | Most probably this is a configuration issue.
-`https://acrolinx.com/apispec/v1/errors/auth` | Invalid authentication. | Use another access token.
+`client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
+`server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
+`client_signature_missing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to aquire a valid license.
+`client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was is invalid. | Contact Acrolinx, how to aquire a valid license.
+`sso` | Returned for any Single Sign On errors. | Most probably this is a configuration issue.
+`auth` | Invalid authentication. | Use another access token.
 
 # Group Index
 
@@ -1286,7 +1286,7 @@ The response is a list of all entries across all dictionaries where the entry fi
 + NOT_UP_TO_DATE: yes (string, optional)
 
 ## ErrorResponse (object)
-- `type`: `https://acrolinx.com/apispec/v1/errors/client` (string,required)
+- `type`: `client` (string,required)
 - `title`: `Unspecified client error` (string,required)
 - `detail`: `This is a detailled explanation, that can be displayed to the user.` (string,required)
 - `status`: `403` (string,required)
