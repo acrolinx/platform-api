@@ -7,11 +7,46 @@ The Acrolinx Core Platform API is the new REST API for accessing all functionali
 
 Open points are marked with a TODO annotation.
 
+# Authentication and Authorization of the Acrolinx Platform API
+
+When using the Acrolinx Platform API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
+
+An **Access Token** is a encoded and cryptogaphically singed string. It has the following characteristics:
+
+* It is bound to a user
+* There can be an infinite number of Access Tokens per user
+* It has a certain lifetime (default 30 Days, can be changed)
+* It will expire after the lifetime or when the password of the associated user is changed
+* It provides authorization and authentication
+
+How to get an **Access Token**?
+You can get an Access Token by using the Acrolinx sign-in workflow. 
+(further description here)
+
+How to use an Access Token?
+
+Every request you are doing with the Acrolinx Platform API must contain a [header](#header-access-token) providing the Access Token:
+
+```
+    X-Acrolinx-Authorization: WERTZUIOP
+```
+
+## API Token
+An API Token is an Access Token but with special characteristics:
+
+* It has a lifetime of 4 years
+* It expires after this lifetime but **not when password of the user changes.**
+* Only one API Token can be bound to a user at the time
+
+You can get an API Token by accessing user settings page on the Dashboard and generate one. 
+
+Other than that the **API Token** functions as an **Access Token**.
+
 # General Headers
 
-## Authorization Token
+## Access Token
 
-All methods except "index" and "poll auth token" require a valid auth token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
+All methods except "index" and "poll auth token" require a valid access token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
 If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response isn’t explicitly mentioned below.
 
 Example:
