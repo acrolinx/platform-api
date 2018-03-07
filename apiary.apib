@@ -462,6 +462,7 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
 + Response 200 (application/json)
 
         {
+          "data": {
             "id": "fred",
             "name": "fred",  // Acrolinx login name (user ID) - TODO: is this already a suitable ID?
             "firstName": "Fred",   //
@@ -479,14 +480,19 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
                 "possibleValues": [],
                 "default": null
             }
+          }
         }
 
 + Response 403 (application/json)
 
         // if auth token does not permit to show the user's data
         {
-            "message": "You are not allowed to perform this operation.",
-            "type": "com.acrolinx.faults.InsufficientPrivileges",
+          "error": {
+            "detail": "You are not allowed to perform this operation.",
+            "title": "Not allowed",
+            "status": 403
+            "type": "not_allowed"
+          }
         }
 
 ### Update User [PUT]
@@ -513,6 +519,7 @@ TODO: Which user information can be updated with this call? Are partial updates 
 + Response 200 (application/json)
 
         {
+          "data": {
             "id": "fred",
             "name": "fred",
             "firstName": "Freddy",
@@ -530,6 +537,7 @@ TODO: Which user information can be updated with this call? Are partial updates 
                 "possibleValues": [],
                 "default": null
             }
+          }
         }
 
 + Response 403 (application/json)
@@ -568,6 +576,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 + Response 200 (application/json)
 
         {
+          "data": {
             "id": "283ab1e075f21a",
             "reference": "C:\\abc.docx",
             "mimeType": "application/word",
@@ -584,6 +593,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
             "displayInfo": {
                 "reference": "abc.docx"
             }
+          }
         }
 
 ## Put/Update Document [PUT /api/v1/document/{id}]
@@ -610,6 +620,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 + Response 200 (application/json)
 
         {
+          "data": {
             "id": "283ab1e075f21a",
             "reference": "C:\\abc.docx",
             "mimeType": "application/word",
@@ -626,6 +637,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
             "displayInfo": {
                 "reference": "abc.docx"
             }
+          }
         }
 
 
@@ -653,11 +665,13 @@ TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' 
 + Response 200 (application/json)
 
         {
-            "inputFormats": [], // TODO: why is this here again?
-            "links": {
-                "submit_check": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
-                "checking_capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities",
-            }
+          "data":{}
+            "inputFormats": [] // TODO: why is this here again?
+          },
+          "links": {
+            "submit_check": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
+            "checking_capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities",
+          }
         }
 
 ## List Checking Capabilities [GET /api/v1/checking/capabilities]
@@ -673,6 +687,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
 + Response 200 (application/json)
 
         {
+          "data": {
             "audiences": [
                 {
                     "id": "aud-1",
@@ -746,6 +761,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
             "contentEncodings": [ "none", "zip,base64", "base64" ],
             "checkTypes": [ "batch", "partial", "interactive" ],
             "reportTypes": ["scorecard_xml", "scorecard_html", "debug", "termharvesting"]
+          }
         }
 
 ##  Submit a Check [POST /api/v1/checking/submit]
@@ -783,6 +799,7 @@ This call includes an implicit "create/search for document" (in case no document
 + Response 201 (application/json)
 
         {
+          "data": {
             "id": "153",
             "batchId": "159203590",
             "checkOptions": {
@@ -810,17 +827,19 @@ This call includes an implicit "create/search for document" (in case no document
                 "displayInfo": {
                     "reference": "abc.docx"
                 }
-            },
-            "links": {
-                "status": "https://tenant.acrolinx.cloud/api/v1/checking/153/status",
-                "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/153"
             }
+          },
+          "links": {
+              "status": "https://tenant.acrolinx.cloud/api/v1/checking/153/status",
+              "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/153"
+          }
         }
 
 + Response 400 (application/json)
 
         // TODO: non-interactive/batch clients should be able to check without required DMD
         {
+          "error": {
             "message": "Document Metadata required",
             "type": "com.acrolinx.faults.DocumentMetadataRequired",
             "document": {
@@ -841,9 +860,6 @@ This call includes an implicit "create/search for document" (in case no document
                     "reference": "abc.docx"
                 }
             },
-            "links": {
-                "submitMetadata": "https://tenant.acrolinx.cloud/api/v1/document/283ab1e075f21a/metadata"
-            },
             "actions": [
                 {
                     "id": "submitMetadataForm",
@@ -852,11 +868,16 @@ This call includes an implicit "create/search for document" (in case no document
                     "icon": "..."
                 }
             ]
+          },
+          "links": {
+              "submitMetadata": "https://tenant.acrolinx.cloud/api/v1/document/283ab1e075f21a/metadata"
+          }
         }
 
 + Response 400 (application/json)
 
         {
+          "error": {
             "message": "The specified audience is currently not available.",
             "type": "com.acrolinx.faults.AudienceUnavailable",
             "capabilities": {
@@ -865,11 +886,12 @@ This call includes an implicit "create/search for document" (in case no document
                 // etc.
                 // i.e. exactly the response of the "get capabilities" web service method
                 // when calling it with same credentials
-            },
-            "links": {
-                "submit_check": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
-                "checking_capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities"
             }
+          },
+          "links": {
+              "submit_check": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
+              "checking_capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities"
+          }
         }
 
 
@@ -888,14 +910,16 @@ This call includes an implicit "create/search for document" (in case no document
 + Response 200 (application/json)
 
         {
+          "data":{
             "id": "153",
             "documentId": "283ab1e075f21a",
             "state": "done",
             "percent": 100,
-            "message": "(10/10) Done.",
-            "links": {
-                "result": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
-            }
+            "message": "(10/10) Done."
+          },
+          "links": {
+              "result": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
+          }
         }
 
 ## Get Check Result [GET /api/v1/checking/{id}/result]
@@ -906,6 +930,7 @@ This call includes an implicit "create/search for document" (in case no document
 + Response 200 (application/json)
 
         {
+          "data":{
             "id": "153",
             "checkOptions": {
                 "audienceId": "aud_1",
@@ -1244,12 +1269,12 @@ This call includes an implicit "create/search for document" (in case no document
                     "icon": "icon-term-contribute",
                     "replacedBy": "termContribution"
                 }
-            ],
-            "links":
-                {
-                    "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
-                    "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
-                }
+            ]
+          },
+          "links": {
+                "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
+                "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
+          }
         }
 
 ## Get Link to Aggregated Report [GET /api/v1/checking/aggregation/{batchId}]
@@ -1287,7 +1312,9 @@ This method enables the client to discover the supported dictionary scopes.
 + Response 200 (application/json)
 
         {
+          "data": {
             "scopes": [ "audience", "document", "user", "language" ]
+          }
         }
 
 ## Add to Dictionary [POST /api/v1/dictionary/submit]
@@ -1309,12 +1336,14 @@ the client needs to know which information it is. The response is the created di
 + Response 200
 
         {
+          "data": {
             "surface": "wiruwaruwolz",
             "scope": "document",
             "languageId": "en_GB",
             "audienceId": null,
             "documentId": "283ab1e075f21a",
             "userId": null
+          }
         }
 
 # Search for Dictionary Entries [POST /api/v1/dictionary/search]
@@ -1336,7 +1365,7 @@ The response is a list of all entries across all dictionaries where the entry fi
 
 + Response 200
 
-        [
+        "data": {[
             {
                 "surface": "wiruwaruwolz",
                 "scope": "document",
@@ -1353,26 +1382,25 @@ The response is a list of all entries across all dictionaries where the entry fi
                 "documentId": null,
                 "userId": "fred"
             }
-        ]
+        ]}
 
 
 # Data Structures
 
 ## Authorization Response (object)
-+ `state`:`Success` (enum[string],required)
-    + Members
++ data
+  + `state`:`Success` (enum[string],required)
+     + Members
         + `Success`
         + `Started`
-        + `Retry`
-+ `authToken`: `123579080a8d1fee12490a90dc3` (string, optional)
-+ `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], optional)
-    + Members
+  + `authToken`: `123579080a8d1fee12490a90dc3` (string, optional)
+  + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], optional)
+     + Members
         + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sing-in website.
         + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
         + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
-+ `privileges`: CheckingAndClients.checkingApplications, CheckingAndClients.submitDictionaryEntry (array[string], optional)
-+ `retryAfter`: 1 (number, optional)
-+ `userId`: `fred` (string, optional)
+  + `privileges`: CheckingAndClients.checkingApplications, CheckingAndClients.submitDictionaryEntry (array[string], optional)
+  + `userId`: `fred` (string, optional)
 + `links` (optional)
     + `user`: `https://tenant.acrolinx.cloud/api/v1/user/fred` (string, optional)
 
@@ -1394,11 +1422,12 @@ The response is a list of all entries across all dictionaries where the entry fi
 + NOT_UP_TO_DATE: yes (string, optional)
 
 ## ErrorResponse (object)
-- `type`: `client` (string,required)
-- `title`: `Unspecified client error` (string,required)
-- `detail`: `This is a detailled explanation, that can be displayed to the user.` (string,required)
-- `status`: `403` (string,required)
-- `reference`: `4fd78a6b-7ed2-473e-89f5-ef9562742ecb` (string,optional)
++ error
+  - `type`: `client` (string,required)
+  - `title`: `Unspecified client error` (string,required)
+  - `detail`: `This is a detailled explanation, that can be displayed to the user.` (string,required)
+  - `status`: `403` (string,required)
+  - `reference`: `4fd78a6b-7ed2-473e-89f5-ef9562742ecb` (string,optional)
 
 ## PaginationMetadata (object)
 + `page`: `1` (number)
@@ -1480,6 +1509,7 @@ Returns a list of stored views, visible to the authenticated client.
 + Response 200 (application/json)
 
         {
+          "data": {
             "view": [
                 {
                     "id": "850ec0e3-9dd2-48f0-bb9c-8ade80316584",
@@ -1505,6 +1535,7 @@ Returns a list of stored views, visible to the authenticated client.
             ],
             "meta": {
             }
+          }
         }
 
 ## Get view [GET /api/v1/terminology/views/{uuid}]
