@@ -100,9 +100,18 @@ Example:
     X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45; 12345
 ```
 
-# Error responses
+# Response format
 
-## General format
+The API provides a consistent format for all responses. Each response as a field `links` and one of the three fields `error`, `progress`, `data`.
+
+The `links` field contains further URLs that can be used as a next step in the workflow.
+`error` is set, of the request did not succeed. This is accompanied by a HTTP status code above or equal 4xx.
+`progress` means, that the processing is not yet finished and the client has to poll for the final result.
+`data` contains the actual result data, the processing is sucessfully finished.
+
+## Error responses
+
+### General format
 
 The API provides a consistent format for errors, which is based on [RFC7807](https://datatracker.ietf.org/doc/rfc7807/?include_text=1).
 The format is JSON and the API guarantees to send the fields `type`, `title`, `detail`, `status` with each error response.
@@ -112,12 +121,14 @@ Example:
 ```
 HTTP/1.1 403 Forbidden
 Content-Type: application/problem+json
-
 {
+  "error": {
     "type": "invalid_token",
     "title": "Invalid auth token",
     "detail": "The provided token for authorization is expired.",
     "status": 403
+  }
+  "links": {}
 }
 ```
 
@@ -131,7 +142,7 @@ Depending on `type` additional fields may be part of the response providing more
 
 Additional fields may be added in future. A client must not break because of unexpected fields.
 
-## Error types
+### Error types
 
 Type | Description| What to do
 -----|------------|------------
@@ -141,6 +152,61 @@ Type | Description| What to do
 `client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was is invalid. | Contact Acrolinx, how to aquire a valid license.
 `sso` | Returned for any Single Sign On errors. | Most probably this is a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
+
+## Progress responses
+
+A progress response always contains a field `retryAfter`, which tells the client many seconds to wait until the next poll request.
+Optionally the response can have the fields `message`, that contains a human user readable text about the current status, and `percent`, that
+is a number and shows the progress in percent.
+
+Examples:
+
+```
+HTTP/1.1 202 Accepted
+Content-Type: application/json
+{
+  "progress": {
+    "message": "The request is queued on position 5.",
+    "percent": 2,
+    "retryAfter": 5
+  }
+  "links": {
+    "cancel" : "https://tenant.acrolinx.cloud/api/v1/checks/ID100"
+  }
+}
+```
+
+```
+HTTP/1.1 202 Accepted
+Content-Type: application/json
+{
+  "progress": {
+    "retryAfter": 1
+  }
+  "links": {}
+}
+```
+
+## Successful responses
+
+The fields of a successful response with data depend on the request.
+
+Example:
+
+```
+HTTP/1.1 200 Ok
+Content-Type: application/json
+{
+  "data": {
+    "score": 99,
+    "textualScore": "Good job!"
+  }
+  "links": {
+    "submit", "https://tenant.acrolinx.cloud/api/v1/checks"
+  }
+}
+```
+
 
 # Group Index
 
