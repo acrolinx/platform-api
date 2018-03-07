@@ -20,7 +20,7 @@ An **Access Token** is a encoded and cryptogaphically singed string. It has the 
 * It provides authorization and authentication
 
 How to get an **Access Token**?
-You can get an Access Token by using the Acrolinx sign-in workflow. 
+You can get an Access Token by using the Acrolinx sign-in workflow.
 (further description here)
 
 How to use an Access Token?
@@ -38,7 +38,7 @@ An API Token is an Access Token but with special characteristics:
 * It expires after this lifetime but **not when password of the user changes.**
 * Only one API Token can be bound to a user at the time
 
-You can get an API Token by accessing user settings page on the Dashboard and generate one. 
+You can get an API Token by accessing user settings page on the Dashboard and generate one.
 
 Other than that the **API Token** functions as an **Access Token**.
 
@@ -58,7 +58,7 @@ Example:
 ## Base URL
 
 To support reverse proxies, a client may provide the `X-Acrolinx-Base-Url` header with each request. If the response body to the request
-contains links into the Acrolinx API, the server will prefix them with the given value. The provided value will be parsed as an URI.
+contains links into the Acrolinx API, the server will prefix them with the given value. The provided value must be an absolute URL including scheme and host.
 Malformed values will result in a `400` status code.
 
 Example:
