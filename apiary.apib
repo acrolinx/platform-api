@@ -152,6 +152,11 @@ Type | Description| What to do
 `client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was is invalid. | Contact Acrolinx, how to aquire a valid license.
 `sso` | Returned for any Single Sign On errors. | Most probably this is a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
+`interactive_sign_in_timed_out` | The interactive sign-in process timed out. | Start new.
+`bad_content` | Could not decode content. | Probably points to an error in the client.
+`check_cancelled` | The check was cancelled. No result is available. | Probably points to an error in the client.
+`check_failed` | The check failed. | Check logs and configuration.
+`invalid_base_url` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
 
 ## Progress responses
 
@@ -436,7 +441,14 @@ When polling returned a final result, the polling endpoint will disappear and re
     The server has no knowledge of the polling token. If a valid poll URI was used, the cause for this is
     a timeout or another poll request may have consumed the credentials.
 
-    + Attributes (ErrorResponse)
+    The returned type is `interactive_sign_in_timed_out`, which distinguishes this response from a normal 404 caused by a just wrong URL.
+
+    + Attributes
+       + error
+         + `type`: `interactive_sign_in_timed_out` (string,required)
+         + `status`: 404 (number,required)
+         + title: `The interactive sign-in process timed out` (string,required)
+         + detail: `The interactive sign-in process timed out. Please start a sign-in.` (string,required)
 
 # Group User API
 
