@@ -776,7 +776,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
           }
         }
 
-##  Submit a Check [POST /api/v1/checking/submit]
+##  Submit a Check [POST /api/v1/checking/checks]
 
 This call includes an implicit "create/search for document" (in case no document ID was given) and "update document" (in case document ID was given).
 
@@ -787,7 +787,6 @@ This call includes an implicit "create/search for document" (in case no document
             "contentEncoding": "zip,base64",             // optional, default: none = HTTP request encoding
             "checkOptions": {
                 "audienceId": "aud-1",                       // optional, default: first audience
-                "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],    // optional, default: all available for audience
                 "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard_html
                 "contentFormat": "word_xml",                 // optional, default: auto
                 "checkType": "partial",                      // optional, default: interactive
@@ -812,22 +811,10 @@ This call includes an implicit "create/search for document" (in case no document
 
         {
           "data": {
-            "id": "153",
+            "id": "AB-153",
             "batchId": "159203590",
-            "checkOptions": {
-                "audienceId": "aud_1",
-                "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
-                "reportTypes": ["debug", "termharvesting"],
-                "contentFormat": "word_xml",
-                "checkType": "partial",
-                "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]
-            },
             "document": {
                 "id": "283ab1e075f21a",
-                "reference": "C:\\abc.docx",
-                "author": "Ralf",
-                "mimeType": "application/word",
-                "contentType": "E-Mail",
                 "customFields": [
                     {
                         "displayName": "Project ID",
@@ -836,9 +823,6 @@ This call includes an implicit "create/search for document" (in case no document
                         "required": true
                     }
                 ],
-                "displayInfo": {
-                    "reference": "abc.docx"
-                }
             }
           },
           "links": {
@@ -856,10 +840,6 @@ This call includes an implicit "create/search for document" (in case no document
             "type": "com.acrolinx.faults.DocumentMetadataRequired",
             "document": {
                 "id": "283ab1e075f21a",
-                "reference": "C:\\abc.docx",
-                "mimeType": "application/word",
-                "author": "Ralf",
-                "contentType": "E-Mail",
                 "metadata": [
                     {
                         "displayName": "Project ID",
@@ -868,9 +848,6 @@ This call includes an implicit "create/search for document" (in case no document
                         "required": true
                     }
                 ],
-                "displayInfo": {
-                    "reference": "abc.docx"
-                }
             },
             "actions": [
                 {
@@ -914,41 +891,42 @@ This call includes an implicit "create/search for document" (in case no document
 
 + Response 204
 
-## Get Checking Status [GET /api/v1/checking/{id}/status]
+## Get Check Result [GET /api/v1/checking/checks/{id}]
 
 + Parameters
-    + id: `153` (required, number) ... the check id
+    + id: `AB-153` (required, string) ... the check id
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Retry-After: 2
+
+    + Body
+
+            {
+              "progress" : {
+                "percent": 20,
+                "message": "Waiting in queue",
+                "retryAfter": "2"
+              }
+            }
 
 + Response 200 (application/json)
 
         {
           "data":{
-            "id": "153",
-            "documentId": "283ab1e075f21a",
-            "state": "done",
-            "percent": 100,
-            "message": "(10/10) Done."
-          },
-          "links": {
-              "result": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
-          }
-        }
-
-## Get Check Result [GET /api/v1/checking/{id}/result]
-
-+ Parameters
-    + id: `153` (required, number) ... the check id
-
-+ Response 200 (application/json)
-
-        {
-          "data":{
-            "id": "153",
+            "id": "AB-153",
             "checkOptions": {
                 "audienceId": "aud_1",
                 "audienceName": "Acrolinx Essentials",
                 "languageId": "en",
-                "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
+                "termSets": [{
+                    "displayName": "Switches"
+                },
+                {
+                    "displayName": "Acrolinx"
+                }],
                 "reportTypes": ["scorecard", "termharvesting"],
                 "contentFormat": "word_xml",
                 "checkType": "partial",
