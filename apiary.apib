@@ -946,8 +946,10 @@ This call includes an implicit "create/search for document" (in case no document
             "id": "153",
             "checkOptions": {
                 "audienceId": "aud_1",
+                "audienceName": "Acrolinx Essentials",
+                "languageId": "en",
                 "termSetIds": ["c58f3889-9466-4fb4-82c7-973a0b4644d9"],
-                "reportTypes": ["debug", "termharvesting"],
+                "reportTypes": ["scorecard", "termharvesting"],
                 "contentFormat": "word_xml",
                 "checkType": "partial",
                 "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]
@@ -1263,16 +1265,18 @@ This call includes an implicit "create/search for document" (in case no document
                     "url": "https://kis.example.com/info?projectId=52351235"
                 }
             ],
-            "reports": [
-                {
-                    "reportType": "scorecard_html",
-                    "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html"
+            "reports": {
+                "scorecard": {
+                    "displayName":"Score Card",
+                    "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html",
+                    "linkAuthenticated": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html?apikey=hfhfzhfhrz"
                 },
-                {
-                    "reportType": "scorecard_xml",
-                    "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.xml"
+                "termharvesting": {
+                    "displayName": "Term Harvesting",
+                    "link": "https://tenant.acrolinx.cloud/output/en/termharvesting_1.xml",
+                    "linkAuthenticated": "https://tenant.acrolinx.cloud/output/en//termharvesting_1.xml?apikey=tfhzzhfhrz"
                 }
-            ],
+            },
             "actions": [
                 {
                     "id": "termContributionForm",
