@@ -839,11 +839,10 @@ This call includes an implicit "create/search for document" (in case no document
 
 + Response 400 (application/json)
 
-        // TODO: non-interactive/batch clients should be able to check without required DMD
         {
           "error": {
-            "message": "Document Metadata required",
-            "type": "com.acrolinx.faults.DocumentMetadataRequired",
+            "message": "Custom field values are missing",
+            "type": "custom_fields_incomplete",
             "document": {
                 "id": "283ab1e075f21a",
                 "customFields": [
@@ -854,18 +853,9 @@ This call includes an implicit "create/search for document" (in case no document
                         "required": true
                     }
                 ],
-            },
-            "actions": [
-                {
-                    "id": "submitMetadataForm",
-                    "url": "https://host:8031/documentMetadata.html?documentId=283ab1e075f21a",
-                    "displayName": "Add required document metadata",
-                    "icon": "..."
-                }
-            ]
+            }
           },
           "links": {
-              "submitMetadata": "https://tenant.acrolinx.cloud/api/v1/document/283ab1e075f21a/metadata"
           }
         }
 
