@@ -157,6 +157,7 @@ Type | Description| What to do
 `check_cancelled` | The check was cancelled. No result is available. | Probably points to an error in the client.
 `check_failed` | The check failed. | Check logs and configuration.
 `invalid_base_url` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
+`custom_fields_incomplete` | Custom field values are missing. |Please provide values for all required custom fields before or when checking a document.
 
 ## Progress responses
 
@@ -594,7 +595,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
             "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
-            "metadata": [
+            "customFields": [
                 {
                     "displayName": "Project ID",
                     "key": "projectId",
@@ -617,7 +618,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
             "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
-            "metadata": [
+            "customFields": [
                 {
                     "key": "projectId",
                     "value": "Marketing Campaign"
@@ -638,7 +639,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
             "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
-            "metadata": [
+            "customFields": [
                 {
                     "displayName": "Project ID",
                     "key": "projectId",
@@ -797,10 +798,15 @@ This call includes an implicit "create/search for document" (in case no document
                 "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
                 "reference": "C:\\abc.docx",              // optional, default: do not search for ID, always create
                 "mimeType": "application/word",
-                "customFields": {                        // optional
-                    "field1": "value",
-                    "field2": "value"
-                },
+                "customFields": [                       // optional
+                    {
+                        "key": "field1",
+                        "value": "value1"
+                    },{
+                        "key": "field2",
+                        "value": "value2"
+                    }
+                ],
                 "displayInfo": {                          // optional information about the document; stored but not used for identification
                     "reference": "abc.docx"               // optional, default: document.reference, used to choose file names
                 }
@@ -840,7 +846,7 @@ This call includes an implicit "create/search for document" (in case no document
             "type": "com.acrolinx.faults.DocumentMetadataRequired",
             "document": {
                 "id": "283ab1e075f21a",
-                "metadata": [
+                "customFields": [
                     {
                         "displayName": "Project ID",
                         "key": "projectId",
@@ -938,7 +944,7 @@ This call includes an implicit "create/search for document" (in case no document
                 "mimeType": "application/word",
                 "author": "Ralf",
                 "contentType": "E-Mail",
-                "metadata": [
+                "customFields": [
                     {
                         "displayName": "Project ID",
                         "key": "projectId",
