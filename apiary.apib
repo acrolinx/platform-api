@@ -791,9 +791,9 @@ This call includes an implicit "create/search for document" (in case no document
                 "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard_html
                 "contentFormat": "word_xml",                 // optional, default: auto
                 "checkType": "partial",                      // optional, default: interactive
-                "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }]   // only used when checkType=partial
+                "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // only used when checkType=partial
+                "batchId": "gen.clc.159203590",                      // only for batch checks; optional;
             },
-            "batchId": "159203590",                      // only when checkType=batch; optional; if absent: server creates new batchId (sent in response)
             "document": {                                // optional, default: empty "document" object
                 "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
                 "reference": "C:\\abc.docx",              // optional, default: do not search for ID, always create
