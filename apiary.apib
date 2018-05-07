@@ -214,6 +214,11 @@ Content-Type: application/json
 }
 ```
 
+# HTML fields
+
+Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, e.g. guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as e.g. guidanceText.
+
+All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by  server side whitelist.
 
 # Group Index
 
@@ -980,8 +985,8 @@ This call includes an implicit "create/search for document" (in case no document
                 {
                     "goalId": "spelling",
                     "internalName": "title_case_chicago",
-                    "displayName": "Use Chicago style for the title case?",
-                    "guidance": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
+                    "displayNameHtml": "Use Chicago style for the title case?",
+                    "guidanceHtml": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
                     "extractedSurface": "zentense",
                     "positionalInformation": {
                         "hashes": {           // TODO: positional info? groupId grouped flags based on type (e.g. all flags of a rule), but issue hash just groups internalName+extractedSurface
