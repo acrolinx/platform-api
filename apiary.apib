@@ -838,8 +838,8 @@ This call includes an implicit "create/search for document" (in case no document
             }
           },
           "links": {
-              "status": "https://tenant.acrolinx.cloud/api/v1/checking/153/status",
-              "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/153"
+            "result": "https://tenant.acrolinx.cloud/api/v1/checking/checks/AB-153",
+            "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/checks/AB-153"
           }
         }
 
@@ -880,13 +880,13 @@ This call includes an implicit "create/search for document" (in case no document
             }
           },
           "links": {
-              "submit_check": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
-              "checking_capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities"
           }
         }
 
 
 ## Cancel Check [DELETE /api/v1/checking/checks/{id}]
+
+Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
 
 + Parameters
     + id: `153` (required, number) ... the check id
@@ -894,7 +894,9 @@ This call includes an implicit "create/search for document" (in case no document
 + Response 204
 
 
-## Get Check Result [GET /api/v1/checking/checks/{id}]
+## Poll Check Result [GET /api/v1/checking/checks/{id}]
+
+Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
 
 + Parameters
     + id: `AB-153` (required, string) ... the check id
