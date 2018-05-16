@@ -884,16 +884,6 @@ This call includes an implicit "create/search for document" (in case no document
         }
 
 
-## Cancel Check [DELETE /api/v1/checking/checks/{id}]
-
-Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
-
-+ Parameters
-    + id: `153` (required, number) ... the check id
-
-+ Response 204
-
-
 ## Poll Check Result [GET /api/v1/checking/checks/{id}]
 
 Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
@@ -1274,6 +1264,17 @@ Polls the check result. Either a progress or the completed result is returned. T
                 "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
           }
         }
+
+
+## Cancel Check [DELETE /api/v1/checking/checks/{id}]
+
+        Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
+
+        + Parameters
+            + id: `153` (required, number) ... the check id
+
+        + Response 204
+
 
 ## Get Link to Aggregated Report [GET /api/v1/checking/aggregation/{batchId}]
 
