@@ -777,7 +777,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
                 }
             ],
             "contentEncodings": [ "none", "zip,base64", "base64" ],
-            "checkTypes": [ "batch", "partial", "interactive" ],
+            "checkTypes": [ "batch", "interactive" ],
             "reportTypes": ["scorecard_xml", "scorecard_html", "debug", "termharvesting"]
           }
         }
@@ -795,8 +795,8 @@ This call includes an implicit "create/search for document" (in case no document
                 "audienceId": "aud-1",                       // optional, default: first audience
                 "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard_html
                 "contentFormat": "word_xml",                 // optional, default: auto
-                "checkType": "partial",                      // optional, default: interactive, the priority of the check
-                "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // only used when checkType=partial
+                "checkType": "batch",                        // optional, default: interactive, the priority of the check
+                "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
                 "batchId": "gen.clc.159203590",                      // only for batch checks; optional;
                 "disableCustomFieldValidation": true                 // no checking of Document Meta Data, mostly for batch checks; optional;
             },
@@ -924,7 +924,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }],
                 "reportTypes": ["scorecard", "termharvesting"],
                 "contentFormat": "word_xml",
-                "checkType": "partial",
+                "checkType": "interactive",
                 "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]
             },
             "document": {
