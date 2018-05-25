@@ -1273,7 +1273,14 @@ Polls the check result. Either a progress or the completed result is returned. T
 + Parameters
    + id: `153` (required, number) ... the check id
 
-+ Response 204
+
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "id": "153"
+          }
+        }
 
 
 ## Get Link to Aggregated Report [GET /api/v1/checking/aggregation/{batchId}]
