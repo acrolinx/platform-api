@@ -1851,6 +1851,59 @@ TODO:
 + Response 204
 + Response 404
 
+
+
+
+# Group Broadcast API
+
+You can use platform notifications to inform users that checking might be affected by server maintenance or planned server outages.
+
+## Create a Platform Notification [POST /api/v1/broadcasts/platform-notifications]
+
+Publishes a new notification on the platform.
+
+
++ Request (application/json)
+
+        {
+            "title": "Important Announcement",                               // required; The title of the notification
+            "body":  "Acrolinx Platform 5.5 will be deployed tomorrow.",     // required; Notification text.
+            "importance": "HIGH",                                            // optional; "HIGH"|"NORMAL"
+            "start": 1528127782,                                             // required; Notification start time (epoch millisecond timestamp)
+            "end": 1530719782                                               // required; Notification end time (epoch millisecond timestamp)
+        }
+
++ Response 201 (application/json)
+
+        {
+          "data": {
+            "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101"
+          }
+        }
+
+## Retrieve Platform Notifications [GET /api/v1/broadcasts/platform-notifications/{lastRequestTimeInMilliseconds}]
++ Parameters
+    + lastRequestTimeInMilliseconds: `1525449382` (long, required) - epoch millisecond timestamp used to filter active notifications
+
+
++ Response 200 (application/json)
+
+        {
+          "data":
+            platformNotifications: [{
+              "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101",
+              "title": "Important Announcement",
+              "body":  "Acrolinx Platform 5.5 will be deployed tomorrow.",
+              "importance": "HIGH",
+              "start": 1528127782,
+              "end": 1530719782
+              }
+            ]
+          }
+        }
+
+
+
 # Group Other Methods in Existing API - TODO
 
 Checking API:
