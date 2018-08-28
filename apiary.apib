@@ -679,6 +679,8 @@ The API for checking documents.
 
 ## List All Checking Methods [GET /api/v1/checking]
 
+In this section all listed (future) features, which are not yet or only partially implemented, are marked with the keyword DRAFT. The `subIssues` behave exactly like the `issues`, therefore the corresponding spots aren't marked. Please consider this while using the Checking API.
+
 TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' to the index.
 
 + Response 200 (application/json)
@@ -989,21 +991,21 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "index": "hjlRLT0K+LlvlslKdNUlhw==1"
                         },
                         "matches": [{
-                            "extractedPart": "zen",
+                            "extractedPart": "zen",         # DRAFT
                             "extractedBegin": 30,
                             "extractedEnd": 33,
                             "originalPart": "zen",
                             "originalBegin": 19247,
                             "originalEnd": 19255
                         }, {
-                            "extractedPart": "te",
+                            "extractedPart": "te",          # DRAFT
                             "extractedBegin": 33,
                             "extractedEnd": 35,
                             "originalPart": "&te;",
                             "originalBegin": 19250,
                             "originalEnd": 19254
                         },{
-                            "extractedPart": "nse",
+                            "extractedPart": "nse",         # DRAFT
                             "extractedBegin": 35,
                             "extractedEnd": 38,
                             "originalPart": "nse",
@@ -1029,6 +1031,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             }
                         }
                     ],
+                    # DRAFT ------START------
                     "actions": [
                         {
                             "id": "help",
@@ -1044,11 +1047,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "replacedBy": "termContribution"
                         }
                     ],
+                    # DRAFT -------END-------
+                    # DRAFT ------START------
                     "links":
                         {
                             "termContribution": "https://tenant.acrolinx.cloud/terminology/v7/rest/contribute",
                             "addToDictionary": "https://tenant.acrolinx.cloud/api/v1/dictionary/submit"
                         }
+                    # DRAFT -------END-------
                 },
                 {
                     "goalId": "term.unsuitable",
@@ -1063,7 +1069,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "index": "Lm9PqBGGm+tj21rt3pkpjA==1"
                         },
                         "matches": [{
-                            "extractedPart": "Please",
+                            "extractedPart": "Please",      # DRAFT
                             "extractedBegin": 766,
                             "extractedEnd": 772,
                             "originalPart": "Please",
@@ -1082,6 +1088,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             }
                         }
                     ],
+                    # DRAFT ------START------
                     "actions": [
                         {
                             "id": "help",
@@ -1090,6 +1097,8 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "icon": "help-icon"
                         }
                     ],
+                    # DRAFT -------END-------
+                    # DRAFT ------START------
                     "debug": {
                         "term": {
                             "surface": "please",
@@ -1099,6 +1108,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "variant": "legalVariantIllegal",
                         }
                     }
+                    # DRAFT -------END-------
                 },
                 {
                     "goalId": "voice.readability",
@@ -1113,14 +1123,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "index": "accsS0dbn/3rafcbT9NJGw==1"
                         },
                         "matches": [{
-                            "extractedPart": "Reports",
+                            "extractedPart": "Reports",     # DRAFT
                             "extractedBegin": 1360,
                             "extractedEnd": 1367,
                             "originalPart": "Reports",
                             "originalBegin": 33173,
                             "originalEnd": 33180,
                         }, {
-                            "extractedPart": "length",
+                            "extractedPart": "length",      # DRAFT
                             "extractedBegin": 1749,
                             "extractedEnd": 1755,
                             "originalPart": "length",
@@ -1147,14 +1157,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                                 "index": "++0c1Z/OQu1Mwzt0KpkYYA==1"
                             },
                             "matches": [{
-                                "extractedPart": "Reports",
+                                "extractedPart": "Reports",     # DRAFT
                                 "extractedBegin": 1360,
                                 "extractedEnd": 1367,
                                 "originalPart": "Reports",
                                 "originalBegin": 33173,
                                 "originalEnd": 33180,
                             }, {
-                                "extractedPart": "length",
+                                "extractedPart": "length",      # DRAFT
                                 "extractedBegin": 1749,
                                 "extractedEnd": 1755,
                                 "originalPart": "length",
@@ -1209,6 +1219,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     }]
                 }
             ],
+            # DRAFT ------START------
             "keywords": {
                 "links":{
                     "getTargetKeywords": "https://tenant.acrolinx.cloud/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx",
@@ -1229,13 +1240,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }],
                 "target": []
             },
-            "extraInfos": [
+            # DRAFT -------END-------
+            "addonInfo": [
                 {
-                    "id": "rioseo",
-                    "title": "IBM KIS",
+                    "id": "mightyAddon",
+                    "title": "Mighy Addon by Cool Corp.",
                     "iconClass": "search-icon",
                     "iconUrl": "...",
-                    "url": "https://kis.example.com/info?projectId=52351235"
+                    "url": "https://mighy.cool.com/addon?fancyId=12345"
                 }
             ],
             "reports": {
@@ -1250,6 +1262,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "linkAuthenticated": "https://tenant.acrolinx.cloud/output/en//termharvesting_1.xml?apikey=tfhzzhfhrz"
                 }
             },
+            # DRAFT ------START------
             "actions": [
                 {
                     "id": "termContributionForm",
@@ -1259,11 +1272,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "replacedBy": "termContribution"
                 }
             ]
+            # DRAFT -------END-------
           },
+          # DRAFT ------START------
           "links": {
                 "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
                 "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
           }
+          # DRAFT -------END-------
         }
 
 
@@ -1867,7 +1883,7 @@ Publishes a new notification on the platform.
 
         {
             "title": "Important Announcement",                               // required; The title of the notification
-            "body":  "Acrolinx Platform 5.5 will be deployed tomorrow.",     // required; Notification text.
+            "body":  "Acrolinx Platform 5.6 will be deployed tomorrow.",     // required; Notification text.
             "importance": "HIGH",                                            // optional; "HIGH"|"NORMAL"
             "start": 1528127782,                                             // required; Notification start time (epoch millisecond timestamp)
             "end": 1530719782                                               // required; Notification end time (epoch millisecond timestamp)
@@ -1896,7 +1912,7 @@ Retrieves active notifications from the platform.
             platformNotifications: [{
               "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101",
               "title": "Important Announcement",
-              "body":  "Acrolinx Platform 5.5 will be deployed tomorrow.",
+              "body":  "Acrolinx Platform 5.6 will be deployed tomorrow.",
               "importance": "HIGH",
               "start": 1528127782,
               "end": 1530719782
