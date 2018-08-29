@@ -5,8 +5,6 @@ HOST: https://tenant.acrolinx.cloud
 
 The Acrolinx Core Platform API is the new REST API for accessing all functionality of the Core Platform.
 
-Open points are marked with a TODO annotation.
-
 # Authentication and Authorization of the Acrolinx Platform API
 
 When using the Acrolinx Platform API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
@@ -242,7 +240,7 @@ If an invalid auth token was sent, the response is still a 401, though.
             "server": {
                 "version": "5.1.0",
                 "build": "12175",
-                "name": "Acrolinx Cloud instance for Tenant"   // TODO: DEV-15235: configurable string, or externalBaseUrl, or ...?
+                "name": "Acrolinx Cloud instance for Tenant"
             },
             "locales": [ "en" ],
             "settings": {
@@ -279,7 +277,7 @@ If an invalid auth token was sent, the response is still a 401, though.
             }
           },
           "links": {
-            "login": "https://tenant.acrolinx.cloud/api/v1/auth/login",  // TODO: scoped/namespaced link keys to address Stefan's fears of URL overload?
+            "login": "https://tenant.acrolinx.cloud/api/v1/auth/login",
             "logoff": "https://tenant.acrolinx.cloud/api/v1/auth/logoff",
             "checking": "https://tenant.acrolinx.cloud/api/v1/checking",
             "terminology": "https://tenant.acrolinx.cloud/api/v1/terminology",
@@ -460,7 +458,6 @@ When polling returned a final result, the polling endpoint will disappear and re
 # Group User API
 
 Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
-TODO: This may throw together too many concepts at once?
 
 When custom user information is _required_:
 * Interactive clients: This will already be handled via Acrolinx sign-in. Immediately before granting
@@ -469,7 +466,6 @@ auth token for a user with incomplete required custom user information.
 * Headless (API key-based) clients: Dashboard access handles this. After logging in to the dashboard,
 the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
 in the dashboard for the logged-in user. It’s thus impossible to obtain an API token for a user with incomplete required custom user information.
-* TODO: If you enable 'require UMD' in the dashboard, should this invalidate all API tokens and auth tokens at that point?
 
 ## User Resource [/api/v1/user/{id}]
 
@@ -483,7 +479,7 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
         {
           "data": {
             "id": "fred",
-            "name": "fred",  // Acrolinx login name (user ID) - TODO: is this already a suitable ID?
+            "name": "fred",  // Acrolinx login name (user ID)
             "firstName": "Fred",   //
             "lastName": "Freelancer", //
             "tenantId": "smarttech",
@@ -515,8 +511,6 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
         }
 
 ### Update User [PUT]
-
-TODO: Which user information can be updated with this call? Are partial updates allowed?
 
 + Request (application/json)
 
@@ -566,10 +560,6 @@ TODO: Which user information can be updated with this call? Are partial updates 
 # Group Document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
-
-TODO: What about the document display title? Set by client here? Extracted by server here? Extracted by server later during check, that is, not part of document entity?
-
-TODO: How does this relate to the Content Groups in the reporting database? Is it orthogonal?
 
 ## Create or Retrieve Document ID [POST /api/v1/document/_search{?forceNew}]
 
@@ -665,14 +655,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
 In the proposal below, the document is embedded as a JSON string in the "content" field. The `contentEncoding` field determines how the field is used. With `contentEncoding=none`, the document text is embedded as-is. It needs to be encoded in the same way as the entire HTTP request, and it must not contain BOMs. Use any of the other contentEncodings (for example, base64) for binary documents or plain text documents that have a different encoding than the HTTP request encoding and/or that have a BOM. In this case, it’s up to the server to preserve the byte stream (for binary formats), and to guess the charset correctly (for text formats).
 
-TODO: For text documents (plain text/HTML/XML), we may need a way for the client to specify the charset explicitly instead letting the server guess it, because the returned offsets refer to the (decoded) content string.
-
-TODO: XML documents can include their own charset in the header - not sure whether we want to respect that, and what happens if this contradicts the BOM and/or the charset explicitly sent by the client.
-
-TODO: An alternative approach would be to offer multipart/mixed requests, such that the client can just send the request as byte stream in a second part (first part contains the JSON request entity without the document contents). Advantage: could send more files at once in the future; can rely on HTTP standards for specifying the encoding etc. Disadvantages:  multipart/mixed may be more difficult for some clients, and HTTP doesn’t support sending compressed requests.
-
-TODO: For the record: The current 5.2 server expects the document contents to be embedded as JSON string, with the same encoding as the request encoding, and without any BOMs. Exception: for inputFormat=PDF, the (binary) document contents must be sent base64-encoded.
-
 # Group Checking API
 
 The API for checking documents.
@@ -681,13 +663,11 @@ The API for checking documents.
 
 In this section all listed (future) features, which aren’t yet or only partially implemented, are marked with the keyword DRAFT. The `subIssues` behave exactly like the `issues`, therefore the corresponding spots aren't marked. Please consider this while using the Checking API.
 
-TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' to the index.
-
 + Response 200 (application/json)
 
         {
           "data":{}
-            "inputFormats": [] // TODO: why is this here again?
+            "inputFormats": []
           },
           "links": {
             "submit_check": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
@@ -702,8 +682,6 @@ writing guide or a Checking Profile. If sublanguages are activated, they’re fo
 
 For each audience, the server provides information about the language, activated goals, and term sets. The client may use this
 for filtering purposes, but they can only select one (complete) audience for checking (for example, not deselect goals).
-
-TODO: do clients need to be able to select individual term sets, or can this configuration be moved to the server-side?
 
 + Response 200 (application/json)
 
@@ -760,7 +738,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
             "contentFormats": [
                 {
                     "id": "auto",
-                    "displayName": "Automatic Detection"   // TODO: what do we do with this again?
+                    "displayName": "Automatic Detection"
                 },
                 {
                     "id": "text",
@@ -950,7 +928,7 @@ Polls the check result. Either a progress or the completed result is returned. T
             },
             "quality": {
                 "score": 57,
-                "status": "red"   // TODO: which values are allowed?
+                "status": "red"
             },
             "counts": {
                 "sentences": 10,
@@ -985,7 +963,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "guidanceHtml": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
                     "extractedSurface": "zentense",
                     "positionalInformation": {
-                        "hashes": {           // TODO: positional info? groupId grouped flags based on type (e.g. all flags of a rule), but issue hash just groups internalName+extractedSurface
+                        "hashes": {
                             "issue": "BhKh3iaGBjB7Cw6M/GwrLQ==",
                             "environment": "vJ9eCVViEpIdM76h+5K/nA==",
                             "index": "hjlRLT0K+LlvlslKdNUlhw==1"
@@ -1082,7 +1060,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "suggestions": [
                         {
                             "surface": "blablub",
-                            "icon": "https://tenant.acrolinx.cloud/tng/icons/preferred.svg", // TODO: icon class+url?
+                            "icon": "https://tenant.acrolinx.cloud/tng/icons/preferred.svg",
                             "groupId": "2653",
                             "replacements": ["blablub" ]
                             }
@@ -1474,7 +1452,7 @@ This API allows access to the terminology database.
 
 Basic hints about what is available where in the api. Links may appear/disappear based on the authorizations in the token provided.
 
-TODO:
+DRAFT:
 + put more stuff into the object, such as
     + languages
     + statuses (???)
@@ -1501,7 +1479,7 @@ Not implemented!!!
 
 ## View Resource [/api/v1/terminology/views/{id}]
 
-TODO
+DRAFT:
 
 ## Get Views [GET /api/v1/terminology/views{?useForChecking,sort,p,limit}]
 
@@ -1565,7 +1543,7 @@ Returns a list of stored views, visible to the authenticated client.
 
 Returns a stored view, visible to the authenticated client.
 
-TODO:
+DRAFT:
 + More errors
 
 + Parameters
@@ -1586,7 +1564,7 @@ TODO:
 
 Creates a new view. Note that the id send with the request is ignored and a new one is generated.
 
-TODO:
+DRAFT:
 + More errors
 
 + Attributes
@@ -1609,7 +1587,7 @@ TODO:
 
 Updates a view.
 
-TODO:
+DRAFT:
 + More errors
 
 + Attributes
@@ -1637,7 +1615,7 @@ TODO:
 
 Deletes a view.
 
-TODO:
+DRAFT:
 + More errors (authorization)
 
 + Parameters
@@ -1689,7 +1667,7 @@ Returns a list of stored terms.
 
 Returns a single term.
 
-TODO:
+DRAFT:
 + More errors (authorization)
 
 + Parameters
@@ -1710,7 +1688,7 @@ TODO:
 
 Creates a new term.
 
-TODO:
+DRAFT:
 + More errors (authorization, validation)
 
 + Attributes
@@ -1730,7 +1708,7 @@ TODO:
 
 Updates a term.
 
-TODO:
+DRAFT:
 + More errors (authorization, validation)
 
 + Parameters
@@ -1754,7 +1732,7 @@ TODO:
 
 Deletes a term.
 
-TODO:
+DRAFT:
 + More errors (authorization)
 
 + Parameters
@@ -1788,7 +1766,7 @@ Returns a list of all defined languages.
 
 Returns a single language.
 
-TODO:
+DRAFT:
 + More errors (authorization)
 
 + Request
@@ -1809,7 +1787,7 @@ TODO:
 
 Creates a new language.
 
-TODO:
+DRAFT:
 + More errors (authorization, validation)
 
 + Attributes
@@ -1829,7 +1807,7 @@ TODO:
 
 Updates a language.
 
-TODO:
+DRAFT:
 + More errors (authorization, validation)
 
 + Parameters
@@ -1853,7 +1831,7 @@ TODO:
 
 Deletes a language.
 
-TODO:
+DRAFT:
 + More errors (authorization)
 
 + Parameters
@@ -1923,7 +1901,7 @@ Retrieves active notifications from the platform.
 
 
 
-# Group Other Methods in Existing API - TODO
+# Group Other Methods in Existing API - DRAFT
 
 Checking API:
 * Contribute as Term (may be moved to Terminology API)
