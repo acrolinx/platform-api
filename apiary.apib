@@ -5,7 +5,7 @@ HOST: https://tenant.acrolinx.cloud
 
 The Acrolinx Core Platform API is the new REST API for accessing all functionality of the Core Platform.
 
-NOTE: All listed (future) features, which aren’t yet or only partially implemented, are marked with the keyword DRAFT. The subtags behave exactly like the overlay tags within response body, therefore the corresponding spots aren't marked. Please consider this while using the Acrolinx Core Platform API!
+**NOTE:** All listed (future) features, which aren’t yet or only partially implemented, are marked with the keyword DRAFT. The subtags behave exactly like the overlay tags within response body, therefore the corresponding spots aren't marked. Please consider this while using the Acrolinx Core Platform API!
 
 # Authentication and Authorization of the Acrolinx Platform API
 
@@ -865,7 +865,7 @@ This call includes an implicit "create/search for document" (in case no document
         }
 
 
-## Poll Check Result [GET /api/v1/checking/checks/{id}]
+## Poll Check Result [GET /api/v1/checking/checks/{id}] - DRAFT
 
 Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
 
@@ -1448,21 +1448,18 @@ The response is a list of all entries across all dictionaries where the entry fi
 
 This API allows access to the terminology database.
 
-## Get Terminology Index - not implemented [GET /api/v1/terminology]
+## Get Terminology Index [GET /api/v1/terminology] - DRAFT
 
 Basic hints about what is available where in the api. Links may appear/disappear based on the authorizations in the token provided.
 
-DRAFT:
 + put more stuff into the object, such as
     + languages
-    + statuses (???)
+    + statuses
     + custom fields
-    + (maybe: views)
+    + views
 + put more links into the object:
     + links to collections?
     + link to download all picklist options?
-
-Not implemented!!!
 
 + Request
     + Header
@@ -1478,8 +1475,6 @@ Not implemented!!!
         }
 
 ## View Resource [/api/v1/terminology/views/{id}]
-
-DRAFT:
 
 ## Get Views [GET /api/v1/terminology/views{?useForChecking,sort,p,limit}]
 
@@ -1539,11 +1534,10 @@ Returns a list of stored views, visible to the authenticated client.
           }
         }
 
-## Get View [GET /api/v1/terminology/views/{uuid}]
+## Get View [GET /api/v1/terminology/views/{uuid}] - DRAFT
 
 Returns a stored view, visible to the authenticated client.
 
-DRAFT:
 + More errors
 
 + Parameters
@@ -1560,11 +1554,10 @@ DRAFT:
 
 + Response 404
 
-## Create View [POST /api/v1/terminology/views]
+## Create View [POST /api/v1/terminology/views] - DRAFT
 
 Creates a new view. Note that the id send with the request is ignored and a new one is generated.
 
-DRAFT:
 + More errors
 
 + Attributes
@@ -1583,11 +1576,10 @@ DRAFT:
     + Attributes
         + view (View)
 
-## Update View [PUT /api/v1/terminology/views/{uuid}]
+## Update View [PUT /api/v1/terminology/views/{uuid}] - DRAFT
 
 Updates a view.
 
-DRAFT:
 + More errors
 
 + Attributes
@@ -1611,11 +1603,10 @@ DRAFT:
 
 + Response 404
 
-## Delete View [DELETE /api/v1/terminology/views/{uuid}]
+## Delete View [DELETE /api/v1/terminology/views/{uuid}] - DRAFT
 
 Deletes a view.
 
-DRAFT:
 + More errors (authorization)
 
 + Parameters
@@ -1663,11 +1654,10 @@ Returns a list of stored terms.
         + term (array[Term])
         + meta (PaginationMetadata)
 
-### Get a Term [GET /api/v1/terminology/terms/{uuid}]
+### Get a Term [GET /api/v1/terminology/terms/{uuid}] - DRAFT
 
 Returns a single term.
 
-DRAFT:
 + More errors (authorization)
 
 + Parameters
@@ -1684,11 +1674,10 @@ DRAFT:
 
 + Response 404
 
-### Create a Term [POST /api/v1/terminology/terms/]
+### Create a Term [POST /api/v1/terminology/terms/] - DRAFT
 
 Creates a new term.
 
-DRAFT:
 + More errors (authorization, validation)
 
 + Attributes
@@ -1704,11 +1693,10 @@ DRAFT:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/terms/{uuid}
 
-### Update a Term [PUT /api/v1/terminology/terms/{uuid}]
+### Update a Term [PUT /api/v1/terminology/terms/{uuid}] - DRAFT
 
 Updates a term.
 
-DRAFT:
 + More errors (authorization, validation)
 
 + Parameters
@@ -1728,11 +1716,10 @@ DRAFT:
 
 + Response 404
 
-### Delete a Term [DELETE /api/v1/terminology/terms/{uuid}]
+### Delete a Term [DELETE /api/v1/terminology/terms/{uuid}] - DRAFT
 
 Deletes a term.
 
-DRAFT:
 + More errors (authorization)
 
 + Parameters
@@ -1762,11 +1749,10 @@ Returns a list of all defined languages.
         + language (array[Language])
         + meta (PaginationMetadata)
 
-# Get a Language [GET /api/v1/terminology/languages/{uuid}]
+# Get a Language [GET /api/v1/terminology/languages/{uuid}] - DRAFT
 
 Returns a single language.
 
-DRAFT:
 + More errors (authorization)
 
 + Request
@@ -1783,11 +1769,10 @@ DRAFT:
 
 + Response 404
 
-# Create a Language [POST /api/v1/terminology/languages/]
+# Create a Language [POST /api/v1/terminology/languages/] - DRAFT
 
 Creates a new language.
 
-DRAFT:
 + More errors (authorization, validation)
 
 + Attributes
@@ -1803,11 +1788,10 @@ DRAFT:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/languages/{uuid}
 
-# Update a Language [PUT /api/v1/terminology/languages/{uuid}]
+# Update a Language [PUT /api/v1/terminology/languages/{uuid}] - DRAFT
 
 Updates a language.
 
-DRAFT:
 + More errors (authorization, validation)
 
 + Parameters
@@ -1827,11 +1811,10 @@ DRAFT:
 
 + Response 404
 
-# Not Implemented [DELETE /api/v1/terminology/languages/{uuid}]
+# Delete a Language [DELETE /api/v1/terminology/languages/{uuid}] - DRAFT
 
 Deletes a language.
 
-DRAFT:
 + More errors (authorization)
 
 + Parameters
