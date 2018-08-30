@@ -1448,7 +1448,7 @@ The response is a list of all entries across all dictionaries where the entry fi
 
 This API allows access to the terminology database.
 
-## Get Terminology Index [GET /api/v1/terminology] - DRAFT
+## Get Terminology Index - DRAFT [GET /api/v1/terminology]
 
 Basic hints about what is available where in the api. Links may appear/disappear based on the authorizations in the token provided.
 
@@ -1534,7 +1534,7 @@ Returns a list of stored views, visible to the authenticated client.
           }
         }
 
-## Get View [GET /api/v1/terminology/views/{uuid}] - DRAFT
+## Get View - DRAFT [GET /api/v1/terminology/views/{uuid}]
 
 Returns a stored view, visible to the authenticated client.
 
@@ -1554,7 +1554,7 @@ Returns a stored view, visible to the authenticated client.
 
 + Response 404
 
-## Create View [POST /api/v1/terminology/views] - DRAFT
+## Create View - DRAFT [POST /api/v1/terminology/views]
 
 Creates a new view. Note that the id send with the request is ignored and a new one is generated.
 
@@ -1576,7 +1576,7 @@ Creates a new view. Note that the id send with the request is ignored and a new 
     + Attributes
         + view (View)
 
-## Update View [PUT /api/v1/terminology/views/{uuid}] - DRAFT
+## Update View - DRAFT [PUT /api/v1/terminology/views/{uuid}]
 
 Updates a view.
 
@@ -1603,7 +1603,7 @@ Updates a view.
 
 + Response 404
 
-## Delete View [DELETE /api/v1/terminology/views/{uuid}] - DRAFT
+## Delete View - DRAFT [DELETE /api/v1/terminology/views/{uuid}]
 
 Deletes a view.
 
@@ -1654,7 +1654,7 @@ Returns a list of stored terms.
         + term (array[Term])
         + meta (PaginationMetadata)
 
-### Get a Term [GET /api/v1/terminology/terms/{uuid}] - DRAFT
+### Get a Term - DRAFT [GET /api/v1/terminology/terms/{uuid}]
 
 Returns a single term.
 
@@ -1674,7 +1674,7 @@ Returns a single term.
 
 + Response 404
 
-### Create a Term [POST /api/v1/terminology/terms/] - DRAFT
+### Create a Term - DRAFT [POST /api/v1/terminology/terms/]
 
 Creates a new term.
 
@@ -1693,7 +1693,7 @@ Creates a new term.
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/terms/{uuid}
 
-### Update a Term [PUT /api/v1/terminology/terms/{uuid}] - DRAFT
+### Update a Term - DRAFT [PUT /api/v1/terminology/terms/{uuid}]
 
 Updates a term.
 
@@ -1716,7 +1716,7 @@ Updates a term.
 
 + Response 404
 
-### Delete a Term [DELETE /api/v1/terminology/terms/{uuid}] - DRAFT
+### Delete a Term - DRAFT [DELETE /api/v1/terminology/terms/{uuid}]
 
 Deletes a term.
 
@@ -1749,7 +1749,7 @@ Returns a list of all defined languages.
         + language (array[Language])
         + meta (PaginationMetadata)
 
-# Get a Language [GET /api/v1/terminology/languages/{uuid}] - DRAFT
+# Get a Language - DRAFT [GET /api/v1/terminology/languages/{uuid}]
 
 Returns a single language.
 
@@ -1769,7 +1769,7 @@ Returns a single language.
 
 + Response 404
 
-# Create a Language [POST /api/v1/terminology/languages/] - DRAFT
+# Create a Language - DRAFT [POST /api/v1/terminology/languages/]
 
 Creates a new language.
 
@@ -1788,7 +1788,7 @@ Creates a new language.
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/languages/{uuid}
 
-# Update a Language [PUT /api/v1/terminology/languages/{uuid}] - DRAFT
+# Update a Language - DRAFT [PUT /api/v1/terminology/languages/{uuid}]
 
 Updates a language.
 
@@ -1811,7 +1811,7 @@ Updates a language.
 
 + Response 404
 
-# Delete a Language [DELETE /api/v1/terminology/languages/{uuid}] - DRAFT
+# Delete a Language - DRAFT [DELETE /api/v1/terminology/languages/{uuid}]
 
 Deletes a language.
 
