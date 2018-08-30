@@ -5,6 +5,8 @@ HOST: https://tenant.acrolinx.cloud
 
 The Acrolinx Core Platform API is the new REST API for accessing all functionality of the Core Platform.
 
+NOTE: All listed (future) features, which aren’t yet or only partially implemented, are marked with the keyword DRAFT. The subtags behave exactly like the overlay tags within response body, therefore the corresponding spots aren't marked. Please consider this while using the Acrolinx Core Platform API!
+
 # Authentication and Authorization of the Acrolinx Platform API
 
 When using the Acrolinx Platform API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
@@ -660,8 +662,6 @@ In the proposal below, the document is embedded as a JSON string in the "content
 The API for checking documents.
 
 ## List All Checking Methods [GET /api/v1/checking]
-
-In this section all listed (future) features, which aren’t yet or only partially implemented, are marked with the keyword DRAFT. The `subIssues` behave exactly like the `issues`, therefore the corresponding spots aren't marked. Please consider this while using the Checking API.
 
 + Response 200 (application/json)
 
