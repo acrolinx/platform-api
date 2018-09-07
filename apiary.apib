@@ -570,6 +570,34 @@ This call includes an implicit "create/search for document" (in case no document
 
 + Request (application/json)
 
+
+        A minimal request declaring the format only:
+
+        {
+            "content": "text to check",                  // required
+            "checkOptions": {
+                "contentFormat": "markdown",                 // optional, default: auto
+            },
+        }
+        
+        A minimal request using a document reference to tell the format:
+
+        {
+            "content": "text to check",                  // required
+            "document": {                                // optional, default: empty "document" object
+                "reference": "C:\\abc.md",              // optional, default: do not search for ID, always create
+            }
+        }
+
+
+        If a standard format is configured on the server, the minimal request is even shorter:
+
+        {
+            "content": "text to check",                  // required
+        }
+
+        A request can be much more specific, this is the full set of attributes:
+
         {
             "content": "text to check",                  // required
             "contentEncoding": "zip,base64",             // optional, default: none = HTTP request encoding
