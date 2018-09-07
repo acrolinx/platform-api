@@ -458,11 +458,6 @@ When polling returned a final result, the polling endpoint will disappear and re
          + detail: `The interactive sign-in process timed out. Please start a sign-in.` (string, required)
 
 
-
-# Group Content Encodings - DEV-11069
-
-In the proposal below, the document is embedded as a JSON string in the "content" field. The `contentEncoding` field determines how the field is used. With `contentEncoding=none`, the document text is embedded as-is. It needs to be encoded in the same way as the entire HTTP request, and it must not contain BOMs. Use any of the other contentEncodings (for example, base64) for binary documents or plain text documents that have a different encoding than the HTTP request encoding and/or that have a BOM. In this case, it’s up to the server to preserve the byte stream (for binary formats), and to guess the charset correctly (for text formats).
-
 # Group Checking API
 
 The API for checking documents.
