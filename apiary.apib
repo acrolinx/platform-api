@@ -456,207 +456,6 @@ When polling returned a final result, the polling endpoint will disappear and re
          + title: `The interactive sign-in process timed out` (string,required)
          + detail: `The interactive sign-in process timed out. Please start a sign-in.` (string,required)
 
-# Group User API - DRAFT
-
-Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
-TODO: This may throw together too many concepts at once?
-
-When custom user information is _required_:
-* Interactive clients: This will already be handled via Acrolinx sign-in. Immediately before granting
-access to client, the user needs to fill out their custom user information. It’s thus impossible to obtain an
-auth token for a user with incomplete required custom user information.
-* Headless (API key-based) clients: Dashboard access handles this. After logging in to the dashboard,
-the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
-in the dashboard for the logged-in user. It’s thus impossible to obtain an API token for a user with incomplete required custom user information.
-* TODO: If you enable 'require UMD' in the dashboard, should this invalidate all API tokens and auth tokens at that point?
-
-## User Resource [/api/v1/user/{id}]
-
-+ Parameters
-    + id: `fred` (required, string) ... the user ID
-
-### Get User [GET]
-
-+ Response 200 (application/json)
-
-        {
-          "data": {
-            "id": "fred",
-            "name": "fred",  // Acrolinx login name (user ID) - TODO: is this already a suitable ID?
-            "firstName": "Fred",   //
-            "lastName": "Freelancer", //
-            "tenantId": "smarttech",
-            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
-            "properties" : {
-                "customkey": "customvalue",
-            },
-            "metadata":
-            {
-                "displayName": "Department",
-                "key": "department",
-                "value": "IT",
-                "possibleValues": [],
-                "default": null
-            }
-          }
-        }
-
-+ Response 403 (application/json)
-
-        // if auth token does not permit to show the user's data
-        {
-          "error": {
-            "detail": "You are not allowed to perform this operation.",
-            "title": "Not allowed",
-            "status": 403
-            "type": "not_allowed"
-          }
-        }
-
-### Update User [PUT]
-
-TODO: Which user information can be updated with this call? Are partial updates allowed?
-
-+ Request (application/json)
-
-        {
-            "firstName": "Freddy",
-            "lastName": "McFredFace",
-            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
-            "properties" : {
-                "customkeynew": "customvaluenew",
-            },
-            "metadata":
-            {
-                "key": "department",
-                "value": "Manager",
-            }
-        }
-
-
-+ Response 200 (application/json)
-
-        {
-          "data": {
-            "id": "fred",
-            "name": "fred",
-            "firstName": "Freddy",
-            "lastName": "McFredFace",
-            "tenantId": "smarttech",
-            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
-            "properties" : {
-                "customkeynew": "customvaluenew",
-            },
-            "metadata":
-            {
-                "displayName": "Department",
-                "key": "department",
-                "value": "Manager",
-                "possibleValues": [],
-                "default": null
-            }
-          }
-        }
-
-+ Response 403 (application/json)
-
-   + Attributes (ErrorResponse)
-
-# Group Document API - DRAFT
-
-Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
-
-TODO: What about the document display title? Set by client here? Extracted by server here? Extracted by server later during check, that is, not part of document entity?
-
-TODO: How does this relate to the Content Groups in the reporting database? Is it orthogonal?
-
-## Create or Retrieve Document ID [POST /api/v1/document/_search{?forceNew}]
-
-In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
-
-* Parameters
-    * forceNew: `true` (optional, boolean) ... create a new document ID even if there’s a matching existing document
-
-        Default: false
-
-+ Request (application/json)
-
-        {
-            "reference": "C:\\abc.docx",        // optional; if absent, forceNew is implicitly true (=no searching)
-            "mimeType": "application/word",     // optional; absent means "unknown" and matches only "unknown"
-            "author": "Ralf",                   // optional; absent means "unknown" and matches only "unknown"
-            "contentType": "E-Mail",            // optional; absent means "unknown" and matches only "unknown"
-            "displayInfo": {                    // optional information about the document; stored but not used for identification
-                "reference": "abc.docx"         // optional, default: document.reference
-            }
-        }
-
-+ Response 200 (application/json)
-
-        {
-          "data": {
-            "id": "283ab1e075f21a",
-            "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
-            "author": "Ralf",
-            "contentType": "E-Mail",
-            "customFields": [
-                {
-                    "displayName": "Project ID",
-                    "key": "projectId",
-                    "value": null,
-                    "required": true
-                }
-            ],
-            "displayInfo": {
-                "reference": "abc.docx"
-            }
-          }
-        }
-
-## Put/Update Document [PUT /api/v1/document/{id}]
-
-+ Request (application/json)
-
-        {
-            "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
-            "author": "Ralf",
-            "contentType": "E-Mail",
-            "customFields": [
-                {
-                    "key": "projectId",
-                    "value": "Marketing Campaign"
-                }
-            ],
-            "displayInfo": {
-                "reference": "abc.docx"
-            }
-        }
-
-
-+ Response 200 (application/json)
-
-        {
-          "data": {
-            "id": "283ab1e075f21a",
-            "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
-            "author": "Ralf",
-            "contentType": "E-Mail",
-            "customFields": [
-                {
-                    "displayName": "Project ID",
-                    "key": "projectId",
-                    "value": "Marketing Campaign",
-                    "required": true
-                }
-            ],
-            "displayInfo": {
-                "reference": "abc.docx"
-            }
-          }
-        }
 
 # Group Checking API
 
@@ -1284,6 +1083,209 @@ Returns the links to a human readable Analytics Dashboard, which aggregates info
             ]
         }
 
+# Group User API - DRAFT
+
+Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
+TODO: This may throw together too many concepts at once?
+
+When custom user information is _required_:
+* Interactive clients: This will already be handled via Acrolinx sign-in. Immediately before granting
+access to client, the user needs to fill out their custom user information. It’s thus impossible to obtain an
+auth token for a user with incomplete required custom user information.
+* Headless (API key-based) clients: Dashboard access handles this. After logging in to the dashboard,
+the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
+in the dashboard for the logged-in user. It’s thus impossible to obtain an API token for a user with incomplete required custom user information.
+* TODO: If you enable 'require UMD' in the dashboard, should this invalidate all API tokens and auth tokens at that point?
+
+## User Resource [/api/v1/user/{id}]
+
++ Parameters
+    + id: `fred` (required, string) ... the user ID
+
+### Get User [GET]
+
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "id": "fred",
+            "name": "fred",  // Acrolinx login name (user ID) - TODO: is this already a suitable ID?
+            "firstName": "Fred",   //
+            "lastName": "Freelancer", //
+            "tenantId": "smarttech",
+            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
+            "properties" : {
+                "customkey": "customvalue",
+            },
+            "metadata":
+            {
+                "displayName": "Department",
+                "key": "department",
+                "value": "IT",
+                "possibleValues": [],
+                "default": null
+            }
+          }
+        }
+
++ Response 403 (application/json)
+
+        // if auth token does not permit to show the user's data
+        {
+          "error": {
+            "detail": "You are not allowed to perform this operation.",
+            "title": "Not allowed",
+            "status": 403
+            "type": "not_allowed"
+          }
+        }
+
+### Update User [PUT]
+
+TODO: Which user information can be updated with this call? Are partial updates allowed?
+
++ Request (application/json)
+
+        {
+            "firstName": "Freddy",
+            "lastName": "McFredFace",
+            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
+            "properties" : {
+                "customkeynew": "customvaluenew",
+            },
+            "metadata":
+            {
+                "key": "department",
+                "value": "Manager",
+            }
+        }
+
+
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "id": "fred",
+            "name": "fred",
+            "firstName": "Freddy",
+            "lastName": "McFredFace",
+            "tenantId": "smarttech",
+            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
+            "properties" : {
+                "customkeynew": "customvaluenew",
+            },
+            "metadata":
+            {
+                "displayName": "Department",
+                "key": "department",
+                "value": "Manager",
+                "possibleValues": [],
+                "default": null
+            }
+          }
+        }
+
++ Response 403 (application/json)
+
+   + Attributes (ErrorResponse)
+
+# Group Document API - DRAFT
+
+Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
+
+TODO: What about the document display title? Set by client here? Extracted by server here? Extracted by server later during check, that is, not part of document entity?
+
+TODO: How does this relate to the Content Groups in the reporting database? Is it orthogonal?
+
+## Create or Retrieve Document ID [POST /api/v1/document/_search{?forceNew}]
+
+In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
+
+* Parameters
+    * forceNew: `true` (optional, boolean) ... create a new document ID even if there’s a matching existing document
+
+        Default: false
+
++ Request (application/json)
+
+        {
+            "reference": "C:\\abc.docx",        // optional; if absent, forceNew is implicitly true (=no searching)
+            "mimeType": "application/word",     // optional; absent means "unknown" and matches only "unknown"
+            "author": "Ralf",                   // optional; absent means "unknown" and matches only "unknown"
+            "contentType": "E-Mail",            // optional; absent means "unknown" and matches only "unknown"
+            "displayInfo": {                    // optional information about the document; stored but not used for identification
+                "reference": "abc.docx"         // optional, default: document.reference
+            }
+        }
+
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "id": "283ab1e075f21a",
+            "reference": "C:\\abc.docx",
+            "mimeType": "application/word",
+            "author": "Ralf",
+            "contentType": "E-Mail",
+            "customFields": [
+                {
+                    "displayName": "Project ID",
+                    "key": "projectId",
+                    "value": null,
+                    "required": true
+                }
+            ],
+            "displayInfo": {
+                "reference": "abc.docx"
+            }
+          }
+        }
+
+## Put/Update Document [PUT /api/v1/document/{id}]
+
++ Request (application/json)
+
+        {
+            "reference": "C:\\abc.docx",
+            "mimeType": "application/word",
+            "author": "Ralf",
+            "contentType": "E-Mail",
+            "customFields": [
+                {
+                    "key": "projectId",
+                    "value": "Marketing Campaign"
+                }
+            ],
+            "displayInfo": {
+                "reference": "abc.docx"
+            }
+        }
+
+
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "id": "283ab1e075f21a",
+            "reference": "C:\\abc.docx",
+            "mimeType": "application/word",
+            "author": "Ralf",
+            "contentType": "E-Mail",
+            "customFields": [
+                {
+                    "displayName": "Project ID",
+                    "key": "projectId",
+                    "value": "Marketing Campaign",
+                    "required": true
+                }
+            ],
+            "displayInfo": {
+                "reference": "abc.docx"
+            }
+          }
+        }
+		
+		
 # Group Dictionary API
 
 This API handles the spelling dictionary, i.e. words that are ignored by the spell checker.
