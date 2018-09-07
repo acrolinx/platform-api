@@ -5,15 +5,15 @@ HOST: https://tenant.acrolinx.cloud
 
 The Acrolinx Core Platform API is the new REST API for accessing all functionality of the Core Platform.
 
-Open points are marked with a TODO annotation.
+**NOTE:** All listed (future) features, which aren’t yet or only partially implemented, are marked with the keyword DRAFT. The subtags behave exactly like the overlay tags within response body, therefore the corresponding spots aren't marked. Please consider this while using the Acrolinx Core Platform API!
 
 # Authentication and Authorization of the Acrolinx Platform API
 
 When using the Acrolinx Platform API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
 
-An **Access Token** is a encoded and cryptogaphically singed string. It has the following characteristics:
+An **Access Token** is an encoded and cryptographically singed string. It has the following characteristics:
 
-* It is bound to a user
+* It’s bound to a user
 * There can be an infinite number of Access Tokens per user
 * It has a certain lifetime (default 30 Days, can be changed)
 * It will expire after the lifetime or when the password of the associated user is changed
@@ -25,7 +25,7 @@ You can get an Access Token by using the Acrolinx sign-in workflow.
 
 How to use an Access Token?
 
-Every request you are doing with the Acrolinx Platform API must contain a [header](#header-access-token) providing the Access Token:
+Every request you’re doing with the Acrolinx Platform API must contain a [header](#header-access-token) providing the Access Token:
 
 ```
     X-Acrolinx-Authorization: WERTZUIOP
@@ -86,10 +86,10 @@ The "index" request returns the list of supported locales. The server falls back
 * there’s no matching supported locale
 * for the given response, there’s no appropriate localization available
 
-## Client signature
+## Client Signature
 
 If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid client signature. The request
-returns an error, if the header is omitted or the given signature is not valid.
+returns an error, if the header is omitted or the given signature isn’t valid.
 
 The format of the signature is `clientSignature;clientVersion;buildNumber`, where `clientSignature` is the signature as configured in the Acrolinx license and
 `clientVersion` is the version number of the client and `buildNumber` the build number of the client.
@@ -97,21 +97,21 @@ The format of the signature is `clientSignature;clientVersion;buildNumber`, wher
 Example:
 
 ```
-    X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45; 12345
+    X-Acrolinx-Client: SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5; 1.0.1.45; 12345
 ```
 
-# Response format
+# Response Format
 
 The API provides a consistent format for all responses. Each response as a field `links` and one of the three fields `error`, `progress`, `data`.
 
 The `links` field contains further URLs that can be used as a next step in the workflow.
-`error` is set, of the request did not succeed. This is accompanied by a HTTP status code above or equal 4xx.
-`progress` means, that the processing is not yet finished and the client has to poll for the final result.
-`data` contains the actual result data, the processing is sucessfully finished.
+`error` is set, of the request didn’t succeed. This is accompanied by an HTTP status code above or equal 4xx.
+`progress` means, that the processing isn’t yet finished and the client has to poll for the final result.
+`data` contains the actual result data, the processing is successfully finished.
 
-## Error responses
+## Error Responses
 
-### General format
+### General Format
 
 The API provides a consistent format for errors, which is based on [RFC7807](https://datatracker.ietf.org/doc/rfc7807/?include_text=1).
 The format is JSON and the API guarantees to send the fields `type`, `title`, `detail`, `status` with each error response.
@@ -134,37 +134,38 @@ Content-Type: application/problem+json
 
 * `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
 * `title` is a short description of the error. It can be displayed to the user as title of the error.
-* `detail` is a more verbose description of the error. It is suitable to be displayed to the user.
+* `detail` is a more verbose description of the error. It’s suitable to be displayed to the user.
 * `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
 * An optional `reference` field with an id may be present. If there, this id can be found in the Acrolinx log files to support better problem analysis.
 
-Depending on `type` additional fields may be part of the response providing more detailled information.
+Depending on `type`, additional fields may be part of the response providing more detailed information.
 
 Additional fields may be added in future. A client must not break because of unexpected fields.
 
-### Error types
+### Error Types
 
 Type | Description| What to do
 -----|------------|------------
 `client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
 `server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
-`client_signature_missing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to aquire a valid license.
-`client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was is invalid. | Contact Acrolinx, how to aquire a valid license.
-`sso` | Returned for any Single Sign On errors. | Most probably this is a configuration issue.
+`client_signature_missing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to acquire a valid license.
+`client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was is invalid. | Contact Acrolinx, how to acquire a valid license.
+`sso` | Returned for any single sign-on errors. | Most probably this is a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
+`insufficient_privileges` | Insufficient privileges. | Assign the required privileges to the user.
 `interactive_sign_in_timed_out` | The interactive sign-in process timed out. | Start new.
-`bad_content` | Could not decode content. | Probably points to an error in the client.
-`check_cancelled` | The check was cancelled. No result is available. | Probably points to an error in the client.
+`bad_content` | Couldn’t decode content. | Probably points to an error in the client.
+`check_cancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
 `check_failed` | The check failed. | Check logs and configuration.
 `invalid_base_url` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
 `custom_fields_incomplete` | Custom field values are missing. |Please provide values for all required custom fields before or when checking a document.
 
-## Progress responses
+## Progress Responses
 
 A progress response always contains a field `retryAfter`, which tells the client many seconds to wait until the next poll request.
 Optionally the response can have the fields `message`, that contains a human user readable text about the current status, and `percent`, that
 is a number and shows the progress in percent.
-A progress response has always the `Retry-After` header set with the same value as the `retryAfter` field and a HTTP status 202.
+A progress response has always the `Retry-After` header set with the same value as the `retryAfter` field and an HTTP status 202.
 
 Examples:
 
@@ -194,7 +195,7 @@ Content-Type: application/json
 }
 ```
 
-## Successful responses
+## Successful Responses
 
 The fields of a successful response with data depend on the request.
 
@@ -214,11 +215,11 @@ Content-Type: application/json
 }
 ```
 
-# HTML fields
+# HTML Fields
 
-Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, e.g. guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as e.g. guidanceText.
+Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
 
-All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by  server side whitelist.
+All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by server side whitelist.
 
 # Group Index
 
@@ -241,7 +242,7 @@ If an invalid auth token was sent, the response is still a 401, though.
             "server": {
                 "version": "5.1.0",
                 "build": "12175",
-                "name": "Acrolinx Cloud instance for Tenant"   // TODO: DEV-15235: configurable string, or externalBaseUrl, or ...?
+                "name": "Acrolinx Cloud instance for Tenant"
             },
             "locales": [ "en" ],
             "settings": {
@@ -278,7 +279,7 @@ If an invalid auth token was sent, the response is still a 401, though.
             }
           },
           "links": {
-            "login": "https://tenant.acrolinx.cloud/api/v1/auth/login",  // TODO: scoped/namespaced link keys to address Stefan's fears of URL overload?
+            "login": "https://tenant.acrolinx.cloud/api/v1/auth/login",
             "logoff": "https://tenant.acrolinx.cloud/api/v1/auth/logoff",
             "checking": "https://tenant.acrolinx.cloud/api/v1/checking",
             "terminology": "https://tenant.acrolinx.cloud/api/v1/terminology",
@@ -301,7 +302,7 @@ If an invalid auth token was sent, the response is still a 401, though.
 
 # Group Authentication API
 
-Authentication is handled either with a configured access token, with Single-Sign-On (SSO) or in an interactive process by signing in with the Acrolinx sign-in web page.
+Authentication is handled either with a configured access token, with single sign-on (SSO) or in an interactive process by signing in with the Acrolinx sign-in web page.
 Headless clients use either the configured access token or SSO.
 Interactive clients with a human user use SSO or the interactive process.
 
@@ -334,7 +335,7 @@ to authenticate the request.
     + Body
     + Attributes
         + data
-          + `state`:`Success` (string,required)
+          + `state`:`Success` (string, required)
           + `authToken`: `123579080a8d1fee12490a90dc3` (string, required)
           + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], required)
              + Members
@@ -361,7 +362,7 @@ to authenticate the request.
     - `poll` a link to a resource that will return an *Auth Token* and information
           about the user after sign-in. (see [GET `api/v1/auth/sign-ins/{id}`](#authentication-api-poll-for-a-new-api-token-get))
 
-    Note that the sing-in process will time out. The `interactiveLinkTimeout` field
+    Note that the sign-in process will time out. The `interactiveLinkTimeout` field
     contains the duration in seconds, that the `interactive` link will stay valid. If the
     Sign-in page was loaded before this time, the server will extend
     the timeout. To detect timeouts after opening the Sign-in page use the `poll` link.
@@ -381,8 +382,8 @@ to authenticate the request.
 
     + Attributes
         + data
-          + `state`:`Started` (string,required)
-          + `interactiveLinkTimeout`: 900 (number,required)
+          + `state`:`Started` (string, required)
+          + `interactiveLinkTimeout`: 900 (number, required)
         + links
             + `interactive`: `https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412` (string, required)
             + `poll`: `https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui` (string, required)
@@ -432,8 +433,8 @@ When polling returned a final result, the polling endpoint will disappear and re
    + Attributes (Authorization Response)
 
 + Response 202 (application/json)
-   The user has not authorized the sing-in yet. Request the same URI again to continue polling.
-   Note that clients should pace themselfs by respecting the `Retry-After` header.
+   The user hasn’t authorized the sing-in yet. Request the same URI again to continue polling.
+   Note that clients should pace themselfves by respecting the `Retry-After` header.
 
     + Header
 
@@ -441,7 +442,7 @@ When polling returned a final result, the polling endpoint will disappear and re
 
     + Attributes
         + progress
-           + `retryAfter`: 2 (number,required)
+           + `retryAfter`: 2 (number, required)
 
 + Response 404 (application/json)
     The server has no knowledge of the polling token. If a valid poll URI was used, the cause for this is
@@ -451,15 +452,14 @@ When polling returned a final result, the polling endpoint will disappear and re
 
     + Attributes
        + error
-         + `type`: `interactive_sign_in_timed_out` (string,required)
-         + `status`: 404 (number,required)
-         + title: `The interactive sign-in process timed out` (string,required)
-         + detail: `The interactive sign-in process timed out. Please start a sign-in.` (string,required)
+         + `type`: `interactive_sign_in_timed_out` (string, required)
+         + `status`: 404 (number, required)
+         + title: `The interactive sign-in process timed out` (string, required)
+         + detail: `The interactive sign-in process timed out. Please start a sign-in.` (string, required)
 
 # Group User API
 
 Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
-TODO: This may throw together too many concepts at once?
 
 When custom user information is _required_:
 * Interactive clients: This will already be handled via Acrolinx sign-in. Immediately before granting
@@ -468,7 +468,6 @@ auth token for a user with incomplete required custom user information.
 * Headless (API key-based) clients: Dashboard access handles this. After logging in to the dashboard,
 the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
 in the dashboard for the logged-in user. It’s thus impossible to obtain an API token for a user with incomplete required custom user information.
-* TODO: If you enable 'require UMD' in the dashboard, should this invalidate all API tokens and auth tokens at that point?
 
 ## User Resource [/api/v1/user/{id}]
 
@@ -482,7 +481,7 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
         {
           "data": {
             "id": "fred",
-            "name": "fred",  // Acrolinx login name (user ID) - TODO: is this already a suitable ID?
+            "name": "fred",  // Acrolinx login name (user ID)
             "firstName": "Fred",   //
             "lastName": "Freelancer", //
             "tenantId": "smarttech",
@@ -514,8 +513,6 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
         }
 
 ### Update User [PUT]
-
-TODO: Which user information can be updated with this call? Are partial updates allowed?
 
 + Request (application/json)
 
@@ -566,10 +563,6 @@ TODO: Which user information can be updated with this call? Are partial updates 
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
 
-TODO: What about the document display title? Set by client here? Extracted by server here? Extracted by server later during check, that is, not part of document entity?
-
-TODO: How does this relate to the Content Groups in the reporting database? Is it orthogonal?
-
 ## Create or Retrieve Document ID [POST /api/v1/document/_search{?forceNew}]
 
 In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
@@ -582,12 +575,11 @@ In this method, fields in payload are used to (a) associate ID with document inf
 + Request (application/json)
 
         {
-            "reference": "C:\\abc.docx",        // optional; if absent, forceNew is implicitly true (=no searching)
-            "mimeType": "application/word",     // optional; absent means "unknown" and matches only "unknown"
+            "reference": "C:\\abc.md",        // optional; if absent, forceNew is implicitly true (=no searching)
             "author": "Ralf",                   // optional; absent means "unknown" and matches only "unknown"
             "contentType": "E-Mail",            // optional; absent means "unknown" and matches only "unknown"
             "displayInfo": {                    // optional information about the document; stored but not used for identification
-                "reference": "abc.docx"         // optional, default: document.reference
+                "reference": "abc.md"         // optional, default: document.reference
             }
         }
 
@@ -596,8 +588,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
         {
           "data": {
             "id": "283ab1e075f21a",
-            "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
+            "reference": "C:\\abc.md",
             "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
@@ -609,7 +600,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
                 }
             ],
             "displayInfo": {
-                "reference": "abc.docx"
+                "reference": "abc.md"
             }
           }
         }
@@ -619,8 +610,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 + Request (application/json)
 
         {
-            "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
+            "reference": "C:\\abc.md",
             "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
@@ -630,7 +620,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
                 }
             ],
             "displayInfo": {
-                "reference": "abc.docx"
+                "reference": "abc.md"
             }
         }
 
@@ -640,8 +630,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
         {
           "data": {
             "id": "283ab1e075f21a",
-            "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
+            "reference": "C:\\abc.md",
             "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
@@ -653,7 +642,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
                 }
             ],
             "displayInfo": {
-                "reference": "abc.docx"
+                "reference": "abc.md"
             }
           }
         }
@@ -664,27 +653,17 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
 In the proposal below, the document is embedded as a JSON string in the "content" field. The `contentEncoding` field determines how the field is used. With `contentEncoding=none`, the document text is embedded as-is. It needs to be encoded in the same way as the entire HTTP request, and it must not contain BOMs. Use any of the other contentEncodings (for example, base64) for binary documents or plain text documents that have a different encoding than the HTTP request encoding and/or that have a BOM. In this case, it’s up to the server to preserve the byte stream (for binary formats), and to guess the charset correctly (for text formats).
 
-TODO: For text documents (plain text/HTML/XML), we may need a way for the client to specify the charset explicitly instead letting the server guess it, because the returned offsets refer to the (decoded) content string.
-
-TODO: XML documents can include their own charset in the header - not sure whether we want to respect that, and what happens if this contradicts the BOM and/or the charset explicitly sent by the client.
-
-TODO: An alternative approach would be to offer multipart/mixed requests, such that the client can just send the request as byte stream in a second part (first part contains the JSON request entity without the document contents). Advantage: could send more files at once in the future; can rely on HTTP standards for specifying the encoding etc. Disadvantages:  multipart/mixed may be more difficult for some clients, and HTTP doesn’t support sending compressed requests.
-
-TODO: For the record: The current 5.2 server expects the document contents to be embedded as JSON string, with the same encoding as the request encoding, and without any BOMs. Exception: for inputFormat=PDF, the (binary) document contents must be sent base64-encoded.
-
 # Group Checking API
 
 The API for checking documents.
 
 ## List All Checking Methods [GET /api/v1/checking]
 
-TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' to the index.
-
 + Response 200 (application/json)
 
         {
           "data":{}
-            "inputFormats": [] // TODO: why is this here again?
+            "inputFormats": []
           },
           "links": {
             "submit_check": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
@@ -695,12 +674,10 @@ TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' 
 ## List Checking Capabilities [GET /api/v1/checking/capabilities]
 
 The new checking API replaces writing guides and Content Profiles with a flat list of "audiences". Each audience corresponds to a
-writing guide or a Checking Profile. If sublanguages are activated, they are folded into the list of audiences.
+writing guide or a Checking Profile. If sublanguages are activated, they’re folded into the list of audiences.
 
-For each audience, the server provides information about the language, activated goals and term sets. The client may use this
-for filtering purposes, but they can only select one (complete) audience for checking (e.g. not deselect goals).
-
-TODO: do clients need to be able to select individual term sets, or can this configuration be moved to the server-side?
+For each audience, the server provides information about the language, activated goals, and term sets. The client may use this
+for filtering purposes, but they can only select one (complete) audience for checking (for example, not deselect goals).
 
 + Response 200 (application/json)
 
@@ -757,7 +734,7 @@ TODO: do clients need to be able to select individual term sets, or can this con
             "contentFormats": [
                 {
                     "id": "auto",
-                    "displayName": "Automatic Detection"   // TODO: what do we do with this again?
+                    "displayName": "Automatic Detection"
                 },
                 {
                     "id": "text",
@@ -794,7 +771,7 @@ This call includes an implicit "create/search for document" (in case no document
             "checkOptions": {
                 "audienceId": "aud-1",                       // optional, default: first audience
                 "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard_html
-                "contentFormat": "word_xml",                 // optional, default: auto
+                "contentFormat": "markdown",                 // optional, default: auto
                 "checkType": "batch",                        // optional, default: interactive, the priority of the check
                 "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
                 "batchId": "gen.clc.159203590",                      // only for batch checks; optional;
@@ -802,8 +779,7 @@ This call includes an implicit "create/search for document" (in case no document
             },
             "document": {                                // optional, default: empty "document" object
                 "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
-                "reference": "C:\\abc.docx",              // optional, default: do not search for ID, always create
-                "mimeType": "application/word",
+                "reference": "C:\\abc.md",              // optional, default: do not search for ID, always create
                 "customFields": [                       // optional
                     {
                         "key": "field1",
@@ -814,7 +790,7 @@ This call includes an implicit "create/search for document" (in case no document
                     }
                 ],
                 "displayInfo": {                          // optional information about the document; stored but not used for identification
-                    "reference": "abc.docx"               // optional, default: document.reference, used to choose file names
+                    "reference": "abc.md"               // optional, default: document.reference, used to choose file names
                 }
             }
         }
@@ -884,7 +860,7 @@ This call includes an implicit "create/search for document" (in case no document
         }
 
 
-## Poll Check Result [GET /api/v1/checking/checks/{id}]
+## Poll Check Result - DRAFT [GET /api/v1/checking/checks/{id}]
 
 Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
 
@@ -923,14 +899,13 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "displayName": "Acrolinx"
                 }],
                 "reportTypes": ["scorecard", "termharvesting"],
-                "contentFormat": "word_xml",
+                "contentFormat": "markdown",
                 "checkType": "interactive",
                 "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]
             },
             "document": {
                 "id": "283ab1e075f21a",
-                "reference": "C:\\abc.docx",
-                "mimeType": "application/word",
+                "reference": "C:\\abc.md",
                 "author": "Ralf",
                 "contentType": "E-Mail",
                 "customFields": [
@@ -942,12 +917,12 @@ Polls the check result. Either a progress or the completed result is returned. T
                     }
                 ],
                 "displayInfo": {
-                    "reference": "abc.docx"
+                    "reference": "abc.md"
                 }
             },
             "quality": {
                 "score": 57,
-                "status": "red"   // TODO: which values are allowed?
+                "status": "red"
             },
             "counts": {
                 "sentences": 10,
@@ -982,27 +957,27 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "guidanceHtml": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
                     "extractedSurface": "zentense",
                     "positionalInformation": {
-                        "hashes": {           // TODO: positional info? groupId grouped flags based on type (e.g. all flags of a rule), but issue hash just groups internalName+extractedSurface
+                        "hashes": {
                             "issue": "BhKh3iaGBjB7Cw6M/GwrLQ==",
                             "environment": "vJ9eCVViEpIdM76h+5K/nA==",
                             "index": "hjlRLT0K+LlvlslKdNUlhw==1"
                         },
                         "matches": [{
-                            "extractedPart": "zen",
+                            "extractedPart": "zen",         # DRAFT
                             "extractedBegin": 30,
                             "extractedEnd": 33,
                             "originalPart": "zen",
                             "originalBegin": 19247,
                             "originalEnd": 19255
                         }, {
-                            "extractedPart": "te",
+                            "extractedPart": "te",          # DRAFT
                             "extractedBegin": 33,
                             "extractedEnd": 35,
                             "originalPart": "&te;",
                             "originalBegin": 19250,
                             "originalEnd": 19254
                         },{
-                            "extractedPart": "nse",
+                            "extractedPart": "nse",         # DRAFT
                             "extractedBegin": 35,
                             "extractedEnd": 38,
                             "originalPart": "nse",
@@ -1028,6 +1003,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             }
                         }
                     ],
+                    # DRAFT ------START------
                     "actions": [
                         {
                             "id": "help",
@@ -1043,11 +1019,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "replacedBy": "termContribution"
                         }
                     ],
+                    # DRAFT -------END-------
+                    # DRAFT ------START------
                     "links":
                         {
                             "termContribution": "https://tenant.acrolinx.cloud/terminology/v7/rest/contribute",
                             "addToDictionary": "https://tenant.acrolinx.cloud/api/v1/dictionary/submit"
                         }
+                    # DRAFT -------END-------
                 },
                 {
                     "goalId": "term.unsuitable",
@@ -1062,7 +1041,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "index": "Lm9PqBGGm+tj21rt3pkpjA==1"
                         },
                         "matches": [{
-                            "extractedPart": "Please",
+                            "extractedPart": "Please",      # DRAFT
                             "extractedBegin": 766,
                             "extractedEnd": 772,
                             "originalPart": "Please",
@@ -1075,12 +1054,13 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "suggestions": [
                         {
                             "surface": "blablub",
-                            "icon": "https://tenant.acrolinx.cloud/tng/icons/preferred.svg", // TODO: icon class+url?
+                            "icon": "https://tenant.acrolinx.cloud/tng/icons/preferred.svg",
                             "groupId": "2653",
                             "replacements": ["blablub" ]
                             }
                         }
                     ],
+                    # DRAFT ------START------
                     "actions": [
                         {
                             "id": "help",
@@ -1089,6 +1069,8 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "icon": "help-icon"
                         }
                     ],
+                    # DRAFT -------END-------
+                    # DRAFT ------START------
                     "debug": {
                         "term": {
                             "surface": "please",
@@ -1098,6 +1080,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "variant": "legalVariantIllegal",
                         }
                     }
+                    # DRAFT -------END-------
                 },
                 {
                     "goalId": "voice.readability",
@@ -1112,14 +1095,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "index": "accsS0dbn/3rafcbT9NJGw==1"
                         },
                         "matches": [{
-                            "extractedPart": "Reports",
+                            "extractedPart": "Reports",     # DRAFT
                             "extractedBegin": 1360,
                             "extractedEnd": 1367,
                             "originalPart": "Reports",
                             "originalBegin": 33173,
                             "originalEnd": 33180,
                         }, {
-                            "extractedPart": "length",
+                            "extractedPart": "length",      # DRAFT
                             "extractedBegin": 1749,
                             "extractedEnd": 1755,
                             "originalPart": "length",
@@ -1146,14 +1129,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                                 "index": "++0c1Z/OQu1Mwzt0KpkYYA==1"
                             },
                             "matches": [{
-                                "extractedPart": "Reports",
+                                "extractedPart": "Reports",     # DRAFT
                                 "extractedBegin": 1360,
                                 "extractedEnd": 1367,
                                 "originalPart": "Reports",
                                 "originalBegin": 33173,
                                 "originalEnd": 33180,
                             }, {
-                                "extractedPart": "length",
+                                "extractedPart": "length",      # DRAFT
                                 "extractedBegin": 1749,
                                 "extractedEnd": 1755,
                                 "originalPart": "length",
@@ -1208,6 +1191,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     }]
                 }
             ],
+            # DRAFT ------START------
             "keywords": {
                 "links":{
                     "getTargetKeywords": "https://tenant.acrolinx.cloud/services/v1/rest/findability/targetKeywords?contextId=C%3A%5CUsers%5Cgrabowski%5CDesktop%5Ccloud-linguistic-smoketest.docx",
@@ -1228,13 +1212,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }],
                 "target": []
             },
-            "extraInfos": [
+            # DRAFT -------END-------
+            "addonInfo": [
                 {
-                    "id": "rioseo",
-                    "title": "IBM KIS",
+                    "id": "mightyAddon",
+                    "title": "Mighy Addon by Cool Corp.",
                     "iconClass": "search-icon",
                     "iconUrl": "...",
-                    "url": "https://kis.example.com/info?projectId=52351235"
+                    "url": "https://mighy.cool.com/addon?fancyId=12345"
                 }
             ],
             "reports": {
@@ -1249,6 +1234,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "linkAuthenticated": "https://tenant.acrolinx.cloud/output/en//termharvesting_1.xml?apikey=tfhzzhfhrz"
                 }
             },
+            # DRAFT ------START------
             "actions": [
                 {
                     "id": "termContributionForm",
@@ -1258,11 +1244,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "replacedBy": "termContribution"
                 }
             ]
+            # DRAFT -------END-------
           },
+          # DRAFT ------START------
           "links": {
                 "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
                 "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
           }
+          # DRAFT -------END-------
         }
 
 
@@ -1273,7 +1262,14 @@ Polls the check result. Either a progress or the completed result is returned. T
 + Parameters
    + id: `153` (required, number) ... the check id
 
-+ Response 204
+
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "id": "153"
+          }
+        }
 
 
 ## Get Link to Aggregated Report [GET /api/v1/checking/aggregation/{batchId}]
@@ -1300,8 +1296,8 @@ Returns the links to a human readable Analytics Dashboard, which aggregates info
 
 # Group Dictionary API
 
-This API handles the spelling dictionary, i.e. words that are ignored by the spell checker.
-Here, a dictionary entry is a surface string and a language, optionally further restricted
+This API handles the spelling dictionary, that is, words that are ignored by the spell checker.
+Here, a dictionary entry is a surface string and a language. Optionally, an entry can be further restricted
 by either an audience ID, a document ID or a user ID.
 
 ## Get Dictionary Capabilities [GET /api/v1/dictionary/capabilities]
@@ -1388,7 +1384,7 @@ The response is a list of all entries across all dictionaries where the entry fi
 
 ## Authorization Response (object)
 + data
-  + `state`:`Success` (enum[string],required)
+  + `state`:`Success` (enum[string], required)
      + Members
         + `Success`
         + `Started`
@@ -1422,11 +1418,11 @@ The response is a list of all entries across all dictionaries where the entry fi
 
 ## ErrorResponse (object)
 + error
-  - `type`: `client` (string,required)
-  - `title`: `Unspecified client error` (string,required)
-  - `detail`: `This is a detailled explanation, that can be displayed to the user.` (string,required)
-  - `status`: `403` (string,required)
-  - `reference`: `4fd78a6b-7ed2-473e-89f5-ef9562742ecb` (string,optional)
+  - `type`: `client` (string, required)
+  - `title`: `Unspecified client error` (string, required)
+  - `detail`: `This is a detailled explanation, that can be displayed to the user.` (string, required)
+  - `status`: `403` (string, required)
+  - `reference`: `4fd78a6b-7ed2-473e-89f5-ef9562742ecb` (string, optional)
 
 ## PaginationMetadata (object)
 + `page`: `1` (number)
@@ -1440,27 +1436,24 @@ The response is a list of all entries across all dictionaries where the entry fi
 - `parentLanguage`: `b0a5f8d9-9fb3-4c4d-90ea-15acad32ca11` (string)
 - `name`: `hup` (string)
 - `displayName`: `Hupa` (string) - use this string to represent this language in your UI
-- `order`: `33` (number) - represents the visual order between siblings, not necessary continous or complete
+- `order`: `33` (number) - represents the visual order between siblings, not necessary continuous or complete
 
 # Group Terminology API
 
 This API allows access to the terminology database.
 
-## Get terminology index - not implemented [GET /api/v1/terminology]
+## Get Terminology Index - DRAFT [GET /api/v1/terminology]
 
 Basic hints about what is available where in the api. Links may appear/disappear based on the authorizations in the token provided.
 
-TODO:
 + put more stuff into the object, such as
     + languages
-    + statuses (???)
+    + statuses
     + custom fields
-    + (maybe: views)
+    + views
 + put more links into the object:
     + links to collections?
     + link to download all picklist options?
-
-Not implemented!!!
 
 + Request
     + Header
@@ -1475,9 +1468,7 @@ Not implemented!!!
             }
         }
 
-## View resource [/api/v1/terminology/views/{id}]
-
-TODO
+## View Resource [/api/v1/terminology/views/{id}]
 
 ## Get Views [GET /api/v1/terminology/views{?useForChecking,sort,p,limit}]
 
@@ -1537,11 +1528,10 @@ Returns a list of stored views, visible to the authenticated client.
           }
         }
 
-## Get view [GET /api/v1/terminology/views/{uuid}]
+## Get View - DRAFT [GET /api/v1/terminology/views/{uuid}]
 
 Returns a stored view, visible to the authenticated client.
 
-TODO:
 + More errors
 
 + Parameters
@@ -1558,11 +1548,10 @@ TODO:
 
 + Response 404
 
-## Create View [POST /api/v1/terminology/views]
+## Create View - DRAFT [POST /api/v1/terminology/views]
 
 Creates a new view. Note that the id send with the request is ignored and a new one is generated.
 
-TODO:
 + More errors
 
 + Attributes
@@ -1581,11 +1570,10 @@ TODO:
     + Attributes
         + view (View)
 
-## Update View [PUT /api/v1/terminology/views/{uuid}]
+## Update View - DRAFT [PUT /api/v1/terminology/views/{uuid}]
 
 Updates a view.
 
-TODO:
 + More errors
 
 + Attributes
@@ -1609,11 +1597,10 @@ TODO:
 
 + Response 404
 
-## Delete View [DELETE /api/v1/terminology/views/{uuid}]
+## Delete View - DRAFT [DELETE /api/v1/terminology/views/{uuid}]
 
 Deletes a view.
 
-TODO:
 + More errors (authorization)
 
 + Parameters
@@ -1661,11 +1648,10 @@ Returns a list of stored terms.
         + term (array[Term])
         + meta (PaginationMetadata)
 
-### Get a Term [GET /api/v1/terminology/terms/{uuid}]
+### Get a Term - DRAFT [GET /api/v1/terminology/terms/{uuid}]
 
 Returns a single term.
 
-TODO:
 + More errors (authorization)
 
 + Parameters
@@ -1682,11 +1668,10 @@ TODO:
 
 + Response 404
 
-### Create a Term [POST /api/v1/terminology/terms/]
+### Create a Term - DRAFT [POST /api/v1/terminology/terms/]
 
 Creates a new term.
 
-TODO:
 + More errors (authorization, validation)
 
 + Attributes
@@ -1702,11 +1687,10 @@ TODO:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/terms/{uuid}
 
-### Update a Term [PUT /api/v1/terminology/terms/{uuid}]
+### Update a Term - DRAFT [PUT /api/v1/terminology/terms/{uuid}]
 
 Updates a term.
 
-TODO:
 + More errors (authorization, validation)
 
 + Parameters
@@ -1726,11 +1710,10 @@ TODO:
 
 + Response 404
 
-### Delete a Term [DELETE /api/v1/terminology/terms/{uuid}]
+### Delete a Term - DRAFT [DELETE /api/v1/terminology/terms/{uuid}]
 
 Deletes a term.
 
-TODO:
 + More errors (authorization)
 
 + Parameters
@@ -1760,11 +1743,10 @@ Returns a list of all defined languages.
         + language (array[Language])
         + meta (PaginationMetadata)
 
-# Get a Language [GET /api/v1/terminology/languages/{uuid}]
+# Get a Language - DRAFT [GET /api/v1/terminology/languages/{uuid}]
 
 Returns a single language.
 
-TODO:
 + More errors (authorization)
 
 + Request
@@ -1781,11 +1763,10 @@ TODO:
 
 + Response 404
 
-# Create a Language [POST /api/v1/terminology/languages/]
+# Create a Language - DRAFT [POST /api/v1/terminology/languages/]
 
 Creates a new language.
 
-TODO:
 + More errors (authorization, validation)
 
 + Attributes
@@ -1801,11 +1782,10 @@ TODO:
 
             Location: https://tenant.acrolinx.cloud/api/v1/terminology/languages/{uuid}
 
-# Update a Language [PUT /api/v1/terminology/languages/{uuid}]
+# Update a Language - DRAFT [PUT /api/v1/terminology/languages/{uuid}]
 
 Updates a language.
 
-TODO:
 + More errors (authorization, validation)
 
 + Parameters
@@ -1825,11 +1805,10 @@ TODO:
 
 + Response 404
 
-# Not Implemented [DELETE /api/v1/terminology/languages/{uuid}]
+# Delete a Language - DRAFT [DELETE /api/v1/terminology/languages/{uuid}]
 
 Deletes a language.
 
-TODO:
 + More errors (authorization)
 
 + Parameters
@@ -1843,7 +1822,63 @@ TODO:
 + Response 204
 + Response 404
 
-# Group Other Methods in Existing API - TODO
+
+
+
+# Group Broadcast API
+
+You can use platform notifications to inform users that checking might be affected by server maintenance or planned server outages.
+
+## Create a Platform Notification [POST /api/v1/broadcasts/platform-notifications]
+
+Publishes a new notification on the platform.
+
+
++ Request (application/json)
+
+        {
+            "title": "Important Announcement",                               // required; The title of the notification
+            "body":  "Acrolinx Platform 5.6 will be deployed tomorrow.",     // required; Notification text.
+            "importance": "HIGH",                                            // optional; "HIGH"|"NORMAL"
+            "start": 1528127782,                                             // required; Notification start time (epoch millisecond timestamp)
+            "end": 1530719782                                               // required; Notification end time (epoch millisecond timestamp)
+        }
+
++ Response 201 (application/json)
+
+        {
+          "data": {
+            "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101"
+          }
+        }
+
+## Retrieve Platform Notifications [GET /api/v1/broadcasts/platform-notifications/{lastRequestTimeInMilliseconds}]
+
+Retrieves active notifications from the platform.
+
++ Parameters
+    + lastRequestTimeInMilliseconds: `1525449382` (long, required) - epoch millisecond timestamp used to filter active notifications
+
+
++ Response 200 (application/json)
+
+        {
+          "data":
+            platformNotifications: [{
+              "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101",
+              "title": "Important Announcement",
+              "body":  "Acrolinx Platform 5.6 will be deployed tomorrow.",
+              "importance": "HIGH",
+              "start": 1528127782,
+              "end": 1530719782
+              }
+            ]
+          }
+        }
+
+
+
+# Group Other Methods in Existing API - DRAFT
 
 Checking API:
 * Contribute as Term (may be moved to Terminology API)
