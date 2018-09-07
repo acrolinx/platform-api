@@ -461,7 +461,7 @@ When polling returned a final result, the polling endpoint will disappear and re
 
 The API for checking documents.
 
-## List All Checking Methods [GET /api/v1/checking]
+## List All Checking Methods [GET /api/v1/checking] - DRAFT
 
 TODO: Do we need this entrance point? We could move 'capabilities' and 'submit' to the index.
 
@@ -588,7 +588,6 @@ This call includes an implicit "create/search for document" (in case no document
             "document": {                                // optional, default: empty "document" object
                 "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
                 "reference": "C:\\abc.docx",              // optional, default: do not search for ID, always create
-                "mimeType": "application/word",
                 "customFields": [                       // optional
                     {
                         "key": "field1",
@@ -715,7 +714,6 @@ Polls the check result. Either a progress or the completed result is returned. T
             "document": {
                 "id": "283ab1e075f21a",
                 "reference": "C:\\abc.docx",
-                "mimeType": "application/word",
                 "author": "Ralf",
                 "contentType": "E-Mail",
                 "customFields": [
@@ -1061,7 +1059,9 @@ Polls the check result. Either a progress or the completed result is returned. T
 + Response 204
 
 
-## Get Link to Aggregated Report [GET /api/v1/checking/aggregation/{batchId}]
+## Get Link to Content Analysis Dashboard [GET /api/v1/checking/aggregation/{batchId}]
+
+Attention: URL will change.
 
 Returns the links to a human readable Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API key contains a new privilege token with the right Reporting.read.
 
@@ -1210,7 +1210,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
         {
             "reference": "C:\\abc.docx",        // optional; if absent, forceNew is implicitly true (=no searching)
-            "mimeType": "application/word",     // optional; absent means "unknown" and matches only "unknown"
             "author": "Ralf",                   // optional; absent means "unknown" and matches only "unknown"
             "contentType": "E-Mail",            // optional; absent means "unknown" and matches only "unknown"
             "displayInfo": {                    // optional information about the document; stored but not used for identification
@@ -1224,7 +1223,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
           "data": {
             "id": "283ab1e075f21a",
             "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
@@ -1247,7 +1245,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
         {
             "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
@@ -1268,7 +1265,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
           "data": {
             "id": "283ab1e075f21a",
             "reference": "C:\\abc.docx",
-            "mimeType": "application/word",
             "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
@@ -1284,8 +1280,8 @@ In this method, fields in payload are used to (a) associate ID with document inf
             }
           }
         }
-		
-		
+
+
 # Group Dictionary API
 
 This API handles the spelling dictionary, i.e. words that are ignored by the spell checker.
