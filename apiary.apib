@@ -1077,9 +1077,11 @@ Polls the check result. Either a progress or the completed result is returned. T
         }
 
 
-## Get Link to Aggregated Report [GET /api/v1/checking/aggregation/{batchId}]
+## Get Link to Content Analysis Dashboard [GET /api/v1/checking/aggregation/{batchId}]
 
-Returns the links to a human readable Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API key contains a new privilege token with the right Reporting.read.
+Attention: this URL will change.
+
+Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API key contains a new privilege token with the right Reporting.read.
 
 + Parameters
     + batchId: `XYZ-10-22-33` (required, string) ... the batch check id
@@ -1099,7 +1101,7 @@ Returns the links to a human readable Analytics Dashboard, which aggregates info
             ]
         }
 
-# Group User API
+# Group User API - DRAFT
 
 Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
 
@@ -1201,7 +1203,7 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
 
    + Attributes (ErrorResponse)
 
-# Group Document API
+# Group Document API - DRAFT
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
 
@@ -1292,7 +1294,7 @@ In this method, fields in payload are used to (a) associate ID with document inf
 		
 		
 		
-# Group Dictionary API
+# Group Dictionary API - DRAFT
 
 This API handles the spelling dictionary, that is, words that are ignored by the spell checker.
 Here, a dictionary entry is a surface string and a language. Optionally, an entry can be further restricted
@@ -1436,7 +1438,7 @@ The response is a list of all entries across all dictionaries where the entry fi
 - `displayName`: `Hupa` (string) - use this string to represent this language in your UI
 - `order`: `33` (number) - represents the visual order between siblings, not necessary continuous or complete
 
-# Group Terminology API
+# Group Terminology API - DRAFT
 
 This API allows access to the terminology database.
 
@@ -1823,7 +1825,7 @@ Deletes a language.
 
 
 
-# Group Broadcast API
+# Group Broadcast API - DRAFT
 
 You can use platform notifications to inform users that checking might be affected by server maintenance or planned server outages.
 
