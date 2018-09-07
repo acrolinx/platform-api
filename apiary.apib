@@ -692,6 +692,8 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 + Response 200 (application/json)
 
+        Attention: which attributes are contained in the response depends on configuration, request and the document.
+
         {
           "data":{
             "id": "AB-153",
@@ -710,6 +712,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 "checkType": "interactive",
                 "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]
             },
+            # DRAFT ------START------
             "document": {
                 "id": "283ab1e075f21a",
                 "reference": "C:\\abc.md",
@@ -727,6 +730,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "reference": "abc.md"
                 }
             },
+            # DRAFT -------END-------
             "quality": {
                 "score": 57,
                 "status": "red"
@@ -1019,7 +1023,6 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }],
                 "target": []
             },
-            # DRAFT -------END-------
             "addonInfo": [
                 {
                     "id": "mightyAddon",
@@ -1029,6 +1032,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "url": "https://mighy.cool.com/addon?fancyId=12345"
                 }
             ],
+            # DRAFT -------END-------
             "reports": {
                 "scorecard": {
                     "displayName":"Score Card",
