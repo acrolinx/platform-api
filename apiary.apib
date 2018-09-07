@@ -222,7 +222,7 @@ All HTML fields contain only undangerous formatting tags that can be used withou
 
 # Group Index
 
-## Index [GET /api/v1] - DRAFT
+## Index [GET /api/v1]
 
 Note: This is the only web service method that provides a 200 response if no auth token was sent.
 If an invalid auth token was sent, the response is still a 401, though.
@@ -456,7 +456,7 @@ When polling returned a final result, the polling endpoint will disappear and re
          + title: `The interactive sign-in process timed out` (string,required)
          + detail: `The interactive sign-in process timed out. Please start a sign-in.` (string,required)
 
-# Group User API - DRAFT
+# Group User API
 
 Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
 TODO: This may throw together too many concepts at once?
@@ -562,7 +562,7 @@ TODO: Which user information can be updated with this call? Are partial updates 
 
    + Attributes (ErrorResponse)
 
-# Group Document API - DRAFT
+# Group Document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
 
@@ -657,6 +657,20 @@ In this method, fields in payload are used to (a) associate ID with document inf
             }
           }
         }
+
+
+
+# Group Content Encodings - DEV-11069
+
+In the proposal below, the document is embedded as a JSON string in the "content" field. The `contentEncoding` field determines how the field is used. With `contentEncoding=none`, the document text is embedded as-is. It needs to be encoded in the same way as the entire HTTP request, and it must not contain BOMs. Use any of the other contentEncodings (for example, base64) for binary documents or plain text documents that have a different encoding than the HTTP request encoding and/or that have a BOM. In this case, it’s up to the server to preserve the byte stream (for binary formats), and to guess the charset correctly (for text formats).
+
+TODO: For text documents (plain text/HTML/XML), we may need a way for the client to specify the charset explicitly instead letting the server guess it, because the returned offsets refer to the (decoded) content string.
+
+TODO: XML documents can include their own charset in the header - not sure whether we want to respect that, and what happens if this contradicts the BOM and/or the charset explicitly sent by the client.
+
+TODO: An alternative approach would be to offer multipart/mixed requests, such that the client can just send the request as byte stream in a second part (first part contains the JSON request entity without the document contents). Advantage: could send more files at once in the future; can rely on HTTP standards for specifying the encoding etc. Disadvantages:  multipart/mixed may be more difficult for some clients, and HTTP doesn’t support sending compressed requests.
+
+TODO: For the record: The current 5.2 server expects the document contents to be embedded as JSON string, with the same encoding as the request encoding, and without any BOMs. Exception: for inputFormat=PDF, the (binary) document contents must be sent base64-encoded.
 
 # Group Checking API
 
