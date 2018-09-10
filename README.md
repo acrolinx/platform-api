@@ -54,9 +54,9 @@ If you can't wait, you can also jump to the [Quick Start Tutorial](quickstart.md
 Make sure that you always include the following headers:
 
 ```HTTP
-    X-Acrolinx-Auth: YOUR_ACCESS_TOKEN
-    X-Acrolinx-Client: YOUR_CLIENT_SIGNATURE
-    Content-Type:application/json
+X-Acrolinx-Auth: YOUR_ACCESS_TOKEN
+X-Acrolinx-Client: YOUR_CLIENT_SIGNATURE
+Content-Type:application/json
 ```
 
 More on the contents of these headers in the individual topics.
@@ -71,7 +71,7 @@ To make use of the API, you'll need to have an access token.
 The access token needs to be sent for every request done to the API with the header parameter `X-Acrolinx-Auth`.
 
 ```HTTP
-    X-Acrolinx-Auth:SOME_ACCESS_TOKEN_STRING
+X-Acrolinx-Auth:SOME_ACCESS_TOKEN_STRING
 ```
 
 Access tokens are bound to a user and there are two different variants:
@@ -95,29 +95,29 @@ This is how it works:
 Integration requests an access token:
 
 ```HTTP
-    POST: https://tenant.acrolinx.cloud/api/v1/auth/sign-ins
+POST: https://tenant.acrolinx.cloud/api/v1/auth/sign-ins
 ```
 
 The Platform will return two URLs. And `interactive` a `poll` in a result like this:
 
 ```HTTP
-    {
-        "data": {
-            "state": "Started",
-            "interactiveLinkTimeout": 900
-        },
-        "links": {
-            "interactive": "https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412",
-            "poll": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui"
-        }
+{
+    "data": {
+        "state": "Started",
+        "interactiveLinkTimeout": 900
+    },
+    "links": {
+        "interactive": "https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412",
+        "poll": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui"
     }
+}
 ```
 
 Promt the `interactive` URL to the user to authenticate.
 Poll with the `poll` URL until you're getting an http response (code 200)
 
 ```HTTP
-    {
+{
     "data": {
         "state": "Success",
         "authToken": "123579080a8d1fee12490a90dc3",
@@ -131,7 +131,7 @@ Poll with the `poll` URL until you're getting an http response (code 200)
     "links": {
         "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
     }
-    }
+}
 ```
 
 Please Note: the access token is called `authToken` in the response.
@@ -155,7 +155,7 @@ The signature is a string that identifies your integration.
 For developing purposes you should use the following:
 
 ```TEXT
-    SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5
+SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5
 ```
 
 Once you've certified your integration, you'll get your own signature.
@@ -163,7 +163,7 @@ Once you've certified your integration, you'll get your own signature.
 It should be included in every request you're doing to the Acrolinx Platform API as a header:
 
 ```HTTP
-    X-Acrolinx-Client: YOUR_CLIENT_SIGNATURE; VERSION_NUMBER; BUILD_NUMBER
+X-Acrolinx-Client: YOUR_CLIENT_SIGNATURE; VERSION_NUMBER; BUILD_NUMBER
 ```
 
 The API won't complain if you don't send a
