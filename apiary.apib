@@ -1158,23 +1158,32 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
 
         {
           "data": {
-            "id": "fred",
-            "name": "fred",  // Acrolinx login name (user ID)
-            "firstName": "Fred",   //
-            "lastName": "Freelancer", //
+            "id": "784664A47X",
+            "signIn": "fred", 
+            "fullName": "Fred Freelancer",   //
             "tenantId": "smarttech",
-            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry", "UserAndRoles.read" ],
             "properties" : {
                 "customkey": "customvalue",
             },
-            "metadata":
-            {
-                "displayName": "Department",
-                "key": "department",
-                "value": "IT",
-                "possibleValues": [],
-                "default": null
-            }
+            "customFields": [
+                {
+                    "key": "Department",
+                    "displayName": "Department",
+                    "inputType": "optional",
+                    "type": "list",
+                    "value": "My Department",
+                    "possibleValues": [
+                        "No Department",
+                        "My Department"
+                    ]
+                },
+                {
+                    "key": "external_field",
+                    "displayName": "external_field",
+                    "inputType": "externally_provided",
+                    "type": "text"
+                }
+            ]
           }
         }
 
@@ -1195,41 +1204,46 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
 + Request (application/json)
 
         {
-            "firstName": "Freddy",
-            "lastName": "McFredFace",
-            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
-            "properties" : {
-                "customkeynew": "customvaluenew",
-            },
-            "metadata":
-            {
-                "key": "department",
-                "value": "Manager",
-            }
+            "id": "784664A47X",
+            "customFields": [
+                {
+                    "key": "Department",
+                    "value": "My new Department",
+                }
+            ]
         }
 
 
 + Response 200 (application/json)
 
         {
-          "data": {
-            "id": "fred",
-            "name": "fred",
-            "firstName": "Freddy",
-            "lastName": "McFredFace",
+         "data": {
+            "id": "784664A47X",
+            "signIn": "fred", 
+            "fullName": "Fred Freelancer",   //
             "tenantId": "smarttech",
-            "privileges": [ "CheckingAndClients.checkingApplications", "CheckingAndClients.submitDictionaryEntry" ],
             "properties" : {
-                "customkeynew": "customvaluenew",
+                "customkey": "customvalue",
             },
-            "metadata":
-            {
-                "displayName": "Department",
-                "key": "department",
-                "value": "Manager",
-                "possibleValues": [],
-                "default": null
-            }
+            "customFields": [
+                {
+                    "key": "Department",
+                    "displayName": "Department",
+                    "inputType": "optional",
+                    "type": "list",
+                    "value": "My new Department",
+                    "possibleValues": [
+                        "No Department",
+                        "My Department"
+                    ]
+                },
+                {
+                    "key": "external_field",
+                    "displayName": "external_field",
+                    "inputType": "externally_provided",
+                    "type": "text"
+                }
+            ]
           }
         }
 
