@@ -1,19 +1,19 @@
 FORMAT: 1A
 HOST: https://tenant.acrolinx.cloud
 
-# Acrolinx Core Platform API
+# Acrolinx Platform API
 
-The Acrolinx Core Platform API is the new REST API for accessing all functionality of the Core Platform.
+The Acrolinx Platform API is the new REST like API for accessing the Core Platform.
 
-**NOTE:** All listed (future) features, which aren’t yet or only partially implemented, are marked with the keyword DRAFT. The subtags behave exactly like the overlay tags within response body, therefore the corresponding spots aren't marked. Please consider this while using the Acrolinx Core Platform API!
+**NOTE:** All listed (future) features, which aren't yet or only partially implemented, are marked with the keyword DRAFT. The subtags behave exactly like the overlay tags within response body, therefore the corresponding spots aren't marked. Please consider this while using the Acrolinx Platform API!
 
-# Authentication and Authorization of the Acrolinx Platform API
+# Authentication and Authorization
 
 When using the Acrolinx Platform API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
 
 An **Access Token** is an encoded and cryptographically singed string. It has the following characteristics:
 
-* It’s bound to a user
+* It's bound to a user
 * There can be an infinite number of Access Tokens per user
 * It has a certain lifetime (default 30 Days, can be changed)
 * It will expire after the lifetime or when the password of the associated user is changed
@@ -25,7 +25,7 @@ You can get an Access Token by using the Acrolinx sign-in workflow.
 
 How to use an Access Token?
 
-Every request you’re doing with the Acrolinx Platform API must contain a [header](#header-access-token) providing the Access Token:
+Every request you're doing with the Acrolinx Platform API must contain a [header](#header-access-token) providing the Access Token:
 
 ```
     X-Acrolinx-Authorization: WERTZUIOP
@@ -46,8 +46,8 @@ Other than that the **API Token** functions as an **Access Token**.
 
 ## Access Token
 
-All methods except "index" and "poll auth token" require a valid access token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
-If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response isn’t explicitly mentioned below.
+All methods except "index" and "poll access token" require a valid access token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
+If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response isn't explicitly mentioned below.
 
 Example:
 
@@ -79,17 +79,17 @@ Example:
     X-Acrolinx-Client-Locale: de-CH
 ```
 
-The server tries to match the sent locale to the closest locale that it’s able to support, for example, `de`.
+The server tries to match the sent locale to the closest locale that it's able to support, for example, `de`.
 The "index" request returns the list of supported locales. The server falls back to the default `en` locale in the following cases:
 
 * no X-Acrolinx-Client-Locale header is sent
-* there’s no matching supported locale
-* for the given response, there’s no appropriate localization available
+* there's no matching supported locale
+* for the given response, there's no appropriate localization available
 
 ## Client Signature
 
 If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid client signature. The request
-returns an error, if the header is omitted or the given signature isn’t valid.
+returns an error, if the header is omitted or the given signature isn't valid.
 
 The format of the signature is `clientSignature;clientVersion;buildNumber`, where `clientSignature` is the signature as configured in the Acrolinx license and
 `clientVersion` is the version number of the client and `buildNumber` the build number of the client.
@@ -105,8 +105,8 @@ Example:
 The API provides a consistent format for all responses. Each response as a field `links` and one of the three fields `error`, `progress`, `data`.
 
 The `links` field contains further URLs that can be used as a next step in the workflow.
-`error` is set, of the request didn’t succeed. This is accompanied by an HTTP status code above or equal 4xx.
-`progress` means, that the processing isn’t yet finished and the client has to poll for the final result.
+`error` is set, of the request didn't succeed. This is accompanied by an HTTP status code above or equal 4xx.
+`progress` means, that the processing isn't yet finished and the client has to poll for the final result.
 `data` contains the actual result data, the processing is successfully finished.
 
 ## Error Responses
@@ -134,7 +134,7 @@ Content-Type: application/problem+json
 
 * `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
 * `title` is a short description of the error. It can be displayed to the user as title of the error.
-* `detail` is a more verbose description of the error. It’s suitable to be displayed to the user.
+* `detail` is a more verbose description of the error. It's suitable to be displayed to the user.
 * `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
 * An optional `reference` field with an id may be present. If there, this id can be found in the Acrolinx log files to support better problem analysis.
 
@@ -149,12 +149,12 @@ Type | Description| What to do
 `client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
 `server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
 `client_signature_missing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to acquire a valid license.
-`client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was is invalid. | Contact Acrolinx, how to acquire a valid license.
+`client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | Contact Acrolinx, how to acquire a valid license.
 `sso` | Returned for any single sign-on errors. | Most probably this is a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
 `insufficient_privileges` | Insufficient privileges. | Assign the required privileges to the user.
 `interactive_sign_in_timed_out` | The interactive sign-in process timed out. | Start new.
-`bad_content` | Couldn’t decode content. | Probably points to an error in the client.
+`bad_content` | Couldn't decode content. | Probably points to an error in the client.
 `check_cancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
 `check_failed` | The check failed. | Check logs and configuration.
 `invalid_base_url` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
@@ -219,14 +219,14 @@ Content-Type: application/json
 
 Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
 
-All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by server side whitelist.
+All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by server-side whitelist.
 
 # Group Index
 
 ## Index [GET /api/v1] - DRAFT
 
-Note: This is the only web service method that provides a 200 response if no auth token was sent.
-If an invalid auth token was sent, the response is still a 401, though.
+Note: This is the only web service method that provides a 200 response if no access token was sent.
+If an invalid access token was sent, the response is still a 401, though.
 
 + Request
 
@@ -303,13 +303,13 @@ If an invalid auth token was sent, the response is still a 401, though.
 # Group Authentication API
 
 Authentication is handled either with a configured access token, with single sign-on (SSO) or in an interactive process by signing in with the Acrolinx sign-in web page.
-Headless clients use either the configured access token or SSO.
+Embedded integrations use either the configured access token or SSO.
 Interactive clients with a human user use SSO or the interactive process.
 
 ## Request/Validate an API Token [POST /api/v1/auth/sign-ins]
 
 The sing-in collection allows Acrolinx API clients to request user authentication and to check
-the validity and privileges of existing authorization tokens.
+the validity and privileges of existing access tokens.
 
 If the Core Platform is configured for Single Sign-on, this endpoint will accept the configured credentials
 to authenticate the request.
@@ -323,7 +323,7 @@ to authenticate the request.
             X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45; 12345
 
 + Response 200 (application/json)
-    No sign-in needed, the response body will contain valid authorization tokens.
+    No sign-in needed, the response body will contain valid access tokens.
 
     The server may decide that the request is already sufficiently authorized. In this case,
     no sign-in process is started. The response will contain the same information as after
@@ -359,7 +359,7 @@ to authenticate the request.
           `X-Acrolinx-Client-Locale` header, the link will point to a localized
           version of that website if available and technically possible.
 
-    - `poll` a link to a resource that will return an *Auth Token* and information
+    - `poll` a link to a resource that will return an *access token* and information
           about the user after sign-in. (see [GET `api/v1/auth/sign-ins/{id}`](#authentication-api-poll-for-a-new-api-token-get))
 
     Note that the sign-in process will time out. The `interactiveLinkTimeout` field
@@ -390,7 +390,7 @@ to authenticate the request.
 
 + Response 401 (application/json)
     If invalid SSO credentials are supplied the request is rejected. This occurs when an SSO username
-    is present but the SSO password is wrong or missing or the user couldn’t be created.
+    is present but the SSO password is wrong or missing or the user couldn't be created.
 
     + Header
 
@@ -411,7 +411,7 @@ to authenticate the request.
 
 This resource lets a client wait for a user to authenticate and authorize it to use the
 privileged parts of the Acrolinx API. Once the user has completed the sign-in process,
-it will return a new authorization token. It can be sent with each API call to prove the
+it will return a new access token. It can be sent with each API call to prove the
 privileges and identity owned by the user that signed in.
 
 When polling returned a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
@@ -426,15 +426,15 @@ When polling returned a final result, the polling endpoint will disappear and re
     + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
 
 + Response 200 (application/json)
-   A user has completed the sign-in process and the server has created a new authorization token.
+   A user has completed the sign-in process and the server has created a new access token.
 
    Note that this resource will disappear after this response.
 
    + Attributes (Authorization Response)
 
 + Response 202 (application/json)
-   The user hasn’t authorized the sing-in yet. Request the same URI again to continue polling.
-   Note that clients should pace themselfves by respecting the `Retry-After` header.
+   The user hasn't authorized the sing-in yet. Request the same URI again to continue polling.
+   Note that clients should pace themselves by respecting the `Retry-After` header.
 
     + Header
 
@@ -479,7 +479,7 @@ The API for checking documents.
 ## List Checking Capabilities [GET /api/v1/checking/capabilities]
 
 The new checking API replaces writing guides and Content Profiles with a flat list of "audiences". Each audience corresponds to a
-writing guide or a Checking Profile. If sublanguages are activated, they’re folded into the list of audiences.
+writing guide or a Checking Profile. If Sublanguages are activated, they're folded into the list of audiences.
 
 For each audience, the server provides information about the language, activated goals, and term sets. The client may use this
 for filtering purposes, but they can only select one (complete) audience for checking (for example, not deselect goals).
@@ -566,7 +566,7 @@ for filtering purposes, but they can only select one (complete) audience for che
 
 ##  Submit a Check [POST /api/v1/checking/checks]
 
-This call includes an implicit "create/search for document" (in case no document ID was given) and "update document" (in case document ID was given).
+This call includes an implicit "create/search for document" (in case no document id was given) and "update document" (in case document id was given).
 
 + Request (application/json)
 
@@ -1115,7 +1115,7 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 Attention: this URL will change.
 
-Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API key contains a new privilege token with the right Reporting.read.
+Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API token contains a new privilege token with the right Reporting.read.
 
 + Parameters
     + batchId: `XYZ-10-22-33` (required, string) ... the batch check id
@@ -1140,17 +1140,17 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
 
 When custom user information is _required_:
-* Interactive clients: This will already be handled via Acrolinx sign-in. Immediately before granting
-access to client, the user needs to fill out their custom user information. It’s thus impossible to obtain an
-auth token for a user with incomplete required custom user information.
-* Headless (API key-based) clients: Dashboard access handles this. After logging in to the dashboard,
+* Interactive integrations: This will already be handled via Acrolinx sign-in. Immediately before granting
+access to client, the user needs to fill out their custom user information. It's thus impossible to obtain an
+access token for a user with incomplete required custom user information.
+* Embedded integrations (API key-based): Dashboard access handles this. After signing in to the dashboard,
 the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
-in the dashboard for the logged-in user. It’s thus impossible to obtain an API token for a user with incomplete required custom user information.
+in the dashboard for the signed in user. It's thus impossible to obtain an API token for a user with incomplete required custom user information.
 
 ## User Resource [/api/v1/user/{id}]
 
 + Parameters
-    + id: `fred` (required, string) ... the user ID
+    + id: `fred` (required, string) ... the username
 
 ### Get User [GET]
 
@@ -1254,12 +1254,12 @@ in the dashboard for the logged-in user. It’s thus impossible to obtain an API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
 
-## Create or Retrieve Document ID [POST /api/v1/document/_search{?forceNew}]
+## Create or Retrieve Document Id [POST /api/v1/document/_search{?forceNew}]
 
 In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
 
 * Parameters
-    * forceNew: `true` (optional, boolean) ... create a new document ID even if there’s a matching existing document
+    * forceNew: `true` (optional, boolean) ... create a new document id even if there's a matching existing document
 
         Default: false
 
@@ -1340,9 +1340,9 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
 # Group Dictionary API - DRAFT
 
-This API handles the spelling dictionary, that is, words that are ignored by the spell checker.
+This API handles the spelling dictionary, that is, words that are ignored by the spelling checker.
 Here, a dictionary entry is a surface string and a language. Optionally, an entry can be further restricted
-by either an audience ID, a document ID or a user ID.
+by either an audience ID, a document id, or a username.
 
 ## Get Dictionary Capabilities [GET /api/v1/dictionary/capabilities]
 
@@ -1929,7 +1929,7 @@ Checking API:
 
 Core Service:
 * get broadcast messages - integrate into "index" call?
-* is user self reg enabled - integrate into "index" call?
+* is user self-registration enabled - integrate into "index" call?
 * create user - not needed right now? should be part of User API
 
 Findability:
@@ -1942,14 +1942,14 @@ ExtraInfo API:
 Checking Profiles:
 * get and update user settings? get and update profile user settings? what is this?
 
-Feedback API
+Feedback API:
 * submit issue feedback - will be reimplemented anyway
 
-Reuse API
+Reuse API:
 * deprecated anyway
 
-Debug API
+Debug API:
 * not needed for now - special use case
 
-Monitoring API
+Monitoring API:
 * not needed for now - special use case
