@@ -1,0 +1,16 @@
+{
+    "MD004": {
+        "style": "sublist"
+    },
+    "MD007": {
+        "indent": 4
+    },
+    "MD013": {
+        "line_length": 120,
+        "tables": false
+    },
+    "MD024": {
+        "siblings_only": true
+    },
+    "MD038": false
+}
