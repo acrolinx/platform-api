@@ -1137,7 +1137,7 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API - DRAFT
 
-Here, a user is an entity that has a sign-in name, first/last name, privileges, custom properties (set by client), and custom user information.
+Here, a user is an entity that has an id, a sign-in name, name, custom properties (set by client), and custom user information.
 
 When custom user information is _required_:
 * Interactive integrations: This will already be handled via Acrolinx sign-in. Immediately before granting
@@ -1187,15 +1187,15 @@ in the dashboard for the signed in user. It's thus impossible to obtain an API t
           }
         }
 
-+ Response 403 (application/json)
++ Response 401 (application/json)
 
         // if auth token does not permit to show the user's data
         {
           "error": {
-            "detail": "You are not allowed to perform this operation.",
-            "title": "Not allowed",
-            "status": 403
-            "type": "not_allowed"
+            "detail": "The user does not have the required privileges to perform the operation.",
+            "title": "Insufficient privileges",
+            "status": 401
+            "type": "insufficient_privileges"
           }
         }
 
@@ -1246,9 +1246,17 @@ in the dashboard for the signed in user. It's thus impossible to obtain an API t
           }
         }
 
-+ Response 403 (application/json)
++ Response 401 (application/json)
 
-   + Attributes (ErrorResponse)
+        // if auth token does not permit to show the user's data
+        {
+          "error": {
+            "detail": "The user does not have the required privileges to perform the operation.",
+            "title": "Insufficient privileges",
+            "status": 401
+            "type": "insufficient_privileges"
+          }
+        }
 
 # Group Document API - DRAFT
 
