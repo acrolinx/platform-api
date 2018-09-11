@@ -1,0 +1,327 @@
+{
+	"info": {
+		"_postman_id": "3da5ee37-51dc-43e0-8eba-e620318ba585",
+		"name": "Acrolinx API",
+		"description": "Acrolinx API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Checking API",
+			"item": [
+				{
+					"name": "Minimal Check Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"text to check\"\n}"
+						},
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checking",
+								"checks"
+							]
+						},
+						"description": "Just for testing that your connection is working."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Request with Reference",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"text to check\",\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checking",
+								"checks"
+							]
+						},
+						"description": "Always include the document reference. Otherwise all analytics capabilities are out of reach."
+					},
+					"response": []
+				},
+				{
+					"name": "Getting Capabilities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/capabilities",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checking",
+								"capabilities"
+							]
+						},
+						"description": "Getting capabilities for checking."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Request with Audience ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"audienceId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checking",
+								"checks"
+							]
+						},
+						"description": "The audienceId defines which guidelines are applied."
+					},
+					"response": []
+				},
+				{
+					"name": "Check Request + Batch Id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"audienceId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\",\n        \"batchId\": \"my_super_batch_id_1\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
+						},
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checking",
+								"checks"
+							]
+						},
+						"description": "If you want to check a set of content and have a content analysis dashboard with all the result, you need to send a batchId."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Content Analysis Report Link",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/aggregation/my_batch_id-12345",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checking",
+								"aggregation",
+								"my_batch_id-12345"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Validate a Valid Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/auth/sign-ins",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign-ins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request a new Sign-in",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/auth/sign-ins",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign-ins"
+							]
+						},
+						"description": "Use the Sign-in when you want to implement interactive integrations. Otherwise you should rely on the API Token."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
