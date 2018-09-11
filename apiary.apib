@@ -1147,6 +1147,10 @@ access token for a user with incomplete required custom user information.
 the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
 in the dashboard for the signed in user. It's thus impossible to obtain an API token for a user with incomplete required custom user information.
 
+Security:
+* A user can read and update its own data
+* Only privileged users can read or update other users data
+
 ## User Resource [/api/v1/user/{id}]
 
 + Parameters
