@@ -83,7 +83,7 @@ Access Tokens normally only have a total lifetime of 30 days. After that they ha
 
 API Tokens live much longer: 4 years.
 
-## Getting and Access Token with Acrolinx Sign-In
+## Getting an Access Token with Acrolinx Sign-In
 
 The Acrolinx sign-in process is targeted at situations where you want individual users to sign in.
 Authentication is handled by a web application of the Acrolinx Platform.
@@ -92,49 +92,49 @@ This is how it works:
 
 ![Sign-in diagram](doc/sign-in.png)
 
-Integration requests an access token:
+1. Integration requests an access token:
 
-```HTTP
-POST: https://tenant.acrolinx.cloud/api/v1/auth/sign-ins
-```
+    ```HTTP
+    POST: https://tenant.acrolinx.cloud/api/v1/auth/sign-ins
+    ```
 
-The Platform will return two URLs. And `interactive` a `poll` in a result like this:
+2. The Platform will return two URLs: an `interactive`, and a `poll` URL in a result like this:
 
-```HTTP
-{
-    "data": {
-        "state": "Started",
-        "interactiveLinkTimeout": 900
-    },
-    "links": {
-        "interactive": "https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412",
-        "poll": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui"
+    ```HTTP
+    {
+        "data": {
+            "state": "Started",
+            "interactiveLinkTimeout": 900
+        },
+        "links": {
+            "interactive": "https://tenant.acrolinx.cloud/dashboard.html?login=19901-2-8412998412",
+            "poll": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui"
+        }
     }
-}
-```
+    ```
 
-Promt the `interactive` URL to the user to authenticate.
-Poll with the `poll` URL until you're getting an http response (code 200)
+3. Promt the `interactive` URL to the user to authenticate.
+    Poll with the `poll` URL until you're getting an http response (code 200).
 
-```HTTP
-{
-    "data": {
-        "state": "Success",
-        "authToken": "123579080a8d1fee12490a90dc3",
-        "authorizedUsing": "ACROLINX_SIGN_IN",
-        "privileges": [
-        "CheckingAndClients.checkingApplications",
-        "CheckingAndClients.submitDictionaryEntry"
-        ],
-        "userId": "fred"
-    },
-    "links": {
-        "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+    ```HTTP
+    {
+        "data": {
+            "state": "Success",
+            "authToken": "123579080a8d1fee12490a90dc3",
+            "authorizedUsing": "ACROLINX_SIGN_IN",
+            "privileges": [
+            "CheckingAndClients.checkingApplications",
+            "CheckingAndClients.submitDictionaryEntry"
+            ],
+            "userId": "fred"
+        },
+        "links": {
+            "user": "https://tenant.acrolinx.cloud/api/v1/user/fred"
+        }
     }
-}
-```
+    ```
 
-Please Note: the access token is called `authToken` in the response.
+    Please Note: the access token is called `authToken` in the response.
 
 ## Getting an API Token
 
@@ -145,7 +145,6 @@ Getting an API Token is easy:
 * Scroll down
 * Click on ‘CREATE API TOKEN'
 * Copy the API token. You can revisit this site later to get your token again.
-* Scroll up and save the user.
 
 ![API Token](doc/creating_api_token.gif)
 
