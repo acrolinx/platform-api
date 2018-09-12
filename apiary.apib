@@ -86,9 +86,9 @@ The "index" request returns the list of supported locales. The server falls back
 * there's no matching supported locale
 * for the given response, there's no appropriate localization available
 
-## Client Signature
+## Signature
 
-If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid client signature. The request
+If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid signature. The request
 returns an error, if the header is omitted or the given signature isn't valid.
 
 The format of the signature is `clientSignature;clientVersion;buildNumber`, where `clientSignature` is the signature as configured in the Acrolinx license and

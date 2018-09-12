@@ -55,7 +55,7 @@ Make sure that you always include the following headers:
 
 ```HTTP
 X-Acrolinx-Auth: YOUR_ACCESS_TOKEN
-X-Acrolinx-Client: YOUR_CLIENT_SIGNATURE
+X-Acrolinx-Client: YOUR_SIGNATURE
 Content-Type:application/json
 ```
 
