@@ -162,7 +162,7 @@ Once you've certified your integration, you'll get your own signature.
 It should be included in every request you're doing to the Acrolinx Platform API as a header:
 
 ```HTTP
-X-Acrolinx-Client: YOUR_CLIENT_SIGNATURE; VERSION_NUMBER; BUILD_NUMBER
+X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER; BUILD_NUMBER
 ```
 
 The API won't complain if you don't send a
