@@ -342,10 +342,11 @@ to authenticate the request.
                 + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sing-in website.
                 + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
                 + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
-          + `privileges`: CheckingAndClients.checkingApplications, CheckingAndClients.submitDictionaryEntry (array[string], required)
-          + `userId`: `fred` (string, required)
+          + `user`
+		     + id `eb323701-839f-4998-b56e-3e20c70259c5` (string, required)
         + `links` (optional)
-            + `user`: `https://tenant.acrolinx.cloud/api/v1/user/fred` (string, optional)
+            + `get_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
+            + `update_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
 
 
 + Response 201 (application/json)
@@ -1154,7 +1155,7 @@ Security:
 ## User Resource [/api/v1/user/{id}]
 
 + Parameters
-    + id: `fred` (required, string) ... the username
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... the username
 
 ### Get User [GET]
 
@@ -1162,7 +1163,7 @@ Security:
 
         {
           "data": {
-            "id": "784664A47X",
+            "id": "eb323701-839f-4998-b56e-3e20c70259c5",
             "signIn": "fred", 
             "fullName": "Fred Freelancer",   //
             "tenantId": "smarttech",
@@ -1221,7 +1222,7 @@ Security:
 
         {
          "data": {
-            "id": "784664A47X",
+            "id": "eb323701-839f-4998-b56e-3e20c70259c5",
             "signIn": "fred", 
             "fullName": "Fred Freelancer",   //
             "tenantId": "smarttech",
@@ -1450,10 +1451,11 @@ The response is a list of all entries across all dictionaries where the entry fi
         + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sing-in website.
         + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
         + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
-  + `privileges`: CheckingAndClients.checkingApplications, CheckingAndClients.submitDictionaryEntry (array[string], optional)
-  + `userId`: `fred` (string, optional)
+  + `user`
+     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
 + `links` (optional)
-    + `user`: `https://tenant.acrolinx.cloud/api/v1/user/fred` (string, optional)
+    + `get_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
+    + `update_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
 
 ## View (object)
 + id: `850ec0e3-9dd2-48f0-bb9c-8ade80316584` (string)
