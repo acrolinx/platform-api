@@ -745,7 +745,6 @@ Polls the check result. Either a progress or the completed result is returned. T
             "document": {
                 "id": "283ab1e075f21a",
                 "reference": "C:\\abc.md",
-                "author": "Ralf",
                 "contentType": "E-Mail",
                 "customFields": [
                     {
@@ -1267,12 +1266,12 @@ Security:
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
 
-## Create or Retrieve Document Id [POST /api/v1/document/_search{?forceNew}]
+## Create or Retrieve Document Info [POST /api/v1/document/_search{?forceNew}]
 
-In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing ID that matches given fields.
+In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing info that matches given fields.
 
 * Parameters
-    * forceNew: `true` (optional, boolean) ... create a new document id even if there's a matching existing document
+    * forceNew: `true` (optional, boolean) ... create a new document info even if there's a matching existing document
 
         Default: false
 
@@ -1280,7 +1279,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
         {
             "reference": "C:\\abc.md",        // optional; if absent, forceNew is implicitly true (=no searching)
-            "author": "Ralf",                   // optional; absent means "unknown" and matches only "unknown"
             "contentType": "E-Mail",            // optional; absent means "unknown" and matches only "unknown"
             "displayInfo": {                    // optional information about the document; stored but not used for identification
                 "reference": "abc.md"         // optional, default: document.reference
@@ -1293,7 +1291,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
           "data": {
             "id": "283ab1e075f21a",
             "reference": "C:\\abc.md",
-            "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
                 {
@@ -1315,7 +1312,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
 
         {
             "reference": "C:\\abc.md",
-            "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
                 {
@@ -1335,7 +1331,6 @@ In this method, fields in payload are used to (a) associate ID with document inf
           "data": {
             "id": "283ab1e075f21a",
             "reference": "C:\\abc.md",
-            "author": "Ralf",
             "contentType": "E-Mail",
             "customFields": [
                 {
