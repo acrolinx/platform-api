@@ -1266,6 +1266,14 @@ Security:
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
 
+Typical program flow:
+
+1. A document is opened in the host editor.
+2. The integration uses create or retrieve document information, to check if the custom fields have to be filled out.
+   If the user has to fill out custom fields, the API returns all fields to fill out and the set values.
+3. The integration requests the user to fill out the custom field.
+4. The integration sets the new custom fields either using the update document function or while submitting a check request.
+
 ## Create or Retrieve Document Info [POST /api/v1/document/_search{?forceNew}]
 
 In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing info that matches given fields.
