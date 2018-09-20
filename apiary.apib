@@ -661,17 +661,17 @@ This call includes an implicit "create/search for document" (in case no document
           "error": {
             "message": "Custom field values are missing",
             "type": "custom_fields_incomplete",
-            "document": {
-                "id": "283ab1e075f21a",
-                "customFields": [
-                    {
-                        "displayName": "Project ID",
-                        "key": "projectId",
-                        "value": null,
-                        "required": true
-                    }
-                ],
-            }
+            "validationDetails": [
+                {
+                    "title": "Custom field is required.",
+                    "constraint": "Custom field \"Field\" must not be empty.",
+                    "attributePath": "customFields.Field",
+                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
+                    "invalidValue": null,
+                    "type": "Required"
+                }
+            ],
+            "status": 400
           },
           "links": {
           }
@@ -679,18 +679,35 @@ This call includes an implicit "create/search for document" (in case no document
 
 + Response 400 (application/json)
 
+        // if any of the given custom fields is invalid, a detailed error information is given.
         {
           "error": {
-            "message": "The specified audience is currently not available.",
-            "type": "com.acrolinx.faults.AudienceUnavailable",
-            "capabilities": {
-                // "audiences": { ... },
-                // "languages": { ... },
-                // etc.
-                // i.e. exactly the response of the "get capabilities" web service method
-                // when calling it with same credentials
-            }
-          },
+            "detail": "Please provide values for all required custom fields.",
+            "type": "validation",
+            "title": "Custom field values are missing",
+            "validationDetails": [
+                {
+                    "title": "Custom field is required.",
+                    "constraint": "Custom field \"Field\" must not be empty.",
+                    "attributePath": "customFields.Field",
+                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
+                    "invalidValue": null,
+                    "type": "Required"
+                }
+            ],
+            "status": 400
+         }
+       }
+
++ Response 400 (application/json)
+
+        {
+          "error": {
+            "detail": "The audience doesn't exist or isn't available for the user id and language given.",
+            "type": "audience_doesnt_exist",
+            "title": "Audience doesn't exist",
+            "status": 400
+          },			
           "links": {
           }
         }
