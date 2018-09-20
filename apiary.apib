@@ -1191,28 +1191,6 @@ Security:
           }
         }
 
-+ Response 400 (application/json)
-
-        // if any of the updated fields is invalid, a detailed error information is given.
-        {
-          "error": {
-            "detail": "Please provide values for all required custom fields.",
-            "type": "validation",
-            "title": "Custom field values are missing",
-            "validationDetails": [
-                {
-                    "title": "Custom field is required.",
-                    "constraint": "Custom field \"Field\" must not be empty.",
-                    "attributePath": "customFields.Field",
-                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
-                    "invalidValue": null,
-                    "type": "Required"
-                }
-            ],
-            "status": 400
-         }
-       }
-
 + Response 401 (application/json)
 
         // if auth token does not permit to show the user's data
@@ -1272,9 +1250,31 @@ Security:
           }
         }
 
++ Response 400 (application/json)
+
+        // if any of the updated fields is invalid, a detailed error information is given.
+        {
+          "error": {
+            "detail": "Please provide values for all required custom fields.",
+            "type": "validation",
+            "title": "Custom field values are missing",
+            "validationDetails": [
+                {
+                    "title": "Custom field is required.",
+                    "constraint": "Custom field \"Field\" must not be empty.",
+                    "attributePath": "customFields.Field",
+                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
+                    "invalidValue": null,
+                    "type": "Required"
+                }
+            ],
+            "status": 400
+         }
+       }
+
 + Response 401 (application/json)
 
-        // if auth token does not permit to show the user's data
+        // if auth token does not permit to update the user's data
         {
           "error": {
             "detail": "The user does not have the required privileges to perform the operation.",
