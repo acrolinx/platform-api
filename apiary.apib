@@ -142,6 +142,8 @@ Depending on `type`, additional fields may be part of the response providing mor
 
 Additional fields may be added in future. A client must not break because of unexpected fields.
 
+
+
 ### Error Types
 
 Type | Description| What to do
@@ -159,6 +161,36 @@ Type | Description| What to do
 `check_failed` | The check failed. | Check logs and configuration.
 `invalid_base_url` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
 `custom_fields_incomplete` | Custom field values are missing. |Please provide values for all required custom fields before or when checking a document.
+`validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
+
+### Additional Information On Validation Errors
+
+Errors with type `validation` come with a list of constraint violation descriptions in an additional property `validationDetails`:
+
+```
+{
+	"title": "Validation error",
+	"constraint": "The 'languageId' is required.",
+	"attributePath": "submit.arg1.languageId",
+	"detail": "The 'languageId' is required but was 'null'.",
+	"invalidValue": "DictionaryEntry{surface='TestSurface', scope=language, languageId='', audienceId='null', documentId='null'}",
+	"possibleValues": ["en", "de"]
+}
+
+```
+* `title`: "Validation error"
+* `constraint`: A minimal description of the constraint that was violated.
+* `attributePath`: A hint towards the property that was violated.
+* `detail`: A more detailed description of the constraint violation.
+* `invalidValue`: The value that was invalid. Can be a data structure.
+* `possibleValues`: An optional list of valid values for the property.
+
+
+The `validationDetails` are intended as information for developers to troubleshoot bad requests.
+They are not intended for automated consumption.
+Values are not guaranteed to be always present or in a uniform format.
+
+
 
 ## Progress Responses
 
