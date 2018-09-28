@@ -124,7 +124,7 @@ Content-Type: application/problem+json
 {
   "error": {
     "type": "invalid_token",
-    "title": "Invalid auth token",
+    "title": "Invalid access token",
     "detail": "The provided token for authorization is expired.",
     "status": 403
   }
@@ -322,10 +322,10 @@ If an invalid access token was sent, the response is still a 401, though.
 
 + Response 401 (application/json)
 
-        {  // if provided auth token became invalid
+        {  // if provided access token became invalid
           "error": {
             "type": "invalid_token",
-            "title": "Invalid auth token",
+            "title": "Invalid access token",
             "detail": "The provided token for authorization is expired.",
             "status": 401
           },
@@ -350,7 +350,7 @@ to authenticate the request.
 
     + Header
 
-            X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3 (valid) OR (invalid/expired auth token) OR (no auth token)
+            X-Acrolinx-Auth: 123579080a8d1fee12490a90dc3 (valid) OR (invalid/expired access token) OR (no access token)
             X-Acrolinx-Client-Locale: ja
             X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45; 12345
 
@@ -368,7 +368,7 @@ to authenticate the request.
     + Attributes
         + data
           + `state`:`Success` (string, required)
-          + `authToken`: `123579080a8d1fee12490a90dc3` (string, required)
+          + `accessToken`: `123579080a8d1fee12490a90dc3` (string, required)
           + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], required)
              + Members
                 + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sign-In website.
@@ -1160,8 +1160,6 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 ## Get Link to Content Analysis Dashboard [GET /api/v1/checking/contentanalysis/{batchId}]
 
-Attention: this URL will change.
-
 Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API token contains a new privilege token with the right Reporting.read.
 
 + Parameters
@@ -1248,7 +1246,7 @@ Security:
 
 + Response 401 (application/json)
 
-        // if auth token does not permit to show the user's data
+        // if access token does not permit to show the user's data
         {
           "error": {
             "detail": "The user does not have the required privileges to perform the operation.",
@@ -1329,7 +1327,7 @@ Security:
 
 + Response 401 (application/json)
 
-        // if auth token does not permit to update the user's data
+        // if access token does not permit to update the user's data
         {
           "error": {
             "detail": "The user does not have the required privileges to perform the operation.",
@@ -1462,7 +1460,7 @@ the client needs to know which information it is. The response is the created di
             "languageId": "en_GB",                      // required if scope!=audience
             "audienceId": "aud-1",                      // required if scope=audience
             "documentId": "283ab1e075f21a",             // required if scope=document
-            "userId": "fred"                            // optional, default: user from auth token
+            "userId": "fred"                            // optional, default: user from access token
         }
 
 + Response 200
@@ -1525,7 +1523,7 @@ The response is a list of all entries across all dictionaries where the entry fi
      + Members
         + `Success`
         + `Started`
-  + `authToken`: `123579080a8d1fee12490a90dc3` (string, optional)
+  + `accessToken`: `123579080a8d1fee12490a90dc3` (string, optional)
   + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], optional)
      + Members
         + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sign-In website.
