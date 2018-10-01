@@ -120,7 +120,7 @@ This is how it works:
     {
         "data": {
             "state": "Success",
-            "authToken": "123579080a8d1fee12490a90dc3",
+            "accessToken": "123579080a8d1fee12490a90dc3",
             "authorizedUsing": "ACROLINX_SIGN_IN",
             "privileges": [
             "CheckingAndClients.checkingApplications",
@@ -133,8 +133,6 @@ This is how it works:
         }
     }
     ```
-
-    Please Note: the access token is called `authToken` in the response.
 
 ## Getting an API Token
 
