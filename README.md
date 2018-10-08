@@ -182,7 +182,7 @@ Maintenance in production is getting much easier with a version and build number
     + SDKs build on the API and would give you a basic framework using the API in a language like Java or JavaScript.
       However with the new API, we think that there’s no need for an SDK in most use cases.
       Once we’ve released the Acrolinx Platform API, we'll decide based on feedback if and which SDKs we’re providing.
-* Can we put hierarchies in the document reference, for example, `<book>`, `<chapter>`, `<section>`
+* Can we put hierarchies in the document reference, for example: `<book>`, `<chapter>`, `<section>`
   so the analytics would group all check results for the book, chapter and so on?
     + If you want to group content, you should use document custom fields.
       These will also be available via the API.
