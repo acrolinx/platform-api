@@ -20,7 +20,8 @@ If something doesn't work, check the next day if it works again.
 
 ## Prerequisites
 
-Please contact [Acrolinx SDK support](sdk-support@acrolinx.com) for consulting and getting your integration certified.
+Please contact [Acrolinx SDK support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/sdk-support.md)
+for consulting and getting your integration certified.
 This sample works with a test license on an internal Acrolinx URL.
 This license is only meant for demonstration and developing purposes.
 Once you finished your integration, you'll have to get a license for your integration from Acrolinx.
@@ -171,20 +172,25 @@ Maintenance in production is getting much easier with a version and build number
 
 ## FAQ / Questions and Answers
 
-### What about Authentication? SSO?
-Authentication is done either via an API Token or via Acrolinx sign-in. Acrolinx sign-in supports different SSO methods using PingFederate.
-
-### Can you get the dashboard or the content report as JSON as well?
-The analytics results aren’t available as JSON.
-
-### How does the API relate to the products named Java Automation SDK, JavaScript Automation SDK etc. that are in the Integration Release Schedule?
-SDKs build on the API and would give you a basic framework using the API in a language like Java or JavaScript. However with the new API, we think that there’s no need for an SDK in most use cases. Once we’ve released the Acrolinx Platform API, we'll decide based on feedback if and which SDKs we’re providing.
-
-### Can we put hierarchies in the document reference, e.g. \<book>/\<chapter>/\<section> so the analytics would group all check results for the book, chapter and so on?
-If you want to group content, you should use document custom fields. These will also be available via the API. The document reference is important for identifying a piece of content but it isn’t used to group content.
-
-### Can we add a link to each checked item in the batch, so the Content Analysis report can provide a link back to the content in the overview?
-In most cases your document reference actually is the link to your content. If you need to provide a separate or different link, you may use custom fields for this.
+* What about Authentication? SSO?
+    + Authentication is done either via an API Token or via Acrolinx sign-in.
+      Acrolinx sign-in supports different SSO methods using PingFederate.
+* Can you get the dashboard or the content report as JSON as well?
+    + The analytics results aren’t available as JSON.
+* How does the API relate to the products named Java Automation SDK, JavaScript Automation SDK etc.
+   that are in the Integration Release Schedule?
+    + SDKs build on the API and would give you a basic framework using the API in a language like Java or JavaScript.
+      However with the new API, we think that there’s no need for an SDK in most use cases.
+      Once we’ve released the Acrolinx Platform API, we'll decide based on feedback if and which SDKs we’re providing.
+* Can we put hierarchies in the document reference, for example, `<book>`, `<chapter>`, `<section>`
+  so the analytics would group all check results for the book, chapter and so on?
+    + If you want to group content, you should use document custom fields.
+      These will also be available via the API.
+      The document reference is important for identifying a piece of content but it isn’t used to group content.
+* Can we add a link to each checked item in the batch, so the Content Analysis Dashboard can provide a link back
+  to the content in the overview?
+    + In most cases your document reference, actually is the link to your content.
+      If you need to provide a separate or different link, you may use custom fields for this.
 
 ## Reference
 
