@@ -12,5 +12,8 @@
     "MD024": {
         "siblings_only": true
     },
+    "MD026": {
+        "punctuation": ".,;:!"
+    },
     "MD038": false
 }
