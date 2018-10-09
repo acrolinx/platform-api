@@ -1353,10 +1353,15 @@ Typical program flow:
 
 In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing info that matches given fields.
 
+* Parameters
+    * force: `true` (optional, boolean) ... create a new document info even if there's a matching existing document
+
+        Default: false
+
 + Request (application/json)
 
         {
-            "reference": "C:\\abc.md",        // optional; if absent, forceNew is implicitly true (=no searching)
+            "reference": "C:\\abc.md",        // optional; if absent, force is implicitly true (=no searching)
             "contentType": "E-Mail",            // optional; absent means "unknown" and matches only "unknown"
             "displayInfo": {                    // optional information about the document; stored but not used for identification
                 "reference": "abc.md"         // optional, default: document.reference
