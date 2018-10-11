@@ -1349,24 +1349,9 @@ Typical program flow:
 3. The integration requests the user to fill out the custom field.
 4. The integration sets the new custom fields either using the update document function or while submitting a check request.
 
-## Create or Retrieve Document Info [POST /api/v1/document/search]
+## Create or Retrieve Document Info [GET /api/v1/document/{id}]
 
-In this method, fields in payload are used to (a) associate ID with document info, (b) search for existing info that matches given fields.
-
-* Parameters
-    * force: `true` (optional, boolean) ... create a new document info even if there's a matching existing document
-
-        Default: false
-
-+ Request (application/json)
-
-        {
-            "reference": "C:\\abc.md",        // optional; if absent, force is implicitly true (=no searching)
-            "contentType": "E-Mail",            // optional; absent means "unknown" and matches only "unknown"
-            "displayInfo": {                    // optional information about the document; stored but not used for identification
-                "reference": "abc.md"         // optional, default: document.reference
-            }
-        }
+This method provides Document which was found in the database.
 
 + Response 200 (application/json)
 
