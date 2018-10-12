@@ -1452,7 +1452,9 @@ This method enables the integration to discover the available dictionary scopes.
 
 Alternatively, you can retrieve the available scopes from a check result: 
     
+```
     data.dictionaryScopes: [ "language", "audience", "document" ]
+```
 
 + Response 200 (application/json)
 
@@ -1473,9 +1475,10 @@ Spell checking is a multifaceted functionality.
 Whether or not a particular issue will disappear after adding it to the dictionary, depends on the issue's true nature.
 The spelling checker tells you if you can reasonably suppress an issue by adding a surface to the dictionary.
 In the check result: 
-    
-    issues[n].canAddToDictionary: true
 
+```    
+    issues[n].canAddToDictionary: true
+```
 
 + Request (application/json)
 
