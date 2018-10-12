@@ -1416,26 +1416,57 @@ This method provides Document which was found in the database.
 
 # Group Dictionary API - DRAFT
 
-This API handles the spelling dictionary, that is, words that are ignored by the spelling checker.
-Here, a dictionary entry is a surface string and a language. Optionally, an entry can be further restricted
-by either an audience ID, a document id, or a username.
+This API handles the spelling dictionary. 
+Items listed in the spelling dictionary are ignored (not flagged) by the spelling checker.
+
+## Dictionary Entry
+From an API perspective, an "item" or *dictionary entry* has the following properties:
+
+* `surface`: The string that isn't a spelling issue.
+* `scope`: The range of influence of the spelling exception.
+    * `language`
+    * `audience`
+    * `document`
+* `languageId`: The language in which the surface shouldn't be a spelling issue.
+* `audienceId`: The audience for which the surface shouldn't be a spelling issue.
+* `documentId`: The document in which the surface shouldn't be a spelling issue.
+
+Depending on the `scope`, the -`Id`-values are optional or mandatory: 
+
+* `scope=language` requires a `languageId` (or alternatively an `audienceId`).
+* `scope=audience` requires an `audienceId`.
+* `scope=document` requires a `documentId` and alternatively a `languageId` or an `audienceId`.
+
+The `documentId` is a persistent identifier of the document from the Acrolinx Analytics reporting database.
+
+(Tip: With an `audienceId` and a `documentId` you're always on the safe side.)
+
+(Tip: Audiences have languages. 
+Keep `languageId` and `audienceId` consistent in that respect if sending both. 
+Otherwise the winner depends on the `scope`.)
 
 ## Get Dictionary Capabilities [GET /api/v1/dictionary/capabilities]
 
-This method enables the client to discover the supported dictionary scopes.
+This method enables the integration to discover the available dictionary scopes.
+(The availability of scopes depends on the server configuration and the user's privileges.)
+
+A dictionary scope 
 
 + Response 200 (application/json)
 
         {
           "data": {
-            "scopes": [ "audience", "document", "user", "language" ]
+            "scopes": [ "language", "audience", "document" ]
           }
         }
 
+Alternatively, you can retrieve the available scopes from a check result: 
+    
+    data.dictionaryScopes: [ "language", "audience", "document" ]
+
 ## Add to Dictionary [POST /api/v1/dictionary/submit]
 
-Create a dictionary entry for the specified scope. Depending on the scope, more information is required -
-the client needs to know which information it is. The response is the created dictionary entry.
+Create a dictionary entry for the specified scope.
 
 + Request (application/json)
 
@@ -1444,8 +1475,7 @@ the client needs to know which information it is. The response is the created di
             "scope": "document",                        // required, one of the scopes above
             "languageId": "en_GB",                      // required if scope!=audience
             "audienceId": "aud-1",                      // required if scope=audience
-            "documentId": "283ab1e075f21a",             // required if scope=document
-            "userId": "fred"                            // optional, default: user from access token
+            "documentId": "283ab1e075f21a"             // required if scope=document
         }
 
 + Response 200
@@ -1456,11 +1486,17 @@ the client needs to know which information it is. The response is the created di
             "scope": "document",
             "languageId": "en_GB",
             "audienceId": null,
-            "documentId": "283ab1e075f21a",
-            "userId": null
+            "documentId": "283ab1e075f21a"
           }
         }
 
+Beware: 
+Spell checking is a multifaceted functionality.
+Whether or not a particular issue will disappear after adding it to the dictionary, depends on the issue's true nature.
+The spelling checker tells you if you can reasonably suppress an issue by adding a surface to the dictionary.
+In the check result: 
+    
+    issues[n].canAddToDictionary: true
 
 # Data Structures
 
