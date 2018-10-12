@@ -1461,44 +1461,6 @@ the client needs to know which information it is. The response is the created di
           }
         }
 
-# Search for Dictionary Entries [POST /api/v1/dictionary/search]
-
-This is new functionality intended to make the contents of the spelling dictionary transparent for the first time.
-The dictionary entry in the request payload is used as the search criteria, where "null" fields mean "any".
-The response is a list of all entries across all dictionaries where the entry fields match the non-null criteria exactly.
-
-+ Request (application/json)
-
-        {
-            "surface": "wiruwaruwolz",
-            "scope": null,
-            "languageId": "en_GB",
-            "audienceId": null,
-            "documentId": null,
-            "userId": null
-        }
-
-+ Response 200
-
-        "data": {[
-            {
-                "surface": "wiruwaruwolz",
-                "scope": "document",
-                "languageId": "en_GB",
-                "audienceId": null,
-                "documentId": "283ab1e075f21a",
-                "userId": null
-            },
-            {
-                "surface": "wiruwaruwolz",
-                "scope": "user",
-                "languageId": "en_GB",
-                "audienceId": null,
-                "documentId": null,
-                "userId": "fred"
-            }
-        ]}
-
 
 # Data Structures
 
