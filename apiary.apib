@@ -665,71 +665,13 @@ This call includes an implicit "create/search for document" (in case no document
 
         {
           "data": {
-            "id": "AB-153",
-            # DRAFT ------START------
-            "batchId": "159203590",
-            "document": {
-                "id": "283ab1e075f21a",
-                "customFields": [
-                    {
-                        "displayName": "Project ID",
-                        "key": "projectId",
-                        "value": "Marketing Campaign",
-                        "required": true
-                    }
-                ],
-            }
+            "id": "AB-153"
           },
-          # DRAFT ------END------
           "links": {
             "result": "https://tenant.acrolinx.cloud/api/v1/checking/checks/AB-153",
             "cancel": "https://tenant.acrolinx.cloud/api/v1/checking/checks/AB-153"
           }
         }
-
-+ Response 400 (application/json)
-
-        {
-          "error": {
-            "message": "Custom field values are missing",
-            "type": "custom_fields_incomplete",
-            "validationDetails": [
-                {
-                    "title": "Custom field is required.",
-                    "constraint": "Custom field \"Field\" must not be empty.",
-                    "attributePath": "customFields.Field",
-                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
-                    "invalidValue": null,
-                    "type": "Required"
-                }
-            ],
-            "status": 400
-          },
-          "links": {
-          }
-        }
-
-+ Response 400 (application/json)
-
-        // if any of the given custom fields is invalid, a detailed error information is given.
-        {
-          "error": {
-            "detail": "Please provide values for all required custom fields.",
-            "type": "validation",
-            "title": "Custom field values are missing",
-            "validationDetails": [
-                {
-                    "title": "Custom field is required.",
-                    "constraint": "Custom field \"Field\" must not be empty.",
-                    "attributePath": "customFields.Field",
-                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
-                    "invalidValue": null,
-                    "type": "Required"
-                }
-            ],
-            "status": 400
-         }
-       }
 
 + Response 400 (application/json)
 
@@ -790,11 +732,11 @@ Polls the check result. Either a progress or the completed result is returned. T
                 "checkType": "interactive",
                 "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }]
             },
-            # DRAFT ------START------
             "document": {
                 "id": "283ab1e075f21a",
-                "reference": "C:\\abc.md",
+# DRAFT BEGIN
                 "contentType": "E-Mail",
+# DRAFT END
                 "customFields": [
                     {
                         "displayName": "Project ID",
@@ -807,7 +749,6 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "reference": "abc.md"
                 }
             },
-            # DRAFT -------END-------
             "quality": {
                 "score": 57,
                 "status": "red"
@@ -1140,6 +1081,57 @@ Polls the check result. Either a progress or the completed result is returned. T
           # DRAFT -------END-------
         }
 
++ Response 400 (application/json)
+
+        {
+          "error": {
+            "message": "Custom field values are missing",
+            "type": "custom_fields_incorrect",
+            "title": "Custom field values are incomplete.",
+            "documentId": "3487ahgfh5fg-fg3",
+            "validationDetails": [
+                {
+                    "title": "Custom field is required.",
+                    "constraint": "Custom field \"Field\" must not be empty.",
+                    "attributePath": "document.customFields.Field",
+                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
+                    "invalidValue": null,
+                    "possibleValues": ["Correct Value 1","Correct Value 2"],
+                    "type": "Required"
+                }
+            ],
+            "status": 400
+          },
+          "links": {
+          }
+        }
+
++ Response 400 (application/json)
+
+        // if any of the given custom fields is invalid, a detailed error information is given.
+        {
+          "error": {
+            "detail": "The value for document custom field \"Field\" cannot be \"Wrong Value\".",
+            "type": "custom_fields_incorrect",
+            "title": "Custom field values are incorrect",
+            "documentId": "3487ahgfh5fg-fg3",
+            "validationDetails": [
+                {
+                    "title": "Custom field of invalid value.",
+                    "constraint": "Custom field \"Field\" must not be \"Wrong Value\".",
+                    "attributePath": "document.customFields.Field",
+                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
+                    "invalidValue": "Wrong Value",
+                    "possibleValues": ["Correct Value 1","Correct Value 2"],
+                    "type": "InvalidValue" // InvalidValue, InvalidField, Required, Readonly, Inconsistent
+                }
+            ],
+            "status": 400
+         }
+       }
+
+
+
 
 ## Cancel Check [DELETE /api/v1/checking/checks/{id}]
 
@@ -1416,7 +1408,7 @@ This method provides Document which was found in the database.
 
 # Group Dictionary API
 
-This API handles the spelling dictionary. 
+This API handles the spelling dictionary.
 Items listed in the spelling dictionary are ignored (not flagged) by the spelling checker.
 
 ## Dictionary Entry
@@ -1431,7 +1423,7 @@ From an API perspective, an "item" or *dictionary entry* has the following prope
 * `audienceId`: The audience for which the surface shouldn't be a spelling issue.
 * `documentId`: The document in which the surface shouldn't be a spelling issue.
 
-Depending on the `scope`, the -`Id`-values are optional or mandatory: 
+Depending on the `scope`, the -`Id`-values are optional or mandatory:
 
 * `scope=language` requires a `languageId` (or alternatively an `audienceId`).
 * `scope=audience` requires an `audienceId`.
@@ -1441,8 +1433,8 @@ The `documentId` is a persistent identifier of the document from the Acrolinx An
 
 (Tip: With an `audienceId` and a `documentId` you're always on the safe side.)
 
-(Tip: Audiences have languages. 
-Keep `languageId` and `audienceId` consistent in that respect if sending both. 
+(Tip: Audiences have languages.
+Keep `languageId` and `audienceId` consistent in that respect if sending both.
 Otherwise the winner depends on the `scope`.)
 
 ## Get Dictionary Capabilities [GET /api/v1/dictionary/capabilities]
@@ -1450,8 +1442,8 @@ Otherwise the winner depends on the `scope`.)
 This method enables the integration to discover the available dictionary scopes.
 (The availability of scopes depends on the server configuration and the user's privileges.)
 
-Alternatively, you can retrieve the available scopes from a check result: 
-    
+Alternatively, you can retrieve the available scopes from a check result:
+
 ```
 data.dictionaryScopes: [ "language", "audience", "document" ]
 ```
@@ -1470,13 +1462,13 @@ data.dictionaryScopes: [ "language", "audience", "document" ]
 
 Create a dictionary entry for the specified scope.
 
-Beware: 
+Beware:
 Spell checking is a multifaceted functionality.
 Whether or not a particular issue will disappear after adding it to the dictionary, depends on the issue's true nature.
 The spelling checker tells you if you can reasonably suppress an issue by adding a surface to the dictionary.
-In the check result: 
+In the check result:
 
-```    
+```
 issues[n].canAddToDictionary: true
 ```
 
