@@ -644,8 +644,7 @@ This call includes an implicit "create/search for document" (in case no document
                 "disableCustomFieldValidation": true                 // no checking of Document Meta Data, mostly for batch checks; optional;
             },
             "document": {                                // optional, default: empty "document" object
-                "id": "283ab1e075f21a",                  // optional; if present: update with following non-null infos (if any); if absent: search for or create ID with following infos
-                "reference": "C:\\abc.md",              // optional, default: do not search for ID, always create
+                "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
                 "customFields": [                       // optional
                     {
                         "key": "field1",
