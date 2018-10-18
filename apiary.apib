@@ -633,10 +633,10 @@ This call includes an implicit "create/search for document" (in case no document
 
         {
             "content": "text to check",                  // required
-            "contentEncoding": "zip,base64",             // optional, default: none = HTTP request encoding
+            "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
             "checkOptions": {
                 "audienceId": "aud-1",                       // optional, default: first audience
-                "reportTypes": ["debug", "termharvesting"],  // optional, default: scorecard_html
+                "reportTypes": ["scorecard"],  // optional, default: scorecard
                 "contentFormat": "markdown",                 // optional, default: auto
                 "checkType": "batch",                        // optional, default: interactive, the priority of the check
                 "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
