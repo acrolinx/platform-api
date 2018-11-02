@@ -332,6 +332,19 @@ If an invalid access token was sent, the response is still a 401, though.
           "links": {}
         }
 
+## Platform Capabilities [GET /api/v1/capabilities]
+
+An aggregation of the capabilities of the APIs subresources. This resource serves a single entry point for clients that need
+to use more than one feature of the API.
+
++ Response 200 (application/json)
+    + Attributes
+        + data (object)
+            + checking (object) - capabilities of the checking resource
+            + document (Document Capabilities) - capabilities of the document resource
+        + links (object)
+
+
 # Group Authentication API
 
 Authentication is handled either with a configured access token, with single sign-on (SSO) or in an interactive process by signing in with the Acrolinx sign-in web page.
@@ -1390,6 +1403,16 @@ This method provides Document which was found in the database.
           }
         }
 
+## Document API Capabilities [GET /api/v1/document/capabilities]
+
+Use this method to discover the configuration and capabilities of the document API.
+Available information includes the configured document custom fields.
+
++ Response 200 (application/json)
+    + Attributes
+        + data (Document Capabilities)
+        + links (object)
+
 # Group Dictionary API
 
 This API handles the spelling dictionary.
@@ -1491,9 +1514,9 @@ This API allows access to the terminology database.
     + `accessToken`: `123579080a8d1fee12490a90dc3` (string, required)
     + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], required)
         + Members
-        + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sign-In website.
-        + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
-        + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
+            + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sign-In website.
+            + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
+            + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
     + `user`
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, required)
     + `integration` (Integration)
@@ -1543,6 +1566,22 @@ This API allows access to the terminology database.
 ## Integration (object)
 + properties (object) - server-side configuration for the integration, that signed in
 + addons (array) - enabled Acrolinx Add-ons
+
+## Document Capabilities (object)
++ customFields (array[Custom Field]) - configured document custom field
+
+## Custom Field (object)
++ key: department (string)
++ inputType: `optional` (enum[string])
+    + Members
+        - required
+        - optional
+        - externally_provided
++ type: text (enum[string])
+    + Members
+        - list
+        - text
++ possibleValues (array[string], optional) - a list of possible values for list-type fields
 
 ## Get Terminology Index - DRAFT [GET /api/v1/terminology]
 
