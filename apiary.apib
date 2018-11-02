@@ -364,22 +364,7 @@ to authenticate the request.
     - The `X-Acrolinx-Auth` header contained a valid token.
     - Single Sign-on is configured and valid credentials are supplied.
 
-    + Body
-    + Attributes
-        + data
-          + `state`:`Success` (string, required)
-          + `accessToken`: `123579080a8d1fee12490a90dc3` (string, required)
-          + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], required)
-             + Members
-                + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sign-In website.
-                + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
-                + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
-          + `user`
-             + id `eb323701-839f-4998-b56e-3e20c70259c5` (string, required)
-        + `links` (optional)
-            + `get_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
-            + `update_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
-
+    + Attributes (Authorization Success)
 
 + Response 201 (application/json)
     If the `X-Acrolinx-Auth` header is absent a
@@ -463,7 +448,7 @@ When polling returned a final result, the polling endpoint will disappear and re
 
    Note that this resource will disappear after this response.
 
-   + Attributes (Authorization Response)
+   + Attributes (Authorization Success)
 
 + Response 202 (application/json)
    The user hasn't authorized the sign-in yet. Request the same URI again to continue polling.
@@ -1500,20 +1485,18 @@ This API allows access to the terminology database.
 
 # Data Structures
 
-## Authorization Response (object)
+## Authorization Success (object)
 + data
-  + `state`:`Success` (enum[string], required)
-     + Members
-        + `Success`
-        + `Started`
-  + `accessToken`: `123579080a8d1fee12490a90dc3` (string, optional)
-  + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], optional)
-     + Members
+    + `state`:`Success` (string, required)
+    + `accessToken`: `123579080a8d1fee12490a90dc3` (string, required)
+    + `authorizedUsing`: `ACROLINX_SIGN_IN` (enum[string], required)
+        + Members
         + `ACROLINX_SIGN_IN` - Authorized by the user signing in via the Acrolinx Sign-In website.
         + `ACROLINX_TOKEN` - Authorized by a token provided with the request.
         + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
-  + `user`
-     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
+    + `user`
+        + id `eb323701-839f-4998-b56e-3e20c70259c5` (string, required)
+    + `integration` (Integration)
 + `links` (optional)
     + `get_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
     + `update_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
@@ -1557,6 +1540,9 @@ This API allows access to the terminology database.
 - `displayName`: `Hupa` (string) - use this string to represent this language in your UI
 - `order`: `33` (number) - represents the visual order between siblings, not necessary continuous or complete
 
+## Integration (object)
++ properties (object) - server-side configuration for the integration, that signed in
++ addons (array) - enabled Acrolinx Add-ons
 
 ## Get Terminology Index - DRAFT [GET /api/v1/terminology]
 
