@@ -11,11 +11,11 @@ The Acrolinx Platform API is the new REST like API for accessing the Core Platfo
 
 When using the Acrolinx Platform API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
 
-An **Access Token** is an encoded and cryptographically singed string. It has the following characteristics:
+An **Access Token** is an encoded and cryptographically signed string. It has the following characteristics:
 
 * It's bound to a user
 * There can be an infinite number of Access Tokens per user
-* It has a certain lifetime (default 30 Days, can be changed)
+* It has a certain lifetime (default 30 days, can be changed)
 * It will expire after the lifetime or when the password of the associated user is changed
 * It provides authorization and authentication
 
@@ -38,9 +38,9 @@ An API Token is an Access Token but with special characteristics:
 * It expires after this lifetime but **not when password of the user changes.**
 * Only one API Token can be bound to a user at the time
 
-You can get an API Token by accessing user settings page on the Dashboard and generate one.
+You can get an API Token by accessing the user settings page on the Dashboard and generating one.
 
-Other than that the **API Token** functions as an **Access Token**.
+Other than that, the **API Token** functions as an **Access Token**.
 
 # General Headers
 
@@ -70,7 +70,7 @@ Example:
 ## Client Locale
 
 All methods accept a header `X-Acrolinx-Client-Locale`, with which the client can identify its own locale (for example, UI language).
-The value of the header field must be a single language tag that is compliant to BCP 47. The server will try to return message strings
+The value of the header field must be a single language tag that is compliant to BCP 47. The Acrolinx Platform will try to return message strings
 and other locale-specific parts of the response in the requested language.
 
 Example:
