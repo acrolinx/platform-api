@@ -1205,7 +1205,7 @@ Security:
         {
           "data": {
             "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-            "signIn": "fred",
+            "username": "fred",
             "fullName": "Fred Freelancer",   //
             "tenantId": "smarttech",
             "properties" : {
@@ -1264,7 +1264,7 @@ Security:
         {
          "data": {
             "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-            "signIn": "fred",
+            "username": "fred",
             "fullName": "Fred Freelancer",   //
             "tenantId": "smarttech",
             "properties" : {
@@ -1519,6 +1519,7 @@ This API allows access to the terminology database.
             + `ACROLINX_SSO` - Authorized by single sign-on credentials provided with the request.
     + `user`
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, required)
+		+ username: `user` (string,required)
     + `integration` (Integration)
 + `links` (optional)
     + `get_user`: `https://tenant.acrolinx.cloud/api/v1/user/eb323701-839f-4998-b56e-3e20c70259c5` (string, optional)
