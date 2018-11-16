@@ -830,27 +830,13 @@ Polls the check result. Either a progress or the completed result is returned. T
                             }
                         }
                     ],
-                    # DRAFT ------START------
-                    "actions": [
-                        {
-                            "id": "help",
-                            "url": "https://tenant.acrolinx.cloud/htmldata/en/rules/help/title_case_chicago.html",
-                            "displayName": "Help"
-                        },
-                        {
-                            "id": "termContributionForm",
-                            "url": "https://tenant.acrolinx.cloud/termcontribution.html?surface=@@base64:cXdlcnR5dWlvcA==&locale=en&language=en&userid=admin&context=@@base64:VGhpcyBzZW50ZW5jZSBoYXMgYSBxd2VydHl1aW9wLg==#",
-                            "displayName": "Add as Term"
-                        }
-                    ],
-                    # DRAFT -------END-------
-                    # DRAFT ------START------
                     "links":
                         {
                             "termContribution": "https://tenant.acrolinx.cloud/terminology/v7/rest/contribute",
-                            "addToDictionary": "https://tenant.acrolinx.cloud/api/v1/dictionary/submit"
+                            "termContributionInteractive": "https://tenant.acrolinx.cloud/termcontribution.html?surface=@@base64:cXdlcnR5dWlvcA==&locale=en&language=en&userid=admin&context=@@base64:VGhpcyBzZW50ZW5jZSBoYXMgYSBxd2VydHl1aW9wLg==",
+                            "addToDictionary": "https://tenant.acrolinx.cloud/api/v1/dictionary/submit",
+                            "help":"https://tenant.acrolinx.cloud/htmldata/en/rules/help/title_case_chicago.html"
                         }
-                    # DRAFT -------END-------
                 },
                 {
                     "goalId": "term.unsuitable",
@@ -884,15 +870,6 @@ Polls the check result. Either a progress or the completed result is returned. T
                             }
                         }
                     ],
-                    # DRAFT ------START------
-                    "actions": [
-                        {
-                            "id": "help",
-                            "url": "https://tenant.acrolinx.cloud/termhelp?termUniversalId=9c2e9ffb-a314-4b61-94b2-d62db3c18945&locale=en",
-                            "displayName": "Help"
-                        }
-                    ],
-                    # DRAFT -------END-------
                     # DRAFT ------START------
                     "debug": {
                         "term": {
@@ -1057,25 +1034,10 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "linkAuthenticated": "https://tenant.acrolinx.cloud/output/en//termharvesting_1.xml?apikey=tfhzzhfhrz"
                 }
             },
-            # DRAFT ------START------
-            "actions": [
-                {
-                    "id": "termContributionForm",
-                    "url": "https://tenant.acrolinx.cloud/termcontribution.html",
-                    "displayName": "Add as Term",
-                    "icon": "icon-term-contribute",
-                    "replacedBy": "termContribution"
-                }
-            ],
-            # DRAFT -------END-------
             "dictionaryScopes": ["language", "audience", "document"]
           },
-          # DRAFT ------START------
           "links": {
-                "termContribution": "https://tenant.acrolinx.cloud/terminology/rest/v7/contribute",
-                "deleteScorecard": "https://tenant.acrolinx.cloud/api/v1/checking/153/result"
           }
-          # DRAFT -------END-------
         }
 
 + Response 400 (application/json)
