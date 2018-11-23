@@ -1011,13 +1011,20 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }],
                 "target": []
             },
-            "embed":{
-                "timeStarted": 1542794003.424,
-                "score": 84,
-                "status": "green",
-                "scorecardUrl": "https://tenant.acrolinx.cloud/services/output/en/saktq5udxet3we7buzdrlabb5z_report.html"
-            },
-            # DRAFT ------START------
+            "embed":[{ // While the below keys represent the current implementation, they can change without notice
+                "key": "timeStarted",
+                "value": "2018-11-23T07:29:10.979Z[UTC]"
+            },{
+                "key": "score",
+                "value": "84"
+            },{
+                "key": "status",
+                "value": "green"
+            },{
+                "key": "scorecardUrl",
+                "value": "https://tenant.acrolinx.cloud/services/output/en/oi5ilqippevjh2cdyn3hyldiwa_report.html"
+            }],
+            // DRAFT ------START------
             "addonInfo": [
                 {
                     "id": "mightyAddon",
@@ -1027,7 +1034,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "url": "https://mighy.cool.com/addon?fancyId=12345"
                 }
             ],
-            # DRAFT -------END-------
+            // DRAFT -------END-------
             "reports": {
                 "scorecard": {
                     "displayName":"Score Card",
