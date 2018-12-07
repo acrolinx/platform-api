@@ -173,7 +173,7 @@ Errors with type `validation` come with a list of constraint violation descripti
     "constraint": "The 'languageId' is required.",
     "attributePath": "submit.arg1.languageId",
     "detail": "The 'languageId' is required but was 'null'.",
-    "invalidValue": "DictionaryEntry{surface='TestSurface', scope=language, languageId='', contentGoalId='null', documentId='null'}",
+    "invalidValue": "DictionaryEntry{surface='TestSurface', scope=language, languageId='', guidanceProfileId='null', documentId='null'}",
     "possibleValues": ["en", "de"]
 }
 
@@ -509,24 +509,24 @@ The API for checking documents.
 
 ## List Checking Capabilities [GET /api/v1/checking/capabilities]
 
-The new checking API replaces writing guides and Content Profiles with a flat list of content goals. Each content goal corresponds to a
-writing guide or a Checking Profile. If Sublanguages are activated, they're folded into the list of content goals.
+The new checking API replaces writing guides and Content Profiles with a flat list of guidance profiles. Each guidance profile corresponds to a
+writing guide or a Checking Profile. If Sublanguages are activated, they're folded into the list of guidance profiles.
 
-For each content goal, the server provides information about the language, activated aspects, and term sets. The client may use this
-for filtering purposes, but they can only select one (complete) content goal for checking (for example, not deselect aspects).
+For each guidance profile, the server provides information about the language, activated goals, and term sets. The client may use this
+for filtering purposes, but they can only select one (complete) guidance profile for checking (for example, not deselect goals).
 
 + Response 200 (application/json)
 
         {
           "data": {
-            "contentGoals": [
+            "guidanceProfiles": [
                 {
                     "id": "aud-1",
                     "displayName": "Tom the Technical Type",
                     "language": {
                         "displayName": "English (Great Britain)"
                     },
-                    "aspects": [{
+                    "goals": [{
                         "id": "spelling",
                         "displayName": "Spelling",
                         "color": "#f21"
@@ -559,7 +559,7 @@ for filtering purposes, but they can only select one (complete) content goal for
                     "language": {
                         "displayName": "German"
                     },
-                    "aspects": [{
+                    "goals": [{
                         "id": "spelling",
                         "displayName": "Spelling",
                         "color": "#f21"
@@ -634,7 +634,7 @@ This call includes an implicit "create/search for document" (in case no document
             "content": "text to check",                  // required
             "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
             "checkOptions": {
-                "contentGoalId": "aud-1",                       // optional, default: first content goal
+                "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
                 "reportTypes": ["scorecard"],  // optional, default: scorecard
                 "contentFormat": "markdown",                 // optional, default: auto
                 "checkType": "batch",                        // optional, default: interactive, the priority of the check
@@ -675,9 +675,9 @@ This call includes an implicit "create/search for document" (in case no document
 
         {
           "error": {
-            "detail": "The content goal doesn't exist or isn't available for the user id and language given.",
+            "detail": "The guidance profile doesn't exist or isn't available for the user id and language given.",
             "type": "content_goal",
-            "title": "Content goal doesn't exist",
+            "title": "guidance profile doesn't exist",
             "status": 400
           },
           "links": {
@@ -716,8 +716,8 @@ Polls the check result. Either a progress or the completed result is returned. T
           "data":{
             "id": "AB-153",
             "checkOptions": {
-                "contentGoalId": "aud_1",
-                "contentGoalName": "Acrolinx Essentials",
+                "guidanceProfileId": "aud_1",
+                "guidanceProfileName": "Acrolinx Essentials",
                 "languageId": "en",
                 "termSets": [{
                     "displayName": "Switches"
@@ -756,7 +756,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 "words": 121,
                 "issues": 15
             },
-            "aspects": [
+            "goals": [
                 {
                     "id": "spelling",
                     "displayName": "Spelling",
@@ -778,7 +778,7 @@ Polls the check result. Either a progress or the completed result is returned. T
             ],
             "issues": [
                 {
-                    "aspectId": "spelling",
+                    "goalId": "spelling",
                     "internalName": "title_case_chicago",
                     "displayNameHtml": "Use Chicago style for the title case?",
                     "guidanceHtml": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
@@ -840,7 +840,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                         }
                 },
                 {
-                    "aspectId": "term.unsuitable",
+                    "goalId": "term.unsuitable",
                     "internalName": "term_flag",
                     "displayName": "<b>Illegal sublanguage variant</b> of preferred term",
                     "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
@@ -884,7 +884,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     # DRAFT -------END-------
                 },
                 {
-                    "aspectId": "voice.readability",
+                    "goalId": "voice.readability",
                     "internalName": "en-clarity-medium",
                     "displayName": "Too complex? Your readers need a medium level of clarity. ",
                     "guidance": "",
@@ -918,7 +918,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                         "penalty": 1234.0967741949999
                     },
                     "subIssues": [{
-                        "aspectId": "voice.readability",
+                        "goalId": "voice.readability",
                         "internalName": "phenomenon_embedded_or_complex_sentence",
                         "displayName": "Try to split up this sentence.",
                         "guidance": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
@@ -952,7 +952,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "penalty": 320.0
                         }
                     }, {
-                        "aspectId": "voice.readability",
+                        "goalId": "voice.readability",
                         "internalName": "phenomenon_passive",
                         "displayName": "The active voice is usually clearer.",
                         "guidance": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
@@ -1048,7 +1048,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "linkAuthenticated": "https://tenant.acrolinx.cloud/output/en//termharvesting_1.xml?apikey=tfhzzhfhrz"
                 }
             },
-            "dictionaryScopes": ["language", "contentGoal", "document"]
+            "dictionaryScopes": ["language", "guidanceProfile", "document"]
           },
           "links": {
           }
@@ -1405,24 +1405,24 @@ From an API perspective, an "item" or *dictionary entry* has the following prope
 * `surface`: The string that isn't a spelling issue.
 * `scope`: The range of influence of the spelling exception.
     * `language`
-    * `contentGoal`
+    * `guidanceProfile`
     * `document`
 * `languageId`: The language in which the surface shouldn't be a spelling issue.
-* `contentGoalId`: The contentGoal for which the surface shouldn't be a spelling issue.
+* `guidanceProfileId`: The guidanceProfile for which the surface shouldn't be a spelling issue.
 * `documentId`: The document in which the surface shouldn't be a spelling issue.
 
 Depending on the `scope`, the -`Id`-values are optional or mandatory:
 
-* `scope=language` requires a `languageId` (or alternatively an `contentGoalId`).
-* `scope=contentGoal` requires an `contentGoalId`.
-* `scope=document` requires a `documentId` and alternatively a `languageId` or an `contentGoalId`.
+* `scope=language` requires a `languageId` (or alternatively an `guidanceProfileId`).
+* `scope=guidanceProfile` requires an `guidanceProfileId`.
+* `scope=document` requires a `documentId` and alternatively a `languageId` or an `guidanceProfileId`.
 
 The `documentId` is a persistent identifier of the document from the Acrolinx Analytics reporting database.
 
-(Tip: With an `contentGoalId` and a `documentId` you're always on the safe side.)
+(Tip: With an `guidanceProfileId` and a `documentId` you're always on the safe side.)
 
-(Tip: Content goals have languages.
-Keep `languageId` and `contentGoalId` consistent in that respect if sending both.
+(Tip: guidance profiles have languages.
+Keep `languageId` and `guidanceProfileId` consistent in that respect if sending both.
 Otherwise the winner depends on the `scope`.)
 
 ## Get Dictionary Capabilities [GET /api/v1/dictionary/capabilities]
@@ -1433,14 +1433,14 @@ This method enables the integration to discover the available dictionary scopes.
 Alternatively, you can retrieve the available scopes from a check result:
 
 ```
-data.dictionaryScopes: [ "language", "contentGoal", "document" ]
+data.dictionaryScopes: [ "language", "guidanceProfile", "document" ]
 ```
 
 + Response 200 (application/json)
 
         {
           "data": {
-            "scopes": [ "language", "contentGoal", "document" ]
+            "scopes": [ "language", "guidanceProfile", "document" ]
           }
         }
 
@@ -1465,8 +1465,8 @@ issues[n].canAddToDictionary: true
         {
             "surface": "wiruwaruwolz",                  // required
             "scope": "document",                        // required, one of the scopes above
-            "languageId": "en_GB",                      // required if scope!=contentGoal
-            "contentGoalId": "aud-1",                      // required if scope=contentGoal
+            "languageId": "en_GB",                      // required if scope!=guidanceProfile
+            "guidanceProfileId": "aud-1",                      // required if scope=guidanceProfile
             "documentId": "283ab1e075f21a"             // required if scope=document
         }
 
@@ -1477,7 +1477,7 @@ issues[n].canAddToDictionary: true
             "surface": "wiruwaruwolz",
             "scope": "document",
             "languageId": "en_GB",
-            "contentGoalId": null,
+            "guidanceProfileId": null,
             "documentId": "283ab1e075f21a"
           }
         }
