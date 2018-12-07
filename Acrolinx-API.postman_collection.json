@@ -127,7 +127,7 @@
 					"response": []
 				},
 				{
-					"name": "Check Request with contentGoal ID",
+					"name": "Check Request with guidanceProfile ID",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -146,7 +146,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"contentGoalId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
+							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"guidanceProfileId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
 						},
 						"url": {
 							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
@@ -161,7 +161,7 @@
 								"checks"
 							]
 						},
-						"description": "The contentGoalId defines which guidelines are applied."
+						"description": "The guidanceProfileId defines which guidelines are applied."
 					},
 					"response": []
 				},
@@ -185,7 +185,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"contentGoalId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\",\n        \"batchId\": \"my_super_batch_id_1\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
+							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"guidanceProfileId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\",\n        \"batchId\": \"my_super_batch_id_1\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
 						},
 						"url": {
 							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
