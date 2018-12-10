@@ -255,7 +255,7 @@ All HTML fields contain only undangerous formatting tags that can be used withou
 
 # Group Index
 
-## Index [GET /api/v1] - DRAFT
+## Index [GET /api/v1]
 
 Note: This is the only web service method that provides a 200 response if no access token was sent.
 If an invalid access token was sent, the response is still a 401, though.
@@ -272,17 +272,13 @@ If an invalid access token was sent, the response is still a 401, though.
         {
           "data": {
             "server": {
-                "version": "5.1.0",
-                "build": "12175",
-                "name": "Acrolinx Cloud instance for Tenant"
+                "version": "5.1.0.123",
+                "name": "Acrolinx Core Platform"
             },
-            "locales": [ "en" ],
-            "settings": {
-                "useLegacyResultDialog": true
-            }
+            "locales": [ "en" ]
           },
           "links": {
-            "login": "https://tenant.acrolinx.cloud/api/v1/auth/login"
+            "signIn": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins"
             }
         }
 
@@ -299,23 +295,16 @@ If an invalid access token was sent, the response is still a 401, though.
         {
           "data": {
             "server": {
-                "version": "5.4.0",
-                "build": "12175",
-                "name": "Acrolinx Cloud instance for Tenant"
+                "version": "5.1.0.123",
+                "name": "Acrolinx Core Platform"
             },
             "locales": {
                 "en"
-            },
-            "settings": {
-                "useLegacyResultDialog": true
             }
           },
           "links": {
-            "login": "https://tenant.acrolinx.cloud/api/v1/auth/login",
-            "logoff": "https://tenant.acrolinx.cloud/api/v1/auth/logoff",
-            "checking": "https://tenant.acrolinx.cloud/api/v1/checking",
-            "terminology": "https://tenant.acrolinx.cloud/api/v1/terminology",
-            "findability": "https://tenant.acrolinx.cloud/api/v1/findability"
+            "signIn": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins",
+            "submitCheck": "http://tennant.acrolinx.cloud/api/v1/checking/checks"
           }
         }
 
