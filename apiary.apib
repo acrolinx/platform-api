@@ -123,9 +123,9 @@ HTTP/1.1 403 Forbidden
 Content-Type: application/problem+json
 {
   "error": {
-    "type": "invalid_token",
-    "title": "Invalid access token",
-    "detail": "The provided token for authorization is expired.",
+    "type": "auth",
+    "title": "Invalid authentication",
+    "detail": "The provided token for authorization is not valid.",
     "status": 403
   }
   "links": {}
@@ -150,18 +150,20 @@ Type | Description| What to do
 -----|------------|------------
 `client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
 `server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
-`client_signature_missing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to acquire a valid license.
-`client_signature_rejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | Contact Acrolinx, how to acquire a valid license.
+`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to acquire a valid license.
+`clientSignatureRejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | Contact Acrolinx, how to acquire a valid license.
 `sso` | Returned for any single sign-on errors. | Most probably this is a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
-`insufficient_privileges` | Insufficient privileges. | Assign the required privileges to the user.
-`interactive_sign_in_timed_out` | The interactive sign-in process timed out. | Start new.
-`bad_content` | Couldn't decode content. | Probably points to an error in the client.
-`check_cancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
-`check_failed` | The check failed. | Check logs and configuration.
-`invalid_base_url` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
-`custom_fields_incomplete` | Custom field values are missing. |Please provide values for all required custom fields before or when checking a document.
+`insufficientPrivileges` | Insufficient privileges. | Assign the required privileges to the user.
+`interactiveSignInTimedOut` | The interactive sign-in process timed out. | Start new.
+`badContent` | Couldn't decode content. | Probably points to an error in the client.
+`checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
+`checkFailed` | The check failed. | Check logs and configuration.
+`invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
+`customFieldsIncorrect` | Custom field values are incorrect. |Please provide valid values for all required custom fields before or when checking a document.
 `validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
+`guidanceProfileDoesntExist` | Guidance profile doesn't exist | The guidance profile doesn't exist or isn't available for the user id and language given.
+`noGuidanceProfileConfigured` | No guidance profile configured | For the user id and language given no guidance profile is configured.
 
 ### Additional Information On Validation Errors
 
@@ -313,9 +315,9 @@ If an invalid access token was sent, the response is still a 401, though.
 
         {  // if provided access token became invalid
           "error": {
-            "type": "invalid_token",
+            "type": "auth",
             "title": "Invalid access token",
-            "detail": "The provided token for authorization is expired.",
+            "detail": "The provided token for authorization is invalid.",
             "status": 401
           },
           "links": {}
