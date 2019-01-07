@@ -444,7 +444,7 @@ The find-terms service function requires a request object in the format illustra
     "customCriteria": [
     "term/creation-date-time=<2012-05-10T11:41:00",
     "customWorkflowStatus=reviewed"
-    },
+    ],
     "withSchema": false,
     "format": "application/vnd.acrolinx.mtf+xml"
 }
