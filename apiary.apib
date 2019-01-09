@@ -740,7 +740,62 @@ Polls the check result. Either a progress or the completed result is returned. T
             },
             "quality": {
                 "score": 57,
-                "status": "red"
+                "status": "red",
+                "scoresByStrategy": [
+                {
+                  "id": "average",
+                  "score": 100
+                },
+                {
+                  "id": "minimum",
+                  "score": 100
+                }],
+                "scoresByGoal": [
+                {
+                  "id": "GRAMMAR",
+                  "score": 100
+                },
+                {
+                  "id": "STYLE",
+                  "score": 100
+                },
+                {
+                  "id": "TERMINOLOGY",
+                  "score": 100
+                },
+                {
+                  "id": "INFORMALITY",
+                  "score": 100
+                },
+                {
+                  "id": "READABILITY",
+                  "score": 100
+                },
+                {
+                  "id": "SPELLING",
+                  "score": 100
+                },
+                {
+                  "id": "TERMINOLOGY_ADMITTED",
+                  "score": 0
+                }],
+                "metrics": [
+                {
+                  "id": "Clarity index",
+                  "score": 100
+                },
+                {
+                  "id": "Informality index",
+                  "score": 47
+                },
+                {
+                  "id": "Liveliness index",
+                  "score": 50
+                },
+                {
+                  "id": "Flesch Reading Ease",
+                  "score": 36
+                }]
             },
             "counts": {
                 "sentences": 10,
@@ -748,25 +803,48 @@ Polls the check result. Either a progress or the completed result is returned. T
                 "issues": 15
             },
             "goals": [
-                {
-                    "id": "spelling",
-                    "displayName": "Spelling",
-                    "color": "#f21",
-                    "issueCount": 13,
-                },
-                {
-                    "id": "voice.readability",
-                    "displayName": "Clarity",
-                    "color": "#f22",
-                    "issueCount": 2,
-                },
-                {
-                    "id": "term.unsuitable",
-                    "displayName": "Unsuitable Term",
-                    "color": "#f23",
-                    "issueCount": 0
-                }
-            ],
+            {
+              "id": "SPELLING",
+              "displayName": "Spelling",
+              "color": "#ff838b",
+              "issues": 0
+            },
+            {
+                "id": "GRAMMAR",
+                "displayName": "Grammar",
+                "color": "#97beff",
+                "issues": 0
+            },
+            {
+                "id": "STYLE",
+                "displayName": "Style",
+                "color": "#70cb9c",
+                "issues": 0
+            },
+            {
+                "id": "TERMINOLOGY",
+                "displayName": "Deprecated Terms",
+                "color": "#ffc0ff",
+                "issues": 0
+            },
+            {
+                "id": "TERMINOLOGY_ADMITTED",
+                "displayName": "Admitted Terms",
+                "color": "#90b0fd",
+                "issues": 0
+            },
+            {
+                "id": "READABILITY",
+                "displayName": "Clarity",
+                "color": "#b77891",
+                "issues": 0
+            },
+            {
+                "id": "INFORMALITY",
+                "displayName": "Conversational Tone",
+                "color": "#cb3393",
+                "issues": 0
+            }],
             "issues": [
                 {
                     "goalId": "spelling",
