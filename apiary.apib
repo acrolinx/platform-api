@@ -92,12 +92,12 @@ If not otherwise documented, all methods require a header `X-Acrolinx-Client` to
 returns an error, if the header is omitted or the given signature isn't valid.
 
 The format of the signature is `Signature;Version;buildNumber`, where `Signature` is the signature as configured in the Acrolinx license and
-`Version` is the version number of the client and `buildNumber` the build number of the client.
+`Version` is the version number of the client.
 
 Example:
 
 ```
-    X-Acrolinx-Client: SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5; 1.0.1.45; 12345
+    X-Acrolinx-Client: SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5; 1.0.1.45
 ```
 
 # Response Format
