@@ -1,4 +1,4 @@
-# Acrolinx Platform API (0.7 Beta)
+# Acrolinx Platform API
 
 Hello and welcome to the Acrolinx Platform API.
 This documentation is for you if you plan to use:
@@ -7,16 +7,7 @@ This documentation is for you if you plan to use:
 * implement your own integration,
 * or just want to know how the interaction between the Acrolinx Platform and its integrations works.
 
-Currently the Acrolinx Platform API is in a BETA state and not final.
-So things will change. However the main concepts will stay the same.
-
 In the [reference](#reference), you can find the documentation for all services and methods.
-
-## It's a Beta
-
-The Acrolinx Platform API is still evolving and not stable.
-We deploy the latest build daily.
-If something doesn't work, check the next day if it works again.
 
 ## Prerequisites
 
