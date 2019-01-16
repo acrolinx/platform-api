@@ -53,8 +53,7 @@ Content-Type:application/json
 
 More on the contents of these headers in the individual topics.
 In general make sure that all requests to the Acrolinx Platform API are containing these headers.
-Use Cases
-Make sure that you actually need to use the API directly. We have SDKs and ready made integrations.
+Use Cases make sure that you actually need to use the API directly. We have SDKs and ready made integrations.
 More information you can find here.
 
 ## Authentication
@@ -105,7 +104,7 @@ This is how it works:
     }
     ```
 
-3. Promt the `interactive` URL to the user to authenticate.
+3. Prompt the `interactive` URL to the user to authenticate.
     Poll with the `poll` URL until you're getting an http response (code 200).
 
     ```HTTP
@@ -130,7 +129,7 @@ This is how it works:
 
 Getting an API Token is easy:
 
-* Sing-in to the Acrolinx Dashboard
+* Sign-in to the Acrolinx Dashboard
 * Click on ‘Settings' on the top
 * Scroll down
 * Click on ‘CREATE API TOKEN'
