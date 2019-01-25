@@ -626,7 +626,8 @@ This call includes an implicit "create/search for document" (in case no document
             "checkOptions": {
                 "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
                 "reportTypes": ["scorecard"],  // optional, default: scorecard
-                "contentFormat": "markdown",                 // optional, default: interactive
+                "contentFormat": "markdown",                 // optional, default: auto
+                "checkType": "batch",                        // optional, default: interactive
                                                              // the use case of the check, can be:
                                                              //   interactive =  human user checks own document
                                                              //   batch       =  human user checks many own documents
