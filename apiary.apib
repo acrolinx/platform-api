@@ -581,7 +581,7 @@ for filtering purposes, but they can only select one (complete) guidance profile
             ],
             "contentEncodings": [ "none", "zip,base64", "base64" ],
             "referencePattern": "\\.(xml|xhtm|xhtml)$|\\.(md|markdown|mdown|mkdn|mkd)$|\\.(docx|docm|pptx|pptm|xlsx|xlsm)$|\\.txt$",
-            "checkTypes": [ "batch", "interactive" ],
+            "checkTypes": [ "batch", "interactive", "baseline", "automated" ],
             "reportTypes": ["scorecard_xml", "scorecard_html", "debug", "termharvesting"]
           }
         }
@@ -626,8 +626,12 @@ This call includes an implicit "create/search for document" (in case no document
             "checkOptions": {
                 "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
                 "reportTypes": ["scorecard"],  // optional, default: scorecard
-                "contentFormat": "markdown",                 // optional, default: auto
-                "checkType": "batch",                        // optional, default: interactive, the priority of the check
+                "contentFormat": "markdown",                 // optional, default: interactive
+                                                             // the use case of the check, can be:
+                                                             //   interactive =  human user checks own document
+                                                             //   batch       =  human user checks many own documents
+                                                             //   baseline    =  a repository of documents is checked, the user doen't own the documents
+                                                             //   automated   =  check of a single document for automated scenarios as for example a git hook
                 "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
                 "batchId": "gen.clc.159203590",                      // only for batch checks; optional;
                 "disableCustomFieldValidation": true                 // no checking of Document Meta Data, mostly for batch checks; optional;
