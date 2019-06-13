@@ -639,8 +639,7 @@ This call includes an implicit "create/search for document" (in case no document
                                                              //   baseline    =  a repository of documents is checked, the user doesn't own the documents
                                                              //   automated   =  check of a single document for automated scenarios as for example a git hook
                 "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
-                "batchId": "gen.clc.159203590",                      // only for batch checks; optional;
-                "disableCustomFieldValidation": true                 // no checking of Document Meta Data, mostly for batch checks; optional;
+                "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
             },
             "document": {                                // optional, default: empty "document" object
                 "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
@@ -652,11 +651,8 @@ This call includes an implicit "create/search for document" (in case no document
                         "key": "field2",
                         "value": "value2"
                     }
-                ],
-                "displayInfo": {                          // optional information about the document; stored but not used for identification
-                    "reference": "abc.md"               // optional, default: document.reference, used to choose file names
-                }
-            }
+                ]
+             }
         }
 
 + Response 201 (application/json)
