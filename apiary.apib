@@ -2107,7 +2107,7 @@ the metrics resource will be added to the links hash. The following relations ar
 + Response 200 (application/json)
 
         {
-          "lins": {
+          "links": {
             "checkMetrics": "/api/v1/monitoring/checks",
             "healthMetrics": "/api/v1/monitoring/health"
           }
@@ -2119,11 +2119,11 @@ Provides a summary of the check activity on the Acrolinx Platform.
 
 |Field                    |Contents
 |-------------------------|-------------------
-|`receivedChecks`         |Total number of check request received by the platform.
+|`receivedChecks`         |Total number of checks received by the platform.
 |`successfulChecks`       |Total number of completed checks that didn’t result in an error.
 |`failedChecks`           |Total number of completed checks that resulted in an error.
 |`unparseableDocuments`   |Total number of checks that failed due to parsing errors.
-|`currentQueueLength`     |Current number of check request waiting for a free language server.
+|`currentQueueLength`     |Current number of checks waiting for a free language server.
 |`totalQueueTime`         |Total time, in seconds, check requests waited for a free language server.
 
 
@@ -2136,7 +2136,7 @@ Provides a summary of the check activity on the Acrolinx Platform.
             + failedChecks (number): 2 - Total number of failed checks
             + unparseableDocuments: 2 (number) - Total number of checks failed due to parsing errors
             + currentQueueLength: 0 (number) - Current number of waiting checks
-            + totalQueueTime: 1563 (number) - Total time checks spend waiting
+            + totalQueueTime: 1563 (number) - Total time checks spent waiting
  
 
 ## Get Health Metrics [GET /api/v1/monitoring/health]
