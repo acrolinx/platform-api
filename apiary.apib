@@ -2081,6 +2081,86 @@ Retrieves active notifications from the platform.
 
 
 
+# Group Monitoring API
+
+The resources in this group provides information about the health and performace of the Acrolinx
+platform. Accessing this information requires the permission "Access monitoring API." This privilege
+is not granted to all users. Make sure the user associated with your API token has the requisite roles.
+
+Monitoring data is divided for the folloing topics:
+* [general health](#monitoring-api-get-health-metrics)
+* [checking metrics](#monitoring-api-get-check-metrics)
+
+If you have the permission to access these values, the
+[metrics index](#monitoring-api-get-available-metrics) will provide links to these metrics.
+
+
+## Get Available Metrics [GET /api/v1/monitoring]
+
+Lists available metrics according to the permissions of the API user. If acces is granted a link to
+the metrics resource will be added to the links hash. The following relations are currently available:
+
+|Key             | Target
+|----------------|-----------------
+|`checkMetrics`  |[check monitoring resource](#monitoring-api-get-check-metrics)
+|`healthMetrics` |[server health monitoring resource](#monitoring-api-get-health-metrics)
+
++ Response 200 (application/json)
+
+        {
+          "lins": {
+            "checkMetrics": "/api/v1/monitoring/checks",
+            "healthMetrics": "/api/v1/monitoring/health"
+          }
+        }
+
+## Get Check Metrics [GET /api/v1/monitoring/checks]
+
+Provides a summary of the check activity on the Acrolinx platform.
+
+|Field                    |Contents
+|-------------------------|-------------------
+|`receivedChecks`         |Total number of check request received by the plaform.
+|`successfulChecks`       |Total number of completed checks that did not result in an error.
+|`failedChecks`           |Total number of completed checks that resulted in an error.
+|`unparseableDocuments`   |Total number of checks that failed due to parsing errors.
+|`currentQueueLength`     |Current number of check request waiting for a free language server.
+|`totalQueueTime`         |Total time, in seconds, check requests waited for a free language server.
+
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + data (object)
+            + receivedChecks: 54132 (number) - Total number of checks received
+            + successfulChecks: 54130 (number) - Total number of successful checks
+            + failedChecks (number): 2 - Total number of failed checks
+            + unparseableDocuments: 2 (number) - Total number of checks failed due to parsing errors
+            + currentQueueLength: 0 (number) - Current number of waiting checks
+            + totalQueueTime: 1563 (number) - Total time checks spend waiting
+ 
+
+## Get Health Metrics [GET /api/v1/monitoring/health]
+
+A general summary of the health of the Acrolinx platform.
+
+|Field                    |Contents
+|-------------------------|-------------------
+|`languagesReady`         |A hash containing all configured languages as keys. If Acrolinx is ready to check in a language ist value will be true.
+
++ Response 200 (application/json)
+
+        {
+          "data": {
+            "languagesReady": {
+                "en": true,
+                "fr": true,
+                "ja": false
+          }
+        }
+
+
+
 # Group Other Methods in Existing API - DRAFT
 
 Checking API:
@@ -2108,7 +2188,4 @@ Reuse API:
 * deprecated anyway
 
 Debug API:
-* not needed for now - special use case
-
-Monitoring API:
 * not needed for now - special use case
