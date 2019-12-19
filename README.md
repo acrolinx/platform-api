@@ -184,7 +184,7 @@ Maintenance in production is getting much easier with a version and build number
 
 ## Reference
 
-### [Rendered Version on apiary.io](http://docs.acrolinxapi.apiary.io/#)
+### [Rendered Version on apiary.io](https://acrolinxapi.docs.apiary.io/#)
 
 ### [Plain Version](apiary.apib)
 
