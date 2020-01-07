@@ -593,6 +593,17 @@ for filtering purposes, but they can only select one (complete) guidance profile
 
 ##  Submit a Check [POST /api/v1/checking/checks]
 
+Submits a document for checking. After uploading the document it will be scheduled for analysis. Once Acrolinx is done checking the document
+all results will be collected and made available. This leads to the following steps when using the check API:
+
+* submit a check
+* poll for progress
+* download check results
+
+For an overview on what documents and file types are supported by Acrolinx please consult the list of
+[Supported Input Types](https://docs.acrolinx.com/coreplatform/latest/en/compatibility/supported-input-types).
+The same information is available in the checking capabilities.
+
 This call includes an implicit "create/search for document" (in case no document id was given) and "update document" (in case document id was given).
 
 + Request (application/json)
