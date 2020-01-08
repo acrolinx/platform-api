@@ -692,7 +692,9 @@ This call includes an implicit "create/search for document" (in case no document
         }
 
 
-## Poll Check Result [GET /api/v1/checking/checks/{id}]
+## Check Result [/api/v1/checking/checks/{id}]
+
+### Poll Check Result [GET]
 
 Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
 
@@ -1186,13 +1188,13 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }
             ],
             "status": 400
-         }
-       }
+          }
+        }
 
 
 
 
-## Cancel Check [DELETE /api/v1/checking/checks/{id}]
+### Cancel Check [DELETE]
 
         Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
 
@@ -1381,8 +1383,8 @@ Returns information about the current user. See below for possible responses.
                 }
             ],
             "status": 400
-         }
-       }
+          }
+        }
 
 + Response 401 (application/json)
 
@@ -1408,7 +1410,8 @@ Typical program flow:
 3. The integration requests the user to fill out the custom field.
 4. The integration sets the new custom fields either using the update document function or while submitting a check request.
 
-## Get Document [GET /api/v1/document/{id}]
+## Document [/api/v1/document/{id}]
+### Get Document [GET]
 
 This method provides Document which was found in the database.
 
@@ -1433,7 +1436,7 @@ This method provides Document which was found in the database.
           }
         }
 
-## Put/ Update Document Custom Fields [PUT /api/v1/document/{id}]
+### Update Document Custom Fields [PUT]
 
 + Request (application/json)
 
