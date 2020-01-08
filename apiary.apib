@@ -334,7 +334,7 @@ to use more than one feature of the API.
     + Attributes
         + data (object)
             + checking (object) - capabilities of the checking resource
-            + document (Document Capabilities) - capabilities of the document resource
+            + document (object) - capabilities of the document resource
         + links (object)
 
 
@@ -370,7 +370,7 @@ to authenticate the request.
     - The `X-Acrolinx-Auth` header contained a valid token.
     - Single Sign-on is configured and valid credentials are supplied.
 
-    + Attributes (Authorization Success)
+    + Attributes (object)
 
 + Response 201 (application/json)
     If the `X-Acrolinx-Auth` header is absent a
@@ -420,7 +420,7 @@ to authenticate the request.
 
             WWW-Authenticate: ACROLINX_TOKEN, ACROLINX_SIGN_IN (, ACROLINX_SSO)
 
-    + Attributes (ErrorResponse)
+    + Attributes (object)
 
 + Response 503
     The server is unable to start a sign-in process at this time.
@@ -429,7 +429,7 @@ to authenticate the request.
 
             Retry-After: 30
 
-    + Attributes (ErrorResponse)
+    + Attributes (object)
 
 ## Poll for a New API Token [GET /api/v1/auth/sign-ins/{id}]
 
@@ -454,7 +454,7 @@ When polling returned a final result, the polling endpoint will disappear and re
 
    Note that this resource will disappear after this response.
 
-   + Attributes (Authorization Success)
+   + Attributes (object)
 
 + Response 202 (application/json)
    The user hasn't authorized the sign-in yet. Request the same URI again to continue polling.
@@ -1480,7 +1480,7 @@ Available information includes the configured document custom fields.
 
 + Response 200 (application/json)
     + Attributes
-        + data (Document Capabilities)
+        + data (object)
         + links (object)
 
 # Group Dictionary API
