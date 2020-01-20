@@ -1,0 +1,19 @@
+{
+    "name": "platform-api",
+    "version": "0.0.1",
+    "description": "Acrolinx Platform API",
+    "license": "Apache-2.0",
+    "author": "Acrolinx",
+    "url": "https://www.acrolinx.com",
+    "repository": "https://github.com/acrolinx/platform-api",
+    "engines": {
+        "node": ">=8.9.4"
+    },
+    "scripts": {
+        "lint": "node scripts/lint.js"
+    },
+    "devDependencies": {
+        "drafter": "^2.0.0-pre.1"
+    },
+    "dependencies": {}
+}
