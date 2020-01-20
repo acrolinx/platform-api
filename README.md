@@ -53,8 +53,6 @@ Content-Type:application/json
 
 More on the contents of these headers in the individual topics.
 In general make sure that all requests to the Acrolinx Platform API are containing these headers.
-Use Cases make sure that you actually need to use the API directly. We have SDKs and ready made integrations.
-More information you can find here.
 
 ## Authentication
 
