@@ -166,6 +166,7 @@ Type | Description| What to do
 `contentTooLarge` | Content to large | Without reconfiguration of the Acrolinx platfrom the document can't be checked.
 `queueLimitExceeded` | Queue limit exceeded | Retry to submit the check after waiting at least as long as suggested in the retry-after header.
 `conflict` | Concurrent write access | Conflict with a concurrent write access. Retry the operation with fresh data.
+`userLimitExceeded` | User limit exceeded | Activated user limit exceeded. To perform a check, you need to release a user license first.
 
 ### Additional Information On Validation Errors
 
@@ -1638,7 +1639,7 @@ The resources in this group provide information about the health and performance
 Accessing this information requires the permission "Access to monitoring API." This privilege isn’t granted
 to all users. Make sure the user associated with your API token has the requisite roles.
 
-For a quick check of your permissions see if the [metrics index](#monitoring-api-get-available-metrics) 
+For a quick check of your permissions see if the [metrics index](#monitoring-api-get-available-metrics)
 contains links. More information about permission management can be found in the
 [Acrolinx documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management).
 
@@ -1685,7 +1686,7 @@ Provides a summary of the check activity on the Acrolinx Platform.
             + unparseableDocuments: 2 (number) - Total number of checks failed due to parsing errors
             + currentQueueLength: 0 (number) - Current number of waiting checks
             + totalQueueTime: 1563 (number) - Total time checks spent waiting
- 
+
 
 ## Get Health Metrics [GET /api/v1/monitoring/health]
 
