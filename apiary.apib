@@ -166,7 +166,7 @@ Type | Description| What to do
 `contentTooLarge` | Content to large | Without reconfiguration of the Acrolinx platfrom the document can't be checked.
 `queueLimitExceeded` | Queue limit exceeded | Retry to submit the check after waiting at least as long as suggested in the retry-after header.
 `conflict` | Concurrent write access | Conflict with a concurrent write access. Retry the operation with fresh data.
-`licenseLimitExceeded` | License limit exceeded | Active license limit exceeded. To perform a check release a license from inactive user.
+`userLimitExceeded` | User limit exceeded | Activated user limit exceeded. To perform a check, you need to release a user license first.
 
 ### Additional Information On Validation Errors
 
