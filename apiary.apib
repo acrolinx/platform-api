@@ -199,7 +199,7 @@ Values are not guaranteed to be always present or in a uniform format.
 
 ## Progress Responses
 
-A progress response always contains a field `retryAfter`, which tells the client many seconds to wait until the next poll request.
+A progress response always contains a field `retryAfter`, which tells the client how many seconds to wait until the next poll request.
 Optionally the response can have the fields `message`, that contains a human user readable text about the current status, and `percent`, that
 is a number and shows the progress in percent.
 A progress response has always the `Retry-After` header set with the same value as the `retryAfter` field and an HTTP status 202.
