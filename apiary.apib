@@ -515,7 +515,6 @@ for filtering purposes, but they can only select one (complete) guidance profile
 
         {
           "data": {
-            "defaultGuidanceProfileId": "aud-1", // Since Core Platform 2020.03
             "guidanceProfiles": [
                 {
                     "id": "aud-1",
@@ -644,7 +643,7 @@ This call includes an implicit "create/search for document" (in case no document
             "content": "text to check",                  // required
             "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
             "checkOptions": {
-                "guidanceProfileId": "aud-1",                       // optional, default: the guidance profile as specified in the capabilities
+                "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
                 "reportTypes": ["scorecard"],  // optional, default: scorecard
                 "contentFormat": "markdown",                 // optional, default: auto
                 "checkType": "batch",                        // optional, default: interactive
