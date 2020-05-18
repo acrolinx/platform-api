@@ -697,6 +697,22 @@ This call includes an implicit "create/search for document" (in case no document
 
 ## Check Result [/api/v1/checking/checks/{id}]
 
+### Check Result How-To
+
+#### Ignore All Issue Occurrences
+Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue. All these issues can be ignored together.
+
+The integration can also remember the `positionalInformation.hashes.issue` attribute after an ignore-all operation. This lets you filter out all previously ignored occurrences of an issue after a recheck.
+
+#### Replace All Issue Occurrences with a Suggestion
+Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue.
+
+To apply a suggestion to all occurrences of an issue, use the `groupId` attribute to find the corresponding suggestion.
+If an occurrence of an issue doesn’t have a suggestion with the same `groupId` or if the `groupId` is empty, then it can't be replaced with a replace-all operation.
+
+Note that not all occurrences of an issue always have the same suggestions. In this case, the replace-all operation only applies to issues with the same suggestion.
+
+
 ### Poll Check Result [GET]
 
 Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
