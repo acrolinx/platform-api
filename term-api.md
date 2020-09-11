@@ -1,5 +1,10 @@
 # Acrolinx Terminology API v7
 
+## Deprecation Note
+
+**Warning:** Communication using the SDL *MultiTerm XML* format is deprecated.
+While it still works today, support can be removed at any time.
+
 ## Preliminaries
 
 All service operations are demonstrated by a `curl` (cf. [curl man page](http://curl.haxx.se/docs/manpage.html)) command
@@ -93,8 +98,8 @@ Date: Wed, 12 Mar 2014 16:34:51 GMT
 #### Signatures
 
 An integration must identify itself to the Core Platform by means of a unique signature. This signature tells the Core
-Platform what integration is trying to communicate with it and if this communication is allowed to happen. Signatures can
-be enabled individually in the Core Platform's license. To request a session with the Core Platform, an integration's
+Platform which integration is trying to communicate to it. Depending on the signature the communication might be allowed.
+Signatures can be enabled individually in the Core Platform's license. To request a session with the Core Platform, an integration's
 signature is one of the required parameters. If the signature is unknown to the Core Platform,
 no session can be opened and further communication isn’t possible.
 
@@ -106,21 +111,21 @@ The prefix to all v7 terminology API service paths is `http://${serverHostName}:
 
 Required privileges:
 
-- for all terminology service API methods, the user must have at least the "Access API-based terminology applications"
+- for all terminology service API methods, the user must have at least the `Access API-based terminology applications`
   privilege
 
 ### Configuration
 
-Before invoking one of the Terminology API services for the result format MultiTerm, the Core Platform must be
-configured correctly. This includes that there are XSL transformations from ACTIF to MultiTerm XML and MultiTerm
+Before invoking one of the Terminology API services for the result format SDL MultiTerm, the Core Platform must be
+configured correctly. This includes that there are XSL transformations from ACTIF to SDL MultiTerm XML and SDL MultiTerm
 Definition XDT.  The needed XSL style sheets will be available as part of the Core Platform resources.
 
-The availability of those resources can be checked in Acrolinx Dashboard under \"Terminology" -> \"Import and Export" ->
-\"Import/Export" -> \"Custom File Format".
+The availability of those resources can be checked in the Acrolinx Dashboard on
+`Terminology -> Import and Export -> Import/Export -> Custom File Format`.
 
 ### Media/Content Types
 
-Except for application-specific XML data (ACTIF resp. MultiTerm XML/XDT data), request and response data is usually
+Except for application-specific XML data (ACTIF resp. SDL MultiTerm XML/XDT data), request, and response data is usually
 either plain text or in JSON format. The encoding is usually assumed to be UTF-8.
 
 With some service methods, you can control the format of the return values by means of the standard HTTP `Accept` header.
@@ -136,7 +141,7 @@ Supported media types:
 
 - `application/vnd.acrolinx.actif+json`: return entries as ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: return entries as ACTIF in XML
-- `application/vnd.acrolinx.mtf+xml`: return entries as MultiTerm XML
+- `application/vnd.acrolinx.mtf+xml`: return entries as SDL MultiTerm XML
 
 Required privilege:
 
@@ -178,7 +183,7 @@ Content-Length: 8521
 <?xml version="1.0" encoding="utf-8"?><mtf><conceptGrp><concept>13</concept><descripGrp><descrip type="ENTRY_UUID">a918fccf-4a94-4398-b260-4d792289952c</descrip></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp><languageGrp><language lang="EN" type="English"/><termGrp><term>return air</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">120bdf01-4818-4a2c-bcea-4f875b6b129a</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695606</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="NL" type="Dutch"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">680e0ea1-90f1-48ab-9ec9-5a362360692d</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695622</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:20+02:00</date></transacGrp><transacGrp><transac type="modification">marco.aeschimann@ch.sauter-bc.com</transac><date>2011-07-05T10:54:28+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="ES" type="Spanish"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">01352af7-73e6-4024-9433-930846681b56</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695630</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:19+02:00</date></transacGrp><transacGrp><transac type="modification">eric.schneider@ch.sauter-bc.com</transac><date>2011-09-13T10:47:25+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="DE" type="German"/><termGrp><term>Abluftmenge</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695646</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:47</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="FR" type="French"/><termGrp><term>débit d'air repris</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">5334a674-848b-44a3-8b42-1756d38717ef</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695614</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:54</date></transacGrp></termGrp><termGrp><term>débit d'évacuation</term><descripGrp><descrip type="Status">deprecated</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695654</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:58</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="IT" type="Italian"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">7958d666-8511-4c0e-aef1-d0f4748d2d46</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695638</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:18+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2011-08-30T11:55:38+02:00</date></transacGrp></termGrp></languageGrp></conceptGrp></mtf>
 ```
 
-For the more general case, to ask for many entries at the same time specify the UUIDs (or IDs) as comma-separated list
+For the more general case, to ask for many entries at the same time specify the UUIDs (or IDs) as a comma-separated list
 after the `/entries/` endpoint URL:
 
 ```bash
@@ -203,14 +208,14 @@ Supported media types:
 
 - `application/vnd.acrolinx.actif+json`: return schema as ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: return schema as ACTIF in XML
-- `application/vnd.acrolinx.mtf+xdt`: return entries as MultiTerm XDT
+- `application/vnd.acrolinx.mtf+xdt`: return entries as SDL MultiTerm XDT
 
 Required privilege:
 
 - Terminology - View Terms
 
 This functionality is provided by GET `/schema`. The structure of the Acrolinx term base can then be retrieved as
-follows (in the example the MultiTerm XDT representation is requested):
+follows (in the example the SDL MultiTerm XDT representation is requested):
 
 ```bash
 curl -i -H "Accept: application/vnd.acrolinx.mtf+xdt" -H "Authorization: session ee7ac269aed25b4e" -X GET http://${serverHostName}:8031/iq/services/v7/rest/terminology/schema
@@ -275,7 +280,7 @@ Terms can be searched by:
 - or any combination of the above
 
 The individual fields of the search criteria need to be "escaped" by their unicode positions in case they contain
-characters that would otherwise break the JSON request string. For example,  the apostrophe/single quote character `'` is
+characters that would otherwise break the JSON request string. For example, the apostrophe/single quote character `'` is
 escaped as `\u0027`.
 
 The search API supports pagination to retrieve only a certain subset of the result set. The parameters are:
@@ -314,7 +319,7 @@ array `[]`).
 The criteria that exist in the search request are then combined by AND (if `domains` contains more than one value, they’re
  combined into a domain filter by OR-ing them) in the resulting filter.
 
-You can then search with those settings by `POST`ing the request to `/searchTerms`:
+You can then search with those settings by submitting a `POST`-request to `/searchTerms`:
 
 ```bash
 curl -i -H "Content-Type: application/json; charset=UTF-8" -H "Accept: application/json" -H "Authorization: session ee7ac269aed25b4e" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/searchTerms -d '{"criteria":{"name":"d%","language": "fr","domains":["undefined domain", "Technical Names"], "filter":null},"pagination":{"offset": 0,"limit": -1}}'
@@ -374,8 +379,8 @@ Transfer-Encoding: chunked
 }
 ```
 
-(Note: there exists indeed a domain name "undefined domain" in the Core Platform default setup;
-that value doesn't indicate the absence of a value for domain.)
+(Note: there exists indeed a domain name `undefined domain` in the Core Platform default setup;
+that value doesn't indicate the absence of a value for the domain.)
 
 The response is a JSON object with the following attributes:
 
@@ -425,7 +430,7 @@ The desired result format needs to be specified in the required `format` attribu
 
 - `application/vnd.acrolinx.actif+json`: return terms as ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: return terms as ACTIF in XML
-- `application/vnd.acrolinx.mtf+xml`: return terms as MultiTerm XML
+- `application/vnd.acrolinx.mtf+xml`: return terms as SDL MultiTerm XML
 
 Finally, you can optionally have the term base structure (schema) included in the response by setting the `withSchema`
 attribute to `true`.
@@ -528,7 +533,7 @@ The response is a JSON object with the following attributes:
 
 ### Creation and Update of Entries and Terms
 
-Entries and their terms can be created and updated by `POST`ing the respective ACTIF or MultiTerm XML representation
+Entries and their terms can be created and updated by `POST`ing the respective ACTIF or SDL MultiTerm XML representation
 to `/entries`.
 Whether an existing entry is updated or a new entry created crucially depends on the entry UUID specified in the sent
 data.
@@ -543,7 +548,7 @@ Supported media types are:
 
 - `application/vnd.acrolinx.actif+json`: ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: ACTIF in XML
-- `application/vnd.acrolinx.mtf+xml`: MultiTerm XML
+- `application/vnd.acrolinx.mtf+xml`: SDL MultiTerm XML
 
 Required privileges:
 
