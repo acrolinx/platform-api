@@ -489,20 +489,6 @@ When polling returned a final result, the polling endpoint will disappear and re
 
 The API for checking documents.
 
-## List All Checking Methods [GET /api/v1/checking]
-
-+ Response 200 (application/json)
-
-        {
-          "data":{}
-            "inputFormats": []
-          },
-          "links": {
-            "submit_check": "https://tenant.acrolinx.cloud/api/v1/checking/submit",
-            "checking_capabilities": "https://tenant.acrolinx.cloud/api/v1/checking/capabilities",
-          }
-        }
-
 ## List Checking Capabilities [GET /api/v1/checking/capabilities]
 
 The new checking API replaces writing guides and Content Profiles with a flat list of guidance profiles. Each guidance profile corresponds to a
