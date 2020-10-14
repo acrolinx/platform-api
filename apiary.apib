@@ -593,8 +593,6 @@ For an overview on what documents and file types are supported by Acrolinx pleas
 [Supported Input Types](https://docs.acrolinx.com/coreplatform/latest/en/compatibility/supported-input-types).
 The same information is available in the checking capabilities.
 
-This call includes an implicit "create/search for document" (in case no document id was given) and "update document" (in case document id was given).
-
 + Request (application/json)
 
 
@@ -612,7 +610,7 @@ This call includes an implicit "create/search for document" (in case no document
         {
             "content": "text to check",                  // required
             "document": {                                // optional, default: empty "document" object
-                "reference": "C:\\abc.md",              // optional, default: do not search for ID, always create
+                "reference": "C:\\abc.md",              // optional, used to determine the input format and correlate multiple checks of the same document
             }
         }
 
