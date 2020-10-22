@@ -576,7 +576,7 @@ for filtering purposes, but they can only select one (complete) guidance profile
             "contentEncodings": [ "none", "zip,base64", "base64" ],
             "referencePattern": "\\.(xml|xhtm|xhtml)$|\\.(md|markdown|mdown|mkdn|mkd)$|\\.(docx|docm|pptx|pptm|xlsx|xlsm)$|\\.txt$",
             "checkTypes": [ "batch", "interactive", "baseline", "automated" ],
-            "reportTypes": ["extractedText", "termharvesting", "scorecard"]
+            "reportTypes": ["extractedText", "scorecard"]
           }
         }
 
@@ -737,7 +737,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 {
                     "displayName": "Acrolinx"
                 }],
-                "reportTypes": ["scorecard", "termharvesting"],
+                "reportTypes": ["scorecard"],
                 "contentFormat": "markdown",
                 "checkType": "interactive",
                 "partialCheckRanges": [{ "begin": "10", "end": "20" }, { "begin": "40", "end": "70" }],
@@ -1132,11 +1132,6 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "displayName":"Score Card",
                     "link": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html",
                     "linkAuthenticated": "https://tenant.acrolinx.cloud/output/en/abcdef_1_report.html?apikey=hfhfzhfhrz"
-                },
-                "termharvesting": {
-                    "displayName": "Term Harvesting",
-                    "link": "https://tenant.acrolinx.cloud/output/en/termharvesting_1.xml",
-                    "linkAuthenticated": "https://tenant.acrolinx.cloud/output/en//termharvesting_1.xml?apikey=tfhzzhfhrz"
                 },
                 // only if a batch Id was given in the initial request
                 "contentAnalysisDashboard": {
