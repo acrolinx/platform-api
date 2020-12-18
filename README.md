@@ -47,7 +47,7 @@ Make sure that you always include the following headers:
 
 ```HTTP
 X-Acrolinx-Auth: YOUR_ACCESS_TOKEN
-X-Acrolinx-Client: YOUR_SIGNATURE
+X-Acrolinx-Client: YOUR_SIGNATURE;YOUR_VERSION
 Content-Type:application/json
 ```
 
@@ -57,7 +57,7 @@ In general make sure that all requests to the Acrolinx Platform API are containi
 ## Authentication
 
 To make use of the API, you'll need to have an access token.
-The access token needs to be sent for every request done to the API with the header parameter `X-Acrolinx-Auth`.
+The access token needs to be sent for every Platform API request using the header parameter `X-Acrolinx-Auth`.
 
 ```HTTP
 X-Acrolinx-Auth:SOME_ACCESS_TOKEN_STRING
@@ -127,7 +127,7 @@ This is how it works:
 
 Getting an API Token is easy:
 
-* Sign-in to the Acrolinx Dashboard
+* Sign in to the Acrolinx Dashboard
 * Click on ‘Settings' on the top
 * Scroll down
 * Click on ‘CREATE API TOKEN'
@@ -149,8 +149,10 @@ Once you've certified your integration, you'll get your own signature.
 It should be included in every request you're doing to the Acrolinx Platform API as a header:
 
 ```HTTP
-X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER; BUILD_NUMBER
+X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
 ```
+
+The `VERSION_NUMBER` should follow the following pattern `X.X.X.X` like `1.0.0.1`.
 
 The API won't complain if you don't send a
 [version and build number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
@@ -161,7 +163,7 @@ Maintenance in production is getting much easier with a version and build number
 ## FAQ / Questions and Answers
 
 * What about Authentication? SSO?
-    + Authentication is done either via an API Token or via Acrolinx sign-in.
+    + Authentication is done either via an API Token or via the Acrolinx sign-in.
       Acrolinx sign-in supports different SSO methods using PingFederate.
 * Can you get the dashboard or the content report as JSON as well?
     + The analytics results aren’t available as JSON.
@@ -171,7 +173,7 @@ Maintenance in production is getting much easier with a version and build number
       However with the new API, we think that there’s no need for an SDK in most use cases.
       Once we’ve released the Acrolinx Platform API, we'll decide based on feedback if and which SDKs we’re providing.
 * Can we put hierarchies in the document reference, for example: `<book>`, `<chapter>`, `<section>`
-  so the analytics would group all check results for the book, chapter and so on?
+  so the analytics would group all check results for the book, chapter, and so on?
     + If you want to group content, you should use document custom fields.
       These will also be available via the API.
       The document reference is important for identifying a piece of content but it isn’t used to group content.
