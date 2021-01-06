@@ -497,6 +497,10 @@ writing guide or a Checking Profile. If Sublanguages are activated, they're fold
 For each guidance profile, the server provides information about the language, activated goals, and term sets. The client may use this
 for filtering purposes, but they can only select one (complete) guidance profile for checking (for example, not deselect goals).
 
+If the server runs in Targets Mode, the goals contain an additional string field called `scoring`. It can have the values
+`required` (meaning this goal will be included in the calculation of the overall score so it is required to take this goal into account
+when creating content) or `recommended` (meaning this goal is a recommendation only and does not count towards the overall document score).
+
 + Response 200 (application/json)
 
         {
@@ -512,22 +516,26 @@ for filtering purposes, but they can only select one (complete) guidance profile
                     "goals": [{
                         "id": "spelling",
                         "displayName": "Spelling",
-                        "color": "#f21"
+                        "color": "#f21",
+                        "scoring": "required"
                     },
                     {
                         "id": "voice.readability",
                         "displayName": "Clarity",
-                        "color": "#f22"
+                        "color": "#f22",
+                        "scoring": "recommended"
                     },
                     {
                         "id": "term.unsuitable",
                         "displayName": "Unsuitable Term",
-                        "color": "#f23"
+                        "color": "#f23",
+                        "scoring": "required"
                     },
                     {
                         "id": "term.admitted",
                         "displayName": "Use with caution",
-                        "color": "#f24"
+                        "color": "#f24",
+                        "scoring": "required"
                     }],
                     "termSets": [{
                         "displayName": "Switches"
@@ -546,7 +554,8 @@ for filtering purposes, but they can only select one (complete) guidance profile
                     "goals": [{
                         "id": "spelling",
                         "displayName": "Spelling",
-                        "color": "#f21"
+                        "color": "#f21",
+                        "scoring": "required"
                     }],
                     "termSets": []
                 }
@@ -722,7 +731,9 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 + Response 200 (application/json)
 
-        Attention: which attributes are contained in the response depends on configuration, request and the document.
+        Attention: which attributes are contained in the response depends on
+        configuration, request and the document. The 'scoring' field in the
+        goals are only present if the server runs in Targets Mode.
 
         {
           "data":{
@@ -830,42 +841,49 @@ Polls the check result. Either a progress or the completed result is returned. T
               "id": "SPELLING",
               "displayName": "Spelling",
               "color": "#ff838b",
+              "scoring": "required",
               "issues": 0
             },
             {
                 "id": "GRAMMAR",
                 "displayName": "Grammar",
                 "color": "#97beff",
+                "scoring": "required",
                 "issues": 0
             },
             {
                 "id": "STYLE",
                 "displayName": "Style",
                 "color": "#70cb9c",
+                "scoring": "required",
                 "issues": 0
             },
             {
                 "id": "TERMINOLOGY",
                 "displayName": "Deprecated Terms",
                 "color": "#ffc0ff",
+                "scoring": "required",
                 "issues": 0
             },
             {
                 "id": "TERMINOLOGY_ADMITTED",
                 "displayName": "Admitted Terms",
                 "color": "#90b0fd",
+                "scoring": "required",
                 "issues": 0
             },
             {
                 "id": "READABILITY",
                 "displayName": "Clarity",
                 "color": "#b77891",
+                "scoring": "recommended",
                 "issues": 0
             },
             {
                 "id": "INFORMALITY",
                 "displayName": "Conversational Tone",
                 "color": "#cb3393",
+                "scoring": "required",
                 "issues": 0
             }],
             "issues": [
