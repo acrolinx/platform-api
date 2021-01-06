@@ -102,11 +102,11 @@ Example:
 
 # Response Format
 
-The API provides a consistent format for all responses. Each response as a field `links` and one of the three fields `error`, `progress`, `data`.
+The API provides a consistent format for all responses. Each response has a field `links` and one of the three fields `error`, `progress`, `data`.
 
 The `links` field contains further URLs that can be used as a next step in the workflow.
-`error` is set, of the request didn't succeed. This is accompanied by an HTTP status code above or equal 4xx.
-`progress` means, that the processing isn't yet finished and the client has to poll for the final result.
+`error` is set if the request didn't succeed. This is accompanied by an HTTP status code above or equal 4xx.
+`progress` means that the processing isn't finished yet and the client has to poll for the final result.
 `data` contains the actual result data, the processing is successfully finished.
 
 ## Error Responses
@@ -258,7 +258,7 @@ Content-Type: application/json
 
 Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
 
-All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by server-side whitelist.
+All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allowlist.
 
 # Group Index
 
