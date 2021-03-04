@@ -514,27 +514,21 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
                         "displayName": "English (Great Britain)"
                     },
                     "goals": [{
-                        "id": "spelling",
-                        "displayName": "Spelling",
-                        "color": "#f21",
+                        "id": "CORRECTNESS",
+                        "displayName": "Correctness",
+                        "color": "#00bfa5",
                         "scoring": "required"
                     },
                     {
-                        "id": "voice.readability",
+                        "id": "CLARITY",
                         "displayName": "Clarity",
-                        "color": "#f22",
+                        "color": "#ec407a",
                         "scoring": "recommended"
                     },
                     {
-                        "id": "term.unsuitable",
-                        "displayName": "Unsuitable Term",
-                        "color": "#f23",
-                        "scoring": "required"
-                    },
-                    {
-                        "id": "term.admitted",
-                        "displayName": "Use with caution",
-                        "color": "#f24",
+                        "id": "WORDS_AND_PHRASES",
+                        "displayName": "Words and Phrases",
+                        "color": "#ea80fc",
                         "scoring": "required"
                     }],
                     "termSets": [{
@@ -552,9 +546,9 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
                         "displayName": "German"
                     },
                     "goals": [{
-                        "id": "spelling",
-                        "displayName": "Spelling",
-                        "color": "#f21",
+                        "id": "CORRECTNESS",
+                        "displayName": "Correctness",
+                        "color": "#00bfa5",
                         "scoring": "required"
                     }],
                     "termSets": []
@@ -772,45 +766,29 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }
             },
             "quality": {
-                "score": 57,
+                "score": 81,
                 "status": "red",
                 "scoresByStrategy": [
                 {
                   "id": "average",
-                  "score": 100
+                  "score": 81
                 },
                 {
                   "id": "minimum",
-                  "score": 100
+                  "score": 78
                 }],
                 "scoresByGoal": [
                 {
-                  "id": "GRAMMAR",
-                  "score": 100
+                  "id": "CORRECTNESS",
+                  "score": 83
                 },
                 {
-                  "id": "STYLE",
-                  "score": 100
+                  "id": "CLARITY",
+                  "score": 64
                 },
                 {
-                  "id": "TERMINOLOGY",
-                  "score": 100
-                },
-                {
-                  "id": "INFORMALITY",
-                  "score": 100
-                },
-                {
-                  "id": "READABILITY",
-                  "score": 100
-                },
-                {
-                  "id": "SPELLING",
-                  "score": 100
-                },
-                {
-                  "id": "TERMINOLOGY_ADMITTED",
-                  "score": 0
+                  "id": "WORDS_AND_PHRASES",
+                  "score": 78
                 }],
                 "metrics": [
                 {
@@ -831,64 +809,35 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }]
             },
             "counts": {
-                "issues": 15,
-                "scoredIssues": 10, // **Since Core Platform 2020.11**
+                "issues": 3,
+                "scoredIssues": 2, // **Since Core Platform 2020.11**
                 "sentences": 10,
                 "words": 121
             },
-            "goals": [
-            {
-              "id": "SPELLING",
-              "displayName": "Spelling",
-              "color": "#ff838b",
-              "scoring": "required",
-              "issues": 0
-            },
-            {
-                "id": "GRAMMAR",
-                "displayName": "Grammar",
-                "color": "#97beff",
+            "goals": [{
+                "id": "CORRECTNESS",
+                "displayName": "Correctness",
+                "color": "#00bfa5",
                 "scoring": "required",
-                "issues": 0
+                "issues": 1
             },
             {
-                "id": "STYLE",
-                "displayName": "Style",
-                "color": "#70cb9c",
-                "scoring": "required",
-                "issues": 0
-            },
-            {
-                "id": "TERMINOLOGY",
-                "displayName": "Deprecated Terms",
-                "color": "#ffc0ff",
-                "scoring": "required",
-                "issues": 0
-            },
-            {
-                "id": "TERMINOLOGY_ADMITTED",
-                "displayName": "Admitted Terms",
-                "color": "#90b0fd",
-                "scoring": "required",
-                "issues": 0
-            },
-            {
-                "id": "READABILITY",
+                "id": "CLARITY",
                 "displayName": "Clarity",
-                "color": "#b77891",
+                "color": "#ec407a",
                 "scoring": "recommended",
-                "issues": 0
+                "issues": 1
             },
             {
-                "id": "INFORMALITY",
-                "displayName": "Conversational Tone",
-                "color": "#cb3393",
+                "id": "WORDS_AND_PHRASES",
+                "displayName": "Words and Phrases",
+                "color": "#ea80fc",
                 "scoring": "required",
-                "issues": 0
+                "issues": 1
             }],
             "issues": [
                 {
-                    "goalId": "spelling",
+                    "goalId": "CORRECTNESS",
                     "internalName": "title_case_chicago",
                     "displayNameHtml": "Use Chicago style for the title case?",
                     "guidanceHtml": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
@@ -950,7 +899,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                         }
                 },
                 {
-                    "goalId": "term.unsuitable",
+                    "goalId": "WORDS_AND_PHRASES",
                     "internalName": "term_flag",
                     "displayName": "<b>Illegal sublanguage variant</b> of preferred term",
                     "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
@@ -994,7 +943,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     # DRAFT -------END-------
                 },
                 {
-                    "goalId": "voice.readability",
+                    "goalId": "CLARITY",
                     "internalName": "en-clarity-medium",
                     "displayName": "Too complex? Your readers need a medium level of clarity. ",
                     "guidance": "",
@@ -1028,7 +977,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                         "penalty": 1234.0967741949999
                     },
                     "subIssues": [{
-                        "goalId": "voice.readability",
+                        "goalId": "CLARITY",
                         "internalName": "phenomenon_embedded_or_complex_sentence",
                         "displayName": "Try to split up this sentence.",
                         "guidance": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
@@ -1062,7 +1011,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "penalty": 320.0
                         }
                     }, {
-                        "goalId": "voice.readability",
+                        "goalId": "CLARITY",
                         "internalName": "phenomenon_passive",
                         "displayName": "The active voice is usually clearer.",
                         "guidance": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
