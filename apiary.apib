@@ -809,7 +809,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }]
             },
             "counts": {
-                "issues": 3,
+                "issues": 4,
                 "scoredIssues": 2, // **Since Core Platform 2020.11**
                 "sentences": 10,
                 "words": 121
@@ -826,7 +826,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 "displayName": "Clarity",
                 "color": "#ec407a",
                 "scoring": "recommended",
-                "issues": 1
+                "issues": 2
             },
             {
                 "id": "WORDS_AND_PHRASES",
@@ -842,7 +842,8 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "displayNameHtml": "Use Chicago style for the title case?",
                     "guidanceHtml": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
                     "displaySurface": "zentense",
-                    "canAddToDictionary" : true,
+                    "canAddToDictionary": true,
+                    "issueType": "actionable",   // possible values: actionable, analytical - analytical issues are location-independent (since 2021.02)
                     "positionalInformation": {
                         "hashes": {
                             "issue": "BhKh3iaGBjB7Cw6M/GwrLQ==",
@@ -903,6 +904,8 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "internalName": "term_flag",
                     "displayName": "<b>Illegal sublanguage variant</b> of preferred term",
                     "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
+                    "canAddToDictionary": false,
+                    "issueType": "actionable",
                     "displaySurface": "Please",
                     "positionalInformation": {
                         "hashes": {
@@ -947,6 +950,8 @@ Polls the check result. Either a progress or the completed result is returned. T
                     "internalName": "en-clarity-medium",
                     "displayName": "Too complex? Your readers need a medium level of clarity. ",
                     "guidance": "",
+                    "canAddToDictionary": false,
+                    "issueType": "actionable",
                     "displaySurface": "Reports ... length",
                     "positionalInformation": {
                         "hashes": {
@@ -981,6 +986,8 @@ Polls the check result. Either a progress or the completed result is returned. T
                         "internalName": "phenomenon_embedded_or_complex_sentence",
                         "displayName": "Try to split up this sentence.",
                         "guidance": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
+                        "canAddToDictionary": false,
+                        "issueType": "actionable",
                         "displaySurface": "Reports ... length",
                         "positionalInformation": {
                             "hashes": {
@@ -1015,6 +1022,8 @@ Polls the check result. Either a progress or the completed result is returned. T
                         "internalName": "phenomenon_passive",
                         "displayName": "The active voice is usually clearer.",
                         "guidance": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
+                        "canAddToDictionary": false,
+                        "issueType": "actionable",
                         "displaySurface": "was first seen",
                         "positionalInformation": {
                             "hashes": {
@@ -1052,6 +1061,40 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "penalty": 40.0
                         }
                     }]
+                },
+                {
+                    "goalId": "CLARITY",
+                    "internalName": "guideline_FleschReadingEaseAsGuideline",
+                    "displayNameHtml": "<span><b>Flesch Reading Ease: 47</b><br>Flesch Reading Ease is a classic readability metric.</span>",
+                    "guidanceHtml": "",
+                    "canAddToDictionary": false,
+                    "issueType": "analytical",
+                    "displaySurface": "I",
+                    "issueType": "analytical",
+                    "positionalInformation": {
+                        "hashes": {
+                            "issue": "l5wwcDu9O3IhYnnnlx6m/2e+IMTnPtkA6T3YoeqABMo=",
+                            "environment": "lw/i85HTXLCY6KMk/8eOPc1vt5qB79eoy3RG1AEeQMI=",
+                            "index": "9PAShJ4SjFdW4YoLGfp1WFzdUnXe9ZCP2rUI30VscFE==1"
+                        },
+                        "matches": [
+                            {
+                                "extractedPart": "I",
+                                "extractedBegin": 0,
+                                "extractedEnd": 1,
+                                "originalPart": "I",
+                                "originalBegin": 1542,
+                                "originalEnd": 1543
+                            }
+                        ]
+                    },
+                    "readOnly": false,
+                    "issueLocations": [],
+                    "suggestions": [],
+                    "subIssues": [],
+                    "links": {
+                        "help": "https://tenant.acrolinx.cloud/htmldata/en/rules/help/voice.FleschReadingEaseAsGuideline.html"
+                    }
                 }
             ],
             "keywords": {
