@@ -514,27 +514,21 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
                         "displayName": "English (Great Britain)"
                     },
                     "goals": [{
-                        "id": "spelling",
-                        "displayName": "Spelling",
-                        "color": "#f21",
+                        "id": "CORRECTNESS",
+                        "displayName": "Correctness",
+                        "color": "#00bfa5",
                         "scoring": "required"
                     },
                     {
-                        "id": "voice.readability",
+                        "id": "CLARITY",
                         "displayName": "Clarity",
-                        "color": "#f22",
+                        "color": "#ec407a",
                         "scoring": "recommended"
                     },
                     {
-                        "id": "term.unsuitable",
-                        "displayName": "Unsuitable Term",
-                        "color": "#f23",
-                        "scoring": "required"
-                    },
-                    {
-                        "id": "term.admitted",
-                        "displayName": "Use with caution",
-                        "color": "#f24",
+                        "id": "WORDS_AND_PHRASES",
+                        "displayName": "Words and Phrases",
+                        "color": "#ea80fc",
                         "scoring": "required"
                     }],
                     "termSets": [{
@@ -552,9 +546,9 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
                         "displayName": "German"
                     },
                     "goals": [{
-                        "id": "spelling",
-                        "displayName": "Spelling",
-                        "color": "#f21",
+                        "id": "CORRECTNESS",
+                        "displayName": "Correctness",
+                        "color": "#00bfa5",
                         "scoring": "required"
                     }],
                     "termSets": []
@@ -772,45 +766,29 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }
             },
             "quality": {
-                "score": 57,
+                "score": 81,
                 "status": "red",
                 "scoresByStrategy": [
                 {
                   "id": "average",
-                  "score": 100
+                  "score": 81
                 },
                 {
                   "id": "minimum",
-                  "score": 100
+                  "score": 78
                 }],
                 "scoresByGoal": [
                 {
-                  "id": "GRAMMAR",
-                  "score": 100
+                  "id": "CORRECTNESS",
+                  "score": 83
                 },
                 {
-                  "id": "STYLE",
-                  "score": 100
+                  "id": "CLARITY",
+                  "score": 64
                 },
                 {
-                  "id": "TERMINOLOGY",
-                  "score": 100
-                },
-                {
-                  "id": "INFORMALITY",
-                  "score": 100
-                },
-                {
-                  "id": "READABILITY",
-                  "score": 100
-                },
-                {
-                  "id": "SPELLING",
-                  "score": 100
-                },
-                {
-                  "id": "TERMINOLOGY_ADMITTED",
-                  "score": 0
+                  "id": "WORDS_AND_PHRASES",
+                  "score": 78
                 }],
                 "metrics": [
                 {
@@ -831,69 +809,41 @@ Polls the check result. Either a progress or the completed result is returned. T
                 }]
             },
             "counts": {
-                "issues": 15,
-                "scoredIssues": 10, // **Since Core Platform 2020.11**
+                "issues": 4,
+                "scoredIssues": 2, // **Since Core Platform 2020.11**
                 "sentences": 10,
                 "words": 121
             },
-            "goals": [
-            {
-              "id": "SPELLING",
-              "displayName": "Spelling",
-              "color": "#ff838b",
-              "scoring": "required",
-              "issues": 0
-            },
-            {
-                "id": "GRAMMAR",
-                "displayName": "Grammar",
-                "color": "#97beff",
+            "goals": [{
+                "id": "CORRECTNESS",
+                "displayName": "Correctness",
+                "color": "#00bfa5",
                 "scoring": "required",
-                "issues": 0
+                "issues": 1
             },
             {
-                "id": "STYLE",
-                "displayName": "Style",
-                "color": "#70cb9c",
-                "scoring": "required",
-                "issues": 0
-            },
-            {
-                "id": "TERMINOLOGY",
-                "displayName": "Deprecated Terms",
-                "color": "#ffc0ff",
-                "scoring": "required",
-                "issues": 0
-            },
-            {
-                "id": "TERMINOLOGY_ADMITTED",
-                "displayName": "Admitted Terms",
-                "color": "#90b0fd",
-                "scoring": "required",
-                "issues": 0
-            },
-            {
-                "id": "READABILITY",
+                "id": "CLARITY",
                 "displayName": "Clarity",
-                "color": "#b77891",
+                "color": "#ec407a",
                 "scoring": "recommended",
-                "issues": 0
+                "issues": 2
             },
             {
-                "id": "INFORMALITY",
-                "displayName": "Conversational Tone",
-                "color": "#cb3393",
+                "id": "WORDS_AND_PHRASES",
+                "displayName": "Words and Phrases",
+                "color": "#ea80fc",
                 "scoring": "required",
-                "issues": 0
+                "issues": 1
             }],
             "issues": [
                 {
-                    "goalId": "spelling",
+                    "goalId": "CORRECTNESS",
                     "internalName": "title_case_chicago",
                     "displayNameHtml": "Use Chicago style for the title case?",
                     "guidanceHtml": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
                     "displaySurface": "zentense",
-                    "canAddToDictionary" : true,
+                    "canAddToDictionary": true,
+                    "issueType": "actionable",   // possible values: actionable, analytical (since 2021.02)
                     "positionalInformation": {
                         "hashes": {
                             "issue": "BhKh3iaGBjB7Cw6M/GwrLQ==",
@@ -901,21 +851,21 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "index": "hjlRLT0K+LlvlslKdNUlhw==1"
                         },
                         "matches": [{
-                            "extractedPart": "zen",         # DRAFT
+                            "extractedPart": "zen",
                             "extractedBegin": 30,
                             "extractedEnd": 33,
                             "originalPart": "zen",
                             "originalBegin": 19247,
                             "originalEnd": 19255
                         }, {
-                            "extractedPart": "te",          # DRAFT
+                            "extractedPart": "te",
                             "extractedBegin": 33,
                             "extractedEnd": 35,
                             "originalPart": "&te;",
                             "originalBegin": 19250,
                             "originalEnd": 19254
                         },{
-                            "extractedPart": "nse",         # DRAFT
+                            "extractedPart": "nse",
                             "extractedBegin": 35,
                             "extractedEnd": 38,
                             "originalPart": "nse",
@@ -950,10 +900,12 @@ Polls the check result. Either a progress or the completed result is returned. T
                         }
                 },
                 {
-                    "goalId": "term.unsuitable",
+                    "goalId": "WORDS_AND_PHRASES",
                     "internalName": "term_flag",
-                    "displayName": "<b>Illegal sublanguage variant</b> of preferred term",
-                    "guidance": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
+                    "displayNameHtml": "<b>Illegal sublanguage variant</b> of preferred term",
+                    "guidanceHtml": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
+                    "canAddToDictionary": false,
+                    "issueType": "actionable",
                     "displaySurface": "Please",
                     "positionalInformation": {
                         "hashes": {
@@ -962,7 +914,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "index": "Lm9PqBGGm+tj21rt3pkpjA==1"
                         },
                         "matches": [{
-                            "extractedPart": "Please",      # DRAFT
+                            "extractedPart": "Please",
                             "extractedBegin": 766,
                             "extractedEnd": 772,
                             "originalPart": "Please",
@@ -994,10 +946,12 @@ Polls the check result. Either a progress or the completed result is returned. T
                     # DRAFT -------END-------
                 },
                 {
-                    "goalId": "voice.readability",
+                    "goalId": "CLARITY",
                     "internalName": "en-clarity-medium",
-                    "displayName": "Too complex? Your readers need a medium level of clarity. ",
-                    "guidance": "",
+                    "displayNameHtml": "Too complex? Your readers need a medium level of clarity. ",
+                    "guidanceHtml": "",
+                    "canAddToDictionary": false,
+                    "issueType": "actionable",
                     "displaySurface": "Reports ... length",
                     "positionalInformation": {
                         "hashes": {
@@ -1006,14 +960,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "index": "accsS0dbn/3rafcbT9NJGw==1"
                         },
                         "matches": [{
-                            "extractedPart": "Reports",     # DRAFT
+                            "extractedPart": "Reports",
                             "extractedBegin": 1360,
                             "extractedEnd": 1367,
                             "originalPart": "Reports",
                             "originalBegin": 33173,
                             "originalEnd": 33180,
                         }, {
-                            "extractedPart": "length",      # DRAFT
+                            "extractedPart": "length",
                             "extractedBegin": 1749,
                             "extractedEnd": 1755,
                             "originalPart": "length",
@@ -1028,10 +982,12 @@ Polls the check result. Either a progress or the completed result is returned. T
                         "penalty": 1234.0967741949999
                     },
                     "subIssues": [{
-                        "goalId": "voice.readability",
+                        "goalId": "CLARITY",
                         "internalName": "phenomenon_embedded_or_complex_sentence",
-                        "displayName": "Try to split up this sentence.",
-                        "guidance": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
+                        "displayNameHtml": "Try to split up this sentence.",
+                        "guidanceHtml": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
+                        "canAddToDictionary": false,
+                        "issueType": "actionable",
                         "displaySurface": "Reports ... length",
                         "positionalInformation": {
                             "hashes": {
@@ -1040,14 +996,14 @@ Polls the check result. Either a progress or the completed result is returned. T
                                 "index": "++0c1Z/OQu1Mwzt0KpkYYA==1"
                             },
                             "matches": [{
-                                "extractedPart": "Reports",     # DRAFT
+                                "extractedPart": "Reports",
                                 "extractedBegin": 1360,
                                 "extractedEnd": 1367,
                                 "originalPart": "Reports",
                                 "originalBegin": 33173,
                                 "originalEnd": 33180,
                             }, {
-                                "extractedPart": "length",      # DRAFT
+                                "extractedPart": "length",
                                 "extractedBegin": 1749,
                                 "extractedEnd": 1755,
                                 "originalPart": "length",
@@ -1062,10 +1018,12 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "penalty": 320.0
                         }
                     }, {
-                        "goalId": "voice.readability",
+                        "goalId": "CLARITY",
                         "internalName": "phenomenon_passive",
-                        "displayName": "The active voice is usually clearer.",
-                        "guidance": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
+                        "displayNameHtml": "The active voice is usually clearer.",
+                        "guidanceHtml": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
+                        "canAddToDictionary": false,
+                        "issueType": "actionable",
                         "displaySurface": "was first seen",
                         "positionalInformation": {
                             "hashes": {
@@ -1074,23 +1032,26 @@ Polls the check result. Either a progress or the completed result is returned. T
                                 "index": "fOJLASZHiwnwcJWcfbkXnw==1"
                             },
                             "matches": [{
-                                "part": "was",
-                                "begin": 33219,
-                                "end": 33222,
+                                "extractedPart": "was",
                                 "extractedBegin": 1406,
-                                "extractedEnd": 1409
+                                "extractedEnd": 1409,
+                                "originalPart": "was",
+                                "originalBegin": 33219,
+                                "originalEnd": 33222
                             }, {
-                                "part": "first",
-                                "begin": 33223,
-                                "end": 33228,
+                                "extractedPart": "first",
                                 "extractedBegin": 1410,
-                                "extractedEnd": 1415
+                                "extractedEnd": 1415,
+                                "originalPart": "first",
+                                "originalBegin": 33223,
+                                "originalEnd": 33228
                             }, {
-                                "part": "seen",
-                                "begin": 33229,
-                                "end": 33233,
+                                "extractedPart": "seen",
                                 "extractedBegin": 1416,
-                                "extractedEnd": 1420
+                                "extractedEnd": 1420,
+                                "originalPart": "seen",
+                                "originalBegin": 33229,
+                                "originalEnd": 33233
                             }]
                         },
                         "suggestions": [],
@@ -1100,6 +1061,40 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "penalty": 40.0
                         }
                     }]
+                },
+                {
+                    "goalId": "CLARITY",
+                    "internalName": "guideline_FleschReadingEaseAsGuideline",
+                    "displayNameHtml": "<span><b>Flesch Reading Ease: 47</b><br>Flesch Reading Ease is a classic readability metric.</span>",
+                    "guidanceHtml": "",
+                    "canAddToDictionary": false,
+                    "issueType": "analytical",
+                    "displaySurface": "I",
+                    "issueType": "analytical",
+                    "positionalInformation": {
+                        "hashes": {
+                            "issue": "l5wwcDu9O3IhYnnnlx6m/2e+IMTnPtkA6T3YoeqABMo=",
+                            "environment": "lw/i85HTXLCY6KMk/8eOPc1vt5qB79eoy3RG1AEeQMI=",
+                            "index": "9PAShJ4SjFdW4YoLGfp1WFzdUnXe9ZCP2rUI30VscFE==1"
+                        },
+                        "matches": [
+                            {
+                                "extractedPart": "I",
+                                "extractedBegin": 0,
+                                "extractedEnd": 1,
+                                "originalPart": "I",
+                                "originalBegin": 1542,
+                                "originalEnd": 1543
+                            }
+                        ]
+                    },
+                    "readOnly": false,
+                    "issueLocations": [],
+                    "suggestions": [],
+                    "subIssues": [],
+                    "links": {
+                        "help": "https://tenant.acrolinx.cloud/htmldata/en/rules/help/voice.FleschReadingEaseAsGuideline.html"
+                    }
                 }
             ],
             "keywords": {
