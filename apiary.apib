@@ -1297,11 +1297,20 @@ Returns information about the current user. See below for possible responses.
 + Response 200 (application/json)
 
         {
+          "links": [],
           "data": {
             "id": "eb323701-839f-4998-b56e-3e20c70259c5",
             "username": "fred",
             "fullName": "Fred Freelancer",   //
-            "tenantId": "smarttech",
+            "licenseType": "named",
+            "licenseStatus": "active",
+            "createdOn": "2021-01-07T11:31:04Z",
+            "lastIntegrationAccess": "2021-03-10T21:11:14Z",
+            "roles": [
+                {
+                    "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e","name":"Author"
+                }
+            ],
             "properties" : {
                 "customkey": "customvalue",
             },
@@ -1419,6 +1428,26 @@ Returns information about the current user. See below for possible responses.
             "type": "insufficient_privileges"
           }
         }
+
+## List all users [/api/v1/user]
+
++ Response 200 (application/json)
+        {
+            "links": [],
+            "data": [{
+                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "licenseType": "named"
+              }, {
+                "id": "0b8fd847-f787-4e99-a7f2-bed53e31149b",
+                "username": "margaret",
+                "fullName": "Margaret Marketing",
+                "licenseType": "concurrent"
+              }, {}
+            ]
+        }
+
 
 # Group Document API
 
