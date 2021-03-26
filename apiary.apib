@@ -1282,7 +1282,6 @@ Security:
 * A user can read and update its own data
 * Only privileged users can read or update other users data
 
-
 ## Current User [/api/v1/user/self]
 
 Returns information about the current user. See below for possible responses.
@@ -1419,6 +1418,88 @@ Returns information about the current user. See below for possible responses.
             "type": "insufficient_privileges"
           }
         }
+
+## Get all Users [/api/v1/user]
+
+Returns a list of all users.
+
+### Get Users [GET]
+
++ Response 200 (application/json)
+
+        {
+          "data": [
+              {
+                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "username": "fred",
+                "fullName": "Fred Freelancer",   //
+                "tenantId": "smarttech",
+                "properties" : {
+                    "customkey": "customvalue",
+                },
+                "customFields": [
+                    {
+                        "key": "Department",
+                        "displayName": "Department",
+                        "inputType": "optional",
+                        "type": "list",
+                        "value": "My Department",
+                        "possibleValues": [
+                            "No Department",
+                            "My Department"
+                        ]
+                    },
+                    {
+                        "key": "external_field",
+                        "displayName": "external_field",
+                        "inputType": "externally_provided",
+                        "type": "text"
+                    }
+                ]
+              },
+              {
+                "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
+                "username": "franz",
+                "fullName": "Franz Hubendobler",   //
+                "tenantId": "hubendoblergmbh",
+                "properties" : {
+                    "customkey": "customvalue",
+                },
+                "customFields": [
+                    {
+                        "key": "Department",
+                        "displayName": "Department",
+                        "inputType": "optional",
+                        "type": "list",
+                        "value": "My Department",
+                        "possibleValues": [
+                            "No Department",
+                            "My Department"
+                        ]
+                    },
+                    {
+                        "key": "external_field",
+                        "displayName": "external_field",
+                        "inputType": "externally_provided",
+                        "type": "text"
+                    }
+                ]
+              }
+          ]
+        }
+
++ Response 401 (application/json)
+
+        // if access token does not permit to show the user's data
+        {
+          "error": {
+            "detail": "The user does not have the required privileges to perform the operation.",
+            "title": "Insufficient privileges",
+            "status": 401
+            "type": "insufficient_privileges"
+          }
+        }
+
 
 # Group Document API
 
