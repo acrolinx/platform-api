@@ -1425,81 +1425,103 @@ Returns a list of all users.
 
 ### Get Users [GET]
 
++ Request (application/json)
+
+    + Header
+
+            X-Acrolinx-Auth: ""
+            X-Acrolinx-Client: ""
+
 + Response 200 (application/json)
 
         {
-          "data": [
-              {
+        "data": [
+            {
                 "id": "eb323701-839f-4998-b56e-3e20c70259c5",
                 "username": "fred",
-                "fullName": "Fred Freelancer",   //
-                "tenantId": "smarttech",
-                "properties" : {
-                    "customkey": "customvalue",
-                },
+                "fullName": "Fred Freelancer",
+                "createdOn": "2021-02-23T17:24:01.130Z",
+                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                "licenseType": "builtin",
+                "licenseStatus": "inactive",
+                "roles": [
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor",
+                        "privileges": []
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator",
+                        "privileges": []
+                    }
+                ],
                 "customFields": [
                     {
                         "key": "Department",
                         "displayName": "Department",
                         "inputType": "optional",
                         "type": "list",
-                        "value": "My Department",
+                        "value": "",
                         "possibleValues": [
-                            "No Department",
-                            "My Department"
+                            "Example Department"
                         ]
-                    },
-                    {
-                        "key": "external_field",
-                        "displayName": "external_field",
-                        "inputType": "externally_provided",
-                        "type": "text"
                     }
                 ]
-              },
-              {
+            },
+            {
                 "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
                 "username": "franz",
-                "fullName": "Franz Hubendobler",   //
-                "tenantId": "hubendoblergmbh",
-                "properties" : {
-                    "customkey": "customvalue",
-                },
+                "fullName": "Franz Hubendobler",
+                "createdOn": "2021-02-23T17:24:01.131Z",
+                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                "licenseType": "builtin",
+                "licenseStatus": "active",
+                "roles": [
+                    {
+                        "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                        "name": "Analytics Read-Only User",
+                        "privileges": []
+                    }
+                ],
                 "customFields": [
                     {
                         "key": "Department",
                         "displayName": "Department",
                         "inputType": "optional",
                         "type": "list",
-                        "value": "My Department",
                         "possibleValues": [
-                            "No Department",
-                            "My Department"
+                            "Example Department"
                         ]
-                    },
-                    {
-                        "key": "external_field",
-                        "displayName": "external_field",
-                        "inputType": "externally_provided",
-                        "type": "text"
                     }
                 ]
-              }
-          ]
+            }
+        ]
         }
 
 + Response 401 (application/json)
 
-        // if access token does not permit to show the user's data
+        // When the access token does not permit to show the data of the users
         {
-          "error": {
-            "detail": "The user does not have the required privileges to perform the operation.",
-            "title": "Insufficient privileges",
-            "status": 401
-            "type": "insufficient_privileges"
-          }
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "title": "Insufficient privileges",
+                "status": 401
+                "type": "insufficient_privileges"
+            }
         }
 
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
 
 # Group Document API
 
