@@ -1518,8 +1518,9 @@ Returns a list of all users.
 
 # Group Role API
 
-Here, a role is an entity that has an id, a name and list of privileges. 
+Here, a role is an entity that has an id, a name and list of privileges and information whether this role is a default role. 
 You can use roles to group sets of privileges and assign roles to different users.
+Roles can be marked as default to automatically assign at least one default role to all new users.
 
 To see more about role-based access control in Acrolinx: [Acrolinx Roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles)
 
@@ -1527,7 +1528,7 @@ To see more about role-based access control in Acrolinx: [Acrolinx Roles documen
 
 ### Get all Roles [GET]
 
-Retruns a list of all roles.
+Retruns a list of all roles including the belonging privileges.
 
 + Response 200 (application/json)
     
@@ -1541,7 +1542,8 @@ Retruns a list of all roles.
                         "Terminology.read",
                         "Dashboard.logon",
                         "Termbrowser.logon"
-                    ]
+                    ],
+                    "default": false
                 },
                 {
                     "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
@@ -1549,7 +1551,8 @@ Retruns a list of all roles.
                     "privileges": [
                         "CheckingAndClients.checkingApplications",
                         "CheckingAndClients.downloadReports"
-                    ]
+                    ],
+                    "default": true
                 },
                 {
                     "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
@@ -1557,7 +1560,8 @@ Retruns a list of all roles.
                     "privileges": [
                         "TermContribution.contributeTerms",
                         "TermContribution.commentTerms"
-                    ]
+                    ],
+                    "default": false
                 },
                 {
                     "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
@@ -1565,7 +1569,8 @@ Retruns a list of all roles.
                     "privileges": [
                         "Terminology.read",
                         "Dashboard.logon"
-                    ]
+                    ],
+                    "default": false
                 },
                 {
                     "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
@@ -1574,7 +1579,8 @@ Retruns a list of all roles.
                         "Reporting.read",
                         "Dashboard.logon",
                         "CheckingAndClients.downloadReports"
-                    ]
+                    ],
+                    "default": false
                 },
                 {
                     "id": "bc5c91f3-fae1-49f7-8d60-d325077c6ef9",
@@ -1628,7 +1634,8 @@ Retruns a list of all roles.
                         "ReuseManagement.read",
                         "Terminology.statusChange",
                         "CheckingAndClients.accessExtractedContent"
-                    ]
+                    ],
+                    "default": false
                 }
             ]
         }
@@ -1666,7 +1673,8 @@ This method provides Role which was found in the database identified by its *id*
             "name": "ExampleRole",
             "privileges": [
                 "Dashboard.logon"
-            ]
+            ],
+            "default": false
         }
     }
 
@@ -1704,7 +1712,8 @@ In this example the `UserAndRoles.read` privilege will be assigned to the role `
             "privileges": [
                 "UserAndRoles.read",
                 "Dashboard.logon"
-            ]
+            ],
+            "default": false
         }
     }
 
