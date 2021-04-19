@@ -1516,6 +1516,251 @@ Returns a list of all users.
             }
         }
 
+# Group Role API
+
+Here, a role is an entity that has an id, a name and list of privileges. 
+You can use roles to group sets of privileges and assign roles to different users.
+
+To see more about role-based access control in Acrolinx: [Acrolinx Roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles)
+
+## Roles [/api/v1/roles/]
+
+### Get all Roles [GET]
+
+Retruns a list of all roles.
+
++ Response 200 (application/json)
+    
+        {
+            "links": {},
+            "data": [
+                {
+                    "id": "fdcd7fc6-9715-42f8-a947-88812bc02b2a",
+                    "name": "Term Browser User",
+                    "privileges": [
+                        "Terminology.read",
+                        "Dashboard.logon",
+                        "Termbrowser.logon"
+                    ]
+                },
+                {
+                    "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                    "name": "Author",
+                    "privileges": [
+                        "CheckingAndClients.checkingApplications",
+                        "CheckingAndClients.downloadReports"
+                    ]
+                },
+                {
+                    "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                    "name": "Term Contributor",
+                    "privileges": [
+                        "TermContribution.contributeTerms",
+                        "TermContribution.commentTerms"
+                    ]
+                },
+                {
+                    "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                    "name": "Term Browser Administrator",
+                    "privileges": [
+                        "Terminology.read",
+                        "Dashboard.logon"
+                    ]
+                },
+                {
+                    "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                    "name": "Analytics Read-Only User",
+                    "privileges": [
+                        "Reporting.read",
+                        "Dashboard.logon",
+                        "CheckingAndClients.downloadReports"
+                    ]
+                },
+                {
+                    "id": "bc5c91f3-fae1-49f7-8d60-d325077c6ef9",
+                    "name": "Super Administrator",
+                    "privileges": [
+                        "UserAndRoles.read",
+                        "Terminology.read",
+                        "LinguisticConfiguration.configureAndDeployRules",
+                        "LinguisticConfiguration.configureAndDeployReuse",
+                        "CheckingAndClients.submitDictionaryEntry",
+                        "CheckingAndClients.editPluginSegmentation",
+                        "CheckingAndClients.terminologyApplications",
+                        "TermContribution.contributeTerms",
+                        "Reporting.administration",
+                        "Servers.monitoring",
+                        "Terminology.export",
+                        "Terminology.edit",
+                        "CheckingAndClients.checkingApplications",
+                        "Terminology.undump",
+                        "Servers.editNotification",
+                        "CheckingAndClients.reuseApplications",
+                        "CheckingAndClients.runTermHarvesting",
+                        "TermContribution.commentTerms",
+                        "Servers.downloadSupportPackage",
+                        "LinguisticConfiguration.tuneResources",
+                        "LinguisticConfiguration.reloadLanguageConfiguration",
+                        "Terminology.customize",
+                        "Reporting.create",
+                        "LinguisticConfiguration.configureAndDeployTerminology",
+                        "Servers.overlay",
+                        "Terminology.dump",
+                        "UserAndRoles.setApiTokensForOthers",
+                        "Reporting.read",
+                        "CheckingAndClients.editCheckingProfiles",
+                        "Servers.readLicense",
+                        "TermContribution.removeCommentTerms",
+                        "ReuseManagement.edit",
+                        "Dashboard.logon",
+                        "UserAndRoles.editUser",
+                        "Servers.editLicense",
+                        "LinguisticConfiguration.editTargets",
+                        "Termbrowser.logon",
+                        "Servers.downloadLogs",
+                        "UserAndRoles.deleteSessions",
+                        "Terminology.import",
+                        "Servers.capture",
+                        "Servers.list",
+                        "CheckingAndClients.downloadReports",
+                        "Servers.restart",
+                        "Terminology.termbrowserAdmin",
+                        "ReuseManagement.read",
+                        "Terminology.statusChange",
+                        "CheckingAndClients.accessExtractedContent"
+                    ]
+                }
+            ]
+        }
+
++ Response 401 (application/json)
+
+    // When the access token is missing or is invalid in the request
+    {
+        "error": {
+            "detail": "Valid authentication has either not been provided or is insufficient.",
+            "type": "auth",
+            "title": "Invalid authentication",
+            "status": 401
+        }
+    }
+
++ Response 403 (application/json)
+    // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
+
+## Role [/api/v1/roles/{id}]
+### Get Role [GET]
+
+This method provides Role which was found in the database identified by its *id*.
+
++ Response 200 (application/json)
+
+    {
+        "links": {},
+        "data": {
+            "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+            "name": "ExampleRole",
+            "privileges": [
+                "Dashboard.logon"
+            ]
+        }
+    }
+
+### Update belonging privileges [PUT]
+
+You may update belonging privileges assigned to users via roles.
+
+In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
+
++ Request (application/json)
+
+    {
+        "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+        "name": "ExampleRole",
+        "privileges": [
+            "Dashboard.logon",
+            "UserAndRoles.read"
+        ]
+    }
+
++ Response 200 (application/json)
+
+    {
+        "links": {},
+        "data": {
+            "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+            "name": "ExampleRole",
+            "privileges": [
+                "UserAndRoles.read",
+                "Dashboard.logon"
+            ]
+        }
+    }
+
++ Response 400 (application/json)
+
+    // When an unknown privilege was provided in the request
+    {
+        "links": {},
+        "error": {
+            "reference": "bc9b2e2f-1130-4ab5-8127-d9faf7f09485",
+            "detail": "Check the request for invalid values or missing parameters.",
+            "type": "validation",
+            "title": "Invalid request attributes",
+            "validationDetails": [
+                {
+                    "title": "Validation error",
+                    "constraint": "Unknown privileges: Example.privilege",
+                    "attributePath": "privileges",
+                    "detail": "Unknown privileges: Example.privilege",
+                    "invalidValue": "[Dashboard.logon, UserAndRoles.read, Example.privilege]"
+                }
+            ],
+            "status": 400
+        }
+    }
+
++ Response 400 (application/json)
+
+    // When empty privileges was provided in the request
+    {
+        "links": {},
+        "error": {
+            "reference": "58629cdc-3102-4ff2-973b-68eb82ef2ea0",
+            "detail": "Check the request for invalid values or missing parameters.",
+            "type": "validation",
+            "title": "Invalid request attributes",
+            "validationDetails": [
+                {
+                    "title": "Validation error",
+                    "constraint": "NotEmpty",
+                    "attributePath": "privileges",
+                    "detail": "must not be empty",
+                    "invalidValue": "[]"
+                }
+            ],
+            "status": 400
+        }
+    }
+
++ Response 401 (application/json)
+
+    // When the access token is missing or is invalid in the request
+    {
+        "error": {
+            "detail": "Valid authentication has either not been provided or is insufficient.",
+            "type": "auth",
+            "title": "Invalid authentication",
+            "status": 401
+        }
+    }
+
++ Response 403 (application/json)
+    // When the user don't have privileges to edit roles
+
++ Response 404 (application/json)
+    // When role was not found in the database identified by its *id*
+
 # Group Document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
