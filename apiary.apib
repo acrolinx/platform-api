@@ -1519,7 +1519,7 @@ Returns a list of all users.
 # Group Role API
 
 Here, a role is an entity that has an id, a name and list of privileges and information whether this role is a default role. 
-You can use roles to group sets of privileges and assign roles to different users.
+You can use roles to group sets of privileges and assign to different users.
 Roles can be marked as default to automatically assign at least one default role to all new users.
 
 To see more about role-based access control in Acrolinx: [Acrolinx Roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles)
@@ -1655,6 +1655,89 @@ Retruns a list of all roles including the belonging privileges.
 + Response 403 (application/json)
     // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
 
+## Privileges [/api/v1/roles/privileges]
+
+Task or set of tasks which can be perfomed by an User via API or Dashboard (UI) interactions are allowed/denied based on privileges. 
+
+### Get all privileges [GET]
+
+This method provides a list of all supported privileges.
+
+**Note:** The example response can differ from the actual supported privileges depending on your installed Acrolinx version. 
+Rarely, but in newer platform releases privileges might be introduced or removed. 
+To discover existing privileges in your installation perform and compare the result set of this request.  
+
++ Response 200 (application/json)
+
+    {
+        "links": {},
+        "data": [
+            "CheckingAndClients.accessExtractedContent",
+            "CheckingAndClients.checkingApplications",
+            "CheckingAndClients.downloadReports",
+            "CheckingAndClients.editCheckingProfiles",
+            "CheckingAndClients.editPluginSegmentation",
+            "CheckingAndClients.reuseApplications",
+            "CheckingAndClients.runTermHarvesting",
+            "CheckingAndClients.submitDictionaryEntry",
+            "CheckingAndClients.terminologyApplications",
+            "Dashboard.logon",
+            "LinguisticConfiguration.configureAndDeployReuse",
+            "LinguisticConfiguration.configureAndDeployRules",
+            "LinguisticConfiguration.configureAndDeployTerminology",
+            "LinguisticConfiguration.editTargets",
+            "LinguisticConfiguration.reloadLanguageConfiguration",
+            "LinguisticConfiguration.tuneResources",
+            "Reporting.administration",
+            "Reporting.create",
+            "Reporting.read",
+            "ReuseManagement.edit",
+            "ReuseManagement.read",
+            "Servers.capture",
+            "Servers.downloadLogs",
+            "Servers.downloadSupportPackage",
+            "Servers.editLicense",
+            "Servers.editNotification",
+            "Servers.list",
+            "Servers.monitoring",
+            "Servers.overlay",
+            "Servers.readLicense",
+            "Servers.restart",
+            "TermContribution.commentTerms",
+            "TermContribution.contributeTerms",
+            "TermContribution.removeCommentTerms",
+            "Termbrowser.logon",
+            "Terminology.customize",
+            "Terminology.dump",
+            "Terminology.edit",
+            "Terminology.export",
+            "Terminology.import",
+            "Terminology.read",
+            "Terminology.statusChange",
+            "Terminology.termbrowserAdmin",
+            "Terminology.undump",
+            "UserAndRoles.deleteSessions",
+            "UserAndRoles.editUser",
+            "UserAndRoles.read",
+            "UserAndRoles.setApiTokensForOthers"
+        ]
+    }
+
++ Response 401 (application/json)
+
+    // When the access token is missing or is invalid in the request
+    {
+        "error": {
+            "detail": "Valid authentication has either not been provided or is insufficient.",
+            "type": "auth",
+            "title": "Invalid authentication",
+            "status": 401
+        }
+    }
+
++ Response 403 (application/json)
+    // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
+
 ## Role [/api/v1/roles/{id}]
 
 + Parameters
@@ -1687,6 +1770,7 @@ You may update belonging privileges assigned to users via roles.
 - Privilege(s) can be added/removed. (the server completely replace every privilege)
 - Interdependencies with other privileges might occur.
 - Any changes to a role are automatically inherited by all users with that particular role.
+- You need to reference existing privileges. See [Get all privileges](###Get_all_privileges)
 
 **Warning:** This action **permanently** updates the belonging privileges of a Role. 
 If the role is assigned to users, each assigned user will get the updated set of privileges.
