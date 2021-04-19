@@ -1340,83 +1340,141 @@ Returns information about the current user. See below for possible responses.
 
 ### Update User [PUT]
 
-+ Request (application/json)
++ Request Set a custom field (application/json)
 
         {
-             "customFields": [
+            "customFields": [
                 {
                     "key": "Department",
-                    "value": "My new Department",
+                    "value": "My Department"
                 }
             ]
         }
-
 
 + Response 200 (application/json)
 
         {
-         "data": {
-            "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-            "username": "fred",
-            "fullName": "Fred Freelancer",   //
-            "tenantId": "smarttech",
-            "properties" : {
-                "customkey": "customvalue",
-            },
+            "data": {
+                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "tenantId": "smarttech",
+                "properties" : {
+                    "customkey": "customvalue",
+                },
+                "customFields": [
+                    {
+                        "key": "Department",
+                        "displayName": "Department",
+                        "inputType": "optional",
+                        "type": "list",
+                        "value": "My Department",
+                        "possibleValues": [
+                            "No Department",
+                            "My Department"
+                        ]
+                    },
+                    {
+                        "key": "external_field",
+                        "displayName": "external_field",
+                        "inputType": "externally_provided",
+                        "type": "text"
+                    }
+                ]
+            }
+        }
+
++ Request Clear a custom field (application/json)
+
+        {
             "customFields": [
                 {
                     "key": "Department",
-                    "displayName": "Department",
-                    "inputType": "optional",
-                    "type": "list",
-                    "value": "My new Department",
-                    "possibleValues": [
-                        "No Department",
-                        "My Department"
-                    ]
-                },
-                {
-                    "key": "external_field",
-                    "displayName": "external_field",
-                    "inputType": "externally_provided",
-                    "type": "text"
+                    "value": ""
                 }
             ]
-          }
+        }
+
++ Response 200 (application/json)
+
+        {
+            "data": {
+                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "tenantId": "smarttech",
+                "properties" : {
+                    "customkey": "customvalue",
+                },
+                "customFields": [
+                    {
+                        "key": "Department",
+                        "displayName": "Department",
+                        "inputType": "optional",
+                        "type": "list",
+                        "value": "",          // The field is now cleared
+                        "possibleValues": [
+                            "No Department",
+                            "My Department"
+                        ]
+                    },
+                    {
+                        "key": "external_field",
+                        "displayName": "external_field",
+                        "inputType": "externally_provided",
+                        "type": "text"
+                    }
+                ]
+            }
         }
 
 + Response 400 (application/json)
 
-        // if any of the updated fields is invalid, a detailed error information is given.
+        // When any of the updated fields are invalid, a detailed error information is given
         {
-          "error": {
-            "detail": "Please provide values for all required custom fields.",
-            "type": "validation",
-            "title": "Custom field values are missing",
-            "validationDetails": [
-                {
-                    "title": "Custom field is required.",
-                    "constraint": "Custom field \"Field\" must not be empty.",
-                    "attributePath": "customFields.Field",
-                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
-                    "invalidValue": null,
-                    "type": "Required"
-                }
-            ],
-            "status": 400
-          }
+            "error": {
+                "detail": "Cannot set custom field \"Department\" as its value is not one of \"My Department\".",
+                "type": "customFieldsIncorrect",
+                "title": "Custom field values are incorrect",
+                "validationDetails": [
+                    {
+                        "title": "Invalid custom field value",
+                        "constraint": "Must be one of \"My Department\".",
+                        "attributePath": "customFields.Department",
+                        "detail": "Cannot set custom field \"Department\" as its value is not one of \"My Department\".",
+                        "invalidValue": "This is the invalid value",
+                        "possibleValues": [
+                            "My Department"
+                        ],Example
+                        "type": "InvalidValue"
+                    }
+                ],
+                "status": 400
+            }
         }
 
 + Response 401 (application/json)
 
-        // if access token does not permit to update the user's data
+        // when access token does not permit to update the user's data
         {
-          "error": {
-            "detail": "The user does not have the required privileges to perform the operation.",
-            "title": "Insufficient privileges",
-            "status": 401
-            "type": "insufficient_privileges"
-          }
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "title": "Insufficient privileges",
+                "status": 401
+                "type": "insufficient_privileges"
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token is missing or is invalid in the request
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
         }
 
 ## Get all Users [/api/v1/user]
