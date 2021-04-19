@@ -1649,6 +1649,10 @@ Retruns a list of all roles.
     // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
 
 ## Role [/api/v1/roles/{id}]
+
++ Parameters
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
 ### Get Role [GET]
 
 This method provides Role which was found in the database identified by its *id*.
@@ -1672,11 +1676,12 @@ You may update belonging privileges assigned to users via roles.
 
 In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
 
+**Warning:** This action **permanently** updates the belonging privileges of a Role. 
+If the role is assigned to any user, each assigned user will get the updated set of privileges.
+
 + Request (application/json)
 
     {
-        "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
-        "name": "ExampleRole",
         "privileges": [
             "Dashboard.logon",
             "UserAndRoles.read"
