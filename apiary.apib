@@ -1674,10 +1674,16 @@ This method provides Role which was found in the database identified by its *id*
 
 You may update belonging privileges assigned to users via roles.
 
-In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
+**Note:**
+- A role needs to have at least one privilege assigned.
+- Privilege(s) can be added/removed. (the server completely replace every privilege)
+- Interdependencies with other privileges might occur.
+- Any changes to a role are automatically inherited by all users with that particular role.
 
 **Warning:** This action **permanently** updates the belonging privileges of a Role. 
-If the role is assigned to any user, each assigned user will get the updated set of privileges.
+If the role is assigned to users, each assigned user will get the updated set of privileges.
+
+In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
 
 + Request (application/json)
 
