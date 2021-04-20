@@ -1296,46 +1296,57 @@ Returns information about the current user. See below for possible responses.
 + Response 200 (application/json)
 
         {
-          "data": {
-            "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-            "username": "fred",
-            "fullName": "Fred Freelancer",   //
-            "tenantId": "smarttech",
-            "properties" : {
-                "customkey": "customvalue",
-            },
-            "customFields": [
-                {
-                    "key": "Department",
-                    "displayName": "Department",
-                    "inputType": "optional",
-                    "type": "list",
-                    "value": "My Department",
-                    "possibleValues": [
-                        "No Department",
-                        "My Department"
-                    ]
+            "links": {},
+            "data": {
+                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "createdOn": "2021-04-15T15:00:26.495Z",
+                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                "licenseType": "named",
+                "licenseStatus": "inactive",
+                "tenantId": "smarttech",
+                "properties" : {
+                    "customkey": "customvalue",
                 },
-                {
-                    "key": "external_field",
-                    "displayName": "external_field",
-                    "inputType": "externally_provided",
-                    "type": "text"
-                }
-            ]
-          }
+                "roles": [
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor",
+                        "privileges": []
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator",
+                        "privileges": []
+                    }
+                ],
+                "customFields": [
+                    {
+                        "key": "Department",
+                        "displayName": "Department",
+                        "inputType": "optional",
+                        "type": "list",
+                        "value": "Example Department",
+                        "possibleValues": [
+                            "Example Department"
+                        ]
+                    }
+                ]
+            }
         }
 
 + Response 401 (application/json)
 
         // if access token does not permit to show the user's data
         {
-          "error": {
-            "detail": "The user does not have the required privileges to perform the operation.",
-            "title": "Insufficient privileges",
-            "status": 401
-            "type": "insufficient_privileges"
-          }
+            "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "title": "Insufficient privileges",
+                "status": 401
+                "type": "insufficient_privileges"
+            }
         }
 
 ### Update User [PUT]
@@ -1346,7 +1357,7 @@ Returns information about the current user. See below for possible responses.
             "customFields": [
                 {
                     "key": "Department",
-                    "value": "My Department"
+                    "value": "Example Department",
                 }
             ]
         }
@@ -1354,31 +1365,41 @@ Returns information about the current user. See below for possible responses.
 + Response 200 (application/json)
 
         {
+            "links": {},
             "data": {
                 "id": "eb323701-839f-4998-b56e-3e20c70259c5",
                 "username": "fred",
                 "fullName": "Fred Freelancer",
+                "createdOn": "2021-04-15T15:00:26.495Z",
+                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                "licenseType": "named",
+                "licenseStatus": "inactive",
                 "tenantId": "smarttech",
                 "properties" : {
                     "customkey": "customvalue",
                 },
+                "roles": [
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor",
+                        "privileges": []
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator",
+                        "privileges": []
+                    }
+                ],
                 "customFields": [
                     {
                         "key": "Department",
                         "displayName": "Department",
                         "inputType": "optional",
                         "type": "list",
-                        "value": "My Department",
+                        "value": "Example Department",
                         "possibleValues": [
-                            "No Department",
-                            "My Department"
+                            "Example Department"
                         ]
-                    },
-                    {
-                        "key": "external_field",
-                        "displayName": "external_field",
-                        "inputType": "externally_provided",
-                        "type": "text"
                     }
                 ]
             }
@@ -1398,31 +1419,41 @@ Returns information about the current user. See below for possible responses.
 + Response 200 (application/json)
 
         {
+            "links": {},
             "data": {
                 "id": "eb323701-839f-4998-b56e-3e20c70259c5",
                 "username": "fred",
                 "fullName": "Fred Freelancer",
+                "createdOn": "2021-04-15T15:00:26.495Z",
+                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                "licenseType": "named",
+                "licenseStatus": "inactive",
                 "tenantId": "smarttech",
                 "properties" : {
                     "customkey": "customvalue",
                 },
+                "roles": [
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor",
+                        "privileges": []
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator",
+                        "privileges": []
+                    }
+                ],
                 "customFields": [
                     {
                         "key": "Department",
                         "displayName": "Department",
                         "inputType": "optional",
                         "type": "list",
-                        "value": "",          // The field is now cleared
+                        "value": "",              // the field is cleared
                         "possibleValues": [
-                            "No Department",
-                            "My Department"
+                            "Example Department"
                         ]
-                    },
-                    {
-                        "key": "external_field",
-                        "displayName": "external_field",
-                        "inputType": "externally_provided",
-                        "type": "text"
                     }
                 ]
             }
@@ -1477,24 +1508,23 @@ Returns information about the current user. See below for possible responses.
             }
         }
 
-## Get all Users [/api/v1/user]
-
-Returns a list of all users.
-
-### Get Users [GET]
 
 + Response 200 (application/json)
 
         {
-        "data": [
-            {
+            "links": {},
+            "data": {
                 "id": "eb323701-839f-4998-b56e-3e20c70259c5",
                 "username": "fred",
                 "fullName": "Fred Freelancer",
-                "createdOn": "2021-02-23T17:24:01.130Z",
+                "createdOn": "2021-04-15T15:00:26.495Z",
                 "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                "licenseType": "builtin",
+                "licenseType": "named",
                 "licenseStatus": "inactive",
+                "tenantId": "smarttech",
+                "properties" : {
+                    "customkey": "customvalue",
+                },
                 "roles": [
                     {
                         "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
@@ -1513,47 +1543,139 @@ Returns a list of all users.
                         "displayName": "Department",
                         "inputType": "optional",
                         "type": "list",
-                        "value": "",
-                        "possibleValues": [
-                            "Example Department"
-                        ]
-                    }
-                ]
-            },
-            {
-                "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
-                "username": "franz",
-                "fullName": "Franz Hubendobler",
-                "createdOn": "2021-02-23T17:24:01.131Z",
-                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                "licenseType": "builtin",
-                "licenseStatus": "active",
-                "roles": [
-                    {
-                        "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
-                        "name": "Analytics Read-Only User",
-                        "privileges": []
-                    }
-                ],
-                "customFields": [
-                    {
-                        "key": "Department",
-                        "displayName": "Department",
-                        "inputType": "optional",
-                        "type": "list",
+                        "value": "Example Department",
                         "possibleValues": [
                             "Example Department"
                         ]
                     }
                 ]
             }
-        ]
+        }
+
++ Response 400 (application/json)
+
+        // if any of the updated fields is invalid, a detailed error information is given.
+        {
+            "links": {},
+            "error": {
+                "detail": "Please provide values for all required custom fields.",
+                "type": "validation",
+                "title": "Custom field values are missing",
+                "validationDetails": [
+                    {
+                        "title": "Custom field is required.",
+                        "constraint": "Custom field \"Field\" must not be empty.",
+                        "attributePath": "customFields.Field",
+                        "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
+                        "invalidValue": null,
+                        "type": "Required"
+                    }
+                ],
+                "status": 400
+            }
         }
 
 + Response 401 (application/json)
 
-        // When the access token does not permit to show the data of the users
+        // when the access token does not permit to show the data of the users
         {
+            "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "title": "Insufficient privileges",
+                "status": 401
+                "type": "insufficient_privileges"
+            }
+        }
+
+## Get all Users [/api/v1/user]
+
+Returns a list of all users.
+
+### Get Users [GET]
+
++ Response 200 (application/json)
+
+        {
+            "links": {},
+            "data": [
+                {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
+                    "username": "franz",
+                    "fullName": "Franz Hubendobler",
+                    "createdOn": "2021-02-23T17:24:01.131Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "builtin",
+                    "licenseStatus": "active",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                            "name": "Analytics Read-Only User",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
++ Response 401 (application/json)
+
+        // when the access token does not permit to show the data of the users
+        {
+            "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
                 "title": "Insufficient privileges",
@@ -1564,8 +1686,9 @@ Returns a list of all users.
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token is missing or is invalid in the request
         {
+            "links": {},
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
                 "type": "auth",
@@ -1589,129 +1712,134 @@ To see more about role-based access control in Acrolinx: [Acrolinx Roles documen
 Retruns a list of all roles including the belonging privileges.
 
 + Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (array[Role])
     
-        {
-            "links": {},
-            "data": [
-                {
-                    "id": "fdcd7fc6-9715-42f8-a947-88812bc02b2a",
-                    "name": "Term Browser User",
-                    "privileges": [
-                        "Terminology.read",
-                        "Dashboard.logon",
-                        "Termbrowser.logon"
-                    ],
-                    "default": false
-                },
-                {
-                    "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
-                    "name": "Author",
-                    "privileges": [
-                        "CheckingAndClients.checkingApplications",
-                        "CheckingAndClients.downloadReports"
-                    ],
-                    "default": true
-                },
-                {
-                    "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                    "name": "Term Contributor",
-                    "privileges": [
-                        "TermContribution.contributeTerms",
-                        "TermContribution.commentTerms"
-                    ],
-                    "default": false
-                },
-                {
-                    "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                    "name": "Term Browser Administrator",
-                    "privileges": [
-                        "Terminology.read",
-                        "Dashboard.logon"
-                    ],
-                    "default": false
-                },
-                {
-                    "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
-                    "name": "Analytics Read-Only User",
-                    "privileges": [
-                        "Reporting.read",
-                        "Dashboard.logon",
-                        "CheckingAndClients.downloadReports"
-                    ],
-                    "default": false
-                },
-                {
-                    "id": "bc5c91f3-fae1-49f7-8d60-d325077c6ef9",
-                    "name": "Super Administrator",
-                    "privileges": [
-                        "UserAndRoles.read",
-                        "Terminology.read",
-                        "LinguisticConfiguration.configureAndDeployRules",
-                        "LinguisticConfiguration.configureAndDeployReuse",
-                        "CheckingAndClients.submitDictionaryEntry",
-                        "CheckingAndClients.editPluginSegmentation",
-                        "CheckingAndClients.terminologyApplications",
-                        "TermContribution.contributeTerms",
-                        "Reporting.administration",
-                        "Servers.monitoring",
-                        "Terminology.export",
-                        "Terminology.edit",
-                        "CheckingAndClients.checkingApplications",
-                        "Terminology.undump",
-                        "Servers.editNotification",
-                        "CheckingAndClients.reuseApplications",
-                        "CheckingAndClients.runTermHarvesting",
-                        "TermContribution.commentTerms",
-                        "Servers.downloadSupportPackage",
-                        "LinguisticConfiguration.tuneResources",
-                        "LinguisticConfiguration.reloadLanguageConfiguration",
-                        "Terminology.customize",
-                        "Reporting.create",
-                        "LinguisticConfiguration.configureAndDeployTerminology",
-                        "Servers.overlay",
-                        "Terminology.dump",
-                        "UserAndRoles.setApiTokensForOthers",
-                        "Reporting.read",
-                        "CheckingAndClients.editCheckingProfiles",
-                        "Servers.readLicense",
-                        "TermContribution.removeCommentTerms",
-                        "ReuseManagement.edit",
-                        "Dashboard.logon",
-                        "UserAndRoles.editUser",
-                        "Servers.editLicense",
-                        "LinguisticConfiguration.editTargets",
-                        "Termbrowser.logon",
-                        "Servers.downloadLogs",
-                        "UserAndRoles.deleteSessions",
-                        "Terminology.import",
-                        "Servers.capture",
-                        "Servers.list",
-                        "CheckingAndClients.downloadReports",
-                        "Servers.restart",
-                        "Terminology.termbrowserAdmin",
-                        "ReuseManagement.read",
-                        "Terminology.statusChange",
-                        "CheckingAndClients.accessExtractedContent"
-                    ],
-                    "default": false
-                }
-            ]
-        }
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    {
+                        "id": "fdcd7fc6-9715-42f8-a947-88812bc02b2a",
+                        "name": "Term Browser User",
+                        "privileges": [
+                            "Terminology.read",
+                            "Dashboard.logon",
+                            "Termbrowser.logon"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                        "name": "Author",
+                        "privileges": [
+                            "CheckingAndClients.checkingApplications",
+                            "CheckingAndClients.downloadReports"
+                        ],
+                        "default": true
+                    },
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor",
+                        "privileges": [
+                            "TermContribution.contributeTerms",
+                            "TermContribution.commentTerms"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator",
+                        "privileges": [
+                            "Terminology.read",
+                            "Dashboard.logon"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                        "name": "Analytics Read-Only User",
+                        "privileges": [
+                            "Reporting.read",
+                            "Dashboard.logon",
+                            "CheckingAndClients.downloadReports"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "bc5c91f3-fae1-49f7-8d60-d325077c6ef9",
+                        "name": "Super Administrator",
+                        "privileges": [
+                            "UserAndRoles.read",
+                            "Terminology.read",
+                            "LinguisticConfiguration.configureAndDeployRules",
+                            "LinguisticConfiguration.configureAndDeployReuse",
+                            "CheckingAndClients.submitDictionaryEntry",
+                            "CheckingAndClients.editPluginSegmentation",
+                            "CheckingAndClients.terminologyApplications",
+                            "TermContribution.contributeTerms",
+                            "Reporting.administration",
+                            "Servers.monitoring",
+                            "Terminology.export",
+                            "Terminology.edit",
+                            "CheckingAndClients.checkingApplications",
+                            "Terminology.undump",
+                            "Servers.editNotification",
+                            "CheckingAndClients.reuseApplications",
+                            "CheckingAndClients.runTermHarvesting",
+                            "TermContribution.commentTerms",
+                            "Servers.downloadSupportPackage",
+                            "LinguisticConfiguration.tuneResources",
+                            "LinguisticConfiguration.reloadLanguageConfiguration",
+                            "Terminology.customize",
+                            "Reporting.create",
+                            "LinguisticConfiguration.configureAndDeployTerminology",
+                            "Servers.overlay",
+                            "Terminology.dump",
+                            "UserAndRoles.setApiTokensForOthers",
+                            "Reporting.read",
+                            "CheckingAndClients.editCheckingProfiles",
+                            "Servers.readLicense",
+                            "TermContribution.removeCommentTerms",
+                            "ReuseManagement.edit",
+                            "Dashboard.logon",
+                            "UserAndRoles.editUser",
+                            "Servers.editLicense",
+                            "LinguisticConfiguration.editTargets",
+                            "Termbrowser.logon",
+                            "Servers.downloadLogs",
+                            "UserAndRoles.deleteSessions",
+                            "Terminology.import",
+                            "Servers.capture",
+                            "Servers.list",
+                            "CheckingAndClients.downloadReports",
+                            "Servers.restart",
+                            "Terminology.termbrowserAdmin",
+                            "ReuseManagement.read",
+                            "Terminology.statusChange",
+                            "CheckingAndClients.accessExtractedContent"
+                        ],
+                        "default": false
+                    }
+                ]
+            }
 
 + Response 401 (application/json)
 
         // When the access token is missing or is invalid in the request
         {
             "error": {
-            "detail": "Valid authentication has either not been provided or is insufficient.",
-            "type": "auth",
-            "title": "Invalid authentication",
-            "status": 401
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
             }
         }
 
 + Response 403 (application/json)
-    
         // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
 
 ## Privileges [/api/v1/roles/privileges]
@@ -1728,59 +1856,65 @@ To discover existing privileges in your installation perform and compare the res
 
 + Response 200 (application/json)
 
-        {
-            "links": {},
-            "data": [
-                "CheckingAndClients.accessExtractedContent",
-                "CheckingAndClients.checkingApplications",
-                "CheckingAndClients.downloadReports",
-                "CheckingAndClients.editCheckingProfiles",
-                "CheckingAndClients.editPluginSegmentation",
-                "CheckingAndClients.reuseApplications",
-                "CheckingAndClients.runTermHarvesting",
-                "CheckingAndClients.submitDictionaryEntry",
-                "CheckingAndClients.terminologyApplications",
-                "Dashboard.logon",
-                "LinguisticConfiguration.configureAndDeployReuse",
-                "LinguisticConfiguration.configureAndDeployRules",
-                "LinguisticConfiguration.configureAndDeployTerminology",
-                "LinguisticConfiguration.editTargets",
-                "LinguisticConfiguration.reloadLanguageConfiguration",
-                "LinguisticConfiguration.tuneResources",
-                "Reporting.administration",
-                "Reporting.create",
-                "Reporting.read",
-                "ReuseManagement.edit",
-                "ReuseManagement.read",
-                "Servers.capture",
-                "Servers.downloadLogs",
-                "Servers.downloadSupportPackage",
-                "Servers.editLicense",
-                "Servers.editNotification",
-                "Servers.list",
-                "Servers.monitoring",
-                "Servers.overlay",
-                "Servers.readLicense",
-                "Servers.restart",
-                "TermContribution.commentTerms",
-                "TermContribution.contributeTerms",
-                "TermContribution.removeCommentTerms",
-                "Termbrowser.logon",
-                "Terminology.customize",
-                "Terminology.dump",
-                "Terminology.edit",
-                "Terminology.export",
-                "Terminology.import",
-                "Terminology.read",
-                "Terminology.statusChange",
-                "Terminology.termbrowserAdmin",
-                "Terminology.undump",
-                "UserAndRoles.deleteSessions",
-                "UserAndRoles.editUser",
-                "UserAndRoles.read",
-                "UserAndRoles.setApiTokensForOthers"
-            ]
-        }
+    + Attributes (object)
+        + links (object)
+        + data (array[string])
+
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    "CheckingAndClients.accessExtractedContent",
+                    "CheckingAndClients.checkingApplications",
+                    "CheckingAndClients.downloadReports",
+                    "CheckingAndClients.editCheckingProfiles",
+                    "CheckingAndClients.editPluginSegmentation",
+                    "CheckingAndClients.reuseApplications",
+                    "CheckingAndClients.runTermHarvesting",
+                    "CheckingAndClients.submitDictionaryEntry",
+                    "CheckingAndClients.terminologyApplications",
+                    "Dashboard.logon",
+                    "LinguisticConfiguration.configureAndDeployReuse",
+                    "LinguisticConfiguration.configureAndDeployRules",
+                    "LinguisticConfiguration.configureAndDeployTerminology",
+                    "LinguisticConfiguration.editTargets",
+                    "LinguisticConfiguration.reloadLanguageConfiguration",
+                    "LinguisticConfiguration.tuneResources",
+                    "Reporting.administration",
+                    "Reporting.create",
+                    "Reporting.read",
+                    "ReuseManagement.edit",
+                    "ReuseManagement.read",
+                    "Servers.capture",
+                    "Servers.downloadLogs",
+                    "Servers.downloadSupportPackage",
+                    "Servers.editLicense",
+                    "Servers.editNotification",
+                    "Servers.list",
+                    "Servers.monitoring",
+                    "Servers.overlay",
+                    "Servers.readLicense",
+                    "Servers.restart",
+                    "TermContribution.commentTerms",
+                    "TermContribution.contributeTerms",
+                    "TermContribution.removeCommentTerms",
+                    "Termbrowser.logon",
+                    "Terminology.customize",
+                    "Terminology.dump",
+                    "Terminology.edit",
+                    "Terminology.export",
+                    "Terminology.import",
+                    "Terminology.read",
+                    "Terminology.statusChange",
+                    "Terminology.termbrowserAdmin",
+                    "Terminology.undump",
+                    "UserAndRoles.deleteSessions",
+                    "UserAndRoles.editUser",
+                    "UserAndRoles.read",
+                    "UserAndRoles.setApiTokensForOthers"
+                ]
+            }
 
 + Response 401 (application/json)
 
@@ -1809,17 +1943,23 @@ This method provides Role which was found in the database identified by its *id*
 
 + Response 200 (application/json)
 
-        {
-            "links": {},
-            "data": {
-                "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
-                "name": "ExampleRole",
-                "privileges": [
-                    "Dashboard.logon"
-                ],
-                "default": false
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
             }
-        }
 
 ### Update belonging privileges [PUT]
 
@@ -1835,31 +1975,45 @@ You may update belonging privileges assigned to users via roles.
 **Warning:** This action **permanently** updates the belonging privileges of a Role. 
 If the role is assigned to users, each assigned user will get the updated set of privileges.
 
-In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
-
 + Request (application/json)
 
-        {
-            "privileges": [
-                "Dashboard.logon",
-                "UserAndRoles.read"
-            ]
-        }
+    In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (object)
+        + privileges (array[string], required)
+
+    + Body
+
+            {
+                "privileges": [
+                    "Dashboard.logon",
+                    "UserAndRoles.read"
+                ]
+            }
 
 + Response 200 (application/json)
 
-        {
-            "links": {},
-            "data": {
-                "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
-                "name": "ExampleRole",
-                "privileges": [
-                    "UserAndRoles.read",
-                    "Dashboard.logon"
-                ],
-                "default": false
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "UserAndRoles.read",
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
             }
-        }
 
 + Response 400 (application/json)
 
@@ -2265,3 +2419,14 @@ Reuse API:
 
 Debug API:
 * not needed for now - special use case
+
+
+// https://apiblueprint.org/documentation/specification.html#data-structures-section
+# Data Structures
+
+## Role (object) 
+
++ id (string) - UUID 
++ name (string) - Name of the role
++ privileges (array[string]) - Belonging privileges of the role
++ default (boolean) - role is marked as default (true/false)
