@@ -1531,114 +1531,120 @@ To see more about role-based access control in Acrolinx: [Acrolinx Roles documen
 Retruns a list of all roles including the belonging privileges.
 
 + Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (array)
     
-        {
-            "links": {},
-            "data": [
-                {
-                    "id": "fdcd7fc6-9715-42f8-a947-88812bc02b2a",
-                    "name": "Term Browser User",
-                    "privileges": [
-                        "Terminology.read",
-                        "Dashboard.logon",
-                        "Termbrowser.logon"
-                    ],
-                    "default": false
-                },
-                {
-                    "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
-                    "name": "Author",
-                    "privileges": [
-                        "CheckingAndClients.checkingApplications",
-                        "CheckingAndClients.downloadReports"
-                    ],
-                    "default": true
-                },
-                {
-                    "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                    "name": "Term Contributor",
-                    "privileges": [
-                        "TermContribution.contributeTerms",
-                        "TermContribution.commentTerms"
-                    ],
-                    "default": false
-                },
-                {
-                    "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                    "name": "Term Browser Administrator",
-                    "privileges": [
-                        "Terminology.read",
-                        "Dashboard.logon"
-                    ],
-                    "default": false
-                },
-                {
-                    "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
-                    "name": "Analytics Read-Only User",
-                    "privileges": [
-                        "Reporting.read",
-                        "Dashboard.logon",
-                        "CheckingAndClients.downloadReports"
-                    ],
-                    "default": false
-                },
-                {
-                    "id": "bc5c91f3-fae1-49f7-8d60-d325077c6ef9",
-                    "name": "Super Administrator",
-                    "privileges": [
-                        "UserAndRoles.read",
-                        "Terminology.read",
-                        "LinguisticConfiguration.configureAndDeployRules",
-                        "LinguisticConfiguration.configureAndDeployReuse",
-                        "CheckingAndClients.submitDictionaryEntry",
-                        "CheckingAndClients.editPluginSegmentation",
-                        "CheckingAndClients.terminologyApplications",
-                        "TermContribution.contributeTerms",
-                        "Reporting.administration",
-                        "Servers.monitoring",
-                        "Terminology.export",
-                        "Terminology.edit",
-                        "CheckingAndClients.checkingApplications",
-                        "Terminology.undump",
-                        "Servers.editNotification",
-                        "CheckingAndClients.reuseApplications",
-                        "CheckingAndClients.runTermHarvesting",
-                        "TermContribution.commentTerms",
-                        "Servers.downloadSupportPackage",
-                        "LinguisticConfiguration.tuneResources",
-                        "LinguisticConfiguration.reloadLanguageConfiguration",
-                        "Terminology.customize",
-                        "Reporting.create",
-                        "LinguisticConfiguration.configureAndDeployTerminology",
-                        "Servers.overlay",
-                        "Terminology.dump",
-                        "UserAndRoles.setApiTokensForOthers",
-                        "Reporting.read",
-                        "CheckingAndClients.editCheckingProfiles",
-                        "Servers.readLicense",
-                        "TermContribution.removeCommentTerms",
-                        "ReuseManagement.edit",
-                        "Dashboard.logon",
-                        "UserAndRoles.editUser",
-                        "Servers.editLicense",
-                        "LinguisticConfiguration.editTargets",
-                        "Termbrowser.logon",
-                        "Servers.downloadLogs",
-                        "UserAndRoles.deleteSessions",
-                        "Terminology.import",
-                        "Servers.capture",
-                        "Servers.list",
-                        "CheckingAndClients.downloadReports",
-                        "Servers.restart",
-                        "Terminology.termbrowserAdmin",
-                        "ReuseManagement.read",
-                        "Terminology.statusChange",
-                        "CheckingAndClients.accessExtractedContent"
-                    ],
-                    "default": false
-                }
-            ]
-        }
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    {
+                        "id": "fdcd7fc6-9715-42f8-a947-88812bc02b2a",
+                        "name": "Term Browser User",
+                        "privileges": [
+                            "Terminology.read",
+                            "Dashboard.logon",
+                            "Termbrowser.logon"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                        "name": "Author",
+                        "privileges": [
+                            "CheckingAndClients.checkingApplications",
+                            "CheckingAndClients.downloadReports"
+                        ],
+                        "default": true
+                    },
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor",
+                        "privileges": [
+                            "TermContribution.contributeTerms",
+                            "TermContribution.commentTerms"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator",
+                        "privileges": [
+                            "Terminology.read",
+                            "Dashboard.logon"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                        "name": "Analytics Read-Only User",
+                        "privileges": [
+                            "Reporting.read",
+                            "Dashboard.logon",
+                            "CheckingAndClients.downloadReports"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "bc5c91f3-fae1-49f7-8d60-d325077c6ef9",
+                        "name": "Super Administrator",
+                        "privileges": [
+                            "UserAndRoles.read",
+                            "Terminology.read",
+                            "LinguisticConfiguration.configureAndDeployRules",
+                            "LinguisticConfiguration.configureAndDeployReuse",
+                            "CheckingAndClients.submitDictionaryEntry",
+                            "CheckingAndClients.editPluginSegmentation",
+                            "CheckingAndClients.terminologyApplications",
+                            "TermContribution.contributeTerms",
+                            "Reporting.administration",
+                            "Servers.monitoring",
+                            "Terminology.export",
+                            "Terminology.edit",
+                            "CheckingAndClients.checkingApplications",
+                            "Terminology.undump",
+                            "Servers.editNotification",
+                            "CheckingAndClients.reuseApplications",
+                            "CheckingAndClients.runTermHarvesting",
+                            "TermContribution.commentTerms",
+                            "Servers.downloadSupportPackage",
+                            "LinguisticConfiguration.tuneResources",
+                            "LinguisticConfiguration.reloadLanguageConfiguration",
+                            "Terminology.customize",
+                            "Reporting.create",
+                            "LinguisticConfiguration.configureAndDeployTerminology",
+                            "Servers.overlay",
+                            "Terminology.dump",
+                            "UserAndRoles.setApiTokensForOthers",
+                            "Reporting.read",
+                            "CheckingAndClients.editCheckingProfiles",
+                            "Servers.readLicense",
+                            "TermContribution.removeCommentTerms",
+                            "ReuseManagement.edit",
+                            "Dashboard.logon",
+                            "UserAndRoles.editUser",
+                            "Servers.editLicense",
+                            "LinguisticConfiguration.editTargets",
+                            "Termbrowser.logon",
+                            "Servers.downloadLogs",
+                            "UserAndRoles.deleteSessions",
+                            "Terminology.import",
+                            "Servers.capture",
+                            "Servers.list",
+                            "CheckingAndClients.downloadReports",
+                            "Servers.restart",
+                            "Terminology.termbrowserAdmin",
+                            "ReuseManagement.read",
+                            "Terminology.statusChange",
+                            "CheckingAndClients.accessExtractedContent"
+                        ],
+                        "default": false
+                    }
+                ]
+            }
 
 + Response 401 (application/json)
 
@@ -1670,59 +1676,65 @@ To discover existing privileges in your installation perform and compare the res
 
 + Response 200 (application/json)
 
-        {
-            "links": {},
-            "data": [
-                "CheckingAndClients.accessExtractedContent",
-                "CheckingAndClients.checkingApplications",
-                "CheckingAndClients.downloadReports",
-                "CheckingAndClients.editCheckingProfiles",
-                "CheckingAndClients.editPluginSegmentation",
-                "CheckingAndClients.reuseApplications",
-                "CheckingAndClients.runTermHarvesting",
-                "CheckingAndClients.submitDictionaryEntry",
-                "CheckingAndClients.terminologyApplications",
-                "Dashboard.logon",
-                "LinguisticConfiguration.configureAndDeployReuse",
-                "LinguisticConfiguration.configureAndDeployRules",
-                "LinguisticConfiguration.configureAndDeployTerminology",
-                "LinguisticConfiguration.editTargets",
-                "LinguisticConfiguration.reloadLanguageConfiguration",
-                "LinguisticConfiguration.tuneResources",
-                "Reporting.administration",
-                "Reporting.create",
-                "Reporting.read",
-                "ReuseManagement.edit",
-                "ReuseManagement.read",
-                "Servers.capture",
-                "Servers.downloadLogs",
-                "Servers.downloadSupportPackage",
-                "Servers.editLicense",
-                "Servers.editNotification",
-                "Servers.list",
-                "Servers.monitoring",
-                "Servers.overlay",
-                "Servers.readLicense",
-                "Servers.restart",
-                "TermContribution.commentTerms",
-                "TermContribution.contributeTerms",
-                "TermContribution.removeCommentTerms",
-                "Termbrowser.logon",
-                "Terminology.customize",
-                "Terminology.dump",
-                "Terminology.edit",
-                "Terminology.export",
-                "Terminology.import",
-                "Terminology.read",
-                "Terminology.statusChange",
-                "Terminology.termbrowserAdmin",
-                "Terminology.undump",
-                "UserAndRoles.deleteSessions",
-                "UserAndRoles.editUser",
-                "UserAndRoles.read",
-                "UserAndRoles.setApiTokensForOthers"
-            ]
-        }
+    + Attributes (object)
+        + links (object)
+        + data (array[string])
+
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    "CheckingAndClients.accessExtractedContent",
+                    "CheckingAndClients.checkingApplications",
+                    "CheckingAndClients.downloadReports",
+                    "CheckingAndClients.editCheckingProfiles",
+                    "CheckingAndClients.editPluginSegmentation",
+                    "CheckingAndClients.reuseApplications",
+                    "CheckingAndClients.runTermHarvesting",
+                    "CheckingAndClients.submitDictionaryEntry",
+                    "CheckingAndClients.terminologyApplications",
+                    "Dashboard.logon",
+                    "LinguisticConfiguration.configureAndDeployReuse",
+                    "LinguisticConfiguration.configureAndDeployRules",
+                    "LinguisticConfiguration.configureAndDeployTerminology",
+                    "LinguisticConfiguration.editTargets",
+                    "LinguisticConfiguration.reloadLanguageConfiguration",
+                    "LinguisticConfiguration.tuneResources",
+                    "Reporting.administration",
+                    "Reporting.create",
+                    "Reporting.read",
+                    "ReuseManagement.edit",
+                    "ReuseManagement.read",
+                    "Servers.capture",
+                    "Servers.downloadLogs",
+                    "Servers.downloadSupportPackage",
+                    "Servers.editLicense",
+                    "Servers.editNotification",
+                    "Servers.list",
+                    "Servers.monitoring",
+                    "Servers.overlay",
+                    "Servers.readLicense",
+                    "Servers.restart",
+                    "TermContribution.commentTerms",
+                    "TermContribution.contributeTerms",
+                    "TermContribution.removeCommentTerms",
+                    "Termbrowser.logon",
+                    "Terminology.customize",
+                    "Terminology.dump",
+                    "Terminology.edit",
+                    "Terminology.export",
+                    "Terminology.import",
+                    "Terminology.read",
+                    "Terminology.statusChange",
+                    "Terminology.termbrowserAdmin",
+                    "Terminology.undump",
+                    "UserAndRoles.deleteSessions",
+                    "UserAndRoles.editUser",
+                    "UserAndRoles.read",
+                    "UserAndRoles.setApiTokensForOthers"
+                ]
+            }
 
 + Response 401 (application/json)
 
@@ -1751,17 +1763,27 @@ This method provides Role which was found in the database identified by its *id*
 
 + Response 200 (application/json)
 
-        {
-            "links": {},
-            "data": {
-                "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
-                "name": "ExampleRole",
-                "privileges": [
-                    "Dashboard.logon"
-                ],
-                "default": false
+    + Attributes (object)
+        + links (object)
+        + data (object)
+            + id (string)
+            + name (string)
+            + privileges (array[string])
+            + default (boolean)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
             }
-        }
 
 ### Update belonging privileges [PUT]
 
@@ -1777,16 +1799,24 @@ You may update belonging privileges assigned to users via roles.
 **Warning:** This action **permanently** updates the belonging privileges of a Role. 
 If the role is assigned to users, each assigned user will get the updated set of privileges.
 
-In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
-
 + Request (application/json)
 
-        {
-            "privileges": [
-                "Dashboard.logon",
-                "UserAndRoles.read"
-            ]
-        }
+    In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (object)
+        + privileges (array[string], required)
+
+    + Body
+
+            {
+                "privileges": [
+                    "Dashboard.logon",
+                    "UserAndRoles.read"
+                ]
+            }
 
 + Response 200 (application/json)
 
