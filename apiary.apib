@@ -1534,7 +1534,7 @@ Retruns a list of all roles including the belonging privileges.
 
     + Attributes (object)
         + links (object)
-        + data (array)
+        + data (array[Role])
     
     + Body
 
@@ -1765,11 +1765,7 @@ This method provides Role which was found in the database identified by its *id*
 
     + Attributes (object)
         + links (object)
-        + data (object)
-            + id (string)
-            + name (string)
-            + privileges (array[string])
-            + default (boolean)
+        + data (Role)
 
     + Body
 
@@ -1820,18 +1816,24 @@ If the role is assigned to users, each assigned user will get the updated set of
 
 + Response 200 (application/json)
 
-        {
-            "links": {},
-            "data": {
-                "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
-                "name": "ExampleRole",
-                "privileges": [
-                    "UserAndRoles.read",
-                    "Dashboard.logon"
-                ],
-                "default": false
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "UserAndRoles.read",
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
             }
-        }
 
 + Response 400 (application/json)
 
@@ -2237,3 +2239,14 @@ Reuse API:
 
 Debug API:
 * not needed for now - special use case
+
+
+// https://apiblueprint.org/documentation/specification.html#data-structures-section
+# Data Structures
+
+## Role (object) 
+
++ id (string) - UUID 
++ name (string) - Name of the role
++ privileges (array[string]) - Belonging privileges of the role
++ default (boolean) - role is marked as default (true/false)
