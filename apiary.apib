@@ -1296,147 +1296,19 @@ Returns information about the current user. See below for possible responses.
 + Response 200 (application/json)
 
         {
-          "data": {
-            "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-            "username": "fred",
-            "fullName": "Fred Freelancer",   //
-            "tenantId": "smarttech",
-            "properties" : {
-                "customkey": "customvalue",
-            },
-            "customFields": [
-                {
-                    "key": "Department",
-                    "displayName": "Department",
-                    "inputType": "optional",
-                    "type": "list",
-                    "value": "My Department",
-                    "possibleValues": [
-                        "No Department",
-                        "My Department"
-                    ]
-                },
-                {
-                    "key": "external_field",
-                    "displayName": "external_field",
-                    "inputType": "externally_provided",
-                    "type": "text"
-                }
-            ]
-          }
-        }
-
-+ Response 401 (application/json)
-
-        // if access token does not permit to show the user's data
-        {
-          "error": {
-            "detail": "The user does not have the required privileges to perform the operation.",
-            "title": "Insufficient privileges",
-            "status": 401
-            "type": "insufficient_privileges"
-          }
-        }
-
-### Update User [PUT]
-
-+ Request (application/json)
-
-        {
-             "customFields": [
-                {
-                    "key": "Department",
-                    "value": "My new Department",
-                }
-            ]
-        }
-
-
-+ Response 200 (application/json)
-
-        {
-         "data": {
-            "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-            "username": "fred",
-            "fullName": "Fred Freelancer",   //
-            "tenantId": "smarttech",
-            "properties" : {
-                "customkey": "customvalue",
-            },
-            "customFields": [
-                {
-                    "key": "Department",
-                    "displayName": "Department",
-                    "inputType": "optional",
-                    "type": "list",
-                    "value": "My new Department",
-                    "possibleValues": [
-                        "No Department",
-                        "My Department"
-                    ]
-                },
-                {
-                    "key": "external_field",
-                    "displayName": "external_field",
-                    "inputType": "externally_provided",
-                    "type": "text"
-                }
-            ]
-          }
-        }
-
-+ Response 400 (application/json)
-
-        // if any of the updated fields is invalid, a detailed error information is given.
-        {
-          "error": {
-            "detail": "Please provide values for all required custom fields.",
-            "type": "validation",
-            "title": "Custom field values are missing",
-            "validationDetails": [
-                {
-                    "title": "Custom field is required.",
-                    "constraint": "Custom field \"Field\" must not be empty.",
-                    "attributePath": "customFields.Field",
-                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
-                    "invalidValue": null,
-                    "type": "Required"
-                }
-            ],
-            "status": 400
-          }
-        }
-
-+ Response 401 (application/json)
-
-        // if access token does not permit to update the user's data
-        {
-          "error": {
-            "detail": "The user does not have the required privileges to perform the operation.",
-            "title": "Insufficient privileges",
-            "status": 401
-            "type": "insufficient_privileges"
-          }
-        }
-
-## Get all Users [/api/v1/user]
-
-Returns a list of all users.
-
-### Get Users [GET]
-
-+ Response 200 (application/json)
-
-        {
-        "data": [
-            {
+            "links": {},
+            "data": {
                 "id": "eb323701-839f-4998-b56e-3e20c70259c5",
                 "username": "fred",
                 "fullName": "Fred Freelancer",
-                "createdOn": "2021-02-23T17:24:01.130Z",
+                "createdOn": "2021-04-15T15:00:26.495Z",
                 "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                "licenseType": "builtin",
+                "licenseType": "named",
                 "licenseStatus": "inactive",
+                "tenantId": "smarttech",
+                "properties" : {
+                    "customkey": "customvalue",
+                },
                 "roles": [
                     {
                         "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
@@ -1455,25 +1327,67 @@ Returns a list of all users.
                         "displayName": "Department",
                         "inputType": "optional",
                         "type": "list",
-                        "value": "",
+                        "value": "Example Department",
                         "possibleValues": [
                             "Example Department"
                         ]
                     }
                 ]
-            },
-            {
-                "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
-                "username": "franz",
-                "fullName": "Franz Hubendobler",
-                "createdOn": "2021-02-23T17:24:01.131Z",
+            }
+        }
+
++ Response 401 (application/json)
+
+        // if access token does not permit to show the user's data
+        {
+            "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "title": "Insufficient privileges",
+                "status": 401
+                "type": "insufficient_privileges"
+            }
+        }
+
+### Update User [PUT]
+
++ Request (application/json)
+
+        {
+            "customFields": [
+                {
+                    "key": "Department",
+                    "value": "Example Department",
+                }
+            ]
+        }
+
+
++ Response 200 (application/json)
+
+        {
+            "links": {},
+            "data": {
+                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "createdOn": "2021-04-15T15:00:26.495Z",
                 "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                "licenseType": "builtin",
-                "licenseStatus": "active",
+                "licenseType": "named",
+                "licenseStatus": "inactive",
+                "tenantId": "smarttech",
+                "properties" : {
+                    "customkey": "customvalue",
+                },
                 "roles": [
                     {
-                        "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
-                        "name": "Analytics Read-Only User",
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor",
+                        "privileges": []
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator",
                         "privileges": []
                     }
                 ],
@@ -1483,19 +1397,139 @@ Returns a list of all users.
                         "displayName": "Department",
                         "inputType": "optional",
                         "type": "list",
+                        "value": "Example Department",
                         "possibleValues": [
                             "Example Department"
                         ]
                     }
                 ]
             }
-        ]
+        }
+
++ Response 400 (application/json)
+
+        // if any of the updated fields is invalid, a detailed error information is given.
+        {
+            "links": {},
+            "error": {
+                "detail": "Please provide values for all required custom fields.",
+                "type": "validation",
+                "title": "Custom field values are missing",
+                "validationDetails": [
+                    {
+                        "title": "Custom field is required.",
+                        "constraint": "Custom field \"Field\" must not be empty.",
+                        "attributePath": "customFields.Field",
+                        "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
+                        "invalidValue": null,
+                        "type": "Required"
+                    }
+                ],
+                "status": 400
+            }
         }
 
 + Response 401 (application/json)
 
-        // When the access token does not permit to show the data of the users
+        // when the access token does not permit to show the data of the users
         {
+            "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "title": "Insufficient privileges",
+                "status": 401
+                "type": "insufficient_privileges"
+            }
+        }
+
+## Get all Users [/api/v1/user]
+
+Returns a list of all users.
+
+### Get Users [GET]
+
++ Response 200 (application/json)
+
+        {
+            "links": {},
+            "data": [
+                {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
+                    "username": "franz",
+                    "fullName": "Franz Hubendobler",
+                    "createdOn": "2021-02-23T17:24:01.131Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "builtin",
+                    "licenseStatus": "active",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                            "name": "Analytics Read-Only User",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+
++ Response 401 (application/json)
+
+        // when the access token does not permit to show the data of the users
+        {
+            "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
                 "title": "Insufficient privileges",
@@ -1506,8 +1540,9 @@ Returns a list of all users.
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token is missing or is invalid in the request
         {
+            "links": {},
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
                 "type": "auth",
