@@ -1816,23 +1816,119 @@ This method provides Role which was found in the database identified by its *id*
                 }
             }
 
-### Update belonging privileges [PUT]
+### Update Role [PUT]
 
-You may update belonging privileges assigned to users via roles.
+This method provides ability to update Role which was found in the database identified by its *id*.
 
-**Note:**
-- A role needs to have at least one privilege assigned.
-- Privilege(s) can be added/removed. (the server completely replace every privilege)
-- Interdependencies with other privileges might occur.
-- Any changes to a role are automatically inherited by all users with that particular role.
-- You need to reference existing privileges. See [Get all privileges](###Get_all_privileges)
+**Note:** Acrolinx comes installed with a number of preconfigured roles that are common in many organizations that use Acrolinx. The preconfigured roles cannot be edited.
 
-**Warning:** This action **permanently** updates the belonging privileges of a Role. 
-If the role is assigned to users, each assigned user will get the updated set of privileges.
++ Request Update name (application/json)
 
-+ Request (application/json)
+    You may update the name of a role.
+
+    In this example the name will be changed of the role `ExampleRole` which was found in the database identified by its *id*.
+
+    **Note:**
+    - The name needs to be unique. (size must be between 1 and 254)
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (object)
+        + name (string, required)
+
+    + Body
+
+            {
+                "name": "Preferred name"
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "Preferred name",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 400 (application/json)
+
+            // when empty name was provided or more than 254 character long
+            {
+                "links": {},
+                "error": {
+                    "reference": "b22b60a5-6ee4-4f4d-90fb-8a64ae4e697a",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "Size",
+                            "attributePath": "name",
+                            "detail": "size must be between 1 and 254",
+                            "invalidValue": ""
+                        },
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotBlank",
+                            "attributePath": "name",
+                            "detail": "must not be blank",
+                            "invalidValue": ""
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // When the user don't have privileges to edit roles
+
++ Response 404 (application/json)
+
+        // When role was not found in the database identified by its *id*
+
++ Request Update belonging privileges (application/json)
+
+    You may update belonging privileges assigned to users via roles.
 
     In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
+
+    **Note:**
+    - A role needs to have at least one privilege assigned.
+    - Privilege(s) can be added/removed. (the server completely replace every privilege)
+    - Interdependencies with other privileges might occur.
+    - Any changes to a role are automatically inherited by all users with that particular role.
+    - You need to reference existing privileges. See [Get all privileges](###Get_all_privileges)
+
+    **Warning:** This action **permanently** updates the belonging privileges of a Role. 
+    If the role is assigned to users, each assigned user will get the updated set of privileges.
 
     + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
