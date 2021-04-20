@@ -1450,7 +1450,7 @@ Returns information about the current user. See below for possible responses.
                         "displayName": "Department",
                         "inputType": "optional",
                         "type": "list",
-                        "value": "",              // the field is cleared
+                        "value": "",          // the field is cleared
                         "possibleValues": [
                             "Example Department"
                         ]
@@ -1464,19 +1464,19 @@ Returns information about the current user. See below for possible responses.
         // When any of the updated fields are invalid, a detailed error information is given
         {
             "error": {
-                "detail": "Cannot set custom field \"Department\" as its value is not one of \"My Department\".",
+                "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
                 "type": "customFieldsIncorrect",
                 "title": "Custom field values are incorrect",
                 "validationDetails": [
                     {
                         "title": "Invalid custom field value",
-                        "constraint": "Must be one of \"My Department\".",
+                        "constraint": "Must be one of \"Example Department\".",
                         "attributePath": "customFields.Department",
-                        "detail": "Cannot set custom field \"Department\" as its value is not one of \"My Department\".",
+                        "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
                         "invalidValue": "This is the invalid value",
                         "possibleValues": [
-                            "My Department"
-                        ],Example
+                            "Example Department"
+                        ],
                         "type": "InvalidValue"
                     }
                 ],
@@ -1505,86 +1505,6 @@ Returns information about the current user. See below for possible responses.
                 "type": "auth",
                 "title": "Invalid authentication",
                 "status": 401
-            }
-        }
-
-
-+ Response 200 (application/json)
-
-        {
-            "links": {},
-            "data": {
-                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-                "username": "fred",
-                "fullName": "Fred Freelancer",
-                "createdOn": "2021-04-15T15:00:26.495Z",
-                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                "licenseType": "named",
-                "licenseStatus": "inactive",
-                "tenantId": "smarttech",
-                "properties" : {
-                    "customkey": "customvalue",
-                },
-                "roles": [
-                    {
-                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                        "name": "Term Contributor",
-                        "privileges": []
-                    },
-                    {
-                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                        "name": "Term Browser Administrator",
-                        "privileges": []
-                    }
-                ],
-                "customFields": [
-                    {
-                        "key": "Department",
-                        "displayName": "Department",
-                        "inputType": "optional",
-                        "type": "list",
-                        "value": "Example Department",
-                        "possibleValues": [
-                            "Example Department"
-                        ]
-                    }
-                ]
-            }
-        }
-
-+ Response 400 (application/json)
-
-        // if any of the updated fields is invalid, a detailed error information is given.
-        {
-            "links": {},
-            "error": {
-                "detail": "Please provide values for all required custom fields.",
-                "type": "validation",
-                "title": "Custom field values are missing",
-                "validationDetails": [
-                    {
-                        "title": "Custom field is required.",
-                        "constraint": "Custom field \"Field\" must not be empty.",
-                        "attributePath": "customFields.Field",
-                        "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
-                        "invalidValue": null,
-                        "type": "Required"
-                    }
-                ],
-                "status": 400
-            }
-        }
-
-+ Response 401 (application/json)
-
-        // when the access token does not permit to show the data of the users
-        {
-            "links": {},
-            "error": {
-                "detail": "The user does not have the required privileges to perform the operation.",
-                "title": "Insufficient privileges",
-                "status": 401
-                "type": "insufficient_privileges"
             }
         }
 
@@ -1840,6 +1760,7 @@ Retruns a list of all roles including the belonging privileges.
         }
 
 + Response 403 (application/json)
+
         // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
 
 ## Privileges [/api/v1/roles/privileges]
