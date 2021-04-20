@@ -1700,18 +1700,19 @@ Retruns a list of all roles including the belonging privileges.
 
 + Response 401 (application/json)
 
-    // When the access token is missing or is invalid in the request
-    {
-        "error": {
+        // When the access token is missing or is invalid in the request
+        {
+            "error": {
             "detail": "Valid authentication has either not been provided or is insufficient.",
             "type": "auth",
             "title": "Invalid authentication",
             "status": 401
+            }
         }
-    }
 
 + Response 403 (application/json)
-    // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
+    
+        // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
 
 ## Privileges [/api/v1/roles/privileges]
 
@@ -1727,74 +1728,75 @@ To discover existing privileges in your installation perform and compare the res
 
 + Response 200 (application/json)
 
-    {
-        "links": {},
-        "data": [
-            "CheckingAndClients.accessExtractedContent",
-            "CheckingAndClients.checkingApplications",
-            "CheckingAndClients.downloadReports",
-            "CheckingAndClients.editCheckingProfiles",
-            "CheckingAndClients.editPluginSegmentation",
-            "CheckingAndClients.reuseApplications",
-            "CheckingAndClients.runTermHarvesting",
-            "CheckingAndClients.submitDictionaryEntry",
-            "CheckingAndClients.terminologyApplications",
-            "Dashboard.logon",
-            "LinguisticConfiguration.configureAndDeployReuse",
-            "LinguisticConfiguration.configureAndDeployRules",
-            "LinguisticConfiguration.configureAndDeployTerminology",
-            "LinguisticConfiguration.editTargets",
-            "LinguisticConfiguration.reloadLanguageConfiguration",
-            "LinguisticConfiguration.tuneResources",
-            "Reporting.administration",
-            "Reporting.create",
-            "Reporting.read",
-            "ReuseManagement.edit",
-            "ReuseManagement.read",
-            "Servers.capture",
-            "Servers.downloadLogs",
-            "Servers.downloadSupportPackage",
-            "Servers.editLicense",
-            "Servers.editNotification",
-            "Servers.list",
-            "Servers.monitoring",
-            "Servers.overlay",
-            "Servers.readLicense",
-            "Servers.restart",
-            "TermContribution.commentTerms",
-            "TermContribution.contributeTerms",
-            "TermContribution.removeCommentTerms",
-            "Termbrowser.logon",
-            "Terminology.customize",
-            "Terminology.dump",
-            "Terminology.edit",
-            "Terminology.export",
-            "Terminology.import",
-            "Terminology.read",
-            "Terminology.statusChange",
-            "Terminology.termbrowserAdmin",
-            "Terminology.undump",
-            "UserAndRoles.deleteSessions",
-            "UserAndRoles.editUser",
-            "UserAndRoles.read",
-            "UserAndRoles.setApiTokensForOthers"
-        ]
-    }
+        {
+            "links": {},
+            "data": [
+                "CheckingAndClients.accessExtractedContent",
+                "CheckingAndClients.checkingApplications",
+                "CheckingAndClients.downloadReports",
+                "CheckingAndClients.editCheckingProfiles",
+                "CheckingAndClients.editPluginSegmentation",
+                "CheckingAndClients.reuseApplications",
+                "CheckingAndClients.runTermHarvesting",
+                "CheckingAndClients.submitDictionaryEntry",
+                "CheckingAndClients.terminologyApplications",
+                "Dashboard.logon",
+                "LinguisticConfiguration.configureAndDeployReuse",
+                "LinguisticConfiguration.configureAndDeployRules",
+                "LinguisticConfiguration.configureAndDeployTerminology",
+                "LinguisticConfiguration.editTargets",
+                "LinguisticConfiguration.reloadLanguageConfiguration",
+                "LinguisticConfiguration.tuneResources",
+                "Reporting.administration",
+                "Reporting.create",
+                "Reporting.read",
+                "ReuseManagement.edit",
+                "ReuseManagement.read",
+                "Servers.capture",
+                "Servers.downloadLogs",
+                "Servers.downloadSupportPackage",
+                "Servers.editLicense",
+                "Servers.editNotification",
+                "Servers.list",
+                "Servers.monitoring",
+                "Servers.overlay",
+                "Servers.readLicense",
+                "Servers.restart",
+                "TermContribution.commentTerms",
+                "TermContribution.contributeTerms",
+                "TermContribution.removeCommentTerms",
+                "Termbrowser.logon",
+                "Terminology.customize",
+                "Terminology.dump",
+                "Terminology.edit",
+                "Terminology.export",
+                "Terminology.import",
+                "Terminology.read",
+                "Terminology.statusChange",
+                "Terminology.termbrowserAdmin",
+                "Terminology.undump",
+                "UserAndRoles.deleteSessions",
+                "UserAndRoles.editUser",
+                "UserAndRoles.read",
+                "UserAndRoles.setApiTokensForOthers"
+            ]
+        }
 
 + Response 401 (application/json)
 
-    // When the access token is missing or is invalid in the request
-    {
-        "error": {
-            "detail": "Valid authentication has either not been provided or is insufficient.",
-            "type": "auth",
-            "title": "Invalid authentication",
-            "status": 401
+        // When the access token is missing or is invalid in the request
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
         }
-    }
 
 + Response 403 (application/json)
-    // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
+
+        // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
 
 ## Role [/api/v1/roles/{id}]
 
@@ -1807,17 +1809,17 @@ This method provides Role which was found in the database identified by its *id*
 
 + Response 200 (application/json)
 
-    {
-        "links": {},
-        "data": {
-            "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
-            "name": "ExampleRole",
-            "privileges": [
-                "Dashboard.logon"
-            ],
-            "default": false
+        {
+            "links": {},
+            "data": {
+                "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                "name": "ExampleRole",
+                "privileges": [
+                    "Dashboard.logon"
+                ],
+                "default": false
+            }
         }
-    }
 
 ### Update belonging privileges [PUT]
 
@@ -1837,91 +1839,93 @@ In this example the `UserAndRoles.read` privilege will be assigned to the role `
 
 + Request (application/json)
 
-    {
-        "privileges": [
-            "Dashboard.logon",
-            "UserAndRoles.read"
-        ]
-    }
+        {
+            "privileges": [
+                "Dashboard.logon",
+                "UserAndRoles.read"
+            ]
+        }
 
 + Response 200 (application/json)
 
-    {
-        "links": {},
-        "data": {
-            "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
-            "name": "ExampleRole",
-            "privileges": [
-                "UserAndRoles.read",
-                "Dashboard.logon"
-            ],
-            "default": false
+        {
+            "links": {},
+            "data": {
+                "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                "name": "ExampleRole",
+                "privileges": [
+                    "UserAndRoles.read",
+                    "Dashboard.logon"
+                ],
+                "default": false
+            }
         }
-    }
 
 + Response 400 (application/json)
 
-    // When an unknown privilege was provided in the request ("Example.privilege")
-    {
-        "links": {},
-        "error": {
-            "reference": "bc9b2e2f-1130-4ab5-8127-d9faf7f09485",
-            "detail": "Check the request for invalid values or missing parameters.",
-            "type": "validation",
-            "title": "Invalid request attributes",
-            "validationDetails": [
-                {
-                    "title": "Validation error",
-                    "constraint": "Unknown privileges: Example.privilege",
-                    "attributePath": "privileges",
-                    "detail": "Unknown privileges: Example.privilege",
-                    "invalidValue": "[Dashboard.logon, UserAndRoles.read, Example.privilege]"
-                }
-            ],
-            "status": 400
+        // When an unknown privilege was provided in the request ("Example.privilege")
+        {
+            "links": {},
+            "error": {
+                "reference": "bc9b2e2f-1130-4ab5-8127-d9faf7f09485",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Unknown privileges: Example.privilege",
+                        "attributePath": "privileges",
+                        "detail": "Unknown privileges: Example.privilege",
+                        "invalidValue": "[Dashboard.logon, UserAndRoles.read, Example.privilege]"
+                    }
+                ],
+                "status": 400
+            }
         }
-    }
 
 + Response 400 (application/json)
 
-    // When empty privileges was provided in the request
-    {
-        "links": {},
-        "error": {
-            "reference": "58629cdc-3102-4ff2-973b-68eb82ef2ea0",
-            "detail": "Check the request for invalid values or missing parameters.",
-            "type": "validation",
-            "title": "Invalid request attributes",
-            "validationDetails": [
-                {
-                    "title": "Validation error",
-                    "constraint": "NotEmpty",
-                    "attributePath": "privileges",
-                    "detail": "must not be empty",
-                    "invalidValue": "[]"
-                }
-            ],
-            "status": 400
+        // When empty privileges was provided in the request
+        {
+            "links": {},
+            "error": {
+                "reference": "58629cdc-3102-4ff2-973b-68eb82ef2ea0",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "privileges",
+                        "detail": "must not be empty",
+                        "invalidValue": "[]"
+                    }
+                ],
+                "status": 400
+            }
         }
-    }
 
 + Response 401 (application/json)
 
-    // When the access token is missing or is invalid in the request
-    {
-        "error": {
-            "detail": "Valid authentication has either not been provided or is insufficient.",
-            "type": "auth",
-            "title": "Invalid authentication",
-            "status": 401
+        // When the access token is missing or is invalid in the request
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
         }
-    }
 
 + Response 403 (application/json)
-    // When the user don't have privileges to edit roles
+
+        // When the user don't have privileges to edit roles
 
 + Response 404 (application/json)
-    // When role was not found in the database identified by its *id*
+
+        // When role was not found in the database identified by its *id*
 
 # Group Document API
 
@@ -1931,7 +1935,7 @@ Typical program flow:
 
 1. A document is opened in the host editor.
 2. The integration uses create or retrieve document information, to check if the custom fields have to be filled out.
-   If the user has to fill out custom fields, the API returns all fields to fill out and the set values.
+    If the user has to fill out custom fields, the API returns all fields to fill out and the set values.
 3. The integration requests the user to fill out the custom field.
 4. The integration sets the new custom fields either using the update document function or while submitting a check request.
 
@@ -1943,22 +1947,22 @@ This method provides Document which was found in the database.
 + Response 200 (application/json)
 
         {
-          "data": {
-            "id": "283ab1e075f21a",
-            "reference": "C:\\abc.md",
-            "contentType": "E-Mail",
-            "customFields": [
-                {
-                    "displayName": "Project ID",
-                    "key": "projectId",
-                    "value": null,
-                    "required": true
+            "data": {
+                "id": "283ab1e075f21a",
+                "reference": "C:\\abc.md",
+                "contentType": "E-Mail",
+                "customFields": [
+                    {
+                        "displayName": "Project ID",
+                        "key": "projectId",
+                        "value": null,
+                        "required": true
+                    }
+                ],
+                "displayInfo": {
+                    "reference": "abc.md"
                 }
-            ],
-            "displayInfo": {
-                "reference": "abc.md"
             }
-          }
         }
 
 ### Update Document Custom Fields [PUT]
@@ -1983,22 +1987,22 @@ This method provides Document which was found in the database.
 + Response 200 (application/json)
 
         {
-          "data": {
-            "id": "283ab1e075f21a",
-            "reference": "C:\\abc.md",
-            "contentType": "E-Mail",
-            "customFields": [
-                {
-                    "displayName": "Project ID",
-                    "key": "projectId",
-                    "value": "Marketing Campaign",
-                    "required": true
+            "data": {
+                "id": "283ab1e075f21a",
+                "reference": "C:\\abc.md",
+                "contentType": "E-Mail",
+                "customFields": [
+                    {
+                        "displayName": "Project ID",
+                        "key": "projectId",
+                        "value": "Marketing Campaign",
+                        "required": true
+                    }
+                ],
+                "displayInfo": {
+                    "reference": "abc.md"
                 }
-            ],
-            "displayInfo": {
-                "reference": "abc.md"
             }
-          }
         }
 
 ## Document API Capabilities [GET /api/v1/document/capabilities]
