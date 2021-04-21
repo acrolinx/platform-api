@@ -1916,6 +1916,33 @@ This method provides ability to update Role which was found in the database iden
 
         // When role was not found in the database identified by its *id*
 
++ Response 409 (application/json)
+
+        //When updating a preconfigured built-in role
+        {
+            "links": {},
+            "error": {
+                "reference": "677ece6e-d34a-4148-a05a-6b69fa8ab16e",
+                "detail": "Role 'Term Browser User(uuid=fdcd7fc6-9715-42f8-a947-88812bc02b2a privileges=[Termbrowser.logon [TERM_BROWSER] implies [Terminology.read [TERM_MANAGEMENT] implies [Dashboard.logon, Terminology.downloadImages [TERM_MANAGEMENT]]]])' is an immutable built-in role and cannot be changed.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
+        //When role with the same name already exists
+        {
+            "links": {},
+            "error": {
+                "reference": "f3c9e0d7-1c86-4da3-916f-617d839d2da5",
+                "detail": "A role with name 'Preferred name' already exists.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
+
 + Request Update belonging privileges (application/json)
 
     You may update belonging privileges assigned to users via roles.
@@ -2034,6 +2061,20 @@ This method provides ability to update Role which was found in the database iden
 + Response 404 (application/json)
 
         // When role was not found in the database identified by its *id*
+
++ Response 409 (application/json)
+
+        //When updating a preconfigured built-in role
+        {
+            "links": {},
+            "error": {
+                "reference": "677ece6e-d34a-4148-a05a-6b69fa8ab16e",
+                "detail": "Role 'Term Browser User(uuid=fdcd7fc6-9715-42f8-a947-88812bc02b2a privileges=[Termbrowser.logon [TERM_BROWSER] implies [Terminology.read [TERM_MANAGEMENT] implies [Dashboard.logon, Terminology.downloadImages [TERM_MANAGEMENT]]]])' is an immutable built-in role and cannot be changed.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
 
 # Group Document API
 
