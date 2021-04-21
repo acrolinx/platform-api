@@ -2094,6 +2094,36 @@ This method deletes a specified Role identified by its *id*.
 
 + Response 204 (application/json)
 
++ Response 404 (application/json)
+
+        // When role was not found in the database identified by its *id*
+
++ Response 409 (application/json)
+
+        // When the preconditions for deleting a role are not met
+        {
+            "links": {},
+            "error": {
+                "reference": "7ca66314-1341-4b29-848a-fc53a14b6401",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
 
 # Group Document API
 
