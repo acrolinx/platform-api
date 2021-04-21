@@ -1,5 +1,6 @@
 var drafter = require('drafter');
 var fs = require('fs');
+var util = require('util')
 
 try {
 
@@ -11,7 +12,7 @@ try {
         console.log("valid");
     }
     else {
-        console.log(result);
+        console.log(util.inspect(result, false, 20));
         process.exit(2);
     }
 } catch (err) {
