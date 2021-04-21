@@ -2083,6 +2083,18 @@ This method provides ability to update Role which was found in the database iden
             }
         }
 
+### Delete Role [DELETE]
+
+This method deletes a specified Role identified by its *id*.
+
+**Note:** A role can only be successfully deleted if all following conditions are met
+- The role is not a preconfigured built-in roles such as 'Author', 'Super Administrator' and 'Term Browser'.
+- The role is not selected as a default role.
+- The role is not currently assigned to one or more users
+
++ Response 204 (application/json)
+
+
 # Group Document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
