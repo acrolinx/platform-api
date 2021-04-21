@@ -869,12 +869,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "extractedBegin": 35,
                             "extractedEnd": 38,
                             "originalPart": "nse",
-                            "originalBegin": 19254,
-                            "originalEnd": 19257
-                        }]
-                    },
-                    "readOnly": true,
-                    "issueLocations": [
+                 "issueLocations": [
                         {
                             "locationId": "pageLocation",
                             "displayName": "Page 4",
@@ -1295,46 +1290,52 @@ Returns information about the current user. See below for possible responses.
 
 + Response 200 (application/json)
 
-        {
-            "links": {},
-            "data": {
-                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-                "username": "fred",
-                "fullName": "Fred Freelancer",
-                "createdOn": "2021-04-15T15:00:26.495Z",
-                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                "licenseType": "named",
-                "licenseStatus": "inactive",
-                "tenantId": "smarttech",
-                "properties" : {
-                    "customkey": "customvalue",
-                },
-                "roles": [
-                    {
-                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                        "name": "Term Contributor",
-                        "privileges": []
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
                     },
-                    {
-                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                        "name": "Term Browser Administrator",
-                        "privileges": []
-                    }
-                ],
-                "customFields": [
-                    {
-                        "key": "Department",
-                        "displayName": "Department",
-                        "inputType": "optional",
-                        "type": "list",
-                        "value": "Example Department",
-                        "possibleValues": [
-                            "Example Department"
-                        ]
-                    }
-                ]
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
             }
-        }
 
 + Response 401 (application/json)
 
@@ -1450,80 +1451,86 @@ Returns a list of all users.
 
 + Response 200 (application/json)
 
-        {
-            "links": {},
-            "data": [
-                {
-                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-                    "username": "fred",
-                    "fullName": "Fred Freelancer",
-                    "createdOn": "2021-04-15T15:00:26.495Z",
-                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                    "licenseType": "named",
-                    "licenseStatus": "inactive",
-                    "tenantId": "smarttech",
-                    "properties" : {
-                        "customkey": "customvalue",
-                    },
-                    "roles": [
-                        {
-                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                            "name": "Term Contributor",
-                            "privileges": []
+    + Attributes (object)
+        + links (object)
+        + data (array[User])
+    
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    {
+                        "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                        "username": "fred",
+                        "fullName": "Fred Freelancer",
+                        "createdOn": "2021-04-15T15:00:26.495Z",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "named",
+                        "licenseStatus": "inactive",
+                        "tenantId": "smarttech",
+                        "properties" : {
+                            "customkey": "customvalue",
                         },
-                        {
-                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                            "name": "Term Browser Administrator",
-                            "privileges": []
-                        }
-                    ],
-                    "customFields": [
-                        {
-                            "key": "Department",
-                            "displayName": "Department",
-                            "inputType": "optional",
-                            "type": "list",
-                            "value": "Example Department",
-                            "possibleValues": [
-                                "Example Department"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
-                    "username": "franz",
-                    "fullName": "Franz Hubendobler",
-                    "createdOn": "2021-02-23T17:24:01.131Z",
-                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                    "licenseType": "builtin",
-                    "licenseStatus": "active",
-                    "tenantId": "smarttech",
-                    "properties" : {
-                        "customkey": "customvalue",
+                        "roles": [
+                            {
+                                "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                                "name": "Term Contributor",
+                                "privileges": []
+                            },
+                            {
+                                "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                                "name": "Term Browser Administrator",
+                                "privileges": []
+                            }
+                        ],
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            }
+                        ]
                     },
-                    "roles": [
-                        {
-                            "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
-                            "name": "Analytics Read-Only User",
-                            "privileges": []
-                        }
-                    ],
-                    "customFields": [
-                        {
-                            "key": "Department",
-                            "displayName": "Department",
-                            "inputType": "optional",
-                            "type": "list",
-                            "value": "Example Department",
-                            "possibleValues": [
-                                "Example Department"
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
+                    {
+                        "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
+                        "username": "franz",
+                        "fullName": "Franz Hubendobler",
+                        "createdOn": "2021-02-23T17:24:01.131Z",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "builtin",
+                        "licenseStatus": "active",
+                        "tenantId": "smarttech",
+                        "properties" : {
+                            "customkey": "customvalue",
+                        },
+                        "roles": [
+                            {
+                                "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                                "name": "Analytics Read-Only User",
+                                "privileges": []
+                            }
+                        ],
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
 
 + Response 401 (application/json)
 
@@ -2288,3 +2295,26 @@ Debug API:
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
 + default (boolean) - role is marked as default (true/false)
+
+## User (object)
+
++ id (string) - UUID
++ username (string) - The username
++ fullName (string) - The full name of the user
++ createdOn (string) - The ISO8601 timestamp indicating when the user was created
++ lastIntegrationAccess (string) - The ISO8601 timestamp indicating when the last integration access occurred
++ licenseType (string) - The license type
++ licenseStatus (string) - The license status
++ tenantId (string) - The tenant ID
++ properties (object) - Key/Value pair of properties
++ roles (array[Role]) - List of assigned roles
++ customFields (array[CustomField]) - List of custom fields
+
+### CustomField (object)
+
++ key (string) - The unique key of the custom field 
++ displayName (string) - The name to be displayed
++ inputType (string) - Indicates the origin of the field ['required' | 'optional' | 'externallyProvided']
++ type (string) - Indicates the type ['list' | 'text']
++ value (string) - The value of the field
++ possibleValues (array[string]) - List of possible valid values
