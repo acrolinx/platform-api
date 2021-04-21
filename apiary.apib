@@ -2094,6 +2094,33 @@ This method deletes a specified Role identified by its *id*.
 
 + Response 204 (application/json)
 
++ Response 400 (application/json)
+
+        // when the request is invalid such as a malformed *id*
+        {
+            "links": {},
+            "error": {
+                "reference": "a0b499dc-2511-4aa7-8a4e-c386d60b7800",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
 + Response 404 (application/json)
 
         // When role was not found in the database identified by its *id*
@@ -2109,19 +2136,6 @@ This method deletes a specified Role identified by its *id*.
                 "type": "client",
                 "title": "Conflict",
                 "status": 409
-            }
-        }
-
-+ Response 401 (application/json)
-
-        // When the access token is missing or is invalid in the request
-        {
-            "links": {},
-            "error": {
-                "detail": "Valid authentication has either not been provided or is insufficient.",
-                "type": "auth",
-                "title": "Invalid authentication",
-                "status": 401
             }
         }
 
