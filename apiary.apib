@@ -1354,116 +1354,167 @@ Returns information about the current user. See below for possible responses.
 
 + Request Set a custom field (application/json)
 
-        {
-            "customFields": [
-                {
-                    "key": "Department",
-                    "value": "Example Department",
-                }
-            ]
-        }
+    + Attributes (object)
+        + customFields (array[CustomField])
 
-+ Response 200 (application/json)
+    + Body
 
-        {
-            "links": {},
-            "data": {
-                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-                "username": "fred",
-                "fullName": "Fred Freelancer",
-                "createdOn": "2021-04-15T15:00:26.495Z",
-                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                "licenseType": "named",
-                "licenseStatus": "inactive",
-                "tenantId": "smarttech",
-                "properties" : {
-                    "customkey": "customvalue",
-                },
-                "roles": [
-                    {
-                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                        "name": "Term Contributor",
-                        "privileges": []
-                    },
-                    {
-                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                        "name": "Term Browser Administrator",
-                        "privileges": []
-                    }
-                ],
+            {
                 "customFields": [
                     {
+                        "key": "Test Field",
+                        "value": "This is a string of text"
+                    },
+                    {
                         "key": "Department",
-                        "displayName": "Department",
-                        "inputType": "optional",
-                        "type": "list",
-                        "value": "Example Department",
-                        "possibleValues": [
-                            "Example Department"
-                        ]
+                        "value": "Example Department"
                     }
                 ]
             }
-        }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        },
+                        {
+                            "key": "Test Field",
+                            "displayName": "Test Field",
+                            "inputType": "optional",
+                            "type": "text",
+                            "value": "This is a string of text",
+                            "possibleValues": [
+                                "Item"
+                            ]
+                        }
+                    ]
+                }
+            }
 
 + Request Clear a custom field (application/json)
 
-        {
-            "customFields": [
-                {
-                    "key": "Department",
-                    "value": ""
-                }
-            ]
-        }
+    + Attributes (object)
+        + customFields (array[CustomField])
 
-+ Response 200 (application/json)
+    + Body
 
-        {
-            "links": {},
-            "data": {
-                "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-                "username": "fred",
-                "fullName": "Fred Freelancer",
-                "createdOn": "2021-04-15T15:00:26.495Z",
-                "lastIntegrationAccess": "1970-01-01T00:00:00Z",
-                "licenseType": "named",
-                "licenseStatus": "inactive",
-                "tenantId": "smarttech",
-                "properties" : {
-                    "customkey": "customvalue",
-                },
-                "roles": [
-                    {
-                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                        "name": "Term Contributor",
-                        "privileges": []
-                    },
-                    {
-                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                        "name": "Term Browser Administrator",
-                        "privileges": []
-                    }
-                ],
+            {
                 "customFields": [
                     {
+                        "key": "Test Field",
+                        "value": ""
+                    },
+                    {
                         "key": "Department",
-                        "displayName": "Department",
-                        "inputType": "optional",
-                        "type": "list",
-                        "value": "",          // the field is cleared
-                        "possibleValues": [
-                            "Example Department"
-                        ]
+                        "value": ""
                     }
                 ]
             }
-        }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        },
+                        {
+                            "key": "Test Field",
+                1d16248e-88c8-4bc7-9105-b835042f5b3a            "displayName": "Test Field",
+                            "inputType": "optional",
+                            "type": "text",
+                            "value": "This is a string of text",
+                            "possibleValues": [
+                                "Item"
+                            ]
+                        }
+                    ]
+                }
+            }
 
 + Response 400 (application/json)
 
         // When any of the updated fields are invalid, a detailed error information is given
         {
+            "links": {},
             "error": {
                 "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
                 "type": "customFieldsIncorrect",
@@ -1474,7 +1525,7 @@ Returns information about the current user. See below for possible responses.
                         "constraint": "Must be one of \"Example Department\".",
                         "attributePath": "customFields.Department",
                         "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
-                        "invalidValue": "This is the invalid value",
+                        "invalidValue": "This is not valid",
                         "possibleValues": [
                             "Example Department"
                         ],
@@ -1482,18 +1533,6 @@ Returns information about the current user. See below for possible responses.
                     }
                 ],
                 "status": 400
-            }
-        }
-
-+ Response 401 (application/json)
-
-        // when access token does not permit to update the user's data
-        {
-            "error": {
-                "detail": "The user does not have the required privileges to perform the operation.",
-                "title": "Insufficient privileges",
-                "status": 401
-                "type": "insufficient_privileges"
             }
         }
 
@@ -1508,6 +1547,13 @@ Returns information about the current user. See below for possible responses.
                 "status": 401
             }
         }
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to update custom fields
+
++ Response 404 (application/json)
+
+        // when role was not found in the database identified by its *id*
 
 ## Get all Users [/api/v1/user]
 
