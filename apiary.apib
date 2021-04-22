@@ -1868,6 +1868,48 @@ This method provides ability to add new roles.
                 }
             }
 
+            // When empty privileges was provided 
+            {
+                "links": {},
+                "error": {
+                    "reference": "55973236-1b1a-4d76-a62d-360f5d9a1e29",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotEmpty",
+                            "attributePath": "privileges",
+                            "detail": "must not be empty",
+                            "invalidValue": "[]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
+            // When privilege keys that do not exist were referenced
+            {
+                "links": {},
+                "error": {
+                    "reference": "89f517a8-7d8e-4579-8879-5c6bbdd8fd5a",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "Unknown privileges: My.privilege",
+                            "attributePath": "privileges",
+                            "detail": "Unknown privileges: My.privilege",
+                            "invalidValue": "[My.privilege]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
 + Response 401 (application/json)
 
         // When the access token is missing or is invalid in the request
