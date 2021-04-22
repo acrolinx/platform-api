@@ -1555,6 +1555,62 @@ Returns information about the current user. See below for possible responses.
 
         // when role was not found in the database identified by its *id*
 
+### Delete User [DELETE]
+
+This method deletes a specified User identified by its *id*.
+
+**Note:** A user can only be successfully deleted if all following conditions are met
+- The user is not a preconfigured built-in users such as 'admin', 'termcontribution' and 'analyticsReadOnlyUser'. 
+
+To read more about managing users and built-in users check the docs: [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users)
+
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+        // When the request is invalid such as a malformed *id*
+        {
+            "links": {},
+            "error": {
+                "reference": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 404 (application/json)
+
+        // When user was not found in the database identified by its *id*
+
++ Response 409 (application/json)
+
+        // When the preconditions for deleting a user are not met
+        {
+            "links": {},
+            "error": {
+                "reference": "e9c4227c-e75b-4576-93e4-f5b4fec65d3b",
+                "detail": "Built-in user \"termcontribution (termcontribution) \" cannot be deleted",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
 ## Get all Users [/api/v1/user]
 
 Returns a list of all users.
