@@ -1352,6 +1352,96 @@ Returns information about the current user. See below for possible responses.
 
 ### Update User [PUT]
 
++ Request Update full name (application/json)
+
+    You may update the full name of a user.
+
+    In this example only the `fullName` attribute will be changed of the user `fred` which was found in the database identified by its *id*.
+
+    **Note:**
+    - Full name can be also deleted (changed to empty).
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
+
+    + Attributes (object)
+        + fullName (string, required)
+
+    + Body
+
+            {
+                "fullName": "New Full Name"
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "New Full Name",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token is missing or is invalid in the request
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to update users
+
++ Response 404 (application/json)
+
+        // when user was not found in the database identified by its *id*
+
 + Request Set a custom field (application/json)
 
     + Attributes (object)
