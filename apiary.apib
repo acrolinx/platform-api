@@ -1796,6 +1796,10 @@ To discover existing privileges in your installation perform and compare the res
 
         // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
 
+
+
+## Role [/api/v1/roles]
+
 ### Create role [POST]
 
 This method provides ability to add new roles.
@@ -1807,7 +1811,7 @@ This method provides ability to add new roles.
 
 + Request (application/json)
 
-    + Attributes (Role)
+    + Attributes (CreateRole)
 
     + Body
 
@@ -1941,14 +1945,12 @@ This method provides ability to add new roles.
             }
         }
 
-## Role [/api/v1/roles/{id}]
+### Get Role [GET /api/v1/roles/{id}]
+
+This method provides Role which was found in the database identified by its *id*.
 
 + Parameters
     + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
-
-### Get Role [GET]
-
-This method provides Role which was found in the database identified by its *id*.
 
 + Response 200 (application/json)
 
@@ -1970,7 +1972,7 @@ This method provides Role which was found in the database identified by its *id*
                 }
             }
 
-### Update Role [PUT]
+### Update Role [PUT /api/v1/roles/{id}]
 
 This method provides ability to update Role which was found in the database identified by its *id*.
 
@@ -2577,6 +2579,11 @@ Debug API:
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
 + default (boolean) - Indicates the role is assigned to new users by default [ true | false]
+
+## CreateRole (object) 
+
++ name (string) - Name of the role
++ privileges (array[string]) - Belonging privileges of the role
 
 ## User (object)
 
