@@ -2345,6 +2345,34 @@ This method provides Role which was found in the database identified by its *id*
                 }
             }
 
++ Response 403 (application/json)
+
+        // When the user does not have privileges to view roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // When the specified role ID cannot be found
+        {
+        "links": {},
+            "error": {
+                "reference": "9396654f-08b2-461d-80f9-d8b492786186",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
 ### Update Role [PUT /api/v1/roles/{id}]
 
 This method provides ability to update Role which was found in the database identified by its *id*.
