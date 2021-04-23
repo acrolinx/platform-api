@@ -1352,10 +1352,29 @@ Returns information about the current user. See below for possible responses.
 + Response 403 (application/json)
 
         // when there is insufficient privileges to update users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 404 (application/json)
 
         // when user was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "652b5c86-de20-4629-9df6-84265f2722ec",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 ### Update User [PUT]
 
