@@ -2709,9 +2709,33 @@ This method deletes a specified Role identified by its *id*.
             }
         }
 
++ Response 403 (application/json)
+
+        // When the user does not have privileges to delete roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 + Response 404 (application/json)
 
         // When role was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 + Response 409 (application/json)
 
