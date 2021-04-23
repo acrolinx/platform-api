@@ -1879,19 +1879,6 @@ Returns a list of all users.
 
 + Response 401 (application/json)
 
-        // when the access token does not permit to show the data of the users
-        {
-            "links": {},
-            "error": {
-                "detail": "The user does not have the required privileges to perform the operation.",
-                "title": "Insufficient privileges",
-                "status": 401
-                "type": "insufficient_privileges"
-            }
-        }
-
-+ Response 401 (application/json)
-
         // when the access token is missing or is invalid in the request
         {
             "links": {},
@@ -1900,6 +1887,19 @@ Returns a list of all users.
                 "type": "auth",
                 "title": "Invalid authentication",
                 "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to delete a user
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
             }
         }
 
