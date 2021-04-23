@@ -39,8 +39,8 @@ An API Token is an Access Token but with special characteristics:
 * Only one API Token can be bound to a user at the time
 
 How to get API Token:
-* You can get an API Token by accessing the user settings page on the Dashboard and generating one.
-* You can get an API Token programatically using the **User API**. (See more under the **User Generated API Tokens** section)
+* Accessing the user settings page on the Dashboard and generating one.
+* Programmatically using the **User API**. (See more under the **User Generated API Tokens** section)
 
 Other than that, the **API Token** functions as an **Access Token**.
 
@@ -1711,7 +1711,7 @@ To read more about managing users and built-in users check the docs: [Manage You
 
 ## User Generated API Tokens [/api/v1/user/{id}/tokens]
 
-Users can generate long living API Tokens to use them for programatically access the Platform APIs.
+Users can generate long living API Tokens to use them for programmatically access the Platform APIs.
 
 We protect our APIs with self-contained access tokens. Using access tokens the API consumer can authorize itself under the identity of the belonging User.
 API Tokens are access tokens with type `api` and with different characteristics than the access tokens which are issued when using the sign-in endpoint.
@@ -1738,11 +1738,7 @@ This method provides ability to create API Token for the currently authorized us
 
     + Attributes (object)
         + links (object)
-        + data (object)
-            + type: "api" (string)
-            + issuedAt (string) - The ISO8601 timestamp indicating when the token was issued at
-            + expiresAt (string) - The ISO8601 timestamp indicating when the token will expire at
-            + token (string) - The generated API token (JWT)
+        + data (UserApiTokenCreateResponse)
     
     + Body
 
@@ -1799,11 +1795,7 @@ Typical use cases of this API:
 
     + Attributes (object)
         + links (object)
-        + data (object)
-            + type: "api" (string)
-            + issuedAt (string) - The ISO8601 timestamp indicating when the token was issued at
-            + expiresAt (string) - The ISO8601 timestamp indicating when the token will expire at
-            + token (string) - The generated API token (JWT)
+        + data (UserApiTokenCreateResponse)
     
     + Body
 
@@ -3068,3 +3060,10 @@ Debug API:
 + type (string) - Indicates the type ['list' | 'text']
 + value (string) - The value of the field
 + possibleValues (array[string]) - List of possible valid values
+
+### UserApiTokenCreateResponse
+
++ type: "api" (string)
++ issuedAt (string) - The ISO8601 timestamp indicating when the token was issued at
++ expiresAt (string) - The ISO8601 timestamp indicating when the token will expire at
++ token (string) - The generated API token (JWT)
