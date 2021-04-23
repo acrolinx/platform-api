@@ -1463,10 +1463,29 @@ Returns information about the current user. See below for possible responses.
 + Response 403 (application/json)
 
         // when there is insufficient privileges to update users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 404 (application/json)
 
         // when user was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 + Request Set a custom field (application/json)
 
@@ -1614,7 +1633,7 @@ Returns information about the current user. See below for possible responses.
                         },
                         {
                             "key": "Test Field",
-                1d16248e-88c8-4bc7-9105-b835042f5b3a            "displayName": "Test Field",
+                            "displayName": "Test Field",
                             "inputType": "optional",
                             "type": "text",
                             "value": "This is a string of text",
@@ -1666,10 +1685,29 @@ Returns information about the current user. See below for possible responses.
 + Response 403 (application/json)
 
         // when there is insufficient privileges to update custom fields
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 404 (application/json)
 
         // when role was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 ### Delete User [DELETE]
 
