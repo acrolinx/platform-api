@@ -1351,11 +1351,30 @@ Returns information about the current user. See below for possible responses.
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to update users
+        // when there is insufficient privileges to fetch users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 404 (application/json)
 
         // when user was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "652b5c86-de20-4629-9df6-84265f2722ec",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 ### Update User [PUT]
 
@@ -1444,10 +1463,29 @@ Returns information about the current user. See below for possible responses.
 + Response 403 (application/json)
 
         // when there is insufficient privileges to update users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 404 (application/json)
 
         // when user was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 + Request Set a custom field (application/json)
 
@@ -1595,7 +1633,7 @@ Returns information about the current user. See below for possible responses.
                         },
                         {
                             "key": "Test Field",
-                1d16248e-88c8-4bc7-9105-b835042f5b3a            "displayName": "Test Field",
+                            "displayName": "Test Field",
                             "inputType": "optional",
                             "type": "text",
                             "value": "This is a string of text",
@@ -1647,10 +1685,29 @@ Returns information about the current user. See below for possible responses.
 + Response 403 (application/json)
 
         // when there is insufficient privileges to update custom fields
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 404 (application/json)
 
         // when role was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 ### Delete User [DELETE]
 
@@ -1690,9 +1747,32 @@ To read more about managing users and built-in users check the docs: [Manage You
             }
         }
 
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to delete a user
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 + Response 404 (application/json)
 
         // When user was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "e49d3cd5-330a-408d-84a1-e9ecf20677bf",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 + Response 409 (application/json)
 
@@ -1799,19 +1879,6 @@ Returns a list of all users.
 
 + Response 401 (application/json)
 
-        // when the access token does not permit to show the data of the users
-        {
-            "links": {},
-            "error": {
-                "detail": "The user does not have the required privileges to perform the operation.",
-                "title": "Insufficient privileges",
-                "status": 401
-                "type": "insufficient_privileges"
-            }
-        }
-
-+ Response 401 (application/json)
-
         // when the access token is missing or is invalid in the request
         {
             "links": {},
@@ -1820,6 +1887,19 @@ Returns a list of all users.
                 "type": "auth",
                 "title": "Invalid authentication",
                 "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to delete a user
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
             }
         }
 
@@ -1969,6 +2049,16 @@ Retruns a list of all roles including the belonging privileges.
 + Response 403 (application/json)
 
         // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 ## Privileges [/api/v1/roles/privileges]
 
@@ -2060,8 +2150,16 @@ To discover existing privileges in your installation perform and compare the res
 + Response 403 (application/json)
 
         // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
-
-
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 ## Role [/api/v1/roles]
 
@@ -2195,6 +2293,16 @@ This method provides ability to add new roles.
 + Response 403 (application/json)
 
         // When the user does not have privileges to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 409 (application/json)
 
@@ -2236,6 +2344,34 @@ This method provides Role which was found in the database identified by its *id*
                     "default": false
                 }
             }
+
++ Response 403 (application/json)
+
+        // When the user does not have privileges to view roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // When the specified role ID cannot be found
+        {
+        "links": {},
+            "error": {
+                "reference": "9396654f-08b2-461d-80f9-d8b492786186",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 ### Update Role [PUT /api/v1/roles/{id}]
 
@@ -2330,10 +2466,30 @@ This method provides ability to update Role which was found in the database iden
 + Response 403 (application/json)
 
         // When the user does not have privileges to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 404 (application/json)
 
         // When role was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 + Response 409 (application/json)
 
@@ -2476,10 +2632,30 @@ This method provides ability to update Role which was found in the database iden
 + Response 403 (application/json)
 
         // When the user don't have privileges to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Response 404 (application/json)
 
         // When role was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 + Response 409 (application/json)
 
@@ -2533,9 +2709,33 @@ This method deletes a specified Role identified by its *id*.
             }
         }
 
++ Response 403 (application/json)
+
+        // When the user does not have privileges to delete roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 + Response 404 (application/json)
 
         // When role was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 + Response 409 (application/json)
 
