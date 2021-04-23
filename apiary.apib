@@ -1747,9 +1747,32 @@ To read more about managing users and built-in users check the docs: [Manage You
             }
         }
 
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to delete a user
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 + Response 404 (application/json)
 
         // When user was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "e49d3cd5-330a-408d-84a1-e9ecf20677bf",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 + Response 409 (application/json)
 
