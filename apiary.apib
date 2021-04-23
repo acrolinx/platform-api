@@ -1715,7 +1715,11 @@ Users can generate long living API Tokens to use them for programatically access
 
 We protect our APIs with self-contained access tokens. Using access tokens the API consumer can authorize itself under the identity of the belonging User.
 API Tokens are access tokens with type `api` and with different characteristics than the access tokens which are issued when using the sign-in endpoint.
-(Don't forget to check the section *Introduction -> Authentication and Authorization* in this API Blueprint.)
+
+Don't forget to check the section *Introduction -> Authentication and Authorization* in this API Blueprint.
+
+Only one API Token can be bound to a user at the time
+* When creating a new API Token the previously issued API Token gets invalidated! 
 
 **Warning:** Follow the security guidelines when working with API Tokens:
 + Never share your API Token with others and store it securly!
