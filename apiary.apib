@@ -1399,24 +1399,6 @@ Returns information about the current user. See below for possible responses.
                 "fullName": "New Full Name"
             }
 
-+ Request Update roles (application/json)
-
-    You may update the role of a user.
-
-    In this example only the `roles` attribute will be changed of the user `fred` which was found in the database identified by its *id*. Be aware that it's not possible to send an empty array for `roles` as each user must have at least one role assigned. Built-in users cannot be changed in this way. Furthermore, the requestor cannot grant more privileges than they have themselves (privilege escalation). Should one more roles not exist, the call will fail and the error message will contain all unknown roles that were referenced.
-
-    + Parameters
-        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
-
-    + Attributes (object)
-        + roles (array[Role], required)
-
-    + Body
-
-            {
-                "roles": [{"id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e"}]
-            }
-
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -1502,6 +1484,85 @@ Returns information about the current user. See below for possible responses.
                 "type": "client",
                 "title": "Not Found",
                 "status": 404
+            }
+        }
+
++ Request Update roles (application/json)
+
+    You may update the role of a user.
+
+    In this example only the `roles` attribute will be changed of the user `fred` which was found in the database identified by its *id*. Be aware that it's not possible to send an empty array for `roles` as each user must have at least one role assigned. Built-in users cannot be changed in this way. Furthermore, the requestor cannot grant more privileges than they have themselves (privilege escalation). Should one more roles not exist, the call will fail and the error message will contain all unknown roles that were referenced.
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
+
+    + Attributes (object)
+        + roles (array[Role], required)
+
+    + Body
+
+            {
+                "roles": [{"id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e"}]
+            }
+
+* Response 400 (application/json)
+
+        // when roles array is empty
+        {
+          "links": {},
+          "error": {
+            "reference": "aecbef3d-d1a5-4d69-8d6c-3639f3d944b1",
+            "detail": "Check the request for invalid values or missing parameters.",
+            "type": "validation",
+            "title": "Invalid request attributes",
+            "validationDetails": [
+              {
+                "title": "Validation error",
+                "constraint": "NotEmpty",
+                "attributePath": "roles",
+                "detail": "must not be empty",
+                "invalidValue": "[]"
+              }
+            ],
+            "status": 400
+          }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token is missing or is invalid in the request
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there are insufficient privileges to grant role
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when a built-in user should be updated
+        {
+        "links": {},
+            "error": {
+                "detail": "Not possible to update built-in user",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
             }
         }
 
