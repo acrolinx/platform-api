@@ -3099,12 +3099,13 @@ Debug API:
 + id (string) - UUID 
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
-+ default (boolean) - Indicates the role is assigned to new users by default [ true | false]
++ default (boolean) - Indicates the role is assigned to new users by default [ true | false ]
 
 ## CreateRole (object) 
 
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
++ default (boolean, optional) - Indicates the role is assigned to new users by default, it's optional on create [ true | false ]
 
 ## User (object)
 
