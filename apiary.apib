@@ -38,7 +38,9 @@ An API Token is an Access Token but with special characteristics:
 * It will **not expire when the password of the associated user is changed**
 * Only one API Token can be bound to a user at the time
 
-You can get an API Token by accessing the user settings page on the Dashboard and generating one.
+How to get API Token:
+* Accessing the user settings page on the Dashboard and generating one.
+* Programmatically using the **User API**. (See more under the **User Generated API Tokens** section)
 
 Other than that, the **API Token** functions as an **Access Token**.
 
@@ -1284,7 +1286,7 @@ Returns information about the current user. See below for possible responses.
 ## User Resource [/api/v1/user/{id}]
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... the username
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
 ### Get User [GET]
 
@@ -1787,6 +1789,137 @@ To read more about managing users and built-in users check the docs: [Manage You
                 "status": 409
             }
         }
+
+## User Generated API Tokens [/api/v1/user/{id}/tokens]
+
+Users can generate long living API Tokens to use them for programmatically access the Platform APIs.
+
+We protect our APIs with self-contained access tokens. Using access tokens the API consumer can authorize itself under the identity of the belonging User.
+API Tokens are access tokens with type `api` and with different characteristics than the access tokens which are issued when using the sign-in endpoint.
+
+Don't forget to check the section *Introduction -> Authentication and Authorization* in this API Blueprint.
+
+Only one API Token can be bound to a user at the time
+* When creating a new API Token the previously issued API Token gets invalidated! 
+
+**Warning:** Follow the security guidelines when working with API Tokens:
++ Never share your API Token with others and store it securly!
++ Do not bake the generate API Token into any of your custom code that interacts with the Acrolinx Platform APIs!
+
+**Note:** To see more about creating API Tokens in Acrolinx: [Create an API Token](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/authentication/create-an-api-token)
+
+### Create an API Token (Self)  [POST /api/v1/user/self/tokens]
+
+This method provides ability to create API Token for the currently authorized user.
+
+**Note:** Only with the appropriate permission can someone create an API Token: 
+* To create API Token for yourself it only requires you to be authorized with a valid access token.
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (UserApiTokenCreateResponse)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "type": "api",
+                    "issuedAt": "2021-04-23T07:54:07Z",
+                    "expiresAt": "2025-04-22T07:54:07Z",
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXJtY29udHJpYnV0aW9uIiwiYXVkIjoiYWNyb2xpbngiLCJuYmYiOjE2MTkwNzgwNDcsImlzcyI6ImFjcm9saW54OjAwMDBmZmZmZmZmZjAwMDAiLCJleHAiOjE3NDUzMDg0NDcsInRva2VuVHlwZSI6ImFwaSIsImlhdCI6MTYxOTE2NDQ0NywianRpIjoid3lvaXZoenl3Y3dwN3B4ejc2a29xN2F5NDQifQ.hRa2kHPl7EJ6xm115UOmu4QuppFoST7E626ceIsPeCI"
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
+### Create an API Token for User(s) [POST]
+
+This method provides ability to create API Token for users identified by their *id*.
+
+Typical use cases of this API:
+1. Create API token for personal use
+    - 1.1. Gather your own unique identifier *id* using the *Current user* request.
+    - 1.2. Provide your *id* as parameter.
+    - 1.3. Start using the issued API token.
+2. Create API token for someone else
+    - 2.1. Gather the unique identifier *id* of the other user using the *Get users* requests.
+    - 2.2. Provide the other user's *id* as parameter. 
+    - 2.3. Securely hand over the issued API token to the user.  
+
+**Note:** Only with the appropriate permission can someone create an API Token: 
+* To create API Token for yourself it only requires you to be authorized with a valid access token.
+* To create API Token for someone else it requires you to have the privilege `UserAndRoles.setApiTokensForOthers` assigned and to be authorized with a valid access token.
+
+**Alternative use case:** Create API token for impersonate a user
+
+    It is often useful for an admin to impersonate a user. 
+    For example, a user may be experiencing a bug and an admin may want to impersonate the user to see if they can duplicate the problem.   
+
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (UserApiTokenCreateResponse)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "type": "api",
+                    "issuedAt": "2021-04-23T07:54:07Z",
+                    "expiresAt": "2025-04-22T07:54:07Z",
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXJtY29udHJpYnV0aW9uIiwiYXVkIjoiYWNyb2xpbngiLCJuYmYiOjE2MTkwNzgwNDcsImlzcyI6ImFjcm9saW54OjAwMDBmZmZmZmZmZjAwMDAiLCJleHAiOjE3NDUzMDg0NDcsInRva2VuVHlwZSI6ImFwaSIsImlhdCI6MTYxOTE2NDQ0NywianRpIjoid3lvaXZoenl3Y3dwN3B4ejc2a29xN2F5NDQifQ.hRa2kHPl7EJ6xm115UOmu4QuppFoST7E626ceIsPeCI"
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // When the user don't have the privilege to create an API token for others ("UserAndRoles.setApiTokensForOthers")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // When user was not found in the database identified by its *id*
 
 ## Get all Users [/api/v1/user]
 
@@ -3128,3 +3261,10 @@ Debug API:
 + type (string) - Indicates the type ['list' | 'text']
 + value (string) - The value of the field
 + possibleValues (array[string]) - List of possible valid values
+
+### UserApiTokenCreateResponse
+
++ type: "api" (string)
++ issuedAt (string) - The ISO8601 timestamp indicating when the token was issued at
++ expiresAt (string) - The ISO8601 timestamp indicating when the token will expire at
++ token (string) - The generated API token (JWT)
