@@ -1403,7 +1403,7 @@ Returns information about the current user. See below for possible responses.
 
     You may update the role of a user.
 
-    In this example only the `roles` attribute will be changed of the user `fred` which was found in the database identified by its *id*.
+    In this example only the `roles` attribute will be changed of the user `fred` which was found in the database identified by its *id*. Be aware that it's not possible to send an empty array for `roles` as each user must have at least one role assigned. Built-in users cannot be changed in this way. Furthermore, the requestor cannot grant more privileges than they have themselves (privilege escalation). Should one more roles not exist, the call will fail and the error message will contain all unknown roles that were referenced.
 
     + Parameters
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
