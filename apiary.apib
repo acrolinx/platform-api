@@ -1398,7 +1398,25 @@ Returns information about the current user. See below for possible responses.
             {
                 "fullName": "New Full Name"
             }
-    
+
++ Request Update roles (application/json)
+
+    You may update the role of a user.
+
+    In this example only the `roles` attribute will be changed of the user `fred` which was found in the database identified by its *id*.
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
+
+    + Attributes (object)
+        + roles (array[Role], required)
+
+    + Body
+
+            {
+                "roles": [{"id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e"}]
+            }
+
 + Response 200 (application/json)
 
     + Attributes (object)
