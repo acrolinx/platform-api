@@ -1380,14 +1380,77 @@ Returns information about the current user. See below for possible responses.
 
 ### Create User [POST]
 
-+ Request Create a user (application/json)
++ Request Create a user with default roles (application/json)
 
-    This request will create a new user
+    This request will create a new user with no roles specified. This will assign a defualt role to the user automatically.
 
     **Note:**
     - Full name field is optional
-    - Password must pass restriction requirements
-    - 
+    - Password must be between 10 and 128 characters
+
+    + Attributes (object)
+        + User (object)
+    
+    + Body
+
+            {
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "password": "P@ssW0rd12345!",
+                "licenseType": "named"
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                            "name": "Author",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Request Create a user with specified roles (application/json)
+
+    This request will create a new user with specified roles
+
+    **Note:**
+    - Full name field is optional
+    - Password must be between 10 and 128 characters
 
     + Attributes (object)
         + User (object)
@@ -1411,7 +1474,7 @@ Returns information about the current user. See below for possible responses.
                 ]
             }
     
-+ Response 200 (application/json)
++ Response 201 (application/json)
 
     + Attributes (object)
         + links (object)
@@ -1473,6 +1536,27 @@ Returns information about the current user. See below for possible responses.
             }
         }
 
+        // when the password does not meet strict requirements
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 10 and 128",
+                        "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
 + Response 401 (application/json)
 
         // when the access token is missing or is invalid in the request
@@ -1525,7 +1609,6 @@ Returns information about the current user. See below for possible responses.
                 "status": 500
             }
         }
-
 
 
 ### Update User [PUT]
