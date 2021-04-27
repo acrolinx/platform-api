@@ -2384,7 +2384,7 @@ This method provides ability to add new roles.
 - A role needs to have at least one privilege assigned.
 - Existing privileges must be referenced.
 
-+ Request (application/json)
++ Request Create Role (application/json)
 
     + Attributes (CreateRole)
 
@@ -2414,6 +2414,153 @@ This method provides ability to add new roles.
                         "Dashboard.logon"
                     ],
                     "default": false
+                }
+            }
+
++ Response 400 (application/json)
+
+            // When empty name was provided or more than 254 characters long
+            {
+                "links": {},
+                "error": {
+                    "reference": "357a24b5-eb48-45c3-9527-9718506e6e10",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotBlank",
+                            "attributePath": "name",
+                            "detail": "must not be blank",
+                            "invalidValue": ""
+                        },
+                        {
+                            "title": "Validation error",
+                            "constraint": "Size",
+                            "attributePath": "name",
+                            "detail": "size must be between 1 and 254",
+                            "invalidValue": ""
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
+            // When empty privileges was provided 
+            {
+                "links": {},
+                "error": {
+                    "reference": "55973236-1b1a-4d76-a62d-360f5d9a1e29",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotEmpty",
+                            "attributePath": "privileges",
+                            "detail": "must not be empty",
+                            "invalidValue": "[]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
+            // When privilege keys that do not exist were referenced
+            {
+                "links": {},
+                "error": {
+                    "reference": "89f517a8-7d8e-4579-8879-5c6bbdd8fd5a",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "Unknown privileges: My.privilege",
+                            "attributePath": "privileges",
+                            "detail": "Unknown privileges: My.privilege",
+                            "invalidValue": "[My.privilege]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // When the user does not have privileges to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        //When role with the same name already exists
+        {
+            "links": {},
+            "error": {
+                "reference": "f3c9e0d7-1c86-4da3-916f-617d839d2da5",
+                "detail": "A role with name 'My new role' already exists.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Request Create Default Role (application/json)
+
+    + Attributes (CreateRole)
+
+    + Body
+
+            {
+                "name": "This is Default",
+                "privileges": [
+                    "Dashboard.logon"
+                ],
+                "default": true
+            }
+    
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce42",
+                    "name": "This is Default",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": true
                 }
             }
 
@@ -3311,12 +3458,13 @@ Debug API:
 + id (string) - UUID 
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
-+ default (boolean) - Indicates the role is assigned to new users by default [ true | false]
++ default (boolean) - Indicates the role is assigned to new users by default [ true | false ]
 
 ## CreateRole (object) 
 
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
++ default (boolean, optional) - Indicates the role is assigned to new users by default, it's optional on create [ true | false ]
 
 ## User (object)
 
