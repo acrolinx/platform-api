@@ -1378,6 +1378,156 @@ Returns information about the current user. See below for possible responses.
             }
         }
 
+### Create User [POST]
+
++ Request Create a user (application/json)
+
+    This request will create a new user
+
+    **Note:**
+    - Full name field is optional
+    - Password must pass restriction requirements
+    - 
+
+    + Attributes (object)
+        + User (object)
+    
+    + Body
+
+            {
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "password": "P@ssW0rd12345!",
+                "licenseType": "named",
+                "roles": [
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor"
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator"
+                    }
+                ]
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 400 (application/json)
+
+        // when the request format is invalid 
+        {
+            "links": {},
+            "error": {
+                "detail": "Unexpected character ....",
+                "type": "client",
+                "title": "Could not parse request body.",
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token is missing or is invalid in the request
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when creating the same user more than once
+        {
+        "links": {},
+            "error": {
+                "reference": "a159c153-e99b-4d49-9987-ca457670ef86",
+                "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'fred' already exists. Please provide a different user name or spell the user name appropriately.)",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when an unspecified error occurs
+        {
+            "links": {},
+            "error": {
+                "reference": "4f356c86-aac1-4cae-8d78-518aea6cebe0",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+
+
 ### Update User [PUT]
 
 + Request Update full name (application/json)
