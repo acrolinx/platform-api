@@ -1446,7 +1446,7 @@ Returns information about the current user. See below for possible responses.
 
 + Request Create a user with specified roles (application/json)
 
-   This request will create a new user with specified roles.
+    This request will create a new user with specified roles.
 
     **Note:**
     - Full name field is optional
@@ -1556,31 +1556,33 @@ Returns information about the current user. See below for possible responses.
                 "status": 400
             }
         }
-// when the licenseType is invalid
-{
-    "links": {},
-    "error": {
-        "reference": "f04a1a1e-0046-4b86-b9c3-da491d3343b5",
-        "detail": "Check the request for invalid values or missing parameters.",
-        "type": "validation",
-        "title": "Invalid request attributes",
-        "validationDetails": [
-            {
-                "title": "Deserialization error",
-                "constraint": "Must be one of [NAMED, CONCURRENT, BUILTIN].",
-                "attributePath": "licenseType",
-                "detail": "Cannot deserialize enum 'LicenseType' from value 'asd'. Possible values are [NAMED, CONCURRENT, BUILTIN].",
-                "invalidValue": "asd",
-                "possibleValues": [
-                    "NAMED",
-                    "CONCURRENT",
-                    "BUILTIN"
-                ]
+
+        // when the licenseType is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f04a1a1e-0046-4b86-b9c3-da491d3343b5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Deserialization error",
+                        "constraint": "Must be one of [NAMED, CONCURRENT, BUILTIN].",
+                        "attributePath": "licenseType",
+                        "detail": "Cannot deserialize enum 'LicenseType' from value 'asd'. Possible values are [NAMED, CONCURRENT, BUILTIN].",
+                        "invalidValue": "asd",
+                        "possibleValues": [
+                            "NAMED",
+                            "CONCURRENT",
+                            "BUILTIN"
+                        ]
+                    }
+                ],
+                "status": 400
             }
-        ],
-        "status": 400
-    }
-}
+        }
+
 + Response 401 (application/json)
 
         // when the access token is missing or is invalid in the request
