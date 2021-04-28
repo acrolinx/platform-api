@@ -165,7 +165,7 @@ Type | Description| What to do
 `validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
 `guidanceProfileDoesntExist` | Guidance profile doesn't exist | The guidance profile doesn't exist or isn't available for the user id and language given.
 `noGuidanceProfileConfigured` | No guidance profile configured | For the user id and language given no guidance profile is configured.
-`contentTooLarge` | Content to large | Without reconfiguration of the Acrolinx platfrom the document can't be checked.
+`contentTooLarge` | Content to large | Without reconfiguration of the Acrolinx platform the document can't be checked.
 `queueLimitExceeded` | Queue limit exceeded | Retry to submit the check after waiting at least as long as suggested in the retry-after header.
 `conflict` | Concurrent write access | Conflict with a concurrent write access. Retry the operation with fresh data.
 `licenseLimitExceeded` | License limit exceeded | You exceeded a limit set by your licensing terms. The error description contains more details. Please check [the documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/user-licenses) for more information.
@@ -1493,7 +1493,7 @@ Returns information about the current user. See below for possible responses.
 
     You may update the role of a user.
 
-    In this example only the `roles` attribute will be changed of the user `fred` which was found in the database identified by its *id*. Be aware that it's not possible to send an empty array for `roles` as each user must have at least one role assigned. Built-in users cannot be changed in this way. Furthermore, the requestor cannot grant more privileges than they have themselves (privilege escalation). Should one more roles not exist, the call will fail and the error message will contain all unknown roles that were referenced.
+    In this example only the `roles` attribute will be changed of the user `fred` which was found in the database identified by its *id*. Be aware that it's not possible to send an empty array for `roles` as each user must have at least one role assigned. Built-in users cannot be changed in this way. Furthermore, the requestor cannot grant more privileges than they have themselves (privilege escalation). Should one more role not exist, the call will fail and the error message will contain all unknown roles that were referenced.
 
     + Parameters
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
@@ -1882,7 +1882,7 @@ Only one API Token can be bound to a user at the time
 * When creating a new API Token the previously issued API Token gets invalidated! 
 
 **Warning:** Follow the security guidelines when working with API Tokens:
-+ Never share your API Token with others and store it securly!
++ Never share your API Token with others and store it securely!
 + Do not bake the generate API Token into any of your custom code that interacts with the Acrolinx Platform APIs!
 
 **Note:** To see more about creating API Tokens in Acrolinx: [Create an API Token](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/authentication/create-an-api-token)
@@ -2127,7 +2127,7 @@ To see more about role-based access control in Acrolinx: [Acrolinx Roles documen
 
 ### Get all Roles [GET]
 
-Retruns a list of all roles including the belonging privileges.
+Returns a list of all roles including the belonging privileges.
 
 + Response 200 (application/json)
 
@@ -2274,7 +2274,7 @@ Retruns a list of all roles including the belonging privileges.
 
 ## Privileges [/api/v1/roles/privileges]
 
-Task or set of tasks which can be perfomed by an User via API or Dashboard (UI) interactions are allowed/denied based on privileges. 
+Task or set of tasks which can be performed by a User via API or Dashboard (UI) interactions are allowed/denied based on privileges. 
 
 ### Get all privileges [GET]
 
@@ -2959,7 +2959,7 @@ This method provides ability to update Role which was found in the database iden
 
     **Note:**
     - A role needs to have at least one privilege assigned.
-    - Privilege(s) can be added/removed. (the server completely replace every privilege)
+    - Privilege(s) can be added/removed. (the server completely replaces every privilege)
     - Interdependencies with other privileges might occur.
     - Any changes to a role are automatically inherited by all users with that particular role.
     - You need to reference existing privileges. See [Get all privileges](###Get_all_privileges)
@@ -3261,7 +3261,7 @@ This method provides ability to update Role which was found in the database iden
 This method deletes a specified Role identified by its *id*.
 
 **Note:** A role can only be successfully deleted if all following conditions are met
-- The role is not a preconfigured built-in roles such as 'Author', 'Super Administrator' and 'Term Browser'.
+- The role is not a preconfigured built-in role such as 'Author', 'Super Administrator' and 'Term Browser'.
 - The role is not selected as a default role.
 - The role is not currently assigned to one or more users
 
