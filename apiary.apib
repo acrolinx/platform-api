@@ -2386,7 +2386,7 @@ This method provides ability to add new roles.
 
 + Request Create Role (application/json)
 
-    + Attributes (CreateRole)
+    + Attributes (CreateOrUpdateRole)
 
     + Body
 
@@ -2532,7 +2532,7 @@ This method provides ability to add new roles.
 
 + Request Create Default Role (application/json)
 
-    + Attributes (CreateRole)
+    + Attributes (CreateOrUpdateRole)
 
     + Body
 
@@ -2737,9 +2737,80 @@ This method provides Role which was found in the database identified by its *id*
 This method provides ability to update Role which was found in the database identified by its *id*.
 
 **Note:** 
-- Acrolinx comes installed with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
-- The preconfigured roles cannot be edited.
+- To update roles you required to have the `UserAndRoles.editUser` privilege.
+- The preconfigured roles cannot be edited!
+    - Acrolinx comes installed with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
 - Role attributes can be updated either individually or completely within one request. (missing or attributes with `null` values will be ignored)
+
++ Request Update entire model (application/json)
+
+    You may update all attributes of a role in one request.
+
+    **Note:** Check the other following request examples to see how to update individual attributes and validations take in place.
+
+     + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (CreateOrUpdateRole)
+
+    + Body
+
+            {
+                "name": "Preferred name",
+                "privileges": [
+                    "Dashboard.logon"
+                ],
+                "default": false
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "Preferred name",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 403 (application/json)
+
+        // When the user does not have privileges to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // When role was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
 
 + Request Update name (application/json)
 
@@ -3615,11 +3686,11 @@ Debug API:
 + privileges (array[string]) - Belonging privileges of the role
 + default (boolean) - Indicates the role is assigned to new users by default [ true | false ]
 
-## CreateRole (object) 
+## CreateOrUpdateRole (object) 
 
-+ name (string) - Name of the role
-+ privileges (array[string]) - Belonging privileges of the role
-+ default (boolean, optional) - Indicates the role is assigned to new users by default, it's optional on create [ true | false ]
++ name (string, required) - Name of the role
++ privileges (array[string], required) - Belonging privileges of the role
++ default (boolean, optional) - Indicates the role is assigned to new users by default [ true | false ]
 
 ## User (object)
 
