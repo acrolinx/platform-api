@@ -3030,20 +3030,20 @@ This method provides ability to update Role which was found in the database iden
             }
         }
 
-+ Request Make Role Default (application/json)
++ Request Add role to Defaults (application/json)
 
-    You may want to make a role as default in order to get it assigned automatically to newly created users.
+    You may want to update a role and mark as default in order to get it assigned automatically to newly created users.
 
     In this example the `default` attribute will be updated of the role `ExampleRole` which was found in the database identified by its *id*.
 
     **Note:**
     - You can have multiple default roles.
 
-        + Parameters
+    + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
 
     + Attributes (object)
-        + default (string, required)
+        + default (boolean, required) - Possible values are 'true' or 'false'
 
     + Body
 
@@ -3111,6 +3111,76 @@ This method provides ability to update Role which was found in the database iden
                 "status": 404
             }
         }
+
++ Request Remove Role from Defaults (application/json)
+
+    You may want to remove a role from default roles in order to not get it assigned automatically to newly created users anymore.
+
+    In this example the `default` attribute will be updated of the role `ExampleRole` which was found in the database identified by its *id*.
+
+    **Note:**
+    - Having default roles is not required, you can have 0 default roles.
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (object)
+        + default (boolean, required) - Possible values are 'true' or 'false'
+
+    + Body
+
+            {
+                "default": false
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // When the user does not have privileges to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
 
 ### Delete Role [DELETE /api/v1/roles/{id}]
 
