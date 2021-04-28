@@ -1385,8 +1385,11 @@ Returns information about the current user. See below for possible responses.
     This request will create a new user with no roles specified. This will assign a defualt role to the user automatically.
 
     **Note:**
-    - Full name field is optional
+    - username must be unique and cannot exceed 255 characters
+    - Full name field is optional and cannot exceed 255 characters
     - Password must be between 10 and 128 characters
+    - License type must be one of 'named' or 'concurrent'
+    - Must have `UserAndRoles.editUser` privileges to perform this request
 
     + Attributes (object)
         + User (object)
@@ -1449,8 +1452,11 @@ Returns information about the current user. See below for possible responses.
     This request will create a new user with specified roles.
 
     **Note:**
-    - Full name field is optional
+    - username must be unique and cannot exceed 255 characters
+    - Full name field is optional and cannot exceed 255 characters
     - Password must be between 10 and 128 characters
+    - License type must be one of 'named' or 'concurrent'
+    - Must have `UserAndRoles.editUser` privileges to perform this request
 
     + Attributes (object)
         + User (object)
@@ -3584,7 +3590,7 @@ Debug API:
 + fullName (string) - The full name of the user
 + createdOn (string) - The ISO8601 timestamp indicating when the user was created
 + lastIntegrationAccess (string) - The ISO8601 timestamp indicating when the last integration access occurred
-+ licenseType (string) - Indicates the type of license as on of ['NAMED' | 'CONCURRENT' | 'BUILTIN']
++ licenseType (string) - Indicates the type of license as on of ['named' | 'concurrent' | 'builtin']
 + licenseStatus (string) - The license status
 + tenantId (string) - The tenant ID
 + properties (object) - Key/Value pair of properties
