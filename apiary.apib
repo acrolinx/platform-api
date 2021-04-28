@@ -2736,7 +2736,10 @@ This method provides Role which was found in the database identified by its *id*
 
 This method provides ability to update Role which was found in the database identified by its *id*.
 
-**Note:** Acrolinx comes installed with a number of preconfigured roles that are common in many organizations that use Acrolinx. The preconfigured roles cannot be edited.
+**Note:** 
+- Acrolinx comes installed with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
+- The preconfigured roles cannot be edited.
+- Role attributes can be updated either individually or completely within one request. (missing or attributes with `null` values will be ignored)
 
 + Request Update name (application/json)
 
