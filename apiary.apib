@@ -1385,11 +1385,13 @@ Returns information about the current user. See below for possible responses.
     This request will create a new user with no roles specified. This will assign a defualt role to the user automatically.
 
     **Note:**
-    - username must be unique and cannot exceed 255 characters
-    - Full name field is optional and cannot exceed 255 characters
-    - Password must be between 10 and 128 characters
+    - Username must be unique and cannot exceed 255 characters
+    - Full name field cannot exceed 255 characters (optional)
+    - Password must be between 10 and 128 characters (optional)
     - License type must be one of 'named' or 'concurrent'
     - Must have `UserAndRoles.editUser` privileges to perform this request
+
+    Extra caution should be taken when there are no configured default roles. This would result in no roles being automatically assigned.
 
     + Attributes (object)
         + User (object)
