@@ -1,0 +1,17 @@
+image: ruby:2.6.5
+
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+pages:
+  before_script:
+    - gem install apiaryio
+    - mkdir public
+  script:
+    - apiary preview --output public/index.html
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "user-api"'
