@@ -1507,7 +1507,7 @@ Returns information about the current user. See below for possible responses.
 
 + Request Create a user with default roles (application/json)
 
-    This request will create a new user with no roles specified. This will assign a defualt role to the user automatically.
+    This request will create a new user with no roles specified. This will assign a default role to the user automatically.
 
     + Attributes (object)
         + username (string) - The unique username, max length 255 characters
@@ -2506,13 +2506,13 @@ Typical use cases of this API:
 
 The APIs under this group are following the command style API design.  
 
-These administrative commands can help govern users in you Acrolinx instance and do more than simply (re)send the new state of a single resource. 
+These administrative commands can help govern users in your Acrolinx instance and do more than simply (re)send the new state of a single resource. 
 
 **Note:** These requests can be applied multiple times without changing the result (idempotent). 
 
 ### Release an Active Named User license [PUT /api/v1/user/{id}/_release]
 
-This method releases an active license consumed by an User identified with its *id*.
+This method releases an active license consumed by a User identified with its *id*.
 
 **Note:**
 - Only users with the license type `named` can be released.
