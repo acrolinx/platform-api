@@ -2502,6 +2502,71 @@ Typical use cases of this API:
 
         // When user was not found in the database identified by its *id*
 
+## User Commands [/api/v1/user/{id}/_{command}]
+
+The APIs under this group are following the command style API design.  
+
+These administrative commands can help govern users in you Acrolinx instance and do more than simply (re)send the new state of a single resource. 
+
+**Note:** These requests can be applied multiple times without changing the result (idempotent). 
+
+### Release an Active Named User license [PUT /api/v1/user/{id}/_release]
+
+This method releases an active license consumed by an User identified with its *id*.
+
+**Note:**
+- Only users with the license type `named` can be released.
+- If a user gets his license released and they don't consume a license it does not return an error. 
+- To perform this action you must have the `UserAndRoles.deleteSessions` privilege assigned.
+
+**Result:** User's `licenseStatus` changed from `active` to `inactive`.
+
++ Parameters
+      + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+
++ Response 204
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // When the user don't have the privilege to release other users' license ("UserAndRoles.deleteSessions")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // When user was not found in the database identified by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "e49d3cd5-330a-408d-84a1-e9ecf20677bf",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
 # Group Role API
 
 Here, a role is an entity that has an id, a name and list of privileges and information whether this role is a default role. 
