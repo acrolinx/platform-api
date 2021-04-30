@@ -2510,7 +2510,7 @@ These administrative commands can help govern users in your Acrolinx instance an
 
 **Note:** These requests can be applied multiple times without changing the result (idempotent). 
 
-### Release an Active Named User license [PUT]
+### Release an Active Named User license [PUT /api/v1/user/{id}/_release]
 
 This method releases an active license consumed by a User identified with its *id*.
 
@@ -2523,7 +2523,6 @@ This method releases an active license consumed by a User identified with its *i
 
 + Parameters
       + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
-      + command: `release` (required, string) ... Add a description
 
 + Response 204
 
