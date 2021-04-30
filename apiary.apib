@@ -2291,15 +2291,15 @@ Returns information about the current user. See below for possible responses.
 
 ### Delete User [DELETE /api/v1/user/{id}]
 
-+ Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
-
 This method deletes a specified User identified by its *id*.
 
 **Note:** A user can only be successfully deleted if all following conditions are met
 - The user is not a preconfigured built-in users such as 'admin', 'termcontribution' and 'analyticsReadOnlyUser'. 
 
 To read more about managing users and built-in users check the docs: [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users)
+
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
 + Response 204
 
