@@ -1500,21 +1500,194 @@ Returns information about the current user. See below for possible responses.
 - Username must be unique and cannot exceed 255 characters
 - Full name field cannot exceed 255 characters (optional)
 - Password must be between 1 and 128 characters (optional)
-- License type must be one of 'named' or 'concurrent'
+- License type can be one of 'named' or 'concurrent' (optional)
 - Must have `UserAndRoles.editUser` privileges to perform this request
 
 **Note:** Extra caution should be taken when there are no configured default roles. This would result in no roles being automatically assigned.
 
-+ Request Create a user with default roles (application/json)
 
-    This request will create a new user with no roles specified. This will assign a default role to the user automatically.
++ Request Create a user (application/json)
+
+    This request will create a new user with just some basic fields (username, fullname, password) specified in the request model. 
+
+    **Note:** The server will assign a default license type (`named`) and role (`Author`) to the user automatically.
+
+    + Attributes (CreateUser)
+    
+    + Body
+
+            {
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "password": "P@ssW0rd12345!",
+            }
+
++ Response 201 (application/json)
 
     + Attributes (object)
-        + username (string) - The unique username, max length 255 characters
-        + fullName (string) - The full name of the user, max length 255 characters (optional)
-        + password (string) - The user password, length between 1 and 128 characters (optional)
-        + licenseType (string) - Indicates the type of license as one of ['named' | 'concurrent']
+        + links (object)
+        + data (User)
     
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                            "name": "Author",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 400 (application/json)
+
+        // when the request format is invalid 
+        {
+            "links": {},
+            "error": {
+                "detail": "Unexpected character ....",
+                "type": "client",
+                "title": "Could not parse request body.",
+                "status": 400
+            }
+        }
+
+        // when the password does not meet strict requirements
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 1 and 128",
+                        "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the licenseType is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f04a1a1e-0046-4b86-b9c3-da491d3343b5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Deserialization error",
+                        "constraint": "Must be one of [NAMED, CONCURRENT, BUILTIN].",
+                        "attributePath": "licenseType",
+                        "detail": "Cannot deserialize enum 'LicenseType' from value 'asd'. Possible values are [NAMED, CONCURRENT, BUILTIN].",
+                        "invalidValue": "asd",
+                        "possibleValues": [
+                            "NAMED",
+                            "CONCURRENT",
+                            "BUILTIN"
+                        ]
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token is missing or is invalid in the request
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when creating the same user more than once
+        {
+        "links": {},
+            "error": {
+                "reference": "a159c153-e99b-4d49-9987-ca457670ef86",
+                "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'fred' already exists. Please provide a different user name or spell the user name appropriately.)",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when an unspecified error occurs
+        {
+            "links": {},
+            "error": {
+                "reference": "4f356c86-aac1-4cae-8d78-518aea6cebe0",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+
++ Request Create a user with specified license type (application/json)
+
+    This request will create a new user with `named` license type explicitly specified in the request model. 
+    
+    **Note:** The server will assign a default role (`Author`) to the user automatically.
+
+    + Attributes (CreateUser)
+
     + Body
 
             {
@@ -1685,12 +1858,7 @@ Returns information about the current user. See below for possible responses.
 
     This request will create a new user with specified roles.
 
-    + Attributes (object)
-        + username (string) - The unique username, max length 255 characters
-        + fullName (string) - The full name of the user, max length 255 characters (optional)
-        + password (string) - The user password, length between 1 and 128 characters (optional)
-        + licenseType (string) - Indicates the type of license as one of ['named' | 'concurrent']
-        + roles (array[Role]) - List of assignable roles (optional)
+    + Attributes (CreateUser)
     
     + Body
 
@@ -1698,7 +1866,6 @@ Returns information about the current user. See below for possible responses.
                 "username": "fred",
                 "fullName": "Fred Freelancer",
                 "password": "P@ssW0rd12345!",
-                "licenseType": "named",
                 "roles": [
                     {
                         "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
@@ -4157,6 +4324,13 @@ Debug API:
 + properties (object) - Key/Value pair of properties
 + roles (array[Role]) - List of assigned roles
 + customFields (array[CustomField]) - List of custom fields
+
+## CreateUser (object)
++ username (string) - The unique username, max length 255 characters
++ fullName (string) - The full name of the user, max length 255 characters (optional)
++ password (string) - The user password, length between 1 and 128 characters (optional)
++ licenseType (string) - Indicates the type of license as one of ['named' | 'concurrent'] (optional)
++ roles (array[Role]) - List of assignable roles (optional)
 
 ### CustomField (object)
 
