@@ -260,7 +260,7 @@ Content-Type: application/json
 
 Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
 
-All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allowlist.
+All HTML fields contain only non-dangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
 
 # Group Index
 
@@ -332,7 +332,7 @@ If an invalid access token was sent, the response is still a 401, though.
 
 ## Platform Capabilities [GET /api/v1/capabilities]
 
-An aggregation of the capabilities of the APIs subresources. This resource serves a single entry point for clients that need
+An aggregation of the capabilities of the APIs sub-resources. This resource serves a single entry point for clients that need
 to use more than one feature of the API.
 
 + Response 200 (application/json)
@@ -2461,7 +2461,7 @@ Returns information about the current user. See below for possible responses.
 This method deletes a specified User identified by its *id*.
 
 **Note:** A user can only be successfully deleted if all following conditions are met
-- The user is not a preconfigured built-in users such as 'admin', 'termcontribution' and 'analyticsReadOnlyUser'. 
+- The user is not a pre-configured built-in users such as 'admin', 'termcontribution' and 'analyticsReadOnlyUser'. 
 
 To read more about managing users and built-in users check the docs: [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users)
 
@@ -2737,7 +2737,7 @@ This method releases an active license consumed by a User identified with its *i
 ## User Bulk Operations [/api/v1/user/bulk]
 
 These APIs allow for bulk operations to be performed. Bulk operations follow the multi-status request and response model.
-That is the incomng bulk request will contain a list objects that need to be processed (as opposed to invoking the same API many times); the response
+That is the incoming bulk request will contain a list objects that need to be processed (as opposed to invoking the same API many times); the response
 will be `207 Multi-Status` and contain list of results of the objects that were processed successfully and a list of errors for the objects that could not
 be processed.
 
@@ -2826,7 +2826,7 @@ noted in the Create User API section.
             }
 
 
-            // When 3 users are successfuly created but the remaining 2 have conflicts
+            // When 3 users are successfully created but the remaining 2 have conflicts
             {
                 "results": [
                     {
@@ -2865,7 +2865,7 @@ noted in the Create User API section.
                 ]
             }
 
-+ Response 400 (appliation/json)
++ Response 400 (application/json)
 
         // When sending a bulk request with an empty list
         {
@@ -3953,7 +3953,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 409 (application/json)
 
-        //When updating a preconfigured built-in role
+        //When updating a pre-configured built-in role
         {
             "links": {},
             "error": {
@@ -4122,7 +4122,7 @@ This method provides ability to update Role which was found in the database iden
 This method deletes a specified Role identified by its *id*.
 
 **Note:** A role can only be successfully deleted if all following conditions are met
-- The role is not a preconfigured built-in role such as 'Author', 'Super Administrator' and 'Term Browser'.
+- The role is not a pre-configured built-in role such as 'Author', 'Super Administrator' and 'Term Browser'.
 - The role is not selected as a default role.
 - The role is not currently assigned to one or more users
 
@@ -4600,7 +4600,7 @@ Debug API:
 
 ## BulkError
 + status (number) - The resulting HTTP error code of the operation performed on the object
-+ id (string) - An assoicated unique identifier of the object involved in the error
++ id (string) - An associated unique identifier of the object involved in the error
 + type (string) - Indicates the type of the error ['client' | 'server']
 + title (string) - The title of the error message
 + detail (string) - More details on the actual error and the potential cause
