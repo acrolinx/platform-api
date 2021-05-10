@@ -2737,7 +2737,7 @@ This method releases an active license consumed by a User identified with its *i
 ## User Bulk Operations [/api/v1/user/bulk]
 
 These APIs allow for bulk operations to be performed. Bulk operations follow the multi-status request and response model.
-That is the incoming bulk request will contain a list objects that need to be processed (as opposed to invoking the same API many times); the response
+That is the incoming bulk request contains a list of objects that need to be processed (as opposed to invoking the same API many times); the response
 will be `207 Multi-Status` and contain list of results of the objects that were processed successfully and a list of errors for the objects that could not
 be processed.
 
@@ -2752,9 +2752,9 @@ noted in the Create User API section.
 
 + Request Create Users in Bulk (application/json)
 
-    This request will create 5 new users with just some basic fields (username, fullname, password) specified in the request model.
+    This request creates 5 new users with just some basic fields (`username`, `fullName`, `password`) specified in the request model.
 
-    **Note:** The server will assign a default license type (`named`) and role (`Author`) to the user automatically.
+    **Note:** The server will assign a default license type and role automatically, which would typically be (`named`) and role (`Author`) respectively.
 
     + Attributes (BulkCreateUser)
     
