@@ -260,7 +260,7 @@ Content-Type: application/json
 
 Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
 
-All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allowlist.
+All HTML fields contain only non-dangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
 
 # Group Index
 
@@ -332,7 +332,7 @@ If an invalid access token was sent, the response is still a 401, though.
 
 ## Platform Capabilities [GET /api/v1/capabilities]
 
-An aggregation of the capabilities of the APIs subresources. This resource serves a single entry point for clients that need
+An aggregation of the capabilities of the APIs sub-resources. This resource serves a single entry point for clients that need
 to use more than one feature of the API.
 
 + Response 200 (application/json)
@@ -2461,7 +2461,7 @@ Returns information about the current user. See below for possible responses.
 This method deletes a specified User identified by its *id*.
 
 **Note:** A user can only be successfully deleted if all following conditions are met
-- The user is not a preconfigured built-in users such as 'admin', 'termcontribution' and 'analyticsReadOnlyUser'. 
+- The user is not a pre-configured built-in users such as 'admin', 'termcontribution' and 'analyticsReadOnlyUser'. 
 
 To read more about managing users and built-in users check the docs: [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users)
 
@@ -2733,6 +2733,248 @@ This method releases an active license consumed by a User identified with its *i
                 "status": 404
             }
         }
+
+## User Bulk Operations [/api/v1/user/bulk]
+
+These APIs allow for bulk operations to be performed. Bulk operations follow the multi-status request and response model.
+That is the incoming bulk request contains a list of objects that need to be processed (as opposed to invoking the same API many times), the response
+will be `207 Multi-Status` and contain list of `results` of the objects that were processed successfully and a list of `errors` for the objects that could not
+be processed.
+
+**Note:** Bulk requests have a maximum request limit which is defined per API. User creation is an atomic operation but the bulk request is non-transactional.
+
+### Create Users Bulk [POST /api/v1/user/bulk]
+
+This API accepts a list of new users to be created. All user objects follow the requirements and constraints as
+noted in the Create User API section.
+
+**Note:** The maximum request limit is 100 users per bulk request, minimum is 1
+
++ Request Create Users in Bulk (application/json)
+
+    This request creates 5 new users with just some basic fields (`username`, `fullName`, `password`) specified in the request model.
+
+    **Note:** The server will assign a default license type and role automatically, which would typically be (`named`) and role (`Author`) respectively.
+
+    + Attributes (BulkCreateUser)
+    
+    + Body
+
+            [
+                {
+                    "username": "new.user.1",
+                    "fullName": "New User 1",
+                    "password": "P@ssW0rd12345!"
+                },
+                {
+                    "username": "new.user.2",
+                    "fullName": "New User 2",
+                    "password": "P@ssW0rd12345!"
+                },
+                {
+                    "username": "new.user.3",
+                    "fullName": "New User 3",
+                    "password": "P@ssW0rd12345!"
+                },
+                {
+                    "username": "new.user.4",
+                    "fullName": "New User 4",
+                    "password": "P@ssW0rd12345!"
+                },
+                {
+                    "username": "new.user.5",
+                    "fullName": "New User 5",
+                    "password": "P@ssW0rd12345!"
+                }
+            ]
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            // When all users were successfully created
+            {
+                "results": [
+                    {
+                        "status": 201,
+                        "id": "c06de3b6-46c3-46d8-a136-afb6501f88e3",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/c06de3b6-46c3-46d8-a136-afb6501f88e3"
+                    },
+                    {
+                        "status": 201,
+                        "id": "3bd446b9-6371-4ecb-a4fb-ebeb01bae9e3",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/3bd446b9-6371-4ecb-a4fb-ebeb01bae9e3"
+                    },
+                    {
+                        "status": 201,
+                        "id": "4d8a94a8-55fe-4ee6-bf67-8f21a335e7da",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/4d8a94a8-55fe-4ee6-bf67-8f21a335e7da"
+                    },
+                    {
+                        "status": 201,
+                        "id": "76d79076-fbf7-4e02-89b5-a9c52d38b5e6",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/76d79076-fbf7-4e02-89b5-a9c52d38b5e6"
+                    },
+                    {
+                        "status": 201,
+                        "id": "a3b18412-4e61-4795-b5c0-4b2fc82f7995",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/a3b18412-4e61-4795-b5c0-4b2fc82f7995"
+                    }
+                ],
+                "errors": []
+            }
+
+
+            // When 3 users are successfully created but the remaining 2 have conflicts
+            {
+                "results": [
+                    {
+                        "status": 201,
+                        "id": "c06de3b6-46c3-46d8-a136-afb6501f88e3",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/c06de3b6-46c3-46d8-a136-afb6501f88e3"
+                    },
+                    {
+                        "status": 201,
+                        "id": "3bd446b9-6371-4ecb-a4fb-ebeb01bae9e3",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/3bd446b9-6371-4ecb-a4fb-ebeb01bae9e3"
+                    },
+                    {
+                        "status": 201,
+                        "id": "4d8a94a8-55fe-4ee6-bf67-8f21a335e7da",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/4d8a94a8-55fe-4ee6-bf67-8f21a335e7da"
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": 409,
+                        "id": "test.user.4",
+                        "type": "client",
+                        "title": "Conflict",
+                        "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'test.user.1' already exists. Please provide a different user name or spell the user name appropriately.)",
+                        "reference": "68327a0f-db3e-459c-91f9-5a3da691a1d1"
+                    },
+                    {
+                        "status": 409,
+                        "id": "test.user.5",
+                        "type": "client",
+                        "title": "Conflict",
+                        "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'test.user.2' already exists. Please provide a different user name or spell the user name appropriately.)",
+                        "reference": "4be034f9-c8f3-4465-9117-cde7c1f075ca"
+                    }
+                ]
+            }
+
++ Response 400 (application/json)
+
+        // When sending a bulk request with an empty list
+        {
+            "links": {},
+            "error": {
+                "reference": "88892611-7955-4a8f-9f5f-71b99b31bdca",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "detail": "size must be between 1 and 100",
+                        "invalidValue": "[]"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // When sending a bulk request that exceeds the maximum valid limit
+        {
+            "links": {},
+            "error": {
+                "reference": "367fedac-e5bb-4229-9405-3fcc425bf1f5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "detail": "size must be between 1 and 100",
+                        "invalidValue": "[username=test.user.1, username=test.user.2, ... username=test.user.100, username=test.user.101]"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // When sending a bulk request that include validation errors such as empty password
+        {
+            "links": {},
+            "error": {
+                "reference": "241a2429-0f53-49a6-a6af-72aaaf41ad36",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 1 and 128",
+                        "invalidValue": ""
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // When sending a bulk request without a payload body
+        {
+            "links": {},
+            "error": {
+                "reference": "82b2e14b-95f8-4789-8ee8-3822c2297a9c",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotNull",
+                        "detail": "must not be null",
+                        "invalidValue": null
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 500 (application/json)
+
+        // When an unspecified error occurs
+        {
+            "links": {},
+            "error": {
+                "reference": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
 
 # Group Role API
 
@@ -3711,7 +3953,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 409 (application/json)
 
-        //When updating a preconfigured built-in role
+        //When updating a pre-configured built-in role
         {
             "links": {},
             "error": {
@@ -3880,7 +4122,7 @@ This method provides ability to update Role which was found in the database iden
 This method deletes a specified Role identified by its *id*.
 
 **Note:** A role can only be successfully deleted if all following conditions are met
-- The role is not a preconfigured built-in role such as 'Author', 'Super Administrator' and 'Term Browser'.
+- The role is not a pre-configured built-in role such as 'Author', 'Super Administrator' and 'Term Browser'.
 - The role is not selected as a default role.
 - The role is not currently assigned to one or more users
 
@@ -4299,20 +4541,17 @@ Debug API:
 # Data Structures
 
 ## Role (object) 
-
 + id (string) - UUID 
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
 + default (boolean) - Indicates the role is assigned to new users by default [ true | false ]
 
 ## CreateOrUpdateRole (object) 
-
 + name (string, required) - Name of the role
 + privileges (array[string], required) - Belonging privileges of the role
 + default (boolean, optional) - Indicates the role is assigned to new users by default [ true | false ]
 
 ## User (object)
-
 + id (string) - UUID
 + username (string) - The username
 + fullName (string) - The full name of the user
@@ -4333,7 +4572,6 @@ Debug API:
 + roles (array[Role]) - List of assignable roles (optional)
 
 ### CustomField (object)
-
 + key (string) - The unique key of the custom field 
 + displayName (string) - The name to be displayed
 + inputType (string) - Indicates the origin of the field ['required' | 'optional' | 'externallyProvided']
@@ -4342,8 +4580,27 @@ Debug API:
 + possibleValues (array[string]) - List of possible valid values
 
 ### UserApiTokenCreateResponse
-
 + type: "api" (string)
 + issuedAt (string) - The ISO8601 timestamp indicating when the token was issued at
 + expiresAt (string) - The ISO8601 timestamp indicating when the token will expire at
 + token (string) - The generated API token (JWT)
+
+### BulkCreateUser (object)
++ users (array[CreateUser]) - List of users to be created
+
+## BulkResult
++ status (number) - The resulting HTTP success code of the operation performed on the object
++ id (string) - The generated UUID of the object
++ location (string) - The href location of the affected object
+
+## BulkError
++ status (number) - The resulting HTTP error code of the operation performed on the object
++ id (string) - An associated unique identifier of the object involved in the error
++ type (string) - Indicates the type of the error ['client' | 'server']
++ title (string) - The title of the error message
++ detail (string) - More details on the actual error and the potential cause
++ reference (string) - UUID for internal error logging reference
+
+## BulkResultResponse (object)
++ results (array[BulkResult])
++ errors (array[BulkError])
