@@ -4541,20 +4541,17 @@ Debug API:
 # Data Structures
 
 ## Role (object) 
-
 + id (string) - UUID 
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
 + default (boolean) - Indicates the role is assigned to new users by default [ true | false ]
 
 ## CreateOrUpdateRole (object) 
-
 + name (string, required) - Name of the role
 + privileges (array[string], required) - Belonging privileges of the role
 + default (boolean, optional) - Indicates the role is assigned to new users by default [ true | false ]
 
 ## User (object)
-
 + id (string) - UUID
 + username (string) - The username
 + fullName (string) - The full name of the user
@@ -4575,7 +4572,6 @@ Debug API:
 + roles (array[Role]) - List of assignable roles (optional)
 
 ### CustomField (object)
-
 + key (string) - The unique key of the custom field 
 + displayName (string) - The name to be displayed
 + inputType (string) - Indicates the origin of the field ['required' | 'optional' | 'externallyProvided']
@@ -4584,7 +4580,6 @@ Debug API:
 + possibleValues (array[string]) - List of possible valid values
 
 ### UserApiTokenCreateResponse
-
 + type: "api" (string)
 + issuedAt (string) - The ISO8601 timestamp indicating when the token was issued at
 + expiresAt (string) - The ISO8601 timestamp indicating when the token will expire at
@@ -4607,6 +4602,5 @@ Debug API:
 + reference (string) - UUID for internal error logging reference
 
 ## BulkResultResponse (object)
-
 + results (array[BulkResult])
 + errors (array[BulkError])
