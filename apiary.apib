@@ -2738,7 +2738,7 @@ This method releases an active license consumed by a User identified with its *i
 
 These APIs allow for bulk operations to be performed. Bulk operations follow the multi-status request and response model.
 That is the incoming bulk request contains a list of objects that need to be processed (as opposed to invoking the same API many times); the response
-will be `207 Multi-Status` and contain list of results of the objects that were processed successfully and a list of errors for the objects that could not
+will be `207 Multi-Status` and contain list of `results` of the objects that were processed successfully and a list of `errors` for the objects that could not
 be processed.
 
 **Note:** Bulk requests have a maximum request limit which is defined per API
