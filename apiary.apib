@@ -1309,6 +1309,7 @@ Returns information about the current user. See below for possible responses.
                         "licenseType": "named",
                         "licenseStatus": "inactive",
                         "tenantId": "smarttech",
+                        "activeTokenId": "",
                         "properties" : {
                             "customkey": "customvalue",
                         },
@@ -1346,6 +1347,7 @@ Returns information about the current user. See below for possible responses.
                         "licenseType": "builtin",
                         "licenseStatus": "active",
                         "tenantId": "smarttech",
+                        "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
                         "properties" : {
                             "customkey": "customvalue",
                         },
@@ -1424,6 +1426,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseType": "named",
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -1541,6 +1544,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseType": "named",
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
+                    "activeTokenId": "",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -1716,6 +1720,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseType": "named",
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
+                    "activeTokenId": "",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -1897,6 +1902,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseType": "named",
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
+                    "activeTokenId": "",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -2086,6 +2092,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseType": "named",
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -2273,6 +2280,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseType": "named",
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -2352,6 +2360,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseType": "named",
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -3787,7 +3796,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 409 (application/json)
 
-        // When updating a preconfigured built-in role
+        // When updating a pre-configured built-in role
         {
             "links": {},
             "error": {
@@ -4357,8 +4366,8 @@ issues[n].canAddToDictionary: true
             "surface": "wiruwaruwolz",                  // required
             "scope": "document",                        // required, one of the scopes above
             "languageId": "en_GB",                      // required if scope!=guidanceProfile
-            "guidanceProfileId": "aud-1",                      // required if scope=guidanceProfile
-            "documentId": "283ab1e075f21a"             // required if scope=document
+            "guidanceProfileId": "aud-1",               // required if scope=guidanceProfile
+            "documentId": "283ab1e075f21a"              // required if scope=document
         }
 
 + Response 200
@@ -4390,7 +4399,7 @@ Publishes a new notification on the platform.
             "body":  "Acrolinx Platform 5.6 will be deployed tomorrow.",     // required; Notification text.
             "importance": "high",                                            // optional; "high"|"normal"; default: "normal"
             "start": 1528127782,                                             // required; Notification start time (epoch millisecond timestamp)
-            "end": 1530719782                                               // required; Notification end time (epoch millisecond timestamp)
+            "end": 1530719782                                                // required; Notification end time (epoch millisecond timestamp)
         }
 
 + Response 201 (application/json)
@@ -4560,6 +4569,7 @@ Debug API:
 + licenseType (string) - Indicates the type of license as on of ['named' | 'concurrent' | 'builtin']
 + licenseStatus (string) - The license status
 + tenantId (string) - The tenant ID
++ activeTokenId (string) - Displays the currently active API token's id or an empty string if there is no active token
 + properties (object) - Key/Value pair of properties
 + roles (array[Role]) - List of assigned roles
 + customFields (array[CustomField]) - List of custom fields
