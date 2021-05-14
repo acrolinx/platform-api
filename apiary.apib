@@ -1310,6 +1310,7 @@ Returns information about the current user. See below for possible responses.
                         "licenseStatus": "inactive",
                         "tenantId": "smarttech",
                         "activeTokenId": "",
+                        "checkingFrequency": "infrequent",
                         "properties" : {
                             "customkey": "customvalue",
                         },
@@ -1348,6 +1349,7 @@ Returns information about the current user. See below for possible responses.
                         "licenseStatus": "active",
                         "tenantId": "smarttech",
                         "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                        "checkingFrequency": "infrequent",
                         "properties" : {
                             "customkey": "customvalue",
                         },
@@ -1427,6 +1429,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
                     "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -1545,6 +1548,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
                     "activeTokenId": "",
+                    "checkingFrequency": "infrequent",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -1721,6 +1725,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
                     "activeTokenId": "",
+                    "checkingFrequency": "infrequent",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -1903,6 +1908,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
                     "activeTokenId": "",
+                    "checkingFrequency": "infrequent",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -2093,6 +2099,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
                     "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -2281,6 +2288,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
                     "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -2361,6 +2369,7 @@ Returns information about the current user. See below for possible responses.
                     "licenseStatus": "inactive",
                     "tenantId": "smarttech",
                     "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
                     "properties" : {
                         "customkey": "customvalue",
                     },
@@ -4566,13 +4575,19 @@ Debug API:
 + fullName (string) - The full name of the user
 + createdOn (string) - The ISO8601 timestamp indicating when the user was created
 + lastIntegrationAccess (string) - The ISO8601 timestamp indicating when the last integration access occurred
-+ licenseType (string) - Indicates the type of license as on of ['named' | 'concurrent' | 'builtin']
++ licenseType (string) - Indicates the type of license as one of ['named' | 'concurrent' | 'builtin']
 + licenseStatus (string) - The license status
 + tenantId (string) - The tenant ID
 + activeTokenId (string) - Displays the currently active API token's id or an empty string if there is no active token
++ checkingFrequency (UserStatus) - Displays a rough idea of the usage pattern of the user by checking their frequency across the lifetime of the user in days
 + properties (object) - Key/Value pair of properties
 + roles (array[Role]) - List of assigned roles
 + customFields (array[CustomField]) - List of custom fields
+
+### UserStatus (enum)
++ `frequent` - Perform 1 more check than regular users.
++ `infrequent` - Perform fewer checks than regular users.
++ `regular` - Performs 1 check in 24 hours (plus/minus 25%) on average.
 
 ## CreateUser (object)
 + username (string) - The unique username, max length 255 characters
