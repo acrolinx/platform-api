@@ -2985,6 +2985,70 @@ noted in the Create User API section.
         }
 
 
+## User Export [/api/v1/user/export/_{format}]
+
+These APIs provides an easy way to export a concise user list in various file formats.
+
++ Parameters
+      + format: `csv` (required, string) ... To get users in `CSV` file format
+
+### Export Users in CSV format [GET /api/v1/user/export/_csv]
+
+Via exporting users in CSV format the following user data will be returned in table format:
++ **user_id**: The user's unique identifier (string, UUID).
++ **Username**: The user's username, which can be used for logging in and user identification.
++ **Full name**: The full name of the user.
++ **Roles**: List of assigned roles.
++ **Created On**: Indicating when the user was created.
++ **Last Integration Access**: Indicating when the last integration access occurred.
++ **License Type**: Indicates the type of license as on of ['named' | 'concurrent' | 'builtin'].
++ **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema dyanmically. The column name will be mapped from the custom field's name. 
+
+
+**Note:** 
++ The file contains the column headers in the first row.
++ The returned csv file uses the `;` char as column delimiter. 
++ Columns with date time value formatted in `yyyy-MM-dd HH:mm` pattern.
++ Columns containing values of a list sepreated with colon `,` as the "in-cell" delimiter.
+
++ Response 200 (application/octet-stream)
+
+    + Headers
+
+            Content-Disposition: attachment; filename="acrolinx_users_export_20210514_101248.csv
+
+    + Body
+
+            user_id;Username;"Full Name";Roles;"Created On";"Last Integration Access";"License Type";Department
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // When the user don't have the privilege to export users ("UsersAndRoles.read")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+
 # Group Role API
 
 Here, a role is an entity that has an id, a name and list of privileges and information whether this role is a default role. 
