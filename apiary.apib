@@ -4585,9 +4585,9 @@ Debug API:
 + customFields (array[CustomField]) - List of custom fields
 
 ### UserStatus (enum)
-+ `frequent`
-+ `infrequent`
-+ `regular`
++ `frequent` - Perform 1 more check than regular users.
++ `infrequent` - Perform fewer checks than regular users.
++ `regular` - Performs 1 check in 24 hours (plus/minus 25%) on average.
 
 ## CreateUser (object)
 + username (string) - The unique username, max length 255 characters
