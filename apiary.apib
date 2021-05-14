@@ -2990,26 +2990,26 @@ noted in the Create User API section.
 These APIs provides an easy way to export a concise user list in various file formats.
 
 + Parameters
-      + format: `csv` (required, string) ... To get users in `CSV` file format
+      + format: `csv` (required, string) ... To export and download users as `CSV` file
 
 ### Export Users in CSV format [GET /api/v1/user/export/_csv]
 
 Via exporting users in CSV format the following user data will be returned in table format:
 + **user_id**: The user's unique identifier (string, UUID).
-+ **Username**: The user's username, which can be used for logging in and user identification.
++ **Username**: The user's username, which can be used for signing in and user identification.
 + **Full name**: The full name of the user.
 + **Roles**: List of assigned roles.
 + **Created On**: Indicating when the user was created.
 + **Last Integration Access**: Indicating when the last integration access occurred.
 + **License Type**: Indicates the type of license as on of ['named' | 'concurrent' | 'builtin'].
-+ **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema dyanmically. The column name will be mapped from the custom field's name. 
++ **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema dynamically. The column name will be mapped from the custom field's name. 
 
 
 **Note:** 
 + The file contains the column headers in the first row.
 + The returned csv file uses the `;` char as column delimiter. 
 + Columns with date time value formatted in `yyyy-MM-dd HH:mm` pattern.
-+ Columns containing values of a list sepreated with colon `,` as the "in-cell" delimiter.
++ Columns containing values of a list separated with colon `,` as the "in-cell" delimiter.
 
 + Response 200 (application/octet-stream)
 
