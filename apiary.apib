@@ -3013,21 +3013,23 @@ The following User fields will be written into the file (in the following order)
 + **Full name**: The full name of the user.
 + **Roles**: List of assigned roles.
 + **Created On**: Indicating when the user was created.
-+ **Last Integration Access**: Indicating when the last integration access occurred.
++ **Last Integration Access**: Indicating when the last integration access occurred. (Default value `Never` if it hasn’t been occurred)
 + **License Type**: Indicates the type of license as on of ['named' | 'concurrent' | 'builtin'].
 + **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema. 
     + For custom fields the column name is mapped from the User custom field's name (specified on create) and will be added to the end of the sheet dynamically. 
 
 **Notes, about the CSV file and the data formatting:** 
 + Column headers are also written into the file, in the first row.
-+ Fields are sperated by semi-colon `;` char (as column delimiter). 
-+ Date time value formatted in `yyyy-MM-dd HH:mm` pattern.
++ Fields are separated by semi-colon `;` char (as column delimiter). 
++ Date time values exported in `UTC` format, example `2021-05-12T15:40:00.876Z`.
+    + When no stored value for a given Date time type field, the cell should contain `Never` or empty value.
 + Values of a list type field separated with colon `,` (as the "in-cell" delimiter).
++ Values containing space characters are double quoted in the file, example `user_id;Username;"Full Name";....`.
 
 The API also returns the `Content-Disposition` response header to give information about the content. 
-Based on the header value browsers can recognize it is an attachment that is supposed to be downloaded and saved locally.
+Based on the header value browsers can recognize it’s an attachment that can be downloaded and saved locally.
 
-The header parameters are set by the server explicilty:
+The header parameters are set by the server explicitly:
 + `attachment` (indicating the content should be downloaded, most browsers presenting a 'Save as' dialog, prefilled with the value of the filename parameter).
 + `filename="acrolinx_users_export_yyyyMMdd_HHmmss.csv"` (indicating the filename should be used when saving the file locally, starts with `acrolinx_users_export` prefix and contains a timestamp).
 
@@ -3040,6 +3042,11 @@ The header parameters are set by the server explicilty:
     + Body
 
             user_id;Username;"Full Name";Roles;"Created On";"Last Integration Access";"License Type";Department
+            "1ba8d14c-7697-4dbd-b370-3d22662e6fe0";termcontribution;"Term Contribution";"Term Contributor";"2021-05-12T15:40:00.876Z";Never;builtin;"R&D"
+            "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f";analyticsReadOnlyUser;"Analytics Read Only User";"Analytics Read-Only User";"2021-05-12T15:40:00.876Z";Never;builtin;"Example Department"
+            "4f86f443-e5e3-49c9-93da-cb1f89cd28c7";admin;Adminisztrator;"Super Administrator";"2021-05-12T15:40:00.866Z";Never;builtin;IT
+            "05aa0b12-a3b1-455f-9aa6-f48034c191ae";termapiaccess;"Term API Access (builtin)";"Terminology API Access";"2021-05-12T15:40:00.876Z";Never;builtin;
+            "394cdff2-bde8-41d2-85cd-34cd3bbca350";termtargetaccess;"Term Target Access (builtin)";"Term Browser User, Term Browser Administrator";"2021-05-12T15:40:00.876Z";Never;builtin;
 
 + Response 401 (application/json)
 
