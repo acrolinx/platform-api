@@ -3003,7 +3003,11 @@ These APIs provides an easy way to export a concise user list in various file fo
 
 ### Export Users in CSV format [GET /api/v1/user/export/_csv]
 
-Via exporting users in CSV format the following user data will be returned in table format:
+This method provides ability to export users into a CSV file that look like a spreadsheet but with a `.csv` extension.
+Each line of the file is a User data record. Each record consists of one or more User fields and the actual value, separated by column delimiter.
+The downloaded CSV file can be used with most any spreadsheet program, such as Microsoft Excel or Google Spreadsheets.
+
+The following User fields will be written into the file (in the following order):
 + **user_id**: The user's unique identifier (string, UUID).
 + **Username**: The user's username, which can be used for signing in and user identification.
 + **Full name**: The full name of the user.
@@ -3011,14 +3015,21 @@ Via exporting users in CSV format the following user data will be returned in ta
 + **Created On**: Indicating when the user was created.
 + **Last Integration Access**: Indicating when the last integration access occurred.
 + **License Type**: Indicates the type of license as on of ['named' | 'concurrent' | 'builtin'].
-+ **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema dynamically. The column name will be mapped from the custom field's name. 
++ **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema. 
+    + For custom fields the column name is mapped from the User custom field's name (specified on create) and will be added to the end of the sheet dynamically. 
 
+**Notes, about the CSV file and the data formatting:** 
++ Column headers are also written into the file, in the first row.
++ Fields are sperated by semi-colon `;` char (as column delimiter). 
++ Date time value formatted in `yyyy-MM-dd HH:mm` pattern.
++ Values of a list type field separated with colon `,` (as the "in-cell" delimiter).
 
-**Note:** 
-+ The file contains the column headers in the first row.
-+ The returned csv file uses the `;` char as column delimiter. 
-+ Columns with date time value formatted in `yyyy-MM-dd HH:mm` pattern.
-+ Columns containing values of a list separated with colon `,` as the "in-cell" delimiter.
+The API also returns the `Content-Disposition` response header to give information about the content. 
+Based on the header value browsers can recognize it is an attachment that is supposed to be downloaded and saved locally.
+
+The header parameters are set by the server explicilty:
++ `attachment` (indicating the content should be downloaded, most browsers presenting a 'Save as' dialog, prefilled with the value of the filename parameter).
++ `filename="acrolinx_users_export_yyyyMMdd_HHmmss.csv"` (indicating the filename should be used when saving the file locally, starts with `acrolinx_users_export` prefix and contains a timestamp).
 
 + Response 200 (application/octet-stream)
 
