@@ -2752,6 +2752,93 @@ This method releases an active license consumed by a User identified with its *i
             }
         }
 
+### Export All Users [GET /api/v1/user/_export]
+
+This API provides an easy way to export a concise user list in various file formats.
+
+It uses content negotiation to generate the export in the requested format based on the provided `Accept` header value.
+
+**Note:** When the `Accept` header is not specified in the request by the client, it will return with the default format, which is `text/csv`.
+
+The API also returns the `Content-Disposition` response header to give information about the content. 
+Based on the header value browsers can recognize it’s an attachment that can be downloaded and saved locally.
+
+The header parameters are set by the server explicitly:
++ `attachment` (indicating the content should be downloaded, most browsers presenting a 'Save as' dialog, prefilled with the value of the filename parameter).
++ `filename="acrolinx_users_export_yyyyMMdd_HHmmss.csv"` (indicating the filename should be used when saving the file locally, starts with `acrolinx_users_export` prefix and contains a timestamp).
+
++ Request Export Users in CSV format
+
+    This method provides ability to export users into a CSV file that look like a spreadsheet but with a `.csv` extension.
+    Each line of the file is a User data record. Each record consists of one or more User fields and the actual value, separated by column delimiter.
+    The downloaded CSV file can be used with most any spreadsheet program, such as Microsoft Excel or Google Spreadsheets.
+
+    The following User fields will be written into the file (in the following order):
+    + **user_id**: The user's unique identifier (string, UUID).
+    + **Username**: The user's username, which can be used for signing in and user identification.
+    + **Full name**: The full name of the user.
+    + **Roles**: List of assigned roles.
+    + **Created On**: Indicating when the user was created.
+    + **Last Integration Access**: Indicating when the last integration access occurred. (Default value `Never` if it hasn’t been occurred)
+    + **Checking Frequency**: Displays a rough idea of the usage pattern of the user by checking their frequency across the lifetime of the user in days. Its value can be [ 'fequent', 'infrequent', 'regular' ]
+    + **License Type**: Indicates the type of license, its value can be ['named' | 'concurrent' | 'builtin'].
+    + **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema. 
+        + For custom fields the column name is mapped from the User custom field's name (specified on create) and will be added to the end of the sheet dynamically. 
+
+    **Notes, about the CSV file and the data formatting:** 
+    + Column headers are also written into the file, in the first row.
+    + Fields are separated by semi-colon `;` char (as column delimiter). 
+    + Date time values exported in `UTC` format, example `2021-05-12T15:40:00.876Z`.
+        + When no stored value for a given Date time type field, the cell should contain `Never` or empty value.
+    + Values of a list type field separated with colon `,` (as the "in-cell" delimiter).
+    + Values containing space characters are double quoted in the file, example `user_id;Username;"Full Name";....`.
+
+    + Headers
+
+            Accept: text/csv
+
++ Response 200 (text/csv)
+
+    + Headers
+
+            Content-Disposition: attachment; filename="acrolinx_users_export_20210514_101248.csv"
+
+    + Body
+
+            user_id;Username;"Full Name";Roles;"Created On";"Last Integration Access";"Checking Frequency";"License Type";Department
+            "1ba8d14c-7697-4dbd-b370-3d22662e6fe0";termcontribution;"Term Contribution";"Term Contributor";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;"R&D"
+            "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f";analyticsReadOnlyUser;"Analytics Read Only User";"Analytics Read-Only User";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;"Example Department"
+            "4f86f443-e5e3-49c9-93da-cb1f89cd28c7";admin;Adminisztrator;"Super Administrator";"2021-05-12T15:40:00.866Z";Never;infrequent;builtin;IT
+            "05aa0b12-a3b1-455f-9aa6-f48034c191ae";termapiaccess;"Term API Access (builtin)";"Terminology API Access";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;
+            "394cdff2-bde8-41d2-85cd-34cd3bbca350";termtargetaccess;"Term Target Access (builtin)";"Term Browser User, Term Browser Administrator";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // When the user don't have the privilege to export users ("UsersAndRoles.read")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 ## User Bulk Operations [/api/v1/user/bulk]
 
 These APIs allow for bulk operations to be performed. Bulk operations follow the multi-status request and response model.
@@ -2992,90 +3079,6 @@ noted in the Create User API section.
                 "status": 500
             }
         }
-
-
-## User Export [/api/v1/user/export/_{format}]
-
-These APIs provides an easy way to export a concise user list in various file formats.
-
-+ Parameters
-      + format: `csv` (required, string) ... To export and download users as `CSV` file
-
-### Export Users in CSV format [GET /api/v1/user/export/_csv]
-
-This method provides ability to export users into a CSV file that look like a spreadsheet but with a `.csv` extension.
-Each line of the file is a User data record. Each record consists of one or more User fields and the actual value, separated by column delimiter.
-The downloaded CSV file can be used with most any spreadsheet program, such as Microsoft Excel or Google Spreadsheets.
-
-The following User fields will be written into the file (in the following order):
-+ **user_id**: The user's unique identifier (string, UUID).
-+ **Username**: The user's username, which can be used for signing in and user identification.
-+ **Full name**: The full name of the user.
-+ **Roles**: List of assigned roles.
-+ **Created On**: Indicating when the user was created.
-+ **Last Integration Access**: Indicating when the last integration access occurred. (Default value `Never` if it hasn’t been occurred)
-+ **Checking Frequency**: Displays a rough idea of the usage pattern of the user by checking their frequency across the lifetime of the user in days. Its value can be [ 'fequent', 'infrequent', 'regular' ]
-+ **License Type**: Indicates the type of license, its value can be ['named' | 'concurrent' | 'builtin'].
-+ **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema. 
-    + For custom fields the column name is mapped from the User custom field's name (specified on create) and will be added to the end of the sheet dynamically. 
-
-**Notes, about the CSV file and the data formatting:** 
-+ Column headers are also written into the file, in the first row.
-+ Fields are separated by semi-colon `;` char (as column delimiter). 
-+ Date time values exported in `UTC` format, example `2021-05-12T15:40:00.876Z`.
-    + When no stored value for a given Date time type field, the cell should contain `Never` or empty value.
-+ Values of a list type field separated with colon `,` (as the "in-cell" delimiter).
-+ Values containing space characters are double quoted in the file, example `user_id;Username;"Full Name";....`.
-
-The API also returns the `Content-Disposition` response header to give information about the content. 
-Based on the header value browsers can recognize it’s an attachment that can be downloaded and saved locally.
-
-The header parameters are set by the server explicitly:
-+ `attachment` (indicating the content should be downloaded, most browsers presenting a 'Save as' dialog, prefilled with the value of the filename parameter).
-+ `filename="acrolinx_users_export_yyyyMMdd_HHmmss.csv"` (indicating the filename should be used when saving the file locally, starts with `acrolinx_users_export` prefix and contains a timestamp).
-
-+ Response 200 (application/octet-stream)
-
-    + Headers
-
-            Content-Disposition: attachment; filename="acrolinx_users_export_20210514_101248.csv"
-
-    + Body
-
-            user_id;Username;"Full Name";Roles;"Created On";"Last Integration Access";"Checking Frequency";"License Type";Department
-            "1ba8d14c-7697-4dbd-b370-3d22662e6fe0";termcontribution;"Term Contribution";"Term Contributor";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;"R&D"
-            "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f";analyticsReadOnlyUser;"Analytics Read Only User";"Analytics Read-Only User";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;"Example Department"
-            "4f86f443-e5e3-49c9-93da-cb1f89cd28c7";admin;Adminisztrator;"Super Administrator";"2021-05-12T15:40:00.866Z";Never;infrequent;builtin;IT
-            "05aa0b12-a3b1-455f-9aa6-f48034c191ae";termapiaccess;"Term API Access (builtin)";"Terminology API Access";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;
-            "394cdff2-bde8-41d2-85cd-34cd3bbca350";termtargetaccess;"Term Target Access (builtin)";"Term Browser User, Term Browser Administrator";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;
-
-+ Response 401 (application/json)
-
-        // When the access token is missing or is invalid in the request
-        {
-            "links": {},
-            "error": {
-                "detail": "Valid authentication has either not been provided or is insufficient.",
-                "type": "auth",
-                "title": "Invalid authentication",
-                "status": 401
-            }
-        }
-
-+ Response 403 (application/json)
-
-        // When the user don't have the privilege to export users ("UsersAndRoles.read")
-        {
-            "links": {},
-            "error": {
-                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
-                "detail": "The user does not have the required privileges to perform the operation.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 
 # Group Role API
 
