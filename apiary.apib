@@ -1285,9 +1285,43 @@ Returns information about the current user. See below for possible responses.
 
 ## User Resource [/api/v1/user]
 
-### Get All Users [GET /api/v1/user]
+### Get All Users [GET /api/v1/user{?sort}]
+
+This request will retrieve a list of all users in their natural order, this means in the order they were inserted.
+
+**Sorting**
+
+The list may only be sorted by 1 field if the `sort` query parameter is used. The query parameter can be
+prefixed with a `+` or `-` indicating ascending or descending order respectively.
+
+**Note:**
+
+- May only sort by 1 field
+- Query parameter max length is 50 characters, excluding order direction prefixes '+' and '-'
+- Query parameter cannot be empty or filled with blank spaces
+- Query parameter can only accept mixed case alpha numeric characters and underscores
+- Omitting the prefix will automatically assume ascending order
 
 + Request Get a list of all users (application/json)
+
++ Parameters
+
+    + sort (enum[string], optional) - Optional query parameter for sorting by an attribute. 
+            
+        + Prefix the field with:
+            + **"+"** for ascending order, or
+            + **"-"** for descending order. 
+        + **Note:** Omitting a prefix will sort in ascending order.
+
+        + Default: username
+        + Members
+            + `username`
+            + `fullName`
+            + `createdOn`
+            + `lastIntegrationAccess`
+            + `checkingFrequency`
+            + `licenseType`
+            + `licenseStatus`
 
 + Response 200 (application/json)
 
@@ -1375,6 +1409,40 @@ Returns information about the current user. See below for possible responses.
                     }
                 ]
             }
+
++ Response 400 (application/json)
+
+        // when the sort query parameter uses an invalid field name
+        {
+            "links": {},
+            "error": {
+                "reference": "f38d5eba-c68c-4ea3-b0db-ce987a5a16f4",
+                "detail": "Invalid user sortable field",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
+        // when omitting the field name in the sort query parameter
+        {
+            "links": {},
+            "error": {
+                "reference": "b4c323ab-413b-4bf5-be60-93e13c3aad93",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Pattern",
+                        "detail": "must match \"[+-]?[A-Za-z0-9_]{1,50}\"",
+                        "invalidValue": "+"
+                    }
+                ],
+                "status": 400
+            }
+        }
 
 + Response 401 (application/json)
 
