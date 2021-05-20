@@ -1288,7 +1288,10 @@ Returns information about the current user. See below for possible responses.
 ### Get All Users [GET /api/v1/user{?sort}]
 
 This request will retrieve a list of all users in their natural order, this means in the order they were inserted.
-The list may only be sorted by 1 field and if the `sort` query parameter is used. The query parameter can be
+
+**Sorting**
+
+The list may only be sorted by 1 field if the `sort` query parameter is used. The query parameter can be
 prefixed with a `+` or `-` indicating ascending or descending order respectively.
 
 **Note:**
@@ -1303,9 +1306,12 @@ prefixed with a `+` or `-` indicating ascending or descending order respectively
 
 + Parameters
 
-    + sort (enum[string], optional)
-
-        **sort**: prefix the field with `+` for ascending order or `-` for descending order. Note that omitting a prefix will sort in ascending order.
+    + sort (enum[string], optional) - Optional query parameter for sorting by an attribute. 
+            
+        + Prefix the field with:
+            + **"+"** for ascending order, or
+            + **"-"** for descending order. 
+        + **Note:** Omitting a prefix will sort in ascending order.
 
         + Default: username
         + Members
