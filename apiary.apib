@@ -2756,9 +2756,8 @@ This method releases an active license consumed by a User identified with its *i
 
 This API provides an easy way to export a concise user list in various file formats.
 
-It uses content negotiation to generate the exported user data. 
-In HTTP, content negotiation is the mechanism that is used for serving different representations of a resource at the same URI.
-In the request you should provide the `Accept` header value to specify which is best suited format.
+The endpoint uses content negotiation to determine the format of the export, 
+this is done by specifying the desired format in the `Accept` header from the list of supported formats.
 
 **Supported formats:**
 + `text/csv` (default, file extension is `.csv`)
@@ -2846,7 +2845,7 @@ The header parameters are set:
             }
         }
 
-+ Request Try Export Users with an unsupported media type
++ Request Export Users with an unsupported media type
 
     When an unsupported media type provided in the `Accept` header e.g. `text/html` then the API should return with http status `406 - Not Acceptable`.
 
