@@ -6,3 +6,4 @@ os:
 - linux
 script:
   - npm run lint
+cache: npm
