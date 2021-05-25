@@ -1302,6 +1302,10 @@ prefixed with a `+` or `-` indicating ascending or descending order respectively
 - Query parameter can only accept mixed case alpha numeric characters and underscores
 - Omitting the prefix will automatically assume ascending order
 
+Please take caution that query parameters are expected to be encoded in accordance
+to [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
+so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` character can always be omitted as it will default to ascending order.
+
 + Request Get a list of all users (application/json)
 
 + Parameters
