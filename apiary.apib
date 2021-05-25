@@ -2788,6 +2788,7 @@ The header parameters are set:
     + **Last Integration Access**: Indicating when the last integration access occurred. (Default value `Never` if it hasn’t been occurred)
     + **Checking Frequency**: Displays a rough idea of the usage pattern of the user by checking their frequency across the lifetime of the user in days. Its value can be [ 'fequent', 'infrequent', 'regular' ]
     + **License Type**: Indicates the type of license, its value can be ['named' | 'concurrent' | 'builtin'].
+    + **License Status**: The license status indicates whether the user account consumes a `named` license, its value can be ['active', 'inactive']
     + **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema. 
         + For custom fields the column name is mapped from the User custom field's name (specified on create) and will be added to the end of the sheet dynamically. 
 
@@ -2811,12 +2812,12 @@ The header parameters are set:
 
     + Body
 
-            user_id;Username;"Full Name";Roles;"Created On";"Last Integration Access";"Checking Frequency";"License Type";Department
-            "1ba8d14c-7697-4dbd-b370-3d22662e6fe0";termcontribution;"Term Contribution";"Term Contributor";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;"R&D"
-            "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f";analyticsReadOnlyUser;"Analytics Read Only User";"Analytics Read-Only User";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;"Example Department"
-            "4f86f443-e5e3-49c9-93da-cb1f89cd28c7";admin;Adminisztrator;"Super Administrator";"2021-05-12T15:40:00.866Z";Never;infrequent;builtin;IT
-            "05aa0b12-a3b1-455f-9aa6-f48034c191ae";termapiaccess;"Term API Access (builtin)";"Terminology API Access";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;
-            "394cdff2-bde8-41d2-85cd-34cd3bbca350";termtargetaccess;"Term Target Access (builtin)";"Term Browser User, Term Browser Administrator";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;
+            user_id;Username;"Full Name";Roles;"Created On";"Last Integration Access";"Checking Frequency";"License Type";"License Status";Department
+            "1ba8d14c-7697-4dbd-b370-3d22662e6fe0";termcontribution;"Term Contribution";"Term Contributor";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;inactive;"R&D"
+            "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f";analyticsReadOnlyUser;"Analytics Read Only User";"Analytics Read-Only User";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;inactive;"Example Department"
+            "4f86f443-e5e3-49c9-93da-cb1f89cd28c7";admin;Adminisztrator;"Super Administrator";"2021-05-12T15:40:00.866Z";Never;infrequent;builtin;inactive;IT
+            "05aa0b12-a3b1-455f-9aa6-f48034c191ae";termapiaccess;"Term API Access (builtin)";"Terminology API Access";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;inactive;
+            "394cdff2-bde8-41d2-85cd-34cd3bbca350";termtargetaccess;"Term Target Access (builtin)";"Term Browser User, Term Browser Administrator";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;inactive;
 
 + Response 401 (application/json)
 
