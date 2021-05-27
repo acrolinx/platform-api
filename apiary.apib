@@ -2650,8 +2650,58 @@ Only one API Token can be bound to a user at the time
 
 This method provides ability to create API Token for the currently authorized user.
 
-**Note:** Only with the appropriate permission can someone create an API Token: 
-* To create API Token for yourself it only requires you to be authorized with a valid access token.
+**Note:** There is no need of an extra privilege or role to create a new personal API token bound to the user authorized in the request.
+
+**Note:** This endpoint allows users to use Basic authentication scheme in the request to avoid the need of pre-existing API token.
+
++ Request Create API token using Basic auth
+    
+    To authenticate yourself using Basic auth simply needs providing username and password credentails in the `X-Acrolinx-Auth` request header in this `Basic username:passsword` format. 
+
+    * **Important:** 
+        * It should start with the `Basic` prefix, and
+        * credentials part `username:password` must be base64 encoded string. 
+
+    + Headers
+
+            X-Acrolinx-Auth: Basic dGVzdDp0ZXN0
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (UserApiTokenCreateResponse)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "type": "api",
+                    "issuedAt": "2021-04-23T07:54:07Z",
+                    "expiresAt": "2025-04-22T07:54:07Z",
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXJtY29udHJpYnV0aW9uIiwiYXVkIjoiYWNyb2xpbngiLCJuYmYiOjE2MTkwNzgwNDcsImlzcyI6ImFjcm9saW54OjAwMDBmZmZmZmZmZjAwMDAiLCJleHAiOjE3NDUzMDg0NDcsInRva2VuVHlwZSI6ImFwaSIsImlhdCI6MTYxOTE2NDQ0NywianRpIjoid3lvaXZoenl3Y3dwN3B4ejc2a29xN2F5NDQifQ.hRa2kHPl7EJ6xm115UOmu4QuppFoST7E626ceIsPeCI"
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When credentails are missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Request Create API token using existing API token
+
+    + Headers
+
+            X-Acrolinx-Auth: // here comes your existing API token
 
 + Response 200 (application/json)
 
