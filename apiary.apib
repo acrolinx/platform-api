@@ -1581,11 +1581,12 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 - License type can be one of 'named' or 'concurrent' (optional)
 - Must have `UserAndRoles.editUser` privileges to perform this request
 
-**Note:** 
-- Extra caution should be taken when there are no configured default roles. This would result in no roles being automatically assigned.
-- User creation happens automatically with Federated Authentication, while federated authentication is enabled.
+**Extra caution should be taken, in cases:** 
+- There are no configured default roles, this would result in no roles being automatically assigned to new users.
+- Federated authentication is enabled:
+  - User creation happens automatically with Federated Authentication.
   - Only users created by the identity provider can sign in to the Acrolinx Dashboard.
-  - Users created through the API, should only be used for automation purposes (API Token Users).
+  - Users created through the API, should only be used for automation purposes such as interact with Platform API but can’t get access to the Dashboard.
 
 
 + Request Create a user (application/json)
