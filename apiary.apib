@@ -3235,6 +3235,92 @@ noted in the Create User API section.
             }
         }
 
+# Group Licenses API
+
+License information is provided by the following set of APIs.
+
+## Statistics [/api/v1/licenses/statistics]
+
+### Get License Statistics for Users [GET]
+
+Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.
+The following conditions are checked for all users in order to qualify them to be included in the calculation:
+
+- Must be one of the following License Types `named` or `concurrent`
+- For `named` license they must be active it must satisfy the following
+    - Be activated for `Checking` session type
+    - Must not be free of charge
+- All other `named` licensed users will be considered `inactive`
+- All `concurrent` licensed users will be `existing` if a license exists
+
+**Note:** Builtin users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`
+are included in the statistics calculation along with all the non-builtin users but are subject to the conditions above.
+
+Details of the statistics attributes in the table below:
+
+| License Type | Sum Attribute | Description                   |
+|:-------------|---------------|-------------------------------|
+| `named`      | licensed      | Total number of licenses      |
+| `named`      | active        | Total active licenses         |
+| `named`      | inactive      | Total inactive licenses       |
+| `named`      | available     | Total available licenses (`licensed` minus `active`) |
+| `concurrent` | licensed      | Total number of licenses      |
+| `concurrent` | existing      | Total number of licenses used |
+
+**Note:**
+- Must have `UserAndRoles.editUser` privileges to perform this request
+- Concurrent license numbers may be seen (non-zero) if a license has been configured for both `named` and `concurrent` user limits
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data(LicenseStatistics)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "named": {
+                        "licensed": 150,
+                        "active": 58,
+                        "inactive": 23,
+                        "available": 92
+                    },
+                    "concurrent": {
+                        "licensed": 50,
+                        "existing": 10
+                    }
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to fetch license statistics
+        {
+            "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 # Group Role API
 
 Here, a role is an entity that has an id, a name and list of privileges and information whether this role is a default role. 
@@ -4870,3 +4956,17 @@ Debug API:
 ## BulkResultResponse (object)
 + results (array[BulkResult])
 + errors (array[BulkError])
+
+## LicenseStatistics
++ named (Named)
++ concurrent (Concurrent)
+
+### Named
++ licensed (number) - The total number of named licenses available
++ active (number) - The number of active named users
++ inactive (number) - The number of inactive named users
++ available (number) - The numer of avialable licenses (licensed - active)
+
+### Concurrent
++ licensed (number) - The total number of concurrent licenses available
++ existing (number) - The number of concurrent lincenses used
