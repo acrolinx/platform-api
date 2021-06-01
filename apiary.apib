@@ -3185,6 +3185,68 @@ noted in the Create User API section.
             }
         }
 
+# Group Licenses API
+
+TODO : Description for this api group
+
+## Statistics [/api/v1/licenses/statistics]
+
+### Get License Statistics for Users [GET]
+
+TODO: What this method does.
+Privs `UserAndRoles.read`
+
+**Note:**
+- note 1
+- note 2
+- note 3
+
++ Response 200 (application/json)
+
+    + Attributes (LicenseStatistics)
+
+    + Body
+
+            {
+                "named": {
+                    "licensed": 150,
+                    "active": 58,
+                    "inactive": 23,
+                    "available": 92
+                },
+                "concurrent": {
+                    "licensed": 50,
+                    "existing": 10
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to fetch license statistics
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+
 # Group Role API
 
 Here, a role is an entity that has an id, a name and list of privileges and information whether this role is a default role. 
@@ -4820,3 +4882,17 @@ Debug API:
 ## BulkResultResponse (object)
 + results (array[BulkResult])
 + errors (array[BulkError])
+
+## LicenseStatistics
++ named (Named)
++ concurrent (Concurrent)
+
+### Named
++ licensed (number) - The total number of named licenses available
++ active (number) - The number of active named users
++ inactive (number) - The number of inactive named users
++ available (number) - The numer of avialable licenses (licensed - active)
+
+### Concurrent
++ licensed (number) - The total number of concurrent licenses available
++ existing (number) - The number of concurrent lincenses used
