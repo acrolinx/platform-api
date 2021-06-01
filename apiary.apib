@@ -3220,20 +3220,25 @@ Details of the statistics attributes in the table below:
 
 + Response 200 (application/json)
 
-    + Attributes (LicenseStatistics)
+    + Attributes (object)
+        + links (object)
+        + data(LicenseStatistics)
 
     + Body
 
             {
-                "named": {
-                    "licensed": 150,
-                    "active": 58,
-                    "inactive": 23,
-                    "available": 92
-                },
-                "concurrent": {
-                    "licensed": 50,
-                    "existing": 10
+                "links": {},
+                "data": {
+                    "named": {
+                        "licensed": 150,
+                        "active": 58,
+                        "inactive": 23,
+                        "available": 92
+                    },
+                    "concurrent": {
+                        "licensed": 50,
+                        "existing": 10
+                    }
                 }
             }
 
