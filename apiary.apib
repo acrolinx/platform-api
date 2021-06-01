@@ -3187,19 +3187,36 @@ noted in the Create User API section.
 
 # Group Licenses API
 
-TODO : Description for this api group
+License information is provided by the following set of APIs.
 
 ## Statistics [/api/v1/licenses/statistics]
 
 ### Get License Statistics for Users [GET]
 
-TODO: What this method does.
-Privs `UserAndRoles.read`
+Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.
+The Built-in users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`
+are included in the statistics calculation along with all the non-builtin users, however the following conditions are checked
+that will ultimately decide the user to be included in the calculation:
+
+- Must be one of the following License Types `named` or `concurrent`
+- For `named` license they must be activated for `Checking` session type
+- For `named` license they must not be free of charge
+- All other `named` licensed users will be considered `inactive`
+- All `concurrent` licensed users will be `existing` if a license exists
+
+Details of the statistics attributes in the table below:
+
+| License Type | Sum Attribute | Description                   |
+|:-------------|---------------|-------------------------------|
+| `named`      | licensed      | Total number of licenses      |
+| `named`      | active        | Total active licenses         |
+| `named`      | inactive      | Total inactive licenses       |
+| `named`      | available     | Total available licenses (`licensed` - `active`) |
+| `concurrent` | licensed      | Total number of licenses      |
+| `concurrent` | existing      | Total number of licenses used |
 
 **Note:**
-- note 1
-- note 2
-- note 3
+- Must have `UserAndRoles.editUser` privileges to perform this request
 
 + Response 200 (application/json)
 
