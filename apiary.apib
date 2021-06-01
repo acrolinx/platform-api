@@ -3194,15 +3194,17 @@ License information is provided by the following set of APIs.
 ### Get License Statistics for Users [GET]
 
 Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.
-The Built-in users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`
-are included in the statistics calculation along with all the non-builtin users, however the following conditions are checked
-that will ultimately decide the user to be included in the calculation:
+The following conditions are checked for all users in order to qualify them to be included in the calculation:
 
 - Must be one of the following License Types `named` or `concurrent`
-- For `named` license they must be activated for `Checking` session type
-- For `named` license they must not be free of charge
+- For `named` license they must be active it must satisfy the following
+    - Be activated for `Checking` session type
+    - Must not be free of charge
 - All other `named` licensed users will be considered `inactive`
 - All `concurrent` licensed users will be `existing` if a license exists
+
+**Note:** Builtin users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`
+are included in the statistics calculation along with all the non-builtin users but are subject to the conditions above.
 
 Details of the statistics attributes in the table below:
 
@@ -3259,7 +3261,7 @@ Details of the statistics attributes in the table below:
 
         // when there is insufficient privileges to fetch license statistics
         {
-        "links": {},
+            "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
                 "type": "insufficientPrivileges",
@@ -3267,7 +3269,6 @@ Details of the statistics attributes in the table below:
                 "status": 403
             }
         }
-
 
 # Group Role API
 
