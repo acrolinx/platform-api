@@ -7,11 +7,12 @@
 
 ## Variables
 
-| Name         | Description                                                                          |
-| ------------ | ------------------------------------------------------------------------------------ |
-| ACROLINX_URL | Your Acrolinx instance URL. Used in request paths.                                   |
-| ACCESS_TOKEN | Your Access Token. Used in `X-Acrolinx-Auth` header.                                 |
-| SIGNATURE    | Your Client Signature. Used in `X-Acrolinx-Client` header.                           |
-| user_id      | Any User id that exists. It can be used in User API and other user related requests. |
-| role_id      | Any Role id that exists. It can be used in Role API and other role related requests. |
+| Name                     | Description                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------ |
+| ACROLINX_URL             | Your Acrolinx instance URL. Used in request paths.                                   |
+| ACCESS_TOKEN             | Your Access Token. Adds the `X-Acrolinx-Auth` header.                                |
+| SIGNATURE                | Your Client Signature. Adds the `X-Acrolinx-Client` header.                          |
+| base64_username_password | Username and password, in `username:password` format. Must be base64 encoded string. |
+| user_id                  | Any User id that exists. It can be used in User API and other user related requests. |
+| role_id                  | Any Role id that exists. It can be used in Role API and other role related requests. |
 
