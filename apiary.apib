@@ -1265,46 +1265,42 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
-Here, a user is an entity that has an id, a sign-in name, name, custom properties (set by client), and custom user information.
+In the User API, Acrolinx defines a user as an entity that has an id, a sign-in name, a name, custom properties (set by the client), and user information.
 
-When custom user information is _required_:
-* Interactive integrations: This will already be handled via Acrolinx sign-in. Immediately before granting
-access to client, the user needs to fill out their custom user information. It's thus impossible to obtain an
-access token for a user with incomplete required custom user information.
-* Embedded integrations (API key-based): Dashboard access handles this. After signing in to the dashboard,
-the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
-in the dashboard for the signed in user. It's thus impossible to obtain an API token for a user with incomplete required custom user information.
+You’re _required_ to provide user information for the following:
+* Interactive integrations: When you sign in to Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
+* Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter customer user information. This lets you generate an API token for the user that’s signed in.
 
 Security:
-* A user can read and update its own data
-* Only privileged users can read or update other users data
+* A user can read and update its own data.
+* Only privileged users (admin, for example) can read or update other users' data.
 
 ## Current User [/api/v1/user/self]
 
-Returns information about the current user. See below for possible responses.
+This request returns information about the current user. The information includes the user id, username, the user’s full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status. You’ll also see properties, roles, and custom fields.
 
 ## User Resource [/api/v1/user]
 
 ### Get All Users [GET /api/v1/user{?sort}]
 
-This request will retrieve a list of all users in their natural order, this means in the order they were inserted.
+This request retrieves a list of all users in the order that they were added.
 
 **Sorting**
 
-The list may only be sorted by 1 field if the `sort` query parameter is used. The query parameter can be
-prefixed with a `+` or `-` indicating ascending or descending order respectively.
+If you use the `sort` query parameter, you can only sort the list of users by 1 field. 
+You can add a `+` or `-` to display the list in ascending or descending order respectively.
 
 **Note:**
 
-- May only sort by 1 field
-- Query parameter max length is 50 characters, excluding order direction prefixes '+' and '-'
-- Query parameter cannot be empty or filled with blank spaces
-- Query parameter can only accept mixed case alpha numeric characters and underscores
-- Omitting the prefix will automatically assume ascending order
+- You can only sort by 1 field.
+- Query parameter max. length is 50 characters, excluding order direction prefixes '+' and '-'.
+- Query parameter can't be empty or filled with blank spaces.
+- Query parameter can only accept mixed-case alpha numeric characters and underscores.
+- By default, the list appears in ascending order.
 
-Please take caution that query parameters are expected to be encoded in accordance
-to [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
-so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` character can always be omitted as it will default to ascending order.
+So that the `+` character encoded to `%2B` remains valid, make sure that the that query parameters are encoded in accordance
+with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
+Alternatively, you can always omit the `+` character as it will default to ascending order.
 
 + Request Get a list of all users (application/json)
 
@@ -1428,7 +1424,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
             }
         }
 
-        // when omitting the field name in the sort query parameter
+        // when the field name is omitted in the sort query parameter
         {
             "links": {},
             "error": {
@@ -1450,7 +1446,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 401 (application/json)
 
-        // when the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -1463,7 +1459,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to list users
+        // when you don’t have the privilege to list users
         {
         "links": {},
             "error": {
@@ -1474,7 +1470,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
             }
         }
 
-### Get User [GET /api/v1/user/{id}]
+### Get a User [GET /api/v1/user/{id}]
 
 + Request Get specified user by id (application/json)
 
@@ -1534,7 +1530,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 401 (application/json)
 
-        // when the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -1546,7 +1542,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to fetch users
+        // when you don’t have the privilege to fetch users
         {
         "links": {},
             "error": {
@@ -1559,7 +1555,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 404 (application/json)
 
-        // when user was not found in the database identified by its *id*
+        // when the user couldn’t be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -1571,29 +1567,29 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
             }
         }
 
-### Create User [POST /api/v1/user]
+### Create a User [POST /api/v1/user]
 
 **Note:**
 
-- Username must be unique and cannot exceed 255 characters
-- Full name field cannot exceed 255 characters (optional)
-- Password must be between 1 and 128 characters (optional)
-- License type can be one of 'named' or 'concurrent' (optional)
-- Must have `UserAndRoles.editUser` privileges to perform this request
+- The username needs to be unique and is limited to 255 characters.
+- The `fullName` field is limited to 255 characters (optional).
+- The password needs to have between 1 and 128 characters (optional).
+- The license type can either be 'named' or 'concurrent' (optional).
+- You need `UserAndRoles.editUser` privileges to perform this request.
 
-**Extra caution should be taken, in cases:** 
-- There are no configured default roles, this would result in no roles being automatically assigned to new users.
+**Be extra careful in the following cases:** 
+- There are no configured default roles. That means that no roles will be automatically assigned to new users.
 - Federated authentication is enabled:
-  - User creation happens automatically with Federated Authentication.
-  - Only users created by the identity provider can sign-in to the Acrolinx Dashboard.
-  - Users created through the API can only be used for automation purposes such as interactions with the Platform API.
+  - Users are created automatically with federated authentication.
+  - Only users created by the identity provider can sign in to the Acrolinx Dashboard.
+  - Users created through the API can only be used for automation purposes. For example, interactions with the Platform API.
 
 
 + Request Create a user (application/json)
 
-    This request will create a new user with just some basic fields (username, fullname, password) specified in the request model. 
+     This will create a new user if you add a username, fullName, and password to the request. 
 
-    **Note:** The server will assign a default license type (`named`) and role (`Author`) to the user automatically.
+    **Note:** By default, Acrolinx will automatically assign the user the license type `named` and the role `Author`.
 
     + Attributes (CreateUser)
     
@@ -1664,7 +1660,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
             }
         }
 
-        // when the password does not meet strict requirements
+        // when the password doesn’t meet the strictness requirements
         {
             "links": {},
             "error": {
@@ -1713,7 +1709,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 401 (application/json)
 
-        // when the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -1725,7 +1721,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to create users
+        // when you don’t have the privilege to create users
         {
         "links": {},
             "error": {
@@ -1738,7 +1734,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 409 (application/json)
 
-        // when creating the same user more than once
+        // when the user was created more than once
         {
         "links": {},
             "error": {
@@ -1767,9 +1763,9 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Request Create a user with specified license type (application/json)
 
-    This request will create a new user with `named` license type explicitly specified in the request model. 
+    This request will create a new user with the `named` license type explicitly specified in the request model. 
     
-    **Note:** The server will assign a default role (`Author`) to the user automatically.
+    **Note:** Acrolinx will automatically assign the default role `Author` to the user.
 
     + Attributes (CreateUser)
 
@@ -1841,7 +1837,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
             }
         }
 
-        // when the password does not meet strict requirements
+        // when the password doesn’t meet the strictness requirements
         {
             "links": {},
             "error": {
@@ -1890,7 +1886,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 401 (application/json)
 
-        // when the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -1902,7 +1898,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to create users
+        // when you don’t have the privilege to create users
         {
         "links": {},
             "error": {
@@ -1915,7 +1911,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 409 (application/json)
 
-        // when creating the same user more than once
+        // when the same user is created more than once
         {
         "links": {},
             "error": {
@@ -1929,7 +1925,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 500 (application/json)
 
-        // when an unspecified error occurs
+        // when there’s an unspecified error
         {
             "links": {},
             "error": {
@@ -2078,7 +2074,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 401 (application/json)
 
-        // when the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -2090,7 +2086,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to create users
+        // when you don’t have the privilege to create users
         {
         "links": {},
             "error": {
@@ -2103,7 +2099,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 409 (application/json)
 
-        // when creating the same user more than once
+        // when the same user was created more than once
         {
         "links": {},
             "error": {
@@ -2117,7 +2113,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 500 (application/json)
 
-        // when an unspecified error occurs
+        // when there’s an unspecified error
         {
             "links": {},
             "error": {
@@ -2130,19 +2126,19 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
         }
 
 
-### Update User [PUT /api/v1/user/{id}]
+### Update a User [PUT /api/v1/user/{id}]
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
-+ Request Update full name (application/json)
++ Request Update fullName attribute (application/json)
 
-    You may update the full name of a user.
+    You can update the fullName attribute for a user.
 
-    In this example only the `fullName` attribute will be changed of the user `fred` which was found in the database identified by its *id*.
+    In this example, only the `fullName` attribute will change for the user `fred`. This was identified in the database by its *id*.
 
     **Note:**
-    - Full name can be also deleted (changed to empty).
+    - You can delete the `fullName` by changing the attribute to empty.
 
     + Parameters
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
@@ -2209,7 +2205,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 401 (application/json)
 
-        // when the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -2221,7 +2217,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to update users
+        // when you don’t have the privilege to update users
         {
         "links": {},
             "error": {
@@ -2234,7 +2230,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 404 (application/json)
 
-        // when user was not found in the database identified by its *id*
+        // when the user couldn’t be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -2248,9 +2244,9 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Request Update roles (application/json)
 
-    You may update the role of a user.
+    You can update a user’s role.
 
-    In this example only the `roles` attribute will be changed of the user `fred` which was found in the database identified by its *id*. Be aware that it's not possible to send an empty array for `roles` as each user must have at least one role assigned. Built-in users cannot be changed in this way. Furthermore, the requestor cannot grant more privileges than they have themselves (privilege escalation). Should one more role not exist, the call will fail and the error message will contain all unknown roles that were referenced.
+    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn’t apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn’t exist, the call will fail and the error message will show the unknown roles that were referenced.
 
     + Parameters
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
@@ -2266,7 +2262,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 * Response 400 (application/json)
 
-        // when roles array is empty
+        // when the roles array is empty
         {
           "links": {},
           "error": {
@@ -2289,7 +2285,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 401 (application/json)
 
-        // when the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -2301,7 +2297,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 403 (application/json)
 
-        // when there are insufficient privileges to grant role
+        // when you don’t have the privilege to grant a role
         {
         "links": {},
             "error": {
@@ -2314,7 +2310,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 409 (application/json)
 
-        // when a built-in user should be updated
+        // when you try to update a built-in user
         {
         "links": {},
             "error": {
@@ -2489,7 +2485,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 400 (application/json)
 
-        // When any of the updated fields are invalid, a detailed error information is given
+        // when any of the updated fields are invalid, you’ll see a detailed error message
         {
             "links": {},
             "error": {
@@ -2515,7 +2511,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 401 (application/json)
 
-        // when the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -2526,7 +2522,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
         }
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to update custom fields
+        // when you don’t have the privilege to update custom fields
         {
         "links": {},
             "error": {
@@ -2539,7 +2535,7 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
 
 + Response 404 (application/json)
 
-        // when role was not found in the database identified by its *id*
+        // when a role wasn’t found in the database based on its *id*
         {
         "links": {},
             "error": {
@@ -2551,14 +2547,14 @@ so the `+` character encoded to `%2B` will remain valid. Alternatively, the `+` 
             }
         }
 
-### Delete User [DELETE /api/v1/user/{id}]
+### Delete a User [DELETE /api/v1/user/{id}]
 
-This method deletes a specified User identified by its *id*.
+This method deletes a specified user based on its *id*.
 
-**Note:** A user can only be successfully deleted if all following conditions are met
-- The user is not a pre-configured built-in users such as 'admin', 'termcontribution' and 'analyticsReadOnlyUser'. 
+**Note:** You can only delete a user successfully if all of the following conditions are met:
+- The user isn’t a preconfigured, built-in user such as 'admin', 'termcontribution’, or 'analyticsReadOnlyUser'. 
 
-To read more about managing users and built-in users check the docs: [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users)
+To read more about managing users and built-in users, see [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users) in the Acrolinx documentation.
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
@@ -2567,7 +2563,7 @@ To read more about managing users and built-in users check the docs: [Manage You
 
 + Response 400 (application/json)
 
-        // When the request is invalid such as a malformed *id*
+        // when the request is invalid because of a typo, for example
         {
             "links": {},
             "error": {
@@ -2581,7 +2577,7 @@ To read more about managing users and built-in users check the docs: [Manage You
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -2594,7 +2590,7 @@ To read more about managing users and built-in users check the docs: [Manage You
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to delete a user
+        // when you don’t have the privilege to delete a user
         {
         "links": {},
             "error": {
@@ -2607,7 +2603,7 @@ To read more about managing users and built-in users check the docs: [Manage You
 
 + Response 404 (application/json)
 
-        // When user was not found in the database identified by its *id*
+        // when the user wasn’t found in the database based on its *id*
         {
         "links": {},
             "error": {
@@ -2621,7 +2617,7 @@ To read more about managing users and built-in users check the docs: [Manage You
 
 + Response 409 (application/json)
 
-        // When the preconditions for deleting a user are not met
+        // when you can’t delete a user
         {
             "links": {},
             "error": {
@@ -2635,37 +2631,36 @@ To read more about managing users and built-in users check the docs: [Manage You
 
 ## User Generated API Tokens [/api/v1/user/{id}/tokens]
 
-Users can generate long living API Tokens to use them for programmatically access the Platform APIs.
+You can generate long-lasting API tokens for programmatic access to the Platform APIs.
 
-We protect our APIs with self-contained access tokens. Using access tokens the API consumer can authorize itself under the identity of the belonging User.
-API Tokens are access tokens with type `api` and with different characteristics than the access tokens which are issued when using the sign-in endpoint.
+Acrolinx protects its APIs with self-contained access tokens. These access tokens let you authorize yourself as a user. API tokens have different characteristics than the access tokens that are issued when you use the sign-in endpoint.
 
-Don't forget to check the section *Introduction -> Authentication and Authorization* in this API Blueprint.
+Don't forget to check out the *Introduction > Authentication and Authorization* section in this API Blueprint.
 
-Only one API Token can be bound to a user at the time
-* When creating a new API Token the previously issued API Token gets invalidated! 
+Be aware that you can only be bound to one API token at a time.
+* When you create a new API token, your previous API token becomes invalid.
 
-**Warning:** Follow the security guidelines when working with API Tokens:
-+ Never share your API Token with others and store it securely!
-+ Do not bake the generate API Token into any of your custom code that interacts with the Acrolinx Platform APIs!
+**Warning:** Follow these security guidelines when you work with API tokens:
++ Store your API token securely and never share it with others.
++ Don’t bake your API token into any custom code that interacts with the Acrolinx Platform APIs.
 
-**Note:** To see more about creating API Tokens in Acrolinx: [Create an API Token](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/authentication/create-an-api-token)
+**Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/authentication/create-an-api-token) in the Acrolinx documentation.
 
 ### Create an API Token (Self)  [POST /api/v1/user/self/tokens]
 
-This method provides ability to create API Token for the currently authorized user.
+Use this method to create an API token for the current user.
 
-**Note:** There is no need of an extra privilege or role to create a new personal API token bound to the user authorized in the request.
+**Note:** You don't need extra privileges or roles to create a new personal API token bound to the user authorized in the request.
 
-**Note:** This endpoint allows users to use Basic authentication scheme in the request in order to avoid reusing an existing API token.
+**Note:** This endpoint lets users use the Basic authentication scheme to avoid reusing an existing API token.
 
-+ Request Create API token using Basic auth
++ Request Create an API token using Basic auth
     
-    To authenticate using Basic auth just provide the username and password in the `X-Acrolinx-Auth` request header in the following format `Basic username:password`. 
+    To authenticate using Basic auth, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`. 
 
     * **Important:** 
-        * Must be prefixed by `Basic`.
-        * Credentials `username:password` must be base64 encoded.
+        * This needs to have the prefix `Basic`.
+        * Your credentials (`username:password`) must be base64 encoded.
 
     + Headers
 
@@ -2691,7 +2686,7 @@ This method provides ability to create API Token for the currently authorized us
 
 + Response 401 (application/json)
 
-        // When credentails are missing or invalid
+        // when the credentails provided are missing or invalid
         {
             "links": {},
             "error": {
@@ -2702,7 +2697,7 @@ This method provides ability to create API Token for the currently authorized us
             }
         }
 
-+ Request Create API token using existing API token
++ Request Create an API token using an existing API token
 
     + Headers
 
@@ -2728,7 +2723,7 @@ This method provides ability to create API Token for the currently authorized us
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -2741,26 +2736,26 @@ This method provides ability to create API Token for the currently authorized us
 
 ### Create an API Token for User(s) [POST /api/v1/user/{id}/tokens]
 
-This method provides ability to create API Token for users identified by their *id*.
+This method lets you create an API token for users based on their *id*.
 
-Typical use cases of this API:
-1. Create API token for personal use
-    - 1.1. Gather your own unique identifier *id* using the *Current user* request.
-    - 1.2. Provide your *id* as parameter.
+Typical use cases for this API:
+1. Create an API token for personal use
+    - 1.1. Get your own unique identifier *id* via the *Current user* request.
+    - 1.2. Enter your *id* as a parameter.
     - 1.3. Start using the issued API token.
-2. Create API token for someone else
-    - 2.1. Gather the unique identifier *id* of the other user using the *Get users* requests.
-    - 2.2. Provide the other user's *id* as parameter. 
-    - 2.3. Securely hand over the issued API token to the user.  
+2. Create an API token for someone else
+    - 2.1. Get the unique identifier *id* for the other user via the *Get users* requests.
+    - 2.2. Enter the other user's *id* as parameter. 
+    - 2.3. Give the issued API token to the user securely.  
 
-**Note:** Only with the appropriate permission can someone create an API Token: 
-* To create API Token for yourself it only requires you to be authorized with a valid access token.
-* To create API Token for someone else it requires you to have the privilege `UserAndRoles.setApiTokensForOthers` assigned and to be authorized with a valid access token.
+**Note:** You can only create an API token if you have the appropriate permissions: 
+* To create API token for yourself, you need to be authorized with a valid access token.
+* To create API token for someone else, you need the privilege `UserAndRoles.setApiTokensForOthers` and you need to be authorized with a valid access token.
 
-**Alternative use case:** Create API token for impersonate a user
+**Alternative use case:** Create an API token to impersonate a user
 
-    It is often useful for an admin to impersonate a user. 
-    For example, a user may be experiencing a bug and an admin may want to impersonate the user to see if they can duplicate the problem.   
+    Sometimes it’s useful for an admin to impersonate a user to help troubleshoot. 
+    If a user encounters a bug, for example, an admin may want to impersonate the user to try and duplicate the problem.   
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
@@ -2785,7 +2780,7 @@ Typical use cases of this API:
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -2798,7 +2793,7 @@ Typical use cases of this API:
 
 + Response 403 (application/json)
 
-        // When the user don't have the privilege to create an API token for others ("UserAndRoles.setApiTokensForOthers")
+        // when the user can’t create an API token for others ("UserAndRoles.setApiTokensForOthers")
         {
             "links": {},
             "error": {
@@ -2812,24 +2807,24 @@ Typical use cases of this API:
 
 + Response 404 (application/json)
 
-        // When user was not found in the database identified by its *id*
+        // when the user wasn’t found in the database based on its *id*
 
 ## User Commands [/api/v1/user/{id}/_{command}]
 
-The APIs under this group are following the command style API design.  
+The APIs in this group follow the API design command style.   
 
-These administrative commands can help govern users in your Acrolinx instance and do more than simply (re)send the new state of a single resource. 
+These administrative commands can help govern users in your Acrolinx instance. The commands can do more than simply (re)send the new state of a single resource. 
 
-**Note:** These requests can be applied multiple times without changing the result (idempotent). 
+**Note:** You can apply these requests multiple times without changing the result (idempotent). 
 
-### Release an Active Named User license [PUT /api/v1/user/{id}/_release]
+### Release an Active Named User License [PUT /api/v1/user/{id}/_release]
 
-This method releases an active license consumed by a User identified with its *id*.
+This method uses the *id* to release an active license consumed by a user.
 
 **Note:**
-- Only users with the license type `named` can be released.
-- If a user gets his license released and they don't consume a license it does not return an error. 
-- To perform this action you must have the `UserAndRoles.deleteSessions` privilege assigned.
+- You can only release users with the `named` license type.
+- If you release the license of a user who doesn’t consume a license, you won’t see an error. 
+- To do this, you need the `UserAndRoles.deleteSessions` privilege.
 
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
 
@@ -2840,7 +2835,7 @@ This method releases an active license consumed by a User identified with its *i
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -2853,7 +2848,7 @@ This method releases an active license consumed by a User identified with its *i
 
 + Response 403 (application/json)
 
-        // When the user don't have the privilege to release other users' license ("UserAndRoles.deleteSessions")
+        // when you don’t have the privilege to release other users' licenses ("UserAndRoles.deleteSessions")
         {
             "links": {},
             "error": {
@@ -2867,7 +2862,7 @@ This method releases an active license consumed by a User identified with its *i
 
 + Response 404 (application/json)
 
-        // When user was not found in the database identified by its *id*
+        // when the user wasn’t found in the database by its *id*
         {
         "links": {},
             "error": {
@@ -2879,53 +2874,51 @@ This method releases an active license consumed by a User identified with its *i
             }
         }
 
-### Export All Users [GET /api/v1/user/_export]
+### Export a List of Users [GET /api/v1/user/_export]
 
 This API provides an easy way to export a concise user list in various file formats.
 
-The endpoint uses content negotiation to determine the format of the export, 
-this is done by specifying the desired format in the `Accept` header from the list of supported formats.
+The endpoint uses content negotiation to determine the format of the export. You can include the `Accept` header in your request to specify the format you prefer. See the `Supported formats` section for more information about the formats that Acrolinx currently supports.
 
 **Supported formats:**
 + `text/csv` (default, file extension is `.csv`)
 
-**Note:** In case the `Accept` header is not specified, it will return with the default format.
+**Note:** If you don’t specify the format in the `Accept` header, the default will be used.
 
 **Content-Disposition:**
 
 The API also returns the `Content-Disposition` response header to give information about the returned content. 
-Based on this browsers can recognize it’s an attachment that can be downloaded and saved locally.
+Based on this, browsers can recognize downloadable attachments that can be saved locally.
 
-The header parameters are set:
-+ `attachment` - Indicating the content should be downloaded.
-+ `filename="acrolinx_users_export_yyyyMMdd_HHmmss.{fileExt}"` - Most browsers presenting a 'Save as' dialog for attachments, it will prefilled with the value of the filename parameter.
+The header parameters are set as follows:
++ `attachment` - Indicates that the content should be downloaded.
++ `filename="acrolinx_users_export_yyyyMMdd_HHmmss.{fileExt}"` - Most browsers present a 'Save as' dialog for attachments. This will be prefilled with the value of the filename parameter.
 
-+ Request Export Users in CSV format
++ Request Export a list of users in CSV format
 
-    This method provides ability to export users into a CSV file that look like a spreadsheet but with a `.csv` extension.
-    Each line of the file is a User data record. Each record consists of one or more User fields and the actual value, separated by column delimiter.
-    The downloaded CSV file can be used with most any spreadsheet program, such as Microsoft Excel or Google Spreadsheets.
+    This lets you export a list of users and their data into a CSV file that looks like a spreadsheet but has a `.csv` extension.
+    Each line of the file is a user data record. Each record consists of one or more user fields and the actual value, separated by column delimiter.
+    You can use the CSV file with most spreadsheet programs, such as Microsoft Excel or Google Sheets.
 
-    The following User fields will be written into the file (in the following order):
+    You’ll see the following user fields in the file (in the following order):
     + **user_id**: The user's unique identifier (string, UUID).
-    + **Username**: The user's username, which can be used for signing in and user identification.
-    + **Full name**: The full name of the user.
-    + **Roles**: List of assigned roles.
-    + **Created On**: Indicating when the user was created.
-    + **Last Integration Access**: Indicating when the last integration access occurred. (Default value `Never` if it hasn’t been occurred)
-    + **Checking Frequency**: Displays a rough idea of the usage pattern of the user by checking their frequency across the lifetime of the user in days. Its value can be [ 'fequent', 'infrequent', 'regular' ]
-    + **License Type**: Indicates the type of license, its value can be ['named' | 'concurrent' | 'builtin'].
-    + **License Status**: The license status indicates whether the user account consumes a `named` license, its value can be ['active', 'inactive']
-    + **{Custom Field name}**: Users can have multiple (0..N) custom fields, which are also attached to the schema. 
-        + For custom fields the column name is mapped from the User custom field's name (specified on create) and will be added to the end of the sheet dynamically. 
+    + **Username**: The user's username, which can be used for sign in and user identification.
+    + **Full Name**: The full name of the user.
+    + **Roles**: A list of assigned roles.
+    + **Created On**: Indicates when the user was created.
+    + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn’t accessed an integration, the default value is `Never`.
+    + **Checking Frequency**: Displays a rough idea of the user’s usage pattern based on checking frequency across the user’s lifetime in days. Its value can be [ 'frequent', 'infrequent', 'regular' ].
+    + **License Type**: Indicates the type of license. Its value can be ['named' | 'concurrent' | 'builtin'].
+    + **{Custom Field name}**: Users can have multiple (0..N) custom fields that are also attached to the schema. 
+        + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be added to the end of the sheet dynamically. 
 
-    **Notes, about the CSV file and the data formatting:** 
-    + Column headers are also written into the file, in the first row.
-    + Fields are separated by semi-colon `;` char (as column delimiter). 
-    + Date time values exported in `UTC` format, example `2021-05-12T15:40:00.876Z`.
-        + When no stored value for a given Date time type field, the cell should contain `Never` or empty value.
-    + Values of a list type field separated with colon `,` (as the "in-cell" delimiter).
-    + Values containing space characters are double quoted in the file, example `user_id;Username;"Full Name";....`.
+    **Notes, about the CSV file and data formatting:** 
+    + Column headers are also written into the first row of the file.
+    + Fields are separated by a semicolon `;` (as column delimiter). 
+    + Date and time values are exported in `UTC`, for example `2021-05-12T15:40:00.876Z`.
+        + When there’s no stored value for a given Date time type field, the cell should contain `Never` or an empty value.
+    + Values of a list type field are separated with a colon `:` (as the "in-cell" delimiter).
+    + Values that contain space characters are in double quotes in the file, for example, `user_id;Username;"Full Name";....`.
 
     + Headers
 
@@ -2948,7 +2941,7 @@ The header parameters are set:
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or is invalid
         {
             "links": {},
             "error": {
@@ -2961,7 +2954,7 @@ The header parameters are set:
 
 + Response 403 (application/json)
 
-        // When the user don't have the privilege to export users ("UsersAndRoles.read")
+        // when you don’t have the privilege to export users ("UsersAndRoles.read")
         {
             "links": {},
             "error": {
@@ -2973,9 +2966,9 @@ The header parameters are set:
             }
         }
 
-+ Request Export Users with an unsupported media type
++ Request Export users with an unsupported media type
 
-    When an unsupported media type provided in the `Accept` header e.g. `text/html` then the API should return with http status `406 - Not Acceptable`.
+    If you enter an unsupported media type in the `Accept` header, for example, `text/html`, the API will return the http status `406 - Not Acceptable`.
 
     + Headers
 
@@ -2996,25 +2989,25 @@ The header parameters are set:
 
 ## User Bulk Operations [/api/v1/user/bulk]
 
-These APIs allow for bulk operations to be performed. Bulk operations follow the multi-status request and response model.
-That is the incoming bulk request contains a list of objects that need to be processed (as opposed to invoking the same API many times), the response
-will be `207 Multi-Status` and contain list of `results` of the objects that were processed successfully and a list of `errors` for the objects that could not
-be processed.
+These APIs let you perform bulk operations. Bulk operations follow the multi-status request and response model.
+In this model, the incoming bulk request contains a list of objects that need to be processed (as opposed to invoking the same API many times). 
+The response to the request is `207 Multi-Status`. The response contains a list of `results` for the objects that were processed successfully 
+and a list of `errors` for the objects that couldn’t be processed.
 
-**Note:** Bulk requests have a maximum request limit which is defined per API. User creation is an atomic operation but the bulk request is non-transactional.
+**Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
 
-### Create Users Bulk [POST /api/v1/user/bulk]
+### Create Users in Bulk [POST /api/v1/user/bulk]
 
-This API accepts a list of new users to be created. All user objects follow the requirements and constraints as
+This API lets you create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
 
-**Note:** The maximum request limit is 100 users per bulk request, minimum is 1
+**Note:** You can create up to 100 users per bulk request, the minimum is 1.
 
 + Request Create Users in Bulk (application/json)
 
-    This request creates 5 new users with just some basic fields (`username`, `fullName`, `password`) specified in the request model.
+    This request lets you create 5 new users by specifying some basic fields (`username`, `fullName`, `password`) in the request model.
 
-    **Note:** The server will assign a default license type and role automatically, which would typically be (`named`) and role (`Author`) respectively.
+    **Note:** Acrolinx will assign a license type and role automatically. These are typically the license type `named` and the role `Author`.
 
     + Attributes (BulkCreateUser)
     
@@ -3086,7 +3079,7 @@ noted in the Create User API section.
             }
 
 
-            // When 3 users are successfully created but the remaining 2 have conflicts
+            // when 3 users were created successfully but 2 weren’t
             {
                 "results": [
                     {
@@ -3127,7 +3120,7 @@ noted in the Create User API section.
 
 + Response 400 (application/json)
 
-        // When sending a bulk request with an empty list
+        // when a bulk request is sent with an empty list
         {
             "links": {},
             "error": {
@@ -3147,7 +3140,7 @@ noted in the Create User API section.
             }
         }
 
-        // When sending a bulk request that exceeds the maximum valid limit
+        // when a bulk request exceeds the maximum valid limit
         {
             "links": {},
             "error": {
@@ -3167,7 +3160,7 @@ noted in the Create User API section.
             }
         }
 
-        // When sending a bulk request that include validation errors such as empty password
+        // when a bulk request includes validation errors such as an empty password
         {
             "links": {},
             "error": {
@@ -3188,7 +3181,7 @@ noted in the Create User API section.
             }
         }
 
-        // When sending a bulk request without a payload body
+        // when a bulk request is sent without a payload body
         {
             "links": {},
             "error": {
@@ -3210,7 +3203,7 @@ noted in the Create User API section.
 
 + Response 403 (application/json)
 
-        // when there is insufficient privileges to create users
+        // when you don’t have the privilege to create users
         {
         "links": {},
             "error": {
@@ -3223,7 +3216,7 @@ noted in the Create User API section.
 
 + Response 500 (application/json)
 
-        // When an unspecified error occurs
+        // when there’s an unspecified error
         {
             "links": {},
             "error": {
@@ -3323,15 +3316,15 @@ Details of the statistics attributes in the table below:
 
 # Group Role API
 
-Here, a role is an entity that has an id, a name and list of privileges and information whether this role is a default role. 
-You can use roles to group sets of privileges and assign to different users.
-Roles can be marked as default to automatically assign at least one default role to all new users.
+In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role. 
+You can use roles to group sets of privileges and assign them to different users.
+Mark roles as default if you want to automatically assign at least one default role to all new users.
 
-To see more about role-based access control in Acrolinx: [Acrolinx Roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles)
+To read more about role-based access control in Acrolinx, see the [Acrolinx Roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles)
 
 ## Roles [/api/v1/roles/]
 
-### Get all Roles [GET]
+### Get All Roles [GET]
 
 Returns a list of all roles including the belonging privileges.
 
@@ -3453,7 +3446,7 @@ Returns a list of all roles including the belonging privileges.
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -3466,7 +3459,7 @@ Returns a list of all roles including the belonging privileges.
 
 + Response 403 (application/json)
 
-        // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
+        // when you don’t have the privilege to view users and roles ("UserAndRoles.read")
         {
         "links": {},
             "error": {
@@ -3480,15 +3473,15 @@ Returns a list of all roles including the belonging privileges.
 
 ## Privileges [/api/v1/roles/privileges]
 
-Task or set of tasks which can be performed by a User via API or Dashboard (UI) interactions are allowed/denied based on privileges. 
+Privileges determine whether or not a user can perform an action via the API or Acrolinx Dashboard.
 
-### Get all privileges [GET]
+### Get All Privileges [GET]
 
-This method provides a list of all supported privileges.
+This returns a list of all supported privileges.
 
-**Note:** The example response can differ from the actual supported privileges depending on your installed Acrolinx version. 
-Rarely, but in newer platform releases privileges might be introduced or removed. 
-To discover existing privileges in your installation perform and compare the result set of this request.  
+**Note:** Depending on your Acrolinx version, the following example response may look different than the response that you get for your supported privileges. 
+In newer platform releases, there are rare instances where privileges might be introduced or removed. 
+To discover which privileges come with your installation, submit this request and compare it to the example response.  
 
 + Response 200 (application/json)
 
@@ -3554,7 +3547,7 @@ To discover existing privileges in your installation perform and compare the res
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -3567,7 +3560,7 @@ To discover existing privileges in your installation perform and compare the res
 
 + Response 403 (application/json)
 
-        // When the user don't have the privilege to view users and roles ("UserAndRoles.read")
+        // when you don't have the privilege to view users and roles ("UserAndRoles.read")
         {
         "links": {},
             "error": {
@@ -3581,16 +3574,17 @@ To discover existing privileges in your installation perform and compare the res
 
 ## Role [/api/v1/roles]
 
-### Create role [POST]
+### Create Roles [POST]
 
-This method provides ability to add new roles.
+This lets you add new roles.
 
 **Note:**
-- The name needs to be unique. (size must be between 1 and 254)
+- The name needs to be unique and must be between 1 and 254 characters.
 - A role needs to have at least one privilege assigned.
 - Existing privileges must be referenced.
 
-+ Request Create Role (application/json)
+
++ Request Create a role (application/json)
 
     + Attributes (CreateOrUpdateRole)
 
@@ -3625,7 +3619,7 @@ This method provides ability to add new roles.
 
 + Response 400 (application/json)
 
-            // When empty name was provided or more than 254 characters long
+            // when an empty name was provided or the name provided is longer than 254 characters
             {
                 "links": {},
                 "error": {
@@ -3653,7 +3647,7 @@ This method provides ability to add new roles.
                 }
             }
 
-            // When empty privileges was provided 
+            // when empty privileges were provided 
             {
                 "links": {},
                 "error": {
@@ -3674,7 +3668,7 @@ This method provides ability to add new roles.
                 }
             }
 
-            // When privilege keys that do not exist were referenced
+            // when privilege keys that don’t exist were referenced
             {
                 "links": {},
                 "error": {
@@ -3697,7 +3691,7 @@ This method provides ability to add new roles.
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -3710,7 +3704,7 @@ This method provides ability to add new roles.
 
 + Response 403 (application/json)
 
-        // When the user does not have privileges to edit roles
+        // when you don’t have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -3724,7 +3718,7 @@ This method provides ability to add new roles.
 
 + Response 409 (application/json)
 
-        //When role with the same name already exists
+        // when a role with the same name already exists
         {
             "links": {},
             "error": {
@@ -3736,7 +3730,7 @@ This method provides ability to add new roles.
             }
         }
 
-+ Request Create Default Role (application/json)
++ Request Create a default role (application/json)
 
     + Attributes (CreateOrUpdateRole)
 
@@ -3772,7 +3766,7 @@ This method provides ability to add new roles.
 
 + Response 400 (application/json)
 
-            // When empty name was provided or more than 254 characters long
+            // when an empty name was provided or the name provided is longer than 254 characters
             {
                 "links": {},
                 "error": {
@@ -3800,7 +3794,7 @@ This method provides ability to add new roles.
                 }
             }
 
-            // When empty privileges was provided 
+            // when empty privileges were provided 
             {
                 "links": {},
                 "error": {
@@ -3821,7 +3815,7 @@ This method provides ability to add new roles.
                 }
             }
 
-            // When privilege keys that do not exist were referenced
+            // when privilege keys that don’t exist were referenced
             {
                 "links": {},
                 "error": {
@@ -3844,7 +3838,7 @@ This method provides ability to add new roles.
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -3857,7 +3851,7 @@ This method provides ability to add new roles.
 
 + Response 403 (application/json)
 
-        // When the user does not have privileges to edit roles
+        // when you don’t have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -3871,7 +3865,7 @@ This method provides ability to add new roles.
 
 + Response 409 (application/json)
 
-        //When role with the same name already exists
+        // when a role with the same name already exists
         {
             "links": {},
             "error": {
@@ -3883,9 +3877,9 @@ This method provides ability to add new roles.
             }
         }
 
-### Get Role [GET /api/v1/roles/{id}]
+### Get a Role [GET /api/v1/roles/{id}]
 
-This method provides Role which was found in the database identified by its *id*.
+This returns a role that was identified by its *id* in the database.
 
 + Parameters
     + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
@@ -3912,7 +3906,7 @@ This method provides Role which was found in the database identified by its *id*
 
 + Response 403 (application/json)
 
-        // When the user does not have privileges to view roles
+        // when the user doesn’t have the privilege to view roles
         {
         "links": {},
             "error": {
@@ -3926,7 +3920,7 @@ This method provides Role which was found in the database identified by its *id*
 
 + Response 404 (application/json)
 
-        // When the specified role ID cannot be found
+        // when the specified role ID can’t be found
         {
         "links": {},
             "error": {
@@ -3938,21 +3932,21 @@ This method provides Role which was found in the database identified by its *id*
             }
         }
 
-### Update Role [PUT /api/v1/roles/{id}]
+### Update a Role [PUT /api/v1/roles/{id}]
 
-This method provides ability to update Role which was found in the database identified by its *id*.
+This lets you update a role that was identified by its *id* in the database.
 
 **Note:** 
-- To update roles you required to have the `UserAndRoles.editUser` privilege.
-- The preconfigured roles cannot be edited!
-    - Acrolinx comes installed with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
-- Role attributes can be updated either individually or completely within one request. (missing or attributes with `null` values will be ignored)
+- To update roles, you need the privilege `UserAndRoles.editUser`.
+- You can’t edit the preconfigured roles!
+    - Acrolinx comes with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
+- You can use one request to update role attributes individually or completely. The request will ignore missing attributes or attributes with `null` values.
 
 + Request Update entire model (application/json)
 
-    You may update all attributes of a role in one request.
+    You can use one request to update all attributes of a role.
 
-    **Note:** Check the other following request examples to see how to update individual attributes and validations take in place.
+    **Note:** Check the other request examples to see how to update individual attributes and validations.
 
      + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
@@ -3991,7 +3985,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 403 (application/json)
 
-        // When the user does not have privileges to edit roles
+        // when you don’t have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -4005,7 +3999,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 404 (application/json)
 
-        // When role was not found in the database identified by its *id*
+        // when the role couldn’t be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -4018,14 +4012,14 @@ This method provides ability to update Role which was found in the database iden
         }
 
 
-+ Request Update name (application/json)
++ Request Update role name (application/json)
 
-    You may update the name of a role.
+    You can update the name of a role.
 
-    In this example the name will be changed of the role `ExampleRole` which was found in the database identified by its *id*.
+    In this example, the name will be changed for the role `ExampleRole`, which was identified by its *id* in the database.
 
     **Note:**
-    - The name needs to be unique. (size must be between 1 and 254)
+    - The name needs to be unique and must be between 1 and 254 characters.
 
     + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
@@ -4061,7 +4055,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 400 (application/json)
 
-            // When empty name was provided or more than 254 characters long
+            // when an empty name was provided or the name provided is longer than 254 characters
             {
                 "links": {},
                 "error": {
@@ -4091,7 +4085,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4104,7 +4098,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 403 (application/json)
 
-        // When the user does not have privileges to edit roles
+        // when the user doesn’t have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -4118,7 +4112,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 404 (application/json)
 
-        // When role was not found in the database identified by its *id*
+        // when the role couldn’t be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -4132,7 +4126,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 409 (application/json)
 
-        // When updating a pre-configured built-in role
+        // when you update a preconfigured built-in role
         {
             "links": {},
             "error": {
@@ -4144,7 +4138,7 @@ This method provides ability to update Role which was found in the database iden
             }
         }
 
-        //When role with the same name already exists
+        // when a role with the same name already exists
         {
             "links": {},
             "error": {
@@ -4157,21 +4151,21 @@ This method provides ability to update Role which was found in the database iden
         }
 
 
-+ Request Update belonging privileges (application/json)
++ Request Update the privileges that belong to a role (application/json)
 
-    You may update belonging privileges assigned to users via roles.
+    You can use roles to update the privileges that are assigned to a user.
 
-    In this example the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole` which was found in the database identified by its *id*. 
+    In this example, the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole`. The role was identified by its *id* in the database. 
 
     **Note:**
     - A role needs to have at least one privilege assigned.
-    - Privilege(s) can be added/removed. (the server completely replaces every privilege)
-    - Interdependencies with other privileges might occur.
+    - You can add/remove privilege(s). The server completely replaces every privilege.
+    - There might be interdependencies with other privileges.
     - Any changes to a role are automatically inherited by all users with that particular role.
-    - You need to reference existing privileges. See [Get all privileges](###Get_all_privileges)
+    - You need to reference existing privileges. See [Get All Privileges](###Get_all_privileges).
 
-    **Warning:** This action **permanently** updates the belonging privileges of a Role. 
-    If the role is assigned to users, each assigned user will get the updated set of privileges.
+    **Warning:** This action **permanently** updates the privileges that belong to a role. 
+    When you change the privileges for a role, all users with that role will get the updated set of privileges.
 
     + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
@@ -4211,7 +4205,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 400 (application/json)
 
-        // When an unknown privilege was provided in the request ("Example.privilege")
+        // when an unknown privilege is provided in the request ("Example.privilege")
         {
             "links": {},
             "error": {
@@ -4234,7 +4228,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 400 (application/json)
 
-        // When empty privileges was provided in the request
+        // when empty privileges are provided in the request
         {
             "links": {},
             "error": {
@@ -4257,7 +4251,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4270,7 +4264,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 403 (application/json)
 
-        // When the user don't have privileges to edit roles
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -4284,7 +4278,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 404 (application/json)
 
-        // When role was not found in the database identified by its *id*
+        // when the role couldn’t be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -4298,7 +4292,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 409 (application/json)
 
-        //When updating a pre-configured built-in role
+        // when you update a preconfigured built-in role
         {
             "links": {},
             "error": {
@@ -4310,11 +4304,11 @@ This method provides ability to update Role which was found in the database iden
             }
         }
 
-+ Request Add role to Defaults (application/json)
++ Request Add a default role (application/json)
 
-    You may want to update a role and mark as default in order to get it assigned automatically to newly created users.
+    You may want to add a default role so that you can automatically assign it to newly created users.
 
-    In this example the `default` attribute will be updated of the role `ExampleRole` which was found in the database identified by its *id*.
+    In this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.
 
     **Note:**
     - You can have multiple default roles.
@@ -4353,7 +4347,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4366,7 +4360,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 403 (application/json)
 
-        // When the user does not have privileges to edit roles
+        // when you don’t have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -4380,7 +4374,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 404 (application/json)
 
-        // When role was not found in the database identified by its *id*
+        // when the role couldn’t be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -4392,14 +4386,14 @@ This method provides ability to update Role which was found in the database iden
             }
         }
 
-+ Request Remove Role from Defaults (application/json)
++ Request Remove a role from defaults (application/json)
 
-    You may want to remove a role from default roles in order to not get it assigned automatically to newly created users anymore.
+    You may want to remove a default role so it isn’t automatically assigned to newly created users.
 
-    In this example the `default` attribute will be updated of the role `ExampleRole` which was found in the database identified by its *id*.
+    In this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.
 
     **Note:**
-    - Having default roles is not required, you can have 0 default roles.
+    - You aren’t required to have default roles.
 
     + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
@@ -4435,7 +4429,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4448,7 +4442,7 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 403 (application/json)
 
-        // When the user does not have privileges to edit roles
+        // when you don’t have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -4462,20 +4456,20 @@ This method provides ability to update Role which was found in the database iden
 
 + Response 404 (application/json)
 
-### Delete Role [DELETE /api/v1/roles/{id}]
+### Delete a Role [DELETE /api/v1/roles/{id}]
 
-This method deletes a specified Role identified by its *id*.
+This lets you delete a specified role based on its *id*.
 
-**Note:** A role can only be successfully deleted if all following conditions are met
-- The role is not a pre-configured built-in role such as 'Author', 'Super Administrator' and 'Term Browser'.
-- The role is not selected as a default role.
-- The role is not currently assigned to one or more users
+**Note:** You can only successfully delete a role if all of the following conditions are met:
+- The role isn’t a preconfigured built-in role such as 'Author', 'Super Administrator’, or 'Term Browser'.
+- The role isn’t selected as a default role.
+- The role isn’t currently assigned to one or more users.
 
 + Response 204 (application/json)
 
 + Response 400 (application/json)
 
-        // when the request is invalid such as a malformed *id*
+        // when the request is invalid because of a typo, for example
         {
             "links": {},
             "error": {
@@ -4489,7 +4483,7 @@ This method deletes a specified Role identified by its *id*.
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4502,7 +4496,7 @@ This method deletes a specified Role identified by its *id*.
 
 + Response 403 (application/json)
 
-        // When the user does not have privileges to delete roles
+        // when you don’t have the privilege to delete roles
         {
         "links": {},
             "error": {
@@ -4516,7 +4510,7 @@ This method deletes a specified Role identified by its *id*.
 
 + Response 404 (application/json)
 
-        // When role was not found in the database identified by its *id*
+        // when the role couldn’t be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -4530,7 +4524,7 @@ This method deletes a specified Role identified by its *id*.
 
 + Response 409 (application/json)
 
-        // When the preconditions for deleting a role are not met
+        // when the preconditions to delete a role aren’t met
         {
             "links": {},
             "error": {
