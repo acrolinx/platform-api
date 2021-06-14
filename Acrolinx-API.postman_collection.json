@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3da5ee37-51dc-43e0-8eba-e620318ba585",
+		"_postman_id": "6d0fcbb0-ade7-4b8d-b8bb-a6c523c86841",
 		"name": "Acrolinx API",
 		"description": "Acrolinx API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -32,8 +32,7 @@
 							"raw": "{\n    \"content\": \"text to check\"\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/checks",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -71,8 +70,7 @@
 							"raw": "{\n    \"content\": \"text to check\",\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/checks",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -105,13 +103,8 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/capabilities",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/capabilities",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -149,8 +142,7 @@
 							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"guidanceProfileId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/checks",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -188,8 +180,7 @@
 							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"guidanceProfileId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\",\n        \"batchId\": \"my_super_batch_id_1\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/checks",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -222,13 +213,8 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/aggregation/my_batch_id-12345",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/aggregation/my_batch_id-12345",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -271,8 +257,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/auth/sign-ins",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/auth/sign-ins",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -305,8 +290,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/auth/sign-ins",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/auth/sign-ins",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -322,6 +306,1129 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "User API",
+			"item": [
+				{
+					"name": "User Commands",
+					"item": [
+						{
+							"name": "Export a List of Users",
+							"item": [
+								{
+									"name": "Export a list of users in CSV format",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Accept",
+												"value": "text/csv"
+											}
+										],
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/user/_export",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"user",
+												"_export"
+											]
+										},
+										"description": "This lets you export a list of users and their data into a CSV file that looks like a spreadsheet but has a `.csv` extension.\n    Each line of the file is a user data record. Each record consists of one or more user fields and the actual value, separated by column delimiter.\n    You can use the CSV file with most spreadsheet programs, such as Microsoft Excel or Google Sheets.\n\nYou’ll see the following user fields in the file (in the following order):\n  + **user_id**: The user's unique identifier (string, UUID).\n  + **Username**: The user's username, which can be used for sign in and user identification.\n  + **Full Name**: The full name of the user.\n  + **Roles**: A list of assigned roles.\n  + **Created On**: Indicates when the user was created.\n  + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn’t accessed an integration, the default value is `Never`.\n  + **Checking Frequency**: Displays a rough idea of the user’s usage pattern based on checking frequency across the user’s lifetime in days. Its value can be [ 'frequent', 'infrequent', 'regular' ].\n  + **License Type**: Indicates the type of license. Its value can be ['named' | 'concurrent' | 'builtin'].\n  + **{Custom Field name}**: Users can have multiple (0..N) custom fields that are also attached to the schema. \n    + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be added to the end of the sheet dynamically. \n\n**Notes, about the CSV file and data formatting:** \n + Column headers are also written into the first row of the file.\n + Fields are separated by a semicolon `;` (as column delimiter). \n + Date and time values are exported in `UTC`, for example `2021-05-12T15:40:00.876Z`.\n + When there’s no stored value for a given Date time type field, the cell should contain `Never` or an empty value.\n + Values of a list type field are separated with a colon `:` (as the \"in-cell\" delimiter).\n + Values that contain space characters are in double quotes in the file, for example, `user_id;Username;\"Full Name\";....`."
+									},
+									"response": []
+								}
+							],
+							"description": "This API provides an easy way to export a concise user list in various file formats.\n\nThe endpoint uses content negotiation to determine the format of the export. You can include the `Accept` header in your request to specify the format you prefer. See the `Supported formats` section for more information about the formats that Acrolinx currently supports.\n\n**Supported formats:**\n+ `text/csv` (default, file extension is `.csv`)\n\n**Note:** If you don’t specify the format in the `Accept` header, the default will be used.\n\n**Content-Disposition:**\n\nThe API also returns the `Content-Disposition` response header to give information about the returned content. \nBased on this, browsers can recognize downloadable attachments that can be saved locally.\n\nThe header parameters are set as follows:\n+ `attachment` - Indicates that the content should be downloaded.\n+ `filename=\"acrolinx_users_export_yyyyMMdd_HHmmss.{fileExt}\"` - Most browsers present a 'Save as' dialog for attachments. This will be prefilled with the value of the filename parameter."
+						},
+						{
+							"name": "Release an Active Named User License",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}/_release",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}",
+										"_release"
+									]
+								},
+								"description": "This method uses the *id* to release an active license consumed by a user.\n\n**Note:**\n- You can only release users with the `named` license type.\n- If you release the license of a user who doesn’t consume a license, you won’t see an error. \n- To do this, you need the `UserAndRoles.deleteSessions` privilege.\n\n**Result:** User's `licenseStatus` changed from `active` to `inactive`."
+							},
+							"response": []
+						}
+					],
+					"description": "The APIs under this group are following the command style API design.  \n\nThese administrative commands can help govern users in your Acrolinx instance and do more than simply (re)send the new state of a single resource."
+				},
+				{
+					"name": "User Bulk Operations",
+					"item": [
+						{
+							"name": "Create Users in Bulk",
+							"item": [
+								{
+									"name": "Create Users in Bulk",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\r\n    {\r\n        \"username\": \"new.user.1\",\r\n        \"fullName\": \"New User 1\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    },\r\n    {\r\n        \"username\": \"new.user.2\",\r\n        \"fullName\": \"New User 2\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    },\r\n    {\r\n        \"username\": \"new.user.3\",\r\n        \"fullName\": \"New User 3\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    },\r\n    {\r\n        \"username\": \"new.user.4\",\r\n        \"fullName\": \"New User 4\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    },\r\n    {\r\n        \"username\": \"new.user.5\",\r\n        \"fullName\": \"New User 5\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    }\r\n]"
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/user/bulk",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"user",
+												"bulk"
+											]
+										},
+										"description": "This request lets you create 5 new users by specifying some basic fields (`username`, `fullName`, `password`) in the request model.\n\n**Note:** Acrolinx will assign a license type and role automatically. These are typically the license type `named` and the role `Author`."
+									},
+									"response": []
+								}
+							],
+							"description": "This API lets you create a list of new users. All user objects follow the requirements and constraints\nnoted in the Create User API section.\n\n**Note:** You can create up to 100 users per bulk request, the minimum is 1."
+						}
+					],
+					"description": "These APIs let you perform bulk operations. Bulk operations follow the multi-status request and response model.\nIn this model, the incoming bulk request contains a list of objects that need to be processed (as opposed to invoking the same API many times). \nThe response to the request is `207 Multi-Status`. The response contains a list of `results` for the objects that were processed successfully \nand a list of `errors` for the objects that couldn’t be processed.\n\n**Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional."
+				},
+				{
+					"name": "User Generated API Tokens",
+					"item": [
+						{
+							"name": "Create an API Token (Self) with Basic auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){\r",
+											"    postman.setEnvironmentVariable(\"ACCESS_TOKEN\", JSON.parse(responseBody).data.token);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "Basic {{base64_username_password}}",
+										"description": "Credentials `username:password` must be base64 encoded."
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/self/tokens",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"self",
+										"tokens"
+									]
+								},
+								"description": "This method provides ability to create API Token for the currently authorized user.\n\nTo authenticate using Basic auth, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`. \n\n**Important:** \n   * This needs to have the prefix `Basic`.\n   * Your credentials (`username:password`) must be base64 encoded.\n\nNote: The test script automatically updates the `ACCESS_TOKEN` environment variable on success."
+							},
+							"response": []
+						},
+						{
+							"name": "Create an API Token (Self)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/self/tokens",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"self",
+										"tokens"
+									]
+								},
+								"description": "Use this method to create an API token for the current user.\n\n**Note:** You don't need extra privileges or roles to create a new personal API token bound to the user authorized in the request.\n\n**Note:** This endpoint lets users use the Basic authentication scheme to avoid reusing an existing API token.This method provides ability to create API Token for the currently authorized user."
+							},
+							"response": []
+						},
+						{
+							"name": "Create an API Token for User(s)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}/tokens",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}",
+										"tokens"
+									]
+								},
+								"description": "This method lets you create an API token for users based on their *id*.\n\nTypical use cases for this API:\n1. Create an API token for personal use\n    - 1.1. Get your own unique identifier *id* via the *Current user* request.\n    - 1.2. Enter your *id* as a parameter.\n    - 1.3. Start using the issued API token.\n2. Create an API token for someone else\n    - 2.1. Get the unique identifier *id* for the other user via the *Get users* requests.\n    - 2.2. Enter the other user's *id* as parameter. \n    - 2.3. Give the issued API token to the user securely.  \n\n**Note:** You can only create an API token if you have the appropriate permissions: \n* To create API token for yourself, you need to be authorized with a valid access token.\n* To create API token for someone else, you need the privilege `UserAndRoles.setApiTokensForOthers` and you need to be authorized with a valid access token.\n\n**Alternative use case:** Create an API token to impersonate a user\n\nSometimes it’s useful for an admin to impersonate a user to help troubleshoot.\nIf a user encounters a bug, for example, an admin may want to impersonate the user to try and duplicate the problem."
+							},
+							"response": []
+						}
+					],
+					"description": "You can generate long-lasting API tokens for programmatic access to the Platform APIs.\n\nAcrolinx protects its APIs with self-contained access tokens. These access tokens let you authorize yourself as a user. API tokens have different characteristics than the access tokens that are issued when you use the sign-in endpoint.\n\nDon't forget to check out the *Introduction > Authentication and Authorization* section in this API Blueprint.\n\nBe aware that you can only be bound to one API token at a time.\n* When you create a new API token, your previous API token becomes invalid.\n\n**Warning:** Follow these security guidelines when you work with API tokens:\n+ Store your API token securely and never share it with others.\n+ Don’t bake your API token into any custom code that interacts with the Acrolinx Platform APIs.\n\n**Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/authentication/create-an-api-token) in the Acrolinx documentation."
+				},
+				{
+					"name": "Update a User",
+					"item": [
+						{
+							"name": "Update fullName attribute",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullName\": \"New Full Name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								},
+								"description": "You can update the fullName attribute for a user.\n\nIn this example, only the `fullName` attribute will change for the user `fred`. This was identified in the database by its *id*.\n\n**Note:**\n - You can delete the `fullName` by changing the attribute to empty."
+							},
+							"response": []
+						},
+						{
+							"name": "Update roles",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"roles\": [\r\n        {\r\n            \"id\": \"{{role_id}}\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								},
+								"description": "You can update a user’s role.\n\nIn this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn’t apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn’t exist, the call will fail and the error message will show the unknown roles that were referenced."
+							},
+							"response": []
+						},
+						{
+							"name": "Set a custom field",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"customFields\": [\r\n        {\r\n            \"key\": \"Department\",\r\n            \"value\": \"Example Department\"\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Clear a custom field",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"customFields\": [\r\n        {\r\n            \"key\": \"Department\",\r\n            \"value\": \"\"\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								},
+								"description": "In this example we are updating the user's Department custom field value. Note the value attribute is empty, to reset the already set value."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							}
+						],
+						"url": {
+							"raw": "{{ACROLINX_URL}}/api/v1/user",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						},
+						"description": "This request retrieves a list of all users in the order that they were added.\n\n**Sorting**\n\nIf you use the `sort` query parameter, you can only sort the list of users by 1 field. \nYou can add a `+` or `-` to display the list in ascending or descending order respectively.\n\n**Note:**\n\n- You can only sort by 1 field.\n- Query parameter max. length is 50 characters, excluding order direction prefixes '+' and '-'.\n- Query parameter can't be empty or filled with blank spaces.\n- Query parameter can only accept mixed-case alpha numeric characters and underscores.\n- By default, the list appears in ascending order.\n\nSo that the `+` character encoded to `%2B` remains valid, make sure that the that query parameters are encoded in accordance\nwith [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). \nAlternatively, you can always omit the `+` character as it will default to ascending order.This request will retrieve a list of all users in their natural order, this means in the order they were inserted."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							}
+						],
+						"url": {
+							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"{{user_id}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							}
+						],
+						"url": {
+							"raw": "{{ACROLINX_URL}}/api/v1/user/self",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"self"
+							]
+						},
+						"description": "This request returns information about the current user. The information includes the user id, username, the user’s full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status. You’ll also see properties, roles, and custom fields."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"fred\",\r\n    \"fullName\": \"Fred Freelancer\",\r\n    \"password\": \"P@ssW0rd12345!\"\r\n}"
+						},
+						"url": {
+							"raw": "{{ACROLINX_URL}}/api/v1/user/",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								""
+							]
+						},
+						"description": "**Note:**\n\n- The username needs to be unique and is limited to 255 characters.\n- The `fullName` field is limited to 255 characters (optional).\n- The password needs to have between 1 and 128 characters (optional).\n- The license type can either be 'named' or 'concurrent' (optional).\n- You need `UserAndRoles.editUser` privileges to perform this request.\n\n**Be extra careful in the following cases:** \n- There are no configured default roles. That means that no roles will be automatically assigned to new users.\n- Federated authentication is enabled:\n  - Users are created automatically with federated authentication.\n  - Only users created by the identity provider can sign in to the Acrolinx Dashboard.\n  - Users created through the API can only be used for automation purposes. For example, interactions with the Platform API.This request will create a new user with just some basic fields (username, fullname, password) specified in the request model."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a user with specified roles",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"fred\",\r\n    \"fullName\": \"Fred Freelancer\",\r\n    \"password\": \"P@ssW0rd12345!\",\r\n    \"roles\": [\r\n        {\r\n            \"id\": \"{{role_id}}\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{ACROLINX_URL}}/api/v1/user/",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								""
+							]
+						},
+						"description": "This request will create a new user with specified roles."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"{{user_id}}"
+							]
+						},
+						"description": "This method deletes a specified user based on its *id*.\n\n**Note:** You can only delete a user successfully if all of the following conditions are met:\n- The user isn’t a preconfigured, built-in user such as 'admin', 'termcontribution’, or 'analyticsReadOnlyUser'. \n\nTo read more about managing users and built-in users, see [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users) in the Acrolinx documentation."
+					},
+					"response": []
+				}
+			],
+			"description": "In the User API, Acrolinx defines a user as an entity that has an id, a sign-in name, a name, custom properties (set by the client), and user information.\n\nYou’re _required_ to provide user information for the following:\n* Interactive integrations: When you sign in to Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.\n* Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter customer user information. This lets you generate an API token for the user that’s signed in.\n\nSecurity:\n* A user can read and update its own data.\n* Only privileged users (admin, for example) can read or update other users' data."
+		},
+		{
+			"name": "Licenses API",
+			"item": [
+				{
+					"name": "Statistics",
+					"item": [
+						{
+							"name": "Get License Statistics for Users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/licenses/statistics",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"licenses",
+										"statistics"
+									]
+								},
+								"description": "Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.\nThe following conditions are checked for all users in order to qualify them to be included in the calculation:\n\n- Must be one of the following License Types `named` or `concurrent`\n- For `named` license they must be active it must satisfy the following\n    - Be activated for `Checking` session type\n    - Must not be free of charge\n- All other `named` licensed users will be considered `inactive`\n- All `concurrent` licensed users will be `existing` if a license exists\n\n**Note:** Builtin users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`\nare included in the statistics calculation along with all the non-builtin users but are subject to the conditions above.\n\nDetails of the statistics attributes in the table below:\n\n| License Type | Sum Attribute | Description                   |\n|:-------------|---------------|-------------------------------|\n| `named`      | licensed      | Total number of licenses      |\n| `named`      | active        | Total active licenses         |\n| `named`      | inactive      | Total inactive licenses       |\n| `named`      | available     | Total available licenses (`licensed` minus `active`) |\n| `concurrent` | licensed      | Total number of licenses      |\n| `concurrent` | existing      | Total number of licenses used |\n\n**Note:**\n- Must have `UserAndRoles.editUser` privileges to perform this request\n- Concurrent license numbers may be seen (non-zero) if a license has been configured for both `named` and `concurrent` user limits"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Role API",
+			"item": [
+				{
+					"name": "Privileges",
+					"item": [
+						{
+							"name": "Get All Privileges",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/roles/privileges",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"roles",
+										"privileges"
+									]
+								},
+								"description": "This returns a list of all supported privileges.\n\n**Note:** Depending on your Acrolinx version, the following example response may look different than the response that you get for your supported privileges. \nIn newer platform releases, there are rare instances where privileges might be introduced or removed. \nTo discover which privileges come with your installation, submit this request and compare it to the example response."
+							},
+							"response": []
+						}
+					],
+					"description": "Privileges determine whether or not a user can perform an action via the API or Acrolinx Dashboard."
+				},
+				{
+					"name": "Roles",
+					"item": [
+						{
+							"name": "Get All Roles",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/roles",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"roles"
+									]
+								},
+								"description": "Returns a list of all roles including the belonging privileges."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Role",
+					"item": [
+						{
+							"name": "Create Roles",
+							"item": [
+								{
+									"name": "Create role",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"My new role\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create a default Role",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"This is Default\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ],\r\n    \"default\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"description": "This lets you add new roles.\n\n**Note:**\n- The name needs to be unique and must be between 1 and 254 characters.\n- A role needs to have at least one privilege assigned.\n- Existing privileges must be referenced."
+						},
+						{
+							"name": "Update a Role",
+							"item": [
+								{
+									"name": "Update entire model",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Preferred name\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ],\r\n    \"default\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											]
+										},
+										"description": "You can use one request to update all attributes of a role.\n\n**Note:** Check the other request examples to see how to update individual attributes and validations."
+									},
+									"response": []
+								},
+								{
+									"name": "Update role name",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Preferred name\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											]
+										},
+										"description": "You can update the name of a role.\n\nIn this example, the name will be changed for the role `ExampleRole`, which was identified by its *id* in the database.\n\n**Note:**\n - The name needs to be unique and must be between 1 and 254 characters."
+									},
+									"response": []
+								},
+								{
+									"name": "Update the privileges that belong to a role",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"privileges\": [\r\n        \"Dashboard.logon\",\r\n        \"UserAndRoles.read\"\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											]
+										},
+										"description": "You can use roles to update the privileges that are assigned to a user.\n\nIn this example, the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole`. The role was identified by its *id* in the database. \n\n**Note:**\n  - A role needs to have at least one privilege assigned.\n  - You can add/remove privilege(s). The server completely replaces every privilege.\n  - There might be interdependencies with other privileges.\n  - Any changes to a role are automatically inherited by all users with that particular role.\n    - You need to reference existing privileges. See [Get All Privileges](###Get_all_privileges).\n\n**Warning:** This action **permanently** updates the privileges that belong to a role. \n    When you change the privileges for a role, all users with that role will get the updated set of privileges."
+									},
+									"response": []
+								},
+								{
+									"name": "Add a default role",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"default\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											]
+										},
+										"description": "You may want to add a default role so that you can automatically assign it to newly created users.\n\nIn this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.\n\n**Note:**\n  - You can have multiple default roles."
+									},
+									"response": []
+								},
+								{
+									"name": "Remove a role from defaults",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"default\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}?X-Acrolinx-Auth={{ACCESS_TOKEN}}&X-Acrolinx-Client={{SIGNATURE}}&Content-Type=application/json",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											],
+											"query": [
+												{
+													"key": "X-Acrolinx-Auth",
+													"value": "{{ACCESS_TOKEN}}"
+												},
+												{
+													"key": "X-Acrolinx-Client",
+													"value": "{{SIGNATURE}}"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											]
+										},
+										"description": "You may want to remove a default role so it isn’t automatically assigned to newly created users.\n\nIn this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.\n\n**Note:**\n  - You aren’t required to have default roles."
+									},
+									"response": []
+								}
+							],
+							"description": "This lets you update a role that was identified by its *id* in the database.\n\n**Note:** \n- To update roles, you need the privilege `UserAndRoles.editUser`.\n- You can’t edit the preconfigured roles!\n    - Acrolinx comes with a number of preconfigured roles that are common in many organizations that use Acrolinx. \n- You can use one request to update role attributes individually or completely. The request will ignore missing attributes or attributes with `null` values."
+						}
+					]
+				},
+				{
+					"name": "Get a Role",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							}
+						],
+						"url": {
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"roles",
+								"{{role_id}}"
+							]
+						},
+						"description": "This returns a role that was identified by its *id* in the database."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Role",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							}
+						],
+						"url": {
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"roles",
+								"{{role_id}}"
+							]
+						},
+						"description": "This lets you delete a specified role based on its *id*.\n\n**Note:** You can only successfully delete a role if all of the following conditions are met:\n- The role isn’t a preconfigured built-in role such as 'Author', 'Super Administrator’, or 'Term Browser'.\n- The role isn’t selected as a default role.\n- The role isn’t currently assigned to one or more users."
+					},
+					"response": []
+				}
+			],
+			"description": "In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role. \nYou can use roles to group sets of privileges and assign them to different users.\nMark roles as default if you want to automatically assign at least one default role to all new users.\n\nTo read more about role-based access control in Acrolinx, see the [Acrolinx Roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles)"
 		}
 	]
 }
