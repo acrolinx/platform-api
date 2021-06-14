@@ -32,8 +32,7 @@
 							"raw": "{\n    \"content\": \"text to check\"\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/checks",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -71,8 +70,7 @@
 							"raw": "{\n    \"content\": \"text to check\",\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/checks",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -106,8 +104,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/capabilities",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/capabilities",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -145,8 +142,7 @@
 							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"guidanceProfileId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/checks",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -184,8 +180,7 @@
 							"raw": "{\n    \"content\": \"text to check\",\n     \"checkOptions\": {\n        \"guidanceProfileId\": \"cacbef20-e85d-44ce-ad92-7359832ef34f\",\n        \"batchId\": \"my_super_batch_id_1\"\n    },\n    \"document\": {                                \n        \"reference\": \"C:\\\\abc.txt\"             \n    }\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/checks",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/checks",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -219,8 +214,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/checking/aggregation/my_batch_id-12345",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/checking/aggregation/my_batch_id-12345",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -263,8 +257,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/auth/sign-ins",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/auth/sign-ins",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -297,8 +290,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/auth/sign-ins",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/auth/sign-ins",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -340,8 +332,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{ACROLINX_URL}}/api/v1/user/{{user_id}}/_release",
-									"protocol": "https",
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}/_release",
 									"host": [
 										"{{ACROLINX_URL}}"
 									],
@@ -375,8 +366,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{ACROLINX_URL}}/api/v1/user/_export",
-									"protocol": "https",
+									"raw": "{{ACROLINX_URL}}/api/v1/user/_export",
 									"host": [
 										"{{ACROLINX_URL}}"
 									],
@@ -419,8 +409,7 @@
 									"raw": "[\r\n    {\r\n        \"username\": \"new.user.1\",\r\n        \"fullName\": \"New User 1\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    },\r\n    {\r\n        \"username\": \"new.user.2\",\r\n        \"fullName\": \"New User 2\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    },\r\n    {\r\n        \"username\": \"new.user.3\",\r\n        \"fullName\": \"New User 3\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    },\r\n    {\r\n        \"username\": \"new.user.4\",\r\n        \"fullName\": \"New User 4\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    },\r\n    {\r\n        \"username\": \"new.user.5\",\r\n        \"fullName\": \"New User 5\",\r\n        \"password\": \"P@ssW0rd12345!\"\r\n    }\r\n]"
 								},
 								"url": {
-									"raw": "https://{{ACROLINX_URL}}/api/v1/user/bulk",
-									"protocol": "https",
+									"raw": "{{ACROLINX_URL}}/api/v1/user/bulk",
 									"host": [
 										"{{ACROLINX_URL}}"
 									],
@@ -458,8 +447,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{ACROLINX_URL}}/api/v1/user/{{user_id}}/tokens",
-									"protocol": "https",
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}/tokens",
 									"host": [
 										"{{ACROLINX_URL}}"
 									],
@@ -477,6 +465,19 @@
 						},
 						{
 							"name": "Create an API Token (Self) with Basic auth",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if(pm.response.code == 200){\r",
+											"    postman.setEnvironmentVariable(\"ACCESS_TOKEN\", JSON.parse(responseBody).data.token);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "noauth"
@@ -494,8 +495,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{ACROLINX_URL}}/api/v1/user/self/tokens",
-									"protocol": "https",
+									"raw": "{{ACROLINX_URL}}/api/v1/user/self/tokens",
 									"host": [
 										"{{ACROLINX_URL}}"
 									],
@@ -507,7 +507,7 @@
 										"tokens"
 									]
 								},
-								"description": "This method provides ability to create API Token for the currently authorized user."
+								"description": "This method provides ability to create API Token for the currently authorized user.\n\nNote: The test script automatically updates the `ACCESS_TOKEN` environment variable on success."
 							},
 							"response": []
 						},
@@ -530,8 +530,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{ACROLINX_URL}}/api/v1/user/self/tokens",
-									"protocol": "https",
+									"raw": "{{ACROLINX_URL}}/api/v1/user/self/tokens",
 									"host": [
 										"{{ACROLINX_URL}}"
 									],
@@ -564,8 +563,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -594,8 +592,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -631,8 +628,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/self",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/self",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -669,8 +665,7 @@
 							"raw": "{\r\n    \"username\": \"fred\",\r\n    \"fullName\": \"Fred Freelancer\",\r\n    \"password\": \"P@ssW0rd12345!\"\r\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -708,8 +703,7 @@
 							"raw": "{\r\n    \"username\": \"fred\",\r\n    \"fullName\": \"Fred Freelancer\",\r\n    \"password\": \"P@ssW0rd12345!\",\r\n    \"roles\": [\r\n        {\r\n            \"id\": \"{{role_id}}\"\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -751,8 +745,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -794,8 +787,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -832,8 +824,7 @@
 							"raw": "{\r\n    \"customFields\": [\r\n        {\r\n            \"key\": \"Department\",\r\n            \"value\": \"Example Department\"\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -870,8 +861,7 @@
 							"raw": "{\r\n    \"customFields\": [\r\n        {\r\n            \"key\": \"Department\",\r\n            \"value\": \"\"\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -905,8 +895,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -943,8 +932,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{ACROLINX_URL}}/api/v1/licenses/statistics",
-									"protocol": "https",
+									"raw": "{{ACROLINX_URL}}/api/v1/licenses/statistics",
 									"host": [
 										"{{ACROLINX_URL}}"
 									],
@@ -983,8 +971,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://{{ACROLINX_URL}}/api/v1/roles/privileges",
-									"protocol": "https",
+									"raw": "{{ACROLINX_URL}}/api/v1/roles/privileges",
 									"host": [
 										"{{ACROLINX_URL}}"
 									],
@@ -1015,8 +1002,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1057,8 +1043,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1099,8 +1084,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1128,8 +1112,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1171,8 +1154,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1214,8 +1196,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1257,8 +1238,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1287,8 +1267,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles/{{role_id}}?X-Acrolinx-Auth={{ACCESS_TOKEN}}&X-Acrolinx-Client={{SIGNATURE}}&Content-Type=application/json",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}?X-Acrolinx-Auth={{ACCESS_TOKEN}}&X-Acrolinx-Client={{SIGNATURE}}&Content-Type=application/json",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1344,8 +1323,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
@@ -1374,8 +1352,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"protocol": "https",
+							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
 							],
