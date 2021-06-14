@@ -561,10 +561,6 @@
 							{
 								"key": "X-Acrolinx-Client",
 								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
 							}
 						],
 						"url": {
@@ -595,10 +591,6 @@
 							{
 								"key": "X-Acrolinx-Client",
 								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
 							}
 						],
 						"url": {
@@ -619,6 +611,36 @@
 									"value": "",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Acrolinx-Auth",
+								"value": "{{ACCESS_TOKEN}}"
+							},
+							{
+								"key": "X-Acrolinx-Client",
+								"value": "{{SIGNATURE}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{ACROLINX_URL}}/api/v1/user/self",
+							"protocol": "https",
+							"host": [
+								"{{ACROLINX_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"self"
 							]
 						}
 					},
