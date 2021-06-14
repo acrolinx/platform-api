@@ -314,7 +314,45 @@
 					"name": "User Commands",
 					"item": [
 						{
-							"name": "Release an Active Named User license",
+							"name": "Export a List of Users",
+							"item": [
+								{
+									"name": "Export a list of users in CSV format",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Accept",
+												"value": "text/csv"
+											}
+										],
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/user/_export",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"user",
+												"_export"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Release an Active Named User License",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -346,39 +384,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Export Users in CSV format",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Acrolinx-Auth",
-										"value": "{{ACCESS_TOKEN}}"
-									},
-									{
-										"key": "X-Acrolinx-Client",
-										"value": "{{SIGNATURE}}"
-									},
-									{
-										"key": "Accept",
-										"value": "text/csv"
-									}
-								],
-								"url": {
-									"raw": "{{ACROLINX_URL}}/api/v1/user/_export",
-									"host": [
-										"{{ACROLINX_URL}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"user",
-										"_export"
-									]
-								}
-							},
-							"response": []
 						}
 					],
 					"description": "The APIs under this group are following the command style API design.  \n\nThese administrative commands can help govern users in your Acrolinx instance and do more than simply (re)send the new state of a single resource."
@@ -387,7 +392,7 @@
 					"name": "User Bulk Operations",
 					"item": [
 						{
-							"name": "Create Users Bulk",
+							"name": "Create Users in Bulk",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -428,41 +433,6 @@
 				{
 					"name": "User Generated API Tokens",
 					"item": [
-						{
-							"name": "Generate API token (user by id)",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "X-Acrolinx-Auth",
-										"value": "{{ACCESS_TOKEN}}"
-									},
-									{
-										"key": "X-Acrolinx-Client",
-										"value": "{{SIGNATURE}}"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}/tokens",
-									"host": [
-										"{{ACROLINX_URL}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"user",
-										"{{user_id}}",
-										"tokens"
-									]
-								},
-								"description": "This method provides ability to create API Token for users identified by their *id*."
-							},
-							"response": []
-						},
 						{
 							"name": "Create an API Token (Self) with Basic auth",
 							"event": [
@@ -545,11 +515,210 @@
 								"description": "This method provides ability to create API Token for the currently authorized user."
 							},
 							"response": []
+						},
+						{
+							"name": "Create an API Token for User(s)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}/tokens",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}",
+										"tokens"
+									]
+								},
+								"description": "This method provides ability to create API Token for users identified by their *id*."
+							},
+							"response": []
 						}
 					]
 				},
 				{
-					"name": "Get a list of all users",
+					"name": "Update a User",
+					"item": [
+						{
+							"name": "Update fullName attribute",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"fullName\": \"New Full Name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update roles",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"roles\": [\r\n        {\r\n            \"id\": \"{{role_id}}\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set a custom field",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"customFields\": [\r\n        {\r\n            \"key\": \"Department\",\r\n            \"value\": \"Example Department\"\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Clear a custom field",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"customFields\": [\r\n        {\r\n            \"key\": \"Department\",\r\n            \"value\": \"\"\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								},
+								"description": "In this example we are updating the user's Department custom field value. Note the value attribute is empty, to reset the already set value."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get All Users",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -643,7 +812,7 @@
 					"response": []
 				},
 				{
-					"name": "Create a user",
+					"name": "Create a User",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -718,166 +887,7 @@
 					"response": []
 				},
 				{
-					"name": "Update full name",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"fullName\": \"New Full Name\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"user",
-								"{{user_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update roles",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"roles\": [\r\n        {\r\n            \"id\": \"{{role_id}}\"\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"user",
-								"{{user_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Set a custom field",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"customFields\": [\r\n        {\r\n            \"key\": \"Department\",\r\n            \"value\": \"Example Department\"\r\n        }\r\n    ]\r\n}"
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"user",
-								"{{user_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Clear a custom field",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"customFields\": [\r\n        {\r\n            \"key\": \"Department\",\r\n            \"value\": \"\"\r\n        }\r\n    ]\r\n}"
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"user",
-								"{{user_id}}"
-							]
-						},
-						"description": "In this example we are updating the user's Department custom field value. Note the value attribute is empty, to reset the already set value."
-					},
-					"response": []
-				},
-				{
-					"name": "Delete User",
+					"name": "Delete a User",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -918,7 +928,7 @@
 					"name": "Statistics",
 					"item": [
 						{
-							"name": "License Statistics for Users",
+							"name": "Get License Statistics for Users",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -957,7 +967,7 @@
 					"name": "Privileges",
 					"item": [
 						{
-							"name": "List all privileges",
+							"name": "Get All Privileges",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -988,7 +998,348 @@
 					]
 				},
 				{
-					"name": "List all Roles",
+					"name": "Roles",
+					"item": [
+						{
+							"name": "Get All Roles",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									}
+								],
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/roles",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Role",
+					"item": [
+						{
+							"name": "Create Roles",
+							"item": [
+								{
+									"name": "Create role",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"My new role\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create a default Role",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"This is Default\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ],\r\n    \"default\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Update a Role",
+							"item": [
+								{
+									"name": "Update entire model",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Preferred name\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ],\r\n    \"default\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update role name",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Preferred name\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update the privileges that belong to a role",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"privileges\": [\r\n        \"Dashboard.logon\",\r\n        \"UserAndRoles.read\"\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Add a default role",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "X-Acrolinx-Auth",
+												"value": "{{ACCESS_TOKEN}}"
+											},
+											{
+												"key": "X-Acrolinx-Client",
+												"value": "{{SIGNATURE}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"default\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Remove a role from defaults",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"default\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}?X-Acrolinx-Auth={{ACCESS_TOKEN}}&X-Acrolinx-Client={{SIGNATURE}}&Content-Type=application/json",
+											"host": [
+												"{{ACROLINX_URL}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"roles",
+												"{{role_id}}"
+											],
+											"query": [
+												{
+													"key": "X-Acrolinx-Auth",
+													"value": "{{ACCESS_TOKEN}}"
+												},
+												{
+													"key": "X-Acrolinx-Client",
+													"value": "{{SIGNATURE}}"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Get a Role",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1002,116 +1353,6 @@
 							}
 						],
 						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/roles",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"roles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create role",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"My new role\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/roles",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"roles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Default Role",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"This is Default\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ],\r\n    \"default\": true\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/roles",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"roles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Role by Id",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							}
-						],
-						"url": {
 							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
 							"host": [
 								"{{ACROLINX_URL}}"
@@ -1127,218 +1368,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Role",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Preferred name\",\r\n    \"privileges\": [\r\n        \"Dashboard.logon\"\r\n    ],\r\n    \"default\": false\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"roles",
-								"{{role_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Role (name)",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Preferred name\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"roles",
-								"{{role_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Role (mark as default)",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"default\": true\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"roles",
-								"{{role_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove Role from Defaults",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"default\": false\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}?X-Acrolinx-Auth={{ACCESS_TOKEN}}&X-Acrolinx-Client={{SIGNATURE}}&Content-Type=application/json",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"roles",
-								"{{role_id}}"
-							],
-							"query": [
-								{
-									"key": "X-Acrolinx-Auth",
-									"value": "{{ACCESS_TOKEN}}"
-								},
-								{
-									"key": "X-Acrolinx-Client",
-									"value": "{{SIGNATURE}}"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update belonging privileges",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "X-Acrolinx-Auth",
-								"value": "{{ACCESS_TOKEN}}"
-							},
-							{
-								"key": "X-Acrolinx-Client",
-								"value": "{{SIGNATURE}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"privileges\": [\r\n        \"Dashboard.logon\",\r\n        \"UserAndRoles.read\"\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{ACROLINX_URL}}/api/v1/roles/{{role_id}}",
-							"host": [
-								"{{ACROLINX_URL}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"roles",
-								"{{role_id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Role",
+					"name": "Delete a Role",
 					"request": {
 						"method": "DELETE",
 						"header": [
