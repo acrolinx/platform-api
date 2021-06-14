@@ -607,7 +607,7 @@
 										"{{user_id}}"
 									]
 								},
-								"description": "You can update the fullName attribute for a user.\n\n    In this example, only the `fullName` attribute will change for the user `fred`. This was identified in the database by its *id*.\n\n    **Note:**\n    - You can delete the `fullName` by changing the attribute to empty."
+								"description": "You can update the fullName attribute for a user.\n\nIn this example, only the `fullName` attribute will change for the user `fred`. This was identified in the database by its *id*.\n\n**Note:**\n - You can delete the `fullName` by changing the attribute to empty."
 							},
 							"response": []
 						},
