@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a8138c57-ef51-49ec-aafc-ec90379d2faf",
+		"_postman_id": "6d0fcbb0-ade7-4b8d-b8bb-a6c523c86841",
 		"name": "Acrolinx API",
 		"description": "Acrolinx API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -970,7 +970,8 @@
 										"licenses",
 										"statistics"
 									]
-								}
+								},
+								"description": "Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.\nThe following conditions are checked for all users in order to qualify them to be included in the calculation:\n\n- Must be one of the following License Types `named` or `concurrent`\n- For `named` license they must be active it must satisfy the following\n    - Be activated for `Checking` session type\n    - Must not be free of charge\n- All other `named` licensed users will be considered `inactive`\n- All `concurrent` licensed users will be `existing` if a license exists\n\n**Note:** Builtin users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`\nare included in the statistics calculation along with all the non-builtin users but are subject to the conditions above.\n\nDetails of the statistics attributes in the table below:\n\n| License Type | Sum Attribute | Description                   |\n|:-------------|---------------|-------------------------------|\n| `named`      | licensed      | Total number of licenses      |\n| `named`      | active        | Total active licenses         |\n| `named`      | inactive      | Total inactive licenses       |\n| `named`      | available     | Total available licenses (`licensed` minus `active`) |\n| `concurrent` | licensed      | Total number of licenses      |\n| `concurrent` | existing      | Total number of licenses used |\n\n**Note:**\n- Must have `UserAndRoles.editUser` privileges to perform this request\n- Concurrent license numbers may be seen (non-zero) if a license has been configured for both `named` and `concurrent` user limits"
 							},
 							"response": []
 						}
