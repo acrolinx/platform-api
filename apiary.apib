@@ -1268,7 +1268,7 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 In the User API, Acrolinx defines a user as an entity that has an id, a sign-in name, a name, custom properties (set by the client), and user information.
 
 You’re _required_ to provide user information for the following:
-* Interactive integrations: When you sign in to Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
+* Interactive integrations: When you sign in to the Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
 * Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter customer user information. This lets you generate an API token for the user that’s signed in.
 
 Security:
@@ -1293,14 +1293,14 @@ You can add a `+` or `-` to display the list in ascending or descending order re
 **Note:**
 
 - You can only sort by 1 field.
-- Query parameter max. length is 50 characters, excluding order direction prefixes '+' and '-'.
+- Query parameter max. length is 50 characters, excluding order direction prefixes "+" and "-".
 - Query parameter can't be empty or filled with blank spaces.
 - Query parameter can only accept mixed-case alpha numeric characters and underscores.
 - By default, the list appears in ascending order.
 
-So that the `+` character encoded to `%2B` remains valid, make sure that the that query parameters are encoded in accordance
+So that the `+` character encoded to `%2B` stays valid, make sure that the query parameters are encoded in accordance
 with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
-Alternatively, you can always omit the `+` character as it will default to ascending order.
+Alternatively, you can always leave out the `+` character as it will default to ascending order.
 
 + Request Get a list of all users (application/json)
 
@@ -1574,7 +1574,7 @@ Alternatively, you can always omit the `+` character as it will default to ascen
 - The username needs to be unique and is limited to 255 characters.
 - The `fullName` field is limited to 255 characters (optional).
 - The password needs to have between 1 and 128 characters (optional).
-- The license type can either be 'named' or 'concurrent' (optional).
+- The license type can either be "named" or "concurrent" (optional).
 - You need `UserAndRoles.editUser` privileges to perform this request.
 
 **Be extra careful in the following cases:** 
@@ -2552,7 +2552,7 @@ Alternatively, you can always omit the `+` character as it will default to ascen
 This method deletes a specified user based on its *id*.
 
 **Note:** You can only delete a user successfully if all of the following conditions are met:
-- The user isn’t a preconfigured, built-in user such as 'admin', 'termcontribution’, or 'analyticsReadOnlyUser'. 
+- The user isn't a preconfigured, built-in user such as "admin", "termcontribution", or "analyticsReadOnlyUser".
 
 To read more about managing users and built-in users, see [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users) in the Acrolinx documentation.
 
@@ -2629,7 +2629,7 @@ To read more about managing users and built-in users, see [Manage Your Users](ht
             }
         }
 
-## User Generated API Tokens [/api/v1/user/{id}/tokens]
+## User-Generated API Tokens [/api/v1/user/{id}/tokens]
 
 You can generate long-lasting API tokens for programmatic access to the Platform APIs.
 
@@ -2745,17 +2745,17 @@ Typical use cases for this API:
     - 1.3. Start using the issued API token.
 2. Create an API token for someone else
     - 2.1. Get the unique identifier *id* for the other user via the *Get users* requests.
-    - 2.2. Enter the other user's *id* as parameter. 
-    - 2.3. Give the issued API token to the user securely.  
+    - 2.2. Enter the other user's *id* as a parameter.
+    - 2.3. Give the issued API token to the user securely.
 
 **Note:** You can only create an API token if you have the appropriate permissions: 
-* To create API token for yourself, you need to be authorized with a valid access token.
-* To create API token for someone else, you need the privilege `UserAndRoles.setApiTokensForOthers` and you need to be authorized with a valid access token.
+* To create an API token for yourself, you need to be authorized with a valid access token.
+* To create an API token for someone else, you need the privilege `UserAndRoles.setApiTokensForOthers` and you need to be authorized with a valid access token.
 
 **Alternative use case:** Create an API token to impersonate a user
 
-    Sometimes it’s useful for an admin to impersonate a user to help troubleshoot. 
-    If a user encounters a bug, for example, an admin may want to impersonate the user to try and duplicate the problem.   
+    Sometimes an admin might want to impersonate a user to help troubleshoot. 
+    If a user comes across a bug, for example, an admin may want to impersonate the user to try and duplicate the problem.   
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
@@ -2892,7 +2892,7 @@ Based on this, browsers can recognize downloadable attachments that can be saved
 
 The header parameters are set as follows:
 + `attachment` - Indicates that the content should be downloaded.
-+ `filename="acrolinx_users_export_yyyyMMdd_HHmmss.{fileExt}"` - Most browsers present a 'Save as' dialog for attachments. This will be prefilled with the value of the filename parameter.
++ `filename="acrolinx_users_export_yyyyMMdd_HHmmss.{fileExt}"` - Most browsers present a "Save as" dialog for attachments. This will be prefilled with the value of the filename parameter.
 
 + Request Export a list of users in CSV format
 
@@ -2907,9 +2907,9 @@ The header parameters are set as follows:
     + **Roles**: A list of assigned roles.
     + **Created On**: Indicates when the user was created.
     + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn’t accessed an integration, the default value is `Never`.
-    + **Checking Frequency**: Displays a rough idea of the user’s usage pattern based on checking frequency across the user’s lifetime in days. Its value can be [ 'frequent', 'infrequent', 'regular' ].
-    + **License Type**: Indicates the type of license. Its value can be ['named' | 'concurrent' | 'builtin'].
-    + **{Custom Field name}**: Users can have multiple (0..N) custom fields that are also attached to the schema. 
+    + **Checking Frequency**: Displays a rough idea of the user’s usage pattern based on checking frequency across the user’s lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
+    + **License Type**: Indicates the type of license. Its value can be ["named", "concurrent", "builtin"].
+    + **{Custom Field name}**: Users can have multiple (0...N) custom fields that are also attached to the schema. 
         + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be added to the end of the sheet dynamically. 
 
     **Notes, about the CSV file and data formatting:** 
@@ -2918,7 +2918,7 @@ The header parameters are set as follows:
     + Date and time values are exported in `UTC`, for example `2021-05-12T15:40:00.876Z`.
         + When there’s no stored value for a given Date time type field, the cell should contain `Never` or an empty value.
     + Values of a list type field are separated with a colon `:` (as the "in-cell" delimiter).
-    + Values that contain space characters are in double quotes in the file, for example, `user_id;Username;"Full Name";....`.
+    + Values that contain space characters are in double quotes in the file, for example, `user_id;Username;"Full Name";...`.
 
     + Headers
 
@@ -2990,8 +2990,8 @@ The header parameters are set as follows:
 ## User Bulk Operations [/api/v1/user/bulk]
 
 These APIs let you perform bulk operations. Bulk operations follow the multi-status request and response model.
-In this model, the incoming bulk request contains a list of objects that need to be processed (as opposed to invoking the same API many times). 
-The response to the request is `207 Multi-Status`. The response contains a list of `results` for the objects that were processed successfully 
+In this model, the incoming bulk request includes a list of objects that need to be processed (as opposed to using the same API many times). 
+The response to the request is `207 Multi-Status`. The response includes a list of `results` for the objects that were processed successfully 
 and a list of `errors` for the objects that couldn’t be processed.
 
 **Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
@@ -3320,13 +3320,13 @@ In the Role API, Acrolinx defines a role as an entity that has an id, a name and
 You can use roles to group sets of privileges and assign them to different users.
 Mark roles as default if you want to automatically assign at least one default role to all new users.
 
-To read more about role-based access control in Acrolinx, see the [Acrolinx Roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles)
+To read more about role-based access control in Acrolinx, see the [Acrolinx roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles).
 
 ## Roles [/api/v1/roles/]
 
 ### Get All Roles [GET]
 
-Returns a list of all roles including the belonging privileges.
+Returns a list of all roles including the associated privileges.
 
 + Response 200 (application/json)
 
@@ -3473,15 +3473,15 @@ Returns a list of all roles including the belonging privileges.
 
 ## Privileges [/api/v1/roles/privileges]
 
-Privileges determine whether or not a user can perform an action via the API or Acrolinx Dashboard.
+Privileges determine if a user can perform an action via the API or Acrolinx Dashboard.
 
 ### Get All Privileges [GET]
 
 This returns a list of all supported privileges.
 
-**Note:** Depending on your Acrolinx version, the following example response may look different than the response that you get for your supported privileges. 
+**Note:** Depending on your Acrolinx version, the example response may look different than the response that you get for your supported privileges. 
 In newer platform releases, there are rare instances where privileges might be introduced or removed. 
-To discover which privileges come with your installation, submit this request and compare it to the example response.  
+To find out which privileges come with your installation, submit this request and compare it to the example response.  
 
 + Response 200 (application/json)
 
@@ -4461,7 +4461,7 @@ This lets you update a role that was identified by its *id* in the database.
 This lets you delete a specified role based on its *id*.
 
 **Note:** You can only successfully delete a role if all of the following conditions are met:
-- The role isn’t a preconfigured built-in role such as 'Author', 'Super Administrator’, or 'Term Browser'.
+- The role isn’t a preconfigured built-in role such as "Author", "Super Administrator", or "Term Browser".
 - The role isn’t selected as a default role.
 - The role isn’t currently assigned to one or more users.
 
