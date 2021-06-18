@@ -38,7 +38,9 @@ An API Token is an Access Token but with special characteristics:
 * It will **not expire when the password of the associated user is changed**
 * Only one API Token can be bound to a user at the time
 
-You can get an API Token by accessing the user settings page on the Dashboard and generating one.
+How to get API Token:
+* Accessing the user settings page on the Dashboard and generating one.
+* Programmatically using the **User API**. (See more under the **User Generated API Tokens** section)
 
 Other than that, the **API Token** functions as an **Access Token**.
 
@@ -163,7 +165,7 @@ Type | Description| What to do
 `validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
 `guidanceProfileDoesntExist` | Guidance profile doesn't exist | The guidance profile doesn't exist or isn't available for the user id and language given.
 `noGuidanceProfileConfigured` | No guidance profile configured | For the user id and language given no guidance profile is configured.
-`contentTooLarge` | Content to large | Without reconfiguration of the Acrolinx platfrom the document can't be checked.
+`contentTooLarge` | Content to large | Without reconfiguration of the Acrolinx platform the document can't be checked.
 `queueLimitExceeded` | Queue limit exceeded | Retry to submit the check after waiting at least as long as suggested in the retry-after header.
 `conflict` | Concurrent write access | Conflict with a concurrent write access. Retry the operation with fresh data.
 `licenseLimitExceeded` | License limit exceeded | You exceeded a limit set by your licensing terms. The error description contains more details. Please check [the documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/user-licenses) for more information.
@@ -258,7 +260,7 @@ Content-Type: application/json
 
 Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
 
-All HTML fields contain only undangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allowlist.
+All HTML fields contain only non-dangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
 
 # Group Index
 
@@ -330,7 +332,7 @@ If an invalid access token was sent, the response is still a 401, though.
 
 ## Platform Capabilities [GET /api/v1/capabilities]
 
-An aggregation of the capabilities of the APIs subresources. This resource serves a single entry point for clients that need
+An aggregation of the capabilities of the APIs sub-resources. This resource serves a single entry point for clients that need
 to use more than one feature of the API.
 
 + Response 200 (application/json)
@@ -869,12 +871,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                             "extractedBegin": 35,
                             "extractedEnd": 38,
                             "originalPart": "nse",
-                            "originalBegin": 19254,
-                            "originalEnd": 19257
-                        }]
-                    },
-                    "readOnly": true,
-                    "issueLocations": [
+                 "issueLocations": [
                         {
                             "locationId": "pageLocation",
                             "displayName": "Page 4",
@@ -1268,141 +1265,1019 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
-Here, a user is an entity that has an id, a sign-in name, name, custom properties (set by client), and custom user information.
+In the User API, Acrolinx defines a user as an entity that has an id, a sign-in name, a name, custom properties (set by the client), and user information.
 
-When custom user information is _required_:
-* Interactive integrations: This will already be handled via Acrolinx sign-in. Immediately before granting
-access to client, the user needs to fill out their custom user information. It's thus impossible to obtain an
-access token for a user with incomplete required custom user information.
-* Embedded integrations (API key-based): Dashboard access handles this. After signing in to the dashboard,
-the user needs to fill out their custom user information before getting to the actual dashboard. API tokens can only be obtained
-in the dashboard for the signed in user. It's thus impossible to obtain an API token for a user with incomplete required custom user information.
+You’re _required_ to provide user information for the following:
+* Interactive integrations: When you sign in to Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
+* Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter customer user information. This lets you generate an API token for the user that’s signed in.
 
 Security:
-* A user can read and update its own data
-* Only privileged users can read or update other users data
-
+* A user can read and update its own data.
+* Only privileged users (admin, for example) can read or update other users' data.
 
 ## Current User [/api/v1/user/self]
 
-Returns information about the current user. See below for possible responses.
+This request returns information about the current user. The information includes the user id, username, the user’s full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status. You’ll also see properties, roles, and custom fields.
 
-## User Resource [/api/v1/user/{id}]
+## User Resource [/api/v1/user]
+
+### Get All Users [GET /api/v1/user{?sort}]
+
+This request retrieves a list of all users in the order that they were added.
+
+**Sorting**
+
+If you use the `sort` query parameter, you can only sort the list of users by 1 field. 
+You can add a `+` or `-` to display the list in ascending or descending order respectively.
+
+**Note:**
+
+- You can only sort by 1 field.
+- Query parameter max. length is 50 characters, excluding order direction prefixes '+' and '-'.
+- Query parameter can't be empty or filled with blank spaces.
+- Query parameter can only accept mixed-case alpha numeric characters and underscores.
+- By default, the list appears in ascending order.
+
+So that the `+` character encoded to `%2B` remains valid, make sure that the that query parameters are encoded in accordance
+with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
+Alternatively, you can always omit the `+` character as it will default to ascending order.
+
++ Request Get a list of all users (application/json)
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... the username
 
-### Get User [GET]
+    + sort (enum[string], optional) - Optional query parameter for sorting by an attribute. 
+            
+        + Prefix the field with:
+            + **"+"** for ascending order, or
+            + **"-"** for descending order. 
+        + **Note:** Omitting a prefix will sort in ascending order.
+
+        + Default: username
+        + Members
+            + `username`
+            + `fullName`
+            + `createdOn`
+            + `lastIntegrationAccess`
+            + `checkingFrequency`
+            + `licenseType`
+            + `licenseStatus`
 
 + Response 200 (application/json)
 
+    + Attributes (object)
+        + links (object)
+        + data (array[User])
+    
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    {
+                        "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                        "username": "fred",
+                        "fullName": "Fred Freelancer",
+                        "createdOn": "2021-04-15T15:00:26.495Z",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "named",
+                        "licenseStatus": "inactive",
+                        "tenantId": "smarttech",
+                        "activeTokenId": "",
+                        "checkingFrequency": "infrequent",
+                        "properties" : {
+                            "customkey": "customvalue",
+                        },
+                        "roles": [
+                            {
+                                "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                                "name": "Term Contributor",
+                                "privileges": []
+                            },
+                            {
+                                "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                                "name": "Term Browser Administrator",
+                                "privileges": []
+                            }
+                        ],
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
+                        "username": "franz",
+                        "fullName": "Franz Hubendobler",
+                        "createdOn": "2021-02-23T17:24:01.131Z",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "builtin",
+                        "licenseStatus": "active",
+                        "tenantId": "smarttech",
+                        "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                        "checkingFrequency": "infrequent",
+                        "properties" : {
+                            "customkey": "customvalue",
+                        },
+                        "roles": [
+                            {
+                                "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                                "name": "Analytics Read-Only User",
+                                "privileges": []
+                            }
+                        ],
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+
++ Response 400 (application/json)
+
+        // when the sort query parameter uses an invalid field name
         {
-          "data": {
-            "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-            "username": "fred",
-            "fullName": "Fred Freelancer",   //
-            "tenantId": "smarttech",
-            "properties" : {
-                "customkey": "customvalue",
-            },
-            "customFields": [
-                {
-                    "key": "Department",
-                    "displayName": "Department",
-                    "inputType": "optional",
-                    "type": "list",
-                    "value": "My Department",
-                    "possibleValues": [
-                        "No Department",
-                        "My Department"
-                    ]
-                },
-                {
-                    "key": "external_field",
-                    "displayName": "external_field",
-                    "inputType": "externally_provided",
-                    "type": "text"
-                }
-            ]
-          }
+            "links": {},
+            "error": {
+                "reference": "f38d5eba-c68c-4ea3-b0db-ce987a5a16f4",
+                "detail": "Invalid user sortable field",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
+        // when the field name is omitted in the sort query parameter
+        {
+            "links": {},
+            "error": {
+                "reference": "b4c323ab-413b-4bf5-be60-93e13c3aad93",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Pattern",
+                        "detail": "must match \"[+-]?[A-Za-z0-9_]{1,50}\"",
+                        "invalidValue": "+"
+                    }
+                ],
+                "status": 400
+            }
         }
 
 + Response 401 (application/json)
 
-        // if access token does not permit to show the user's data
+        // when the access token in the request is missing or invalid
         {
-          "error": {
-            "detail": "The user does not have the required privileges to perform the operation.",
-            "title": "Insufficient privileges",
-            "status": 401
-            "type": "insufficient_privileges"
-          }
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
         }
 
-### Update User [PUT]
++ Response 403 (application/json)
 
-+ Request (application/json)
-
+        // when you don’t have the privilege to list users
         {
-             "customFields": [
-                {
-                    "key": "Department",
-                    "value": "My new Department",
-                }
-            ]
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
         }
 
+### Get a User [GET /api/v1/user/{id}]
+
++ Request Get specified user by id (application/json)
+
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
 + Response 200 (application/json)
 
-        {
-         "data": {
-            "id": "eb323701-839f-4998-b56e-3e20c70259c5",
-            "username": "fred",
-            "fullName": "Fred Freelancer",   //
-            "tenantId": "smarttech",
-            "properties" : {
-                "customkey": "customvalue",
-            },
-            "customFields": [
-                {
-                    "key": "Department",
-                    "displayName": "Department",
-                    "inputType": "optional",
-                    "type": "list",
-                    "value": "My new Department",
-                    "possibleValues": [
-                        "No Department",
-                        "My Department"
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
                     ]
-                },
-                {
-                    "key": "external_field",
-                    "displayName": "external_field",
-                    "inputType": "externally_provided",
-                    "type": "text"
                 }
-            ]
-          }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
         }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to fetch users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the user couldn’t be identified by its *id* in the database
+        {
+        "links": {},
+            "error": {
+                "reference": "652b5c86-de20-4629-9df6-84265f2722ec",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
+### Create a User [POST /api/v1/user]
+
+**Note:**
+
+- The username needs to be unique and is limited to 255 characters.
+- The `fullName` field is limited to 255 characters (optional).
+- The password needs to have between 1 and 128 characters (optional).
+- The license type can either be 'named' or 'concurrent' (optional).
+- You need `UserAndRoles.editUser` privileges to perform this request.
+
+**Be extra careful in the following cases:** 
+- There are no configured default roles. That means that no roles will be automatically assigned to new users.
+- Federated authentication is enabled:
+  - Users are created automatically with federated authentication.
+  - Only users created by the identity provider can sign in to the Acrolinx Dashboard.
+  - Users created through the API can only be used for automation purposes. For example, interactions with the Platform API.
+
+
++ Request Create a user (application/json)
+
+     This will create a new user if you add a username, fullName, and password to the request. 
+
+    **Note:** By default, Acrolinx will automatically assign the user the license type `named` and the role `Author`.
+
+    + Attributes (CreateUser)
+    
+    + Body
+
+            {
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "password": "P@ssW0rd12345!"
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                            "name": "Author",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
 
 + Response 400 (application/json)
 
-        // if any of the updated fields is invalid, a detailed error information is given.
+        // when the request format is invalid 
         {
-          "error": {
-            "detail": "Please provide values for all required custom fields.",
-            "type": "validation",
-            "title": "Custom field values are missing",
-            "validationDetails": [
-                {
-                    "title": "Custom field is required.",
-                    "constraint": "Custom field \"Field\" must not be empty.",
-                    "attributePath": "customFields.Field",
-                    "detail": "Cannot set custom field \"Field\" as it is required and its value is empty.",
-                    "invalidValue": null,
-                    "type": "Required"
+            "links": {},
+            "error": {
+                "detail": "Unexpected character ....",
+                "type": "client",
+                "title": "Could not parse request body.",
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 1 and 128",
+                        "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the licenseType is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f04a1a1e-0046-4b86-b9c3-da491d3343b5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Deserialization error",
+                        "constraint": "Must be one of [NAMED, CONCURRENT, BUILTIN].",
+                        "attributePath": "licenseType",
+                        "detail": "Cannot deserialize enum 'LicenseType' from value 'asd'. Possible values are [NAMED, CONCURRENT, BUILTIN].",
+                        "invalidValue": "asd",
+                        "possibleValues": [
+                            "NAMED",
+                            "CONCURRENT",
+                            "BUILTIN"
+                        ]
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when the user was created more than once
+        {
+        "links": {},
+            "error": {
+                "reference": "a159c153-e99b-4d49-9987-ca457670ef86",
+                "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'fred' already exists. Please provide a different user name or spell the user name appropriately.)",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when an unspecified error occurs
+        {
+            "links": {},
+            "error": {
+                "reference": "4f356c86-aac1-4cae-8d78-518aea6cebe0",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+
++ Request Create a user with specified license type (application/json)
+
+    This request will create a new user with the `named` license type explicitly specified in the request model. 
+    
+    **Note:** Acrolinx will automatically assign the default role `Author` to the user.
+
+    + Attributes (CreateUser)
+
+    + Body
+
+            {
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "password": "P@ssW0rd12345!",
+                "licenseType": "named"
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                            "name": "Author",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
                 }
+            }
+
++ Response 400 (application/json)
+
+        // when the request format is invalid 
+        {
+            "links": {},
+            "error": {
+                "detail": "Unexpected character ....",
+                "type": "client",
+                "title": "Could not parse request body.",
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 1 and 128",
+                        "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the licenseType is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f04a1a1e-0046-4b86-b9c3-da491d3343b5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Deserialization error",
+                        "constraint": "Must be one of [NAMED, CONCURRENT, BUILTIN].",
+                        "attributePath": "licenseType",
+                        "detail": "Cannot deserialize enum 'LicenseType' from value 'asd'. Possible values are [NAMED, CONCURRENT, BUILTIN].",
+                        "invalidValue": "asd",
+                        "possibleValues": [
+                            "NAMED",
+                            "CONCURRENT",
+                            "BUILTIN"
+                        ]
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when the same user is created more than once
+        {
+        "links": {},
+            "error": {
+                "reference": "a159c153-e99b-4d49-9987-ca457670ef86",
+                "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'fred' already exists. Please provide a different user name or spell the user name appropriately.)",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "4f356c86-aac1-4cae-8d78-518aea6cebe0",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
++ Request Create a user with specified roles (application/json)
+
+    This request will create a new user with specified roles.
+
+    + Attributes (CreateUser)
+    
+    + Body
+
+            {
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "password": "P@ssW0rd12345!",
+                "roles": [
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor"
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator"
+                    }
+                ]
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 400 (application/json)
+
+        // when the request format is invalid 
+        {
+            "links": {},
+            "error": {
+                "detail": "Unexpected character ....",
+                "type": "client",
+                "title": "Could not parse request body.",
+                "status": 400
+            }
+        }
+
+        // when the password does not meet strict requirements
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 1 and 128",
+                        "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the licenseType is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f04a1a1e-0046-4b86-b9c3-da491d3343b5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Deserialization error",
+                        "constraint": "Must be one of [NAMED, CONCURRENT, BUILTIN].",
+                        "attributePath": "licenseType",
+                        "detail": "Cannot deserialize enum 'LicenseType' from value 'asd'. Possible values are [NAMED, CONCURRENT, BUILTIN].",
+                        "invalidValue": "asd",
+                        "possibleValues": [
+                            "NAMED",
+                            "CONCURRENT",
+                            "BUILTIN"
+                        ]
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when the same user was created more than once
+        {
+        "links": {},
+            "error": {
+                "reference": "a159c153-e99b-4d49-9987-ca457670ef86",
+                "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'fred' already exists. Please provide a different user name or spell the user name appropriately.)",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "4f356c86-aac1-4cae-8d78-518aea6cebe0",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+
+### Update a User [PUT /api/v1/user/{id}]
+
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+
++ Request Update fullName attribute (application/json)
+
+    You can update the fullName attribute for a user.
+
+    In this example, only the `fullName` attribute will change for the user `fred`. This was identified in the database by its *id*.
+
+    **Note:**
+    - You can delete the `fullName` by changing the attribute to empty.
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
+
+    + Attributes (object)
+        + fullName (string, required)
+
+    + Body
+
+            {
+                "fullName": "New Full Name"
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "New Full Name",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to update users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the user couldn’t be identified by its *id* in the database
+        {
+        "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
++ Request Update roles (application/json)
+
+    You can update a user’s role.
+
+    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn’t apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn’t exist, the call will fail and the error message will show the unknown roles that were referenced.
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
+
+    + Attributes (object)
+        + roles (array[Role], required)
+
+    + Body
+
+            {
+                "roles": [{"id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e"}]
+            }
+
+* Response 400 (application/json)
+
+        // when the roles array is empty
+        {
+          "links": {},
+          "error": {
+            "reference": "aecbef3d-d1a5-4d69-8d6c-3639f3d944b1",
+            "detail": "Check the request for invalid values or missing parameters.",
+            "type": "validation",
+            "title": "Invalid request attributes",
+            "validationDetails": [
+              {
+                "title": "Validation error",
+                "constraint": "NotEmpty",
+                "attributePath": "roles",
+                "detail": "must not be empty",
+                "invalidValue": "[]"
+              }
             ],
             "status": 400
           }
@@ -1410,14 +2285,2255 @@ Returns information about the current user. See below for possible responses.
 
 + Response 401 (application/json)
 
-        // if access token does not permit to update the user's data
+        // when the access token in the request is missing or invalid
         {
-          "error": {
-            "detail": "The user does not have the required privileges to perform the operation.",
-            "title": "Insufficient privileges",
-            "status": 401
-            "type": "insufficient_privileges"
-          }
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to grant a role
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when you try to update a built-in user
+        {
+        "links": {},
+            "error": {
+                "detail": "Not possible to update built-in user",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Request Set a custom field (application/json)
+
+    + Attributes (object)
+        + customFields (array[CustomField])
+
+    + Body
+
+            {
+                "customFields": [
+                    {
+                        "key": "Test Field",
+                        "value": "This is a string of text"
+                    },
+                    {
+                        "key": "Department",
+                        "value": "Example Department"
+                    }
+                ]
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        },
+                        {
+                            "key": "Test Field",
+                            "displayName": "Test Field",
+                            "inputType": "optional",
+                            "type": "text",
+                            "value": "This is a string of text",
+                            "possibleValues": [
+                                "Item"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Request Clear a custom field (application/json)
+
+    + Attributes (object)
+        + customFields (array[CustomField])
+
+    + Body
+
+            {
+                "customFields": [
+                    {
+                        "key": "Test Field",
+                        "value": ""
+                    },
+                    {
+                        "key": "Department",
+                        "value": ""
+                    }
+                ]
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        },
+                        {
+                            "key": "Test Field",
+                            "displayName": "Test Field",
+                            "inputType": "optional",
+                            "type": "text",
+                            "value": "This is a string of text",
+                            "possibleValues": [
+                                "Item"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 400 (application/json)
+
+        // when any of the updated fields are invalid, you’ll see a detailed error message
+        {
+            "links": {},
+            "error": {
+                "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
+                "type": "customFieldsIncorrect",
+                "title": "Custom field values are incorrect",
+                "validationDetails": [
+                    {
+                        "title": "Invalid custom field value",
+                        "constraint": "Must be one of \"Example Department\".",
+                        "attributePath": "customFields.Department",
+                        "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
+                        "invalidValue": "This is not valid",
+                        "possibleValues": [
+                            "Example Department"
+                        ],
+                        "type": "InvalidValue"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to update custom fields
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when a role wasn’t found in the database based on its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
+### Delete a User [DELETE /api/v1/user/{id}]
+
+This method deletes a specified user based on its *id*.
+
+**Note:** You can only delete a user successfully if all of the following conditions are met:
+- The user isn’t a preconfigured, built-in user such as 'admin', 'termcontribution’, or 'analyticsReadOnlyUser'. 
+
+To read more about managing users and built-in users, see [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users) in the Acrolinx documentation.
+
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+
++ Response 204
+
++ Response 400 (application/json)
+
+        // when the request is invalid because of a typo, for example
+        {
+            "links": {},
+            "error": {
+                "reference": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to delete a user
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the user wasn’t found in the database based on its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "e49d3cd5-330a-408d-84a1-e9ecf20677bf",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when you can’t delete a user
+        {
+            "links": {},
+            "error": {
+                "reference": "e9c4227c-e75b-4576-93e4-f5b4fec65d3b",
+                "detail": "Built-in user \"termcontribution (termcontribution) \" cannot be deleted",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
+## User Generated API Tokens [/api/v1/user/{id}/tokens]
+
+You can generate long-lasting API tokens for programmatic access to the Platform APIs.
+
+Acrolinx protects its APIs with self-contained access tokens. These access tokens let you authorize yourself as a user. API tokens have different characteristics than the access tokens that are issued when you use the sign-in endpoint.
+
+Don't forget to check out the *Introduction > Authentication and Authorization* section in this API Blueprint.
+
+Be aware that you can only be bound to one API token at a time.
+* When you create a new API token, your previous API token becomes invalid.
+
+**Warning:** Follow these security guidelines when you work with API tokens:
++ Store your API token securely and never share it with others.
++ Don’t bake your API token into any custom code that interacts with the Acrolinx Platform APIs.
+
+**Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/authentication/create-an-api-token) in the Acrolinx documentation.
+
+### Create an API Token (Self)  [POST /api/v1/user/self/tokens]
+
+Use this method to create an API token for the current user.
+
+**Note:** You don't need extra privileges or roles to create a new personal API token bound to the user authorized in the request.
+
+**Note:** This endpoint lets users use the Basic authentication scheme to avoid reusing an existing API token.
+
++ Request Create an API token using Basic auth
+    
+    To authenticate using Basic auth, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`. 
+
+    * **Important:** 
+        * This needs to have the prefix `Basic`.
+        * Your credentials (`username:password`) must be base64 encoded.
+
+    + Headers
+
+            X-Acrolinx-Auth: Basic dGVzdDp0ZXN0
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (UserApiTokenCreateResponse)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "type": "api",
+                    "issuedAt": "2021-04-23T07:54:07Z",
+                    "expiresAt": "2025-04-22T07:54:07Z",
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXJtY29udHJpYnV0aW9uIiwiYXVkIjoiYWNy..."
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the credentails provided are missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Request Create an API token using an existing API token
+
+    + Headers
+
+            X-Acrolinx-Auth: // here you will find the existing API token
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (UserApiTokenCreateResponse)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "type": "api",
+                    "issuedAt": "2021-04-23T07:54:07Z",
+                    "expiresAt": "2025-04-22T07:54:07Z",
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXJtY29udHJpYnV0aW9uIiwiYXVkIjoiYWNy..."
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
+### Create an API Token for User(s) [POST /api/v1/user/{id}/tokens]
+
+This method lets you create an API token for users based on their *id*.
+
+Typical use cases for this API:
+1. Create an API token for personal use
+    - 1.1. Get your own unique identifier *id* via the *Current user* request.
+    - 1.2. Enter your *id* as a parameter.
+    - 1.3. Start using the issued API token.
+2. Create an API token for someone else
+    - 2.1. Get the unique identifier *id* for the other user via the *Get users* requests.
+    - 2.2. Enter the other user's *id* as parameter. 
+    - 2.3. Give the issued API token to the user securely.  
+
+**Note:** You can only create an API token if you have the appropriate permissions: 
+* To create API token for yourself, you need to be authorized with a valid access token.
+* To create API token for someone else, you need the privilege `UserAndRoles.setApiTokensForOthers` and you need to be authorized with a valid access token.
+
+**Alternative use case:** Create an API token to impersonate a user
+
+    Sometimes it’s useful for an admin to impersonate a user to help troubleshoot. 
+    If a user encounters a bug, for example, an admin may want to impersonate the user to try and duplicate the problem.   
+
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (UserApiTokenCreateResponse)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "type": "api",
+                    "issuedAt": "2021-04-23T07:54:07Z",
+                    "expiresAt": "2025-04-22T07:54:07Z",
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXJtY29udHJpYnV0aW9uIiwiYXVkIjoiYWNyb2xpbngiLCJuYmYiOjE2MTkwNzgwNDcsImlzcyI6ImFjcm9saW54OjAwMDBmZmZmZmZmZjAwMDAiLCJleHAiOjE3NDUzMDg0NDcsInRva2VuVHlwZSI6ImFwaSIsImlhdCI6MTYxOTE2NDQ0NywianRpIjoid3lvaXZoenl3Y3dwN3B4ejc2a29xN2F5NDQifQ.hRa2kHPl7EJ6xm115UOmu4QuppFoST7E626ceIsPeCI"
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when the user can’t create an API token for others ("UserAndRoles.setApiTokensForOthers")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the user wasn’t found in the database based on its *id*
+
+## User Commands [/api/v1/user/{id}/_{command}]
+
+The APIs in this group follow the API design command style.   
+
+These administrative commands can help govern users in your Acrolinx instance. The commands can do more than simply (re)send the new state of a single resource. 
+
+**Note:** You can apply these requests multiple times without changing the result (idempotent). 
+
+### Release an Active Named User License [PUT /api/v1/user/{id}/_release]
+
+This method uses the *id* to release an active license consumed by a user.
+
+**Note:**
+- You can only release users with the `named` license type.
+- If you release the license of a user who doesn’t consume a license, you won’t see an error. 
+- To do this, you need the `UserAndRoles.deleteSessions` privilege.
+
+**Result:** User's `licenseStatus` changed from `active` to `inactive`.
+
++ Parameters
+      + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+
++ Response 204
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to release other users' licenses ("UserAndRoles.deleteSessions")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the user wasn’t found in the database by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "e49d3cd5-330a-408d-84a1-e9ecf20677bf",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
+### Export a List of Users [GET /api/v1/user/_export]
+
+This API provides an easy way to export a concise user list in various file formats.
+
+The endpoint uses content negotiation to determine the format of the export. You can include the `Accept` header in your request to specify the format you prefer. See the `Supported formats` section for more information about the formats that Acrolinx currently supports.
+
+**Supported formats:**
++ `text/csv` (default, file extension is `.csv`)
+
+**Note:** If you don’t specify the format in the `Accept` header, the default will be used.
+
+**Content-Disposition:**
+
+The API also returns the `Content-Disposition` response header to give information about the returned content. 
+Based on this, browsers can recognize downloadable attachments that can be saved locally.
+
+The header parameters are set as follows:
++ `attachment` - Indicates that the content should be downloaded.
++ `filename="acrolinx_users_export_yyyyMMdd_HHmmss.{fileExt}"` - Most browsers present a 'Save as' dialog for attachments. This will be prefilled with the value of the filename parameter.
+
++ Request Export a list of users in CSV format
+
+    This lets you export a list of users and their data into a CSV file that looks like a spreadsheet but has a `.csv` extension.
+    Each line of the file is a user data record. Each record consists of one or more user fields and the actual value, separated by column delimiter.
+    You can use the CSV file with most spreadsheet programs, such as Microsoft Excel or Google Sheets.
+
+    You’ll see the following user fields in the file (in the following order):
+    + **user_id**: The user's unique identifier (string, UUID).
+    + **Username**: The user's username, which can be used for sign in and user identification.
+    + **Full Name**: The full name of the user.
+    + **Roles**: A list of assigned roles.
+    + **Created On**: Indicates when the user was created.
+    + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn’t accessed an integration, the default value is `Never`.
+    + **Checking Frequency**: Displays a rough idea of the user’s usage pattern based on checking frequency across the user’s lifetime in days. Its value can be [ 'frequent', 'infrequent', 'regular' ].
+    + **License Type**: Indicates the type of license. Its value can be ['named' | 'concurrent' | 'builtin'].
+    + **{Custom Field name}**: Users can have multiple (0..N) custom fields that are also attached to the schema. 
+        + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be added to the end of the sheet dynamically. 
+
+    **Notes, about the CSV file and data formatting:** 
+    + Column headers are also written into the first row of the file.
+    + Fields are separated by a semicolon `;` (as column delimiter). 
+    + Date and time values are exported in `UTC`, for example `2021-05-12T15:40:00.876Z`.
+        + When there’s no stored value for a given Date time type field, the cell should contain `Never` or an empty value.
+    + Values of a list type field are separated with a colon `:` (as the "in-cell" delimiter).
+    + Values that contain space characters are in double quotes in the file, for example, `user_id;Username;"Full Name";....`.
+
+    + Headers
+
+            Accept: text/csv
+
++ Response 200 (text/csv)
+
+    + Headers
+
+            Content-Disposition: attachment; filename="acrolinx_users_export_20210514_101248.csv"
+
+    + Body
+
+            user_id;Username;"Full Name";Roles;"Created On";"Last Integration Access";"Checking Frequency";"License Type";"License Status";Department
+            "1ba8d14c-7697-4dbd-b370-3d22662e6fe0";termcontribution;"Term Contribution";"Term Contributor";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;inactive;"R&D"
+            "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f";analyticsReadOnlyUser;"Analytics Read Only User";"Analytics Read-Only User";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;inactive;"Example Department"
+            "4f86f443-e5e3-49c9-93da-cb1f89cd28c7";admin;Adminisztrator;"Super Administrator";"2021-05-12T15:40:00.866Z";Never;infrequent;builtin;inactive;IT
+            "05aa0b12-a3b1-455f-9aa6-f48034c191ae";termapiaccess;"Term API Access (builtin)";"Terminology API Access";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;inactive;
+            "394cdff2-bde8-41d2-85cd-34cd3bbca350";termtargetaccess;"Term Target Access (builtin)";"Term Browser User, Term Browser Administrator";"2021-05-12T15:40:00.876Z";Never;infrequent;builtin;inactive;
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or is invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to export users ("UsersAndRoles.read")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Request Export users with an unsupported media type
+
+    If you enter an unsupported media type in the `Accept` header, for example, `text/html`, the API will return the http status `406 - Not Acceptable`.
+
+    + Headers
+
+            Accept: text/html
+
++ Response 406
+
+        {
+            "links": {},
+            "error": {
+                "reference": "1baade57-4292-49c9-81b8-fdaa815123fb",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Acceptable",
+                "status": 406
+            }
+        }
+
+## User Bulk Operations [/api/v1/user/bulk]
+
+These APIs let you perform bulk operations. Bulk operations follow the multi-status request and response model.
+In this model, the incoming bulk request contains a list of objects that need to be processed (as opposed to invoking the same API many times). 
+The response to the request is `207 Multi-Status`. The response contains a list of `results` for the objects that were processed successfully 
+and a list of `errors` for the objects that couldn’t be processed.
+
+**Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
+
+### Create Users in Bulk [POST /api/v1/user/bulk]
+
+This API lets you create a list of new users. All user objects follow the requirements and constraints
+noted in the Create User API section.
+
+**Note:** You can create up to 100 users per bulk request, the minimum is 1.
+
++ Request Create Users in Bulk (application/json)
+
+    This request lets you create 5 new users by specifying some basic fields (`username`, `fullName`, `password`) in the request model.
+
+    **Note:** Acrolinx will assign a license type and role automatically. These are typically the license type `named` and the role `Author`.
+
+    + Attributes (BulkCreateUser)
+    
+    + Body
+
+            [
+                {
+                    "username": "new.user.1",
+                    "fullName": "New User 1",
+                    "password": "P@ssW0rd12345!"
+                },
+                {
+                    "username": "new.user.2",
+                    "fullName": "New User 2",
+                    "password": "P@ssW0rd12345!"
+                },
+                {
+                    "username": "new.user.3",
+                    "fullName": "New User 3",
+                    "password": "P@ssW0rd12345!"
+                },
+                {
+                    "username": "new.user.4",
+                    "fullName": "New User 4",
+                    "password": "P@ssW0rd12345!"
+                },
+                {
+                    "username": "new.user.5",
+                    "fullName": "New User 5",
+                    "password": "P@ssW0rd12345!"
+                }
+            ]
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            // When all users were successfully created
+            {
+                "results": [
+                    {
+                        "status": 201,
+                        "id": "c06de3b6-46c3-46d8-a136-afb6501f88e3",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/c06de3b6-46c3-46d8-a136-afb6501f88e3"
+                    },
+                    {
+                        "status": 201,
+                        "id": "3bd446b9-6371-4ecb-a4fb-ebeb01bae9e3",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/3bd446b9-6371-4ecb-a4fb-ebeb01bae9e3"
+                    },
+                    {
+                        "status": 201,
+                        "id": "4d8a94a8-55fe-4ee6-bf67-8f21a335e7da",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/4d8a94a8-55fe-4ee6-bf67-8f21a335e7da"
+                    },
+                    {
+                        "status": 201,
+                        "id": "76d79076-fbf7-4e02-89b5-a9c52d38b5e6",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/76d79076-fbf7-4e02-89b5-a9c52d38b5e6"
+                    },
+                    {
+                        "status": 201,
+                        "id": "a3b18412-4e61-4795-b5c0-4b2fc82f7995",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/a3b18412-4e61-4795-b5c0-4b2fc82f7995"
+                    }
+                ],
+                "errors": []
+            }
+
+
+            // when 3 users were created successfully but 2 weren’t
+            {
+                "results": [
+                    {
+                        "status": 201,
+                        "id": "c06de3b6-46c3-46d8-a136-afb6501f88e3",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/c06de3b6-46c3-46d8-a136-afb6501f88e3"
+                    },
+                    {
+                        "status": 201,
+                        "id": "3bd446b9-6371-4ecb-a4fb-ebeb01bae9e3",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/3bd446b9-6371-4ecb-a4fb-ebeb01bae9e3"
+                    },
+                    {
+                        "status": 201,
+                        "id": "4d8a94a8-55fe-4ee6-bf67-8f21a335e7da",
+                        "location": "http://tenant.acrolinx.cloud/api/v1/user/4d8a94a8-55fe-4ee6-bf67-8f21a335e7da"
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": 409,
+                        "id": "test.user.4",
+                        "type": "client",
+                        "title": "Conflict",
+                        "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'test.user.1' already exists. Please provide a different user name or spell the user name appropriately.)",
+                        "reference": "68327a0f-db3e-459c-91f9-5a3da691a1d1"
+                    },
+                    {
+                        "status": 409,
+                        "id": "test.user.5",
+                        "type": "client",
+                        "title": "Conflict",
+                        "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'test.user.2' already exists. Please provide a different user name or spell the user name appropriately.)",
+                        "reference": "4be034f9-c8f3-4465-9117-cde7c1f075ca"
+                    }
+                ]
+            }
+
++ Response 400 (application/json)
+
+        // when a bulk request is sent with an empty list
+        {
+            "links": {},
+            "error": {
+                "reference": "88892611-7955-4a8f-9f5f-71b99b31bdca",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "detail": "size must be between 1 and 100",
+                        "invalidValue": "[]"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when a bulk request exceeds the maximum valid limit
+        {
+            "links": {},
+            "error": {
+                "reference": "367fedac-e5bb-4229-9405-3fcc425bf1f5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "detail": "size must be between 1 and 100",
+                        "invalidValue": "[username=test.user.1, username=test.user.2, ... username=test.user.100, username=test.user.101]"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when a bulk request includes validation errors such as an empty password
+        {
+            "links": {},
+            "error": {
+                "reference": "241a2429-0f53-49a6-a6af-72aaaf41ad36",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 1 and 128",
+                        "invalidValue": ""
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when a bulk request is sent without a payload body
+        {
+            "links": {},
+            "error": {
+                "reference": "82b2e14b-95f8-4789-8ee8-3822c2297a9c",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotNull",
+                        "detail": "must not be null",
+                        "invalidValue": null
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+# Group Licenses API
+
+License information is provided by the following set of APIs.
+
+## Statistics [/api/v1/licenses/statistics]
+
+### Get License Statistics for Users [GET]
+
+Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.
+The following conditions are checked for all users in order to qualify them to be included in the calculation:
+
+- Must be one of the following License Types `named` or `concurrent`
+- For `named` license they must be active it must satisfy the following
+    - Be activated for `Checking` session type
+    - Must not be free of charge
+- All other `named` licensed users will be considered `inactive`
+- All `concurrent` licensed users will be `existing` if a license exists
+
+**Note:** Builtin users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`
+are included in the statistics calculation along with all the non-builtin users but are subject to the conditions above.
+
+Details of the statistics attributes in the table below:
+
+| License Type | Sum Attribute | Description                   |
+|:-------------|---------------|-------------------------------|
+| `named`      | licensed      | Total number of licenses      |
+| `named`      | active        | Total active licenses         |
+| `named`      | inactive      | Total inactive licenses       |
+| `named`      | available     | Total available licenses (`licensed` minus `active`) |
+| `concurrent` | licensed      | Total number of licenses      |
+| `concurrent` | existing      | Total number of licenses used |
+
+**Note:**
+- Must have `UserAndRoles.editUser` privileges to perform this request
+- Concurrent license numbers may be seen (non-zero) if a license has been configured for both `named` and `concurrent` user limits
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data(LicenseStatistics)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "named": {
+                        "licensed": 150,
+                        "active": 58,
+                        "inactive": 23,
+                        "available": 92
+                    },
+                    "concurrent": {
+                        "licensed": 50,
+                        "existing": 10
+                    }
+                }
+            }
+
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when there is insufficient privileges to fetch license statistics
+        {
+            "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+# Group Role API
+
+In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role. 
+You can use roles to group sets of privileges and assign them to different users.
+Mark roles as default if you want to automatically assign at least one default role to all new users.
+
+To read more about role-based access control in Acrolinx, see the [Acrolinx Roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles)
+
+## Roles [/api/v1/roles/]
+
+### Get All Roles [GET]
+
+Returns a list of all roles including the belonging privileges.
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (array[Role])
+    
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    {
+                        "id": "fdcd7fc6-9715-42f8-a947-88812bc02b2a",
+                        "name": "Term Browser User",
+                        "privileges": [
+                            "Terminology.read",
+                            "Dashboard.logon",
+                            "Termbrowser.logon"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                        "name": "Author",
+                        "privileges": [
+                            "CheckingAndClients.checkingApplications",
+                            "CheckingAndClients.downloadReports"
+                        ],
+                        "default": true
+                    },
+                    {
+                        "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                        "name": "Term Contributor",
+                        "privileges": [
+                            "TermContribution.contributeTerms",
+                            "TermContribution.commentTerms"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                        "name": "Term Browser Administrator",
+                        "privileges": [
+                            "Terminology.read",
+                            "Dashboard.logon"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                        "name": "Analytics Read-Only User",
+                        "privileges": [
+                            "Reporting.read",
+                            "Dashboard.logon",
+                            "CheckingAndClients.downloadReports"
+                        ],
+                        "default": false
+                    },
+                    {
+                        "id": "bc5c91f3-fae1-49f7-8d60-d325077c6ef9",
+                        "name": "Super Administrator",
+                        "privileges": [
+                            "UserAndRoles.read",
+                            "Terminology.read",
+                            "LinguisticConfiguration.configureAndDeployRules",
+                            "LinguisticConfiguration.configureAndDeployReuse",
+                            "CheckingAndClients.submitDictionaryEntry",
+                            "CheckingAndClients.editPluginSegmentation",
+                            "CheckingAndClients.terminologyApplications",
+                            "TermContribution.contributeTerms",
+                            "Reporting.administration",
+                            "Servers.monitoring",
+                            "Terminology.export",
+                            "Terminology.edit",
+                            "CheckingAndClients.checkingApplications",
+                            "Terminology.undump",
+                            "Servers.editNotification",
+                            "CheckingAndClients.reuseApplications",
+                            "CheckingAndClients.runTermHarvesting",
+                            "TermContribution.commentTerms",
+                            "Servers.downloadSupportPackage",
+                            "LinguisticConfiguration.tuneResources",
+                            "LinguisticConfiguration.reloadLanguageConfiguration",
+                            "Terminology.customize",
+                            "Reporting.create",
+                            "LinguisticConfiguration.configureAndDeployTerminology",
+                            "Servers.overlay",
+                            "Terminology.dump",
+                            "UserAndRoles.setApiTokensForOthers",
+                            "Reporting.read",
+                            "CheckingAndClients.editCheckingProfiles",
+                            "Servers.readLicense",
+                            "TermContribution.removeCommentTerms",
+                            "ReuseManagement.edit",
+                            "Dashboard.logon",
+                            "UserAndRoles.editUser",
+                            "Servers.editLicense",
+                            "LinguisticConfiguration.editTargets",
+                            "Termbrowser.logon",
+                            "Servers.downloadLogs",
+                            "UserAndRoles.deleteSessions",
+                            "Terminology.import",
+                            "Servers.capture",
+                            "Servers.list",
+                            "CheckingAndClients.downloadReports",
+                            "Servers.restart",
+                            "Terminology.termbrowserAdmin",
+                            "ReuseManagement.read",
+                            "Terminology.statusChange",
+                            "CheckingAndClients.accessExtractedContent"
+                        ],
+                        "default": false
+                    }
+                ]
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to view users and roles ("UserAndRoles.read")
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+## Privileges [/api/v1/roles/privileges]
+
+Privileges determine whether or not a user can perform an action via the API or Acrolinx Dashboard.
+
+### Get All Privileges [GET]
+
+This returns a list of all supported privileges.
+
+**Note:** Depending on your Acrolinx version, the following example response may look different than the response that you get for your supported privileges. 
+In newer platform releases, there are rare instances where privileges might be introduced or removed. 
+To discover which privileges come with your installation, submit this request and compare it to the example response.  
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (array[string])
+
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    "CheckingAndClients.accessExtractedContent",
+                    "CheckingAndClients.checkingApplications",
+                    "CheckingAndClients.downloadReports",
+                    "CheckingAndClients.editCheckingProfiles",
+                    "CheckingAndClients.editPluginSegmentation",
+                    "CheckingAndClients.reuseApplications",
+                    "CheckingAndClients.runTermHarvesting",
+                    "CheckingAndClients.submitDictionaryEntry",
+                    "CheckingAndClients.terminologyApplications",
+                    "Dashboard.logon",
+                    "LinguisticConfiguration.configureAndDeployReuse",
+                    "LinguisticConfiguration.configureAndDeployRules",
+                    "LinguisticConfiguration.configureAndDeployTerminology",
+                    "LinguisticConfiguration.editTargets",
+                    "LinguisticConfiguration.reloadLanguageConfiguration",
+                    "LinguisticConfiguration.tuneResources",
+                    "Reporting.administration",
+                    "Reporting.create",
+                    "Reporting.read",
+                    "ReuseManagement.edit",
+                    "ReuseManagement.read",
+                    "Servers.capture",
+                    "Servers.downloadLogs",
+                    "Servers.downloadSupportPackage",
+                    "Servers.editLicense",
+                    "Servers.editNotification",
+                    "Servers.list",
+                    "Servers.monitoring",
+                    "Servers.overlay",
+                    "Servers.readLicense",
+                    "Servers.restart",
+                    "TermContribution.commentTerms",
+                    "TermContribution.contributeTerms",
+                    "TermContribution.removeCommentTerms",
+                    "Termbrowser.logon",
+                    "Terminology.customize",
+                    "Terminology.dump",
+                    "Terminology.edit",
+                    "Terminology.export",
+                    "Terminology.import",
+                    "Terminology.read",
+                    "Terminology.statusChange",
+                    "Terminology.termbrowserAdmin",
+                    "Terminology.undump",
+                    "UserAndRoles.deleteSessions",
+                    "UserAndRoles.editUser",
+                    "UserAndRoles.read",
+                    "UserAndRoles.setApiTokensForOthers"
+                ]
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don't have the privilege to view users and roles ("UserAndRoles.read")
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+## Role [/api/v1/roles]
+
+### Create Roles [POST]
+
+This lets you add new roles.
+
+**Note:**
+- The name needs to be unique and must be between 1 and 254 characters.
+- A role needs to have at least one privilege assigned.
+- Existing privileges must be referenced.
+
+
++ Request Create a role (application/json)
+
+    + Attributes (CreateOrUpdateRole)
+
+    + Body
+
+            {
+                "name": "My new role",
+                "privileges": [
+                    "Dashboard.logon"
+                ]
+            }
+    
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "My new role",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 400 (application/json)
+
+            // when an empty name was provided or the name provided is longer than 254 characters
+            {
+                "links": {},
+                "error": {
+                    "reference": "357a24b5-eb48-45c3-9527-9718506e6e10",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotBlank",
+                            "attributePath": "name",
+                            "detail": "must not be blank",
+                            "invalidValue": ""
+                        },
+                        {
+                            "title": "Validation error",
+                            "constraint": "Size",
+                            "attributePath": "name",
+                            "detail": "size must be between 1 and 254",
+                            "invalidValue": ""
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
+            // when empty privileges were provided 
+            {
+                "links": {},
+                "error": {
+                    "reference": "55973236-1b1a-4d76-a62d-360f5d9a1e29",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotEmpty",
+                            "attributePath": "privileges",
+                            "detail": "must not be empty",
+                            "invalidValue": "[]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
+            // when privilege keys that don’t exist were referenced
+            {
+                "links": {},
+                "error": {
+                    "reference": "89f517a8-7d8e-4579-8879-5c6bbdd8fd5a",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "Unknown privileges: My.privilege",
+                            "attributePath": "privileges",
+                            "detail": "Unknown privileges: My.privilege",
+                            "invalidValue": "[My.privilege]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when a role with the same name already exists
+        {
+            "links": {},
+            "error": {
+                "reference": "f3c9e0d7-1c86-4da3-916f-617d839d2da5",
+                "detail": "A role with name 'My new role' already exists.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Request Create a default role (application/json)
+
+    + Attributes (CreateOrUpdateRole)
+
+    + Body
+
+            {
+                "name": "This is Default",
+                "privileges": [
+                    "Dashboard.logon"
+                ],
+                "default": true
+            }
+    
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce42",
+                    "name": "This is Default",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": true
+                }
+            }
+
++ Response 400 (application/json)
+
+            // when an empty name was provided or the name provided is longer than 254 characters
+            {
+                "links": {},
+                "error": {
+                    "reference": "357a24b5-eb48-45c3-9527-9718506e6e10",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotBlank",
+                            "attributePath": "name",
+                            "detail": "must not be blank",
+                            "invalidValue": ""
+                        },
+                        {
+                            "title": "Validation error",
+                            "constraint": "Size",
+                            "attributePath": "name",
+                            "detail": "size must be between 1 and 254",
+                            "invalidValue": ""
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
+            // when empty privileges were provided 
+            {
+                "links": {},
+                "error": {
+                    "reference": "55973236-1b1a-4d76-a62d-360f5d9a1e29",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotEmpty",
+                            "attributePath": "privileges",
+                            "detail": "must not be empty",
+                            "invalidValue": "[]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
+            // when privilege keys that don’t exist were referenced
+            {
+                "links": {},
+                "error": {
+                    "reference": "89f517a8-7d8e-4579-8879-5c6bbdd8fd5a",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "Unknown privileges: My.privilege",
+                            "attributePath": "privileges",
+                            "detail": "Unknown privileges: My.privilege",
+                            "invalidValue": "[My.privilege]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when a role with the same name already exists
+        {
+            "links": {},
+            "error": {
+                "reference": "f3c9e0d7-1c86-4da3-916f-617d839d2da5",
+                "detail": "A role with name 'My new role' already exists.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
+### Get a Role [GET /api/v1/roles/{id}]
+
+This returns a role that was identified by its *id* in the database.
+
++ Parameters
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 403 (application/json)
+
+        // when the user doesn’t have the privilege to view roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the specified role ID can’t be found
+        {
+        "links": {},
+            "error": {
+                "reference": "9396654f-08b2-461d-80f9-d8b492786186",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
+### Update a Role [PUT /api/v1/roles/{id}]
+
+This lets you update a role that was identified by its *id* in the database.
+
+**Note:** 
+- To update roles, you need the privilege `UserAndRoles.editUser`.
+- You can’t edit the preconfigured roles!
+    - Acrolinx comes with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
+- You can use one request to update role attributes individually or completely. The request will ignore missing attributes or attributes with `null` values.
+
++ Request Update entire model (application/json)
+
+    You can use one request to update all attributes of a role.
+
+    **Note:** Check the other request examples to see how to update individual attributes and validations.
+
+     + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (CreateOrUpdateRole)
+
+    + Body
+
+            {
+                "name": "Preferred name",
+                "privileges": [
+                    "Dashboard.logon"
+                ],
+                "default": false
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "Preferred name",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the role couldn’t be identified by its *id* in the database
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
+
++ Request Update role name (application/json)
+
+    You can update the name of a role.
+
+    In this example, the name will be changed for the role `ExampleRole`, which was identified by its *id* in the database.
+
+    **Note:**
+    - The name needs to be unique and must be between 1 and 254 characters.
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (object)
+        + name (string, required)
+
+    + Body
+
+            {
+                "name": "Preferred name"
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "Preferred name",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 400 (application/json)
+
+            // when an empty name was provided or the name provided is longer than 254 characters
+            {
+                "links": {},
+                "error": {
+                    "reference": "b22b60a5-6ee4-4f4d-90fb-8a64ae4e697a",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "Size",
+                            "attributePath": "name",
+                            "detail": "size must be between 1 and 254",
+                            "invalidValue": ""
+                        },
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotBlank",
+                            "attributePath": "name",
+                            "detail": "must not be blank",
+                            "invalidValue": ""
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when the user doesn’t have the privilege to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the role couldn’t be identified by its *id* in the database
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when you update a preconfigured built-in role
+        {
+            "links": {},
+            "error": {
+                "reference": "677ece6e-d34a-4148-a05a-6b69fa8ab16e",
+                "detail": "Role 'Term Browser User(uuid=fdcd7fc6-9715-42f8-a947-88812bc02b2a privileges=[Termbrowser.logon [TERM_BROWSER] implies [Terminology.read [TERM_MANAGEMENT] implies [Dashboard.logon, Terminology.downloadImages [TERM_MANAGEMENT]]]])' is an immutable built-in role and cannot be changed.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
+        // when a role with the same name already exists
+        {
+            "links": {},
+            "error": {
+                "reference": "f3c9e0d7-1c86-4da3-916f-617d839d2da5",
+                "detail": "A role with name 'Preferred name' already exists.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
+
++ Request Update the privileges that belong to a role (application/json)
+
+    You can use roles to update the privileges that are assigned to a user.
+
+    In this example, the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole`. The role was identified by its *id* in the database. 
+
+    **Note:**
+    - A role needs to have at least one privilege assigned.
+    - You can add/remove privilege(s). The server completely replaces every privilege.
+    - There might be interdependencies with other privileges.
+    - Any changes to a role are automatically inherited by all users with that particular role.
+    - You need to reference existing privileges. See [Get All Privileges](###Get_all_privileges).
+
+    **Warning:** This action **permanently** updates the privileges that belong to a role. 
+    When you change the privileges for a role, all users with that role will get the updated set of privileges.
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (object)
+        + privileges (array[string], required)
+
+    + Body
+
+            {
+                "privileges": [
+                    "Dashboard.logon",
+                    "UserAndRoles.read"
+                ]
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "UserAndRoles.read",
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 400 (application/json)
+
+        // when an unknown privilege is provided in the request ("Example.privilege")
+        {
+            "links": {},
+            "error": {
+                "reference": "bc9b2e2f-1130-4ab5-8127-d9faf7f09485",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Unknown privileges: Example.privilege",
+                        "attributePath": "privileges",
+                        "detail": "Unknown privileges: Example.privilege",
+                        "invalidValue": "[Dashboard.logon, UserAndRoles.read, Example.privilege]"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 400 (application/json)
+
+        // when empty privileges are provided in the request
+        {
+            "links": {},
+            "error": {
+                "reference": "58629cdc-3102-4ff2-973b-68eb82ef2ea0",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "privileges",
+                        "detail": "must not be empty",
+                        "invalidValue": "[]"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don't have the privilege to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the role couldn’t be identified by its *id* in the database
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when you update a preconfigured built-in role
+        {
+            "links": {},
+            "error": {
+                "reference": "677ece6e-d34a-4148-a05a-6b69fa8ab16e",
+                "detail": "Role 'Term Browser User(uuid=fdcd7fc6-9715-42f8-a947-88812bc02b2a privileges=[Termbrowser.logon [TERM_BROWSER] implies [Terminology.read [TERM_MANAGEMENT] implies [Dashboard.logon, Terminology.downloadImages [TERM_MANAGEMENT]]]])' is an immutable built-in role and cannot be changed.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Request Add a default role (application/json)
+
+    You may want to add a default role so that you can automatically assign it to newly created users.
+
+    In this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.
+
+    **Note:**
+    - You can have multiple default roles.
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (object)
+        + default (boolean, required) - Possible values are 'true' or 'false'
+
+    + Body
+
+            {
+                "default": true
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": true
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the role couldn’t be identified by its *id* in the database
+        {
+        "links": {},
+            "error": {
+                "reference": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
++ Request Remove a role from defaults (application/json)
+
+    You may want to remove a default role so it isn’t automatically assigned to newly created users.
+
+    In this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.
+
+    **Note:**
+    - You aren’t required to have default roles.
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+
+    + Attributes (object)
+        + default (boolean, required) - Possible values are 'true' or 'false'
+
+    + Body
+
+            {
+                "default": false
+            }
+    
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Role)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "f608876c-a943-4ad2-82c1-e59df943ce41",
+                    "name": "ExampleRole",
+                    "privileges": [
+                        "Dashboard.logon"
+                    ],
+                    "default": false
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to edit roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+### Delete a Role [DELETE /api/v1/roles/{id}]
+
+This lets you delete a specified role based on its *id*.
+
+**Note:** You can only successfully delete a role if all of the following conditions are met:
+- The role isn’t a preconfigured built-in role such as 'Author', 'Super Administrator’, or 'Term Browser'.
+- The role isn’t selected as a default role.
+- The role isn’t currently assigned to one or more users.
+
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+
+        // when the request is invalid because of a typo, for example
+        {
+            "links": {},
+            "error": {
+                "reference": "a0b499dc-2511-4aa7-8a4e-c386d60b7800",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to delete roles
+        {
+        "links": {},
+            "error": {
+                "reference": "f92270f4-ffe8-4104-87d5-ca457fa17cb7",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the role couldn’t be identified by its *id* in the database
+        {
+        "links": {},
+            "error": {
+                "reference": "5caccf73-faa9-4176-b931-8869392a2c1b",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when the preconditions to delete a role aren’t met
+        {
+            "links": {},
+            "error": {
+                "reference": "7ca66314-1341-4b29-848a-fc53a14b6401",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
         }
 
 # Group Document API
@@ -1428,7 +4544,7 @@ Typical program flow:
 
 1. A document is opened in the host editor.
 2. The integration uses create or retrieve document information, to check if the custom fields have to be filled out.
-   If the user has to fill out custom fields, the API returns all fields to fill out and the set values.
+    If the user has to fill out custom fields, the API returns all fields to fill out and the set values.
 3. The integration requests the user to fill out the custom field.
 4. The integration sets the new custom fields either using the update document function or while submitting a check request.
 
@@ -1440,22 +4556,22 @@ This method provides Document which was found in the database.
 + Response 200 (application/json)
 
         {
-          "data": {
-            "id": "283ab1e075f21a",
-            "reference": "C:\\abc.md",
-            "contentType": "E-Mail",
-            "customFields": [
-                {
-                    "displayName": "Project ID",
-                    "key": "projectId",
-                    "value": null,
-                    "required": true
+            "data": {
+                "id": "283ab1e075f21a",
+                "reference": "C:\\abc.md",
+                "contentType": "E-Mail",
+                "customFields": [
+                    {
+                        "displayName": "Project ID",
+                        "key": "projectId",
+                        "value": null,
+                        "required": true
+                    }
+                ],
+                "displayInfo": {
+                    "reference": "abc.md"
                 }
-            ],
-            "displayInfo": {
-                "reference": "abc.md"
             }
-          }
         }
 
 ### Update Document Custom Fields [PUT]
@@ -1480,22 +4596,22 @@ This method provides Document which was found in the database.
 + Response 200 (application/json)
 
         {
-          "data": {
-            "id": "283ab1e075f21a",
-            "reference": "C:\\abc.md",
-            "contentType": "E-Mail",
-            "customFields": [
-                {
-                    "displayName": "Project ID",
-                    "key": "projectId",
-                    "value": "Marketing Campaign",
-                    "required": true
+            "data": {
+                "id": "283ab1e075f21a",
+                "reference": "C:\\abc.md",
+                "contentType": "E-Mail",
+                "customFields": [
+                    {
+                        "displayName": "Project ID",
+                        "key": "projectId",
+                        "value": "Marketing Campaign",
+                        "required": true
+                    }
+                ],
+                "displayInfo": {
+                    "reference": "abc.md"
                 }
-            ],
-            "displayInfo": {
-                "reference": "abc.md"
             }
-          }
         }
 
 ## Document API Capabilities [GET /api/v1/document/capabilities]
@@ -1580,8 +4696,8 @@ issues[n].canAddToDictionary: true
             "surface": "wiruwaruwolz",                  // required
             "scope": "document",                        // required, one of the scopes above
             "languageId": "en_GB",                      // required if scope!=guidanceProfile
-            "guidanceProfileId": "aud-1",                      // required if scope=guidanceProfile
-            "documentId": "283ab1e075f21a"             // required if scope=document
+            "guidanceProfileId": "aud-1",               // required if scope=guidanceProfile
+            "documentId": "283ab1e075f21a"              // required if scope=document
         }
 
 + Response 200
@@ -1613,7 +4729,7 @@ Publishes a new notification on the platform.
             "body":  "Acrolinx Platform 5.6 will be deployed tomorrow.",     // required; Notification text.
             "importance": "high",                                            // optional; "high"|"normal"; default: "normal"
             "start": 1528127782,                                             // required; Notification start time (epoch millisecond timestamp)
-            "end": 1530719782                                               // required; Notification end time (epoch millisecond timestamp)
+            "end": 1530719782                                                // required; Notification end time (epoch millisecond timestamp)
         }
 
 + Response 201 (application/json)
@@ -1758,3 +4874,93 @@ Reuse API:
 
 Debug API:
 * not needed for now - special use case
+
+
+// https://apiblueprint.org/documentation/specification.html#data-structures-section
+# Data Structures
+
+## Role (object) 
++ id (string) - UUID 
++ name (string) - Name of the role
++ privileges (array[string]) - Belonging privileges of the role
++ default (boolean) - Indicates the role is assigned to new users by default [ true | false ]
+
+## CreateOrUpdateRole (object) 
++ name (string, required) - Name of the role
++ privileges (array[string], required) - Belonging privileges of the role
++ default (boolean, optional) - Indicates the role is assigned to new users by default [ true | false ]
+
+## User (object)
++ id (string) - UUID
++ username (string) - The username
++ fullName (string) - The full name of the user
++ createdOn (string) - The ISO8601 timestamp indicating when the user was created
++ lastIntegrationAccess (string) - The ISO8601 timestamp indicating when the last integration access occurred
++ licenseType (string) - Indicates the type of license as one of ['named' | 'concurrent' | 'builtin']
++ licenseStatus (string) - The license status
++ tenantId (string) - The tenant ID
++ activeTokenId (string) - Displays the currently active API token's id or an empty string if there is no active token
++ checkingFrequency (UserStatus) - Displays a rough idea of the usage pattern of the user by checking their frequency across the lifetime of the user in days
++ properties (object) - Key/Value pair of properties
++ roles (array[Role]) - List of assigned roles
++ customFields (array[CustomField]) - List of custom fields
+
+### UserStatus (enum)
++ `frequent` - Perform 1 more check than regular users.
++ `infrequent` - Perform fewer checks than regular users.
++ `regular` - Performs 1 check in 24 hours (plus/minus 25%) on average.
+
+## CreateUser (object)
++ username (string) - The unique username, max length 255 characters
++ fullName (string) - The full name of the user, max length 255 characters (optional)
++ password (string) - The user password, length between 1 and 128 characters (optional)
++ licenseType (string) - Indicates the type of license as one of ['named' | 'concurrent'] (optional)
++ roles (array[Role]) - List of assignable roles (optional)
+
+### CustomField (object)
++ key (string) - The unique key of the custom field 
++ displayName (string) - The name to be displayed
++ inputType (string) - Indicates the origin of the field ['required' | 'optional' | 'externallyProvided']
++ type (string) - Indicates the type ['list' | 'text']
++ value (string) - The value of the field
++ possibleValues (array[string]) - List of possible valid values
+
+### UserApiTokenCreateResponse
++ type: "api" (string)
++ issuedAt (string) - The ISO8601 timestamp indicating when the token was issued at
++ expiresAt (string) - The ISO8601 timestamp indicating when the token will expire at
++ token (string) - The generated API token (JWT)
+
+### BulkCreateUser (object)
++ users (array[CreateUser]) - List of users to be created
+
+## BulkResult
++ status (number) - The resulting HTTP success code of the operation performed on the object
++ id (string) - The generated UUID of the object
++ location (string) - The href location of the affected object
+
+## BulkError
++ status (number) - The resulting HTTP error code of the operation performed on the object
++ id (string) - An associated unique identifier of the object involved in the error
++ type (string) - Indicates the type of the error ['client' | 'server']
++ title (string) - The title of the error message
++ detail (string) - More details on the actual error and the potential cause
++ reference (string) - UUID for internal error logging reference
+
+## BulkResultResponse (object)
++ results (array[BulkResult])
++ errors (array[BulkError])
+
+## LicenseStatistics
++ named (Named)
++ concurrent (Concurrent)
+
+### Named
++ licensed (number) - The total number of named licenses available
++ active (number) - The number of active named users
++ inactive (number) - The number of inactive named users
++ available (number) - The numer of avialable licenses (licensed - active)
+
+### Concurrent
++ licensed (number) - The total number of concurrent licenses available
++ existing (number) - The number of concurrent lincenses used
