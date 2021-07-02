@@ -2264,27 +2264,27 @@ Alternatively, you can always leave out the `+` character as it will default to 
                 "roles": [{"id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e"}]
             }
 
-* Response 400 (application/json)
++ Response 400 (application/json)
 
         // when the roles array is empty
         {
-          "links": {},
-          "error": {
-            "reference": "aecbef3d-d1a5-4d69-8d6c-3639f3d944b1",
-            "detail": "Check the request for invalid values or missing parameters.",
-            "type": "validation",
-            "title": "Invalid request attributes",
-            "validationDetails": [
-              {
-                "title": "Validation error",
-                "constraint": "NotEmpty",
-                "attributePath": "roles",
-                "detail": "must not be empty",
-                "invalidValue": "[]"
-              }
-            ],
-            "status": 400
-          }
+            "links": {},
+            "error": {
+                "reference": "aecbef3d-d1a5-4d69-8d6c-3639f3d944b1",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "roles",
+                        "detail": "must not be empty",
+                        "invalidValue": "[]"
+                    }
+                ],
+                "status": 400
+            }
         }
 
 + Response 401 (application/json)
