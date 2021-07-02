@@ -2128,6 +2128,10 @@ Alternatively, you can always leave out the `+` character as it will default to 
 
 ### Update a User [PUT /api/v1/user/{id}]
 
+**Note:**
+
+- You need `UserAndRoles.editUser` privileges to perform this request.
+
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
@@ -2544,6 +2548,110 @@ Alternatively, you can always leave out the `+` character as it will default to 
                 "type": "client",
                 "title": "Not Found",
                 "status": 404
+            }
+        }
+
++ Request Update the license type of a user (application/json)
+
+    You can update the license type of a user according to the licensing models available. This may only apply to Acrolinx installations that support
+    a dual licensing model, for example `Named` and `Concurrent` licenses. Switching to and from different licenses is permitted as long as the
+    licensing models are present.
+
+    **Note:**
+    - You cannot change the license type of built-in users such as
+        - Admin
+        - TermBrowser
+        - TermTargetAccess
+        - TermContribution
+        - TermApiAccess
+        - AnalyticsReadOnlyUser
+    - You cannot change the license of a user to that of a built-in user
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
+
+    + Attributes (object)
+        + licenseType (string, required) - one of 'named' or 'concurrent'
+
+    + Body
+
+            {
+                "licenseType": 'named'
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "New Full Name",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to update license type
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
             }
         }
 
