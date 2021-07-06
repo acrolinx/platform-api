@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6d0fcbb0-ade7-4b8d-b8bb-a6c523c86841",
+		"_postman_id": "17a64e2b-3c50-47c6-8ce8-e90121ee42cd",
 		"name": "Acrolinx API",
 		"description": "Acrolinx API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -726,6 +726,44 @@
 									]
 								},
 								"description": "In this example we are updating the user's Department custom field value. Note the value attribute is empty, to reset the already set value."
+							},
+							"response": []
+						},
+						{
+							"name": "Update the license type of a user",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "X-Acrolinx-Auth",
+										"value": "{{ACCESS_TOKEN}}"
+									},
+									{
+										"key": "X-Acrolinx-Client",
+										"value": "{{SIGNATURE}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"licenseType\": \"named\"\r\n}"
+								},
+								"url": {
+									"raw": "{{ACROLINX_URL}}/api/v1/user/{{user_id}}",
+									"host": [
+										"{{ACROLINX_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"{{user_id}}"
+									]
+								},
+								"description": "You can update the license type of a user according to the licensing models available. \n\nThis may only apply to Acrolinx installations that support\n    a dual licensing model, for example `Named` and `Concurrent` licenses. Switching to and from different licenses is permitted as long as the\n    licensing models are present. \n\nYou need `UserAndRoles.editUser` privileges to perform this request.\n\n**Note:**\n- You cannot change the license type of built-in users such as\n   - Admin\n   - TermBrowser\n   - TermTargetAccess\n   - TermContribution\n   - TermApiAccess\n   - AnalyticsReadOnlyUser\n- You cannot change the license of a user to that of a built-in user"
 							},
 							"response": []
 						}
