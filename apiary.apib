@@ -2714,6 +2714,18 @@ Alternatively, you can always leave out the `+` character as it will default to 
             }
         }
 
+        // when you update license type of a user to a license model that is not supported in your contract
+        {
+        "links": {},
+            "error": {
+                "reference": "83d3a698-d537-4ea6-87b6-efa815cb6fe5",
+                "detail": "Current license model does not support changing license type to 'Concurrent'",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
 ### Delete a User [DELETE /api/v1/user/{id}]
 
 This method deletes a specified user based on its *id*.
