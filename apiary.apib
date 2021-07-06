@@ -2616,7 +2616,7 @@ Alternatively, you can always leave out the `+` character as it will default to 
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
 
     + Attributes (object)
-        + licenseType (string, required) - one of 'named' or 'concurrent'
+        + licenseType (UserLicense, required) - one of 'named' or 'concurrent'
 
     + Body
 
@@ -5117,3 +5117,7 @@ Debug API:
 ### Concurrent
 + licensed (number) - The total number of concurrent licenses available
 + existing (number) - The number of concurrent lincenses used
+
+### UserLicense (enum)
++ `named` - Fixed license
++ `concurrent` - Floating license
