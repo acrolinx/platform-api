@@ -2700,6 +2700,20 @@ Alternatively, you can always leave out the `+` character as it will default to 
             }
         }
 
++ Response 409 (application/json)
+
+        // when you update license type of a built-in user
+        {
+        "links": {},
+            "error": {
+                "reference": "d243e8ed-ea9a-4a28-983b-3f5b8651fd25",
+                "detail": "Not possible to update built-in user",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
 ### Delete a User [DELETE /api/v1/user/{id}]
 
 This method deletes a specified user based on its *id*.
