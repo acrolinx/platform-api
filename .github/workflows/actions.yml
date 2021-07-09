@@ -1,9 +1,6 @@
 name: Lint API Blueprint
 
-on: 
-  push:
-    paths:
-      - 'apiary.apib'
+on: [push]
 
 jobs:
   build:
