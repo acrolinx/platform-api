@@ -1302,6 +1302,34 @@ So that the `+` character encoded to `%2B` stays valid, make sure that the query
 with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
 Alternatively, you can always leave out the `+` character as it will default to ascending order.
 
+**Pagination**
+
+Instead of getting the entire list of users, you can also request a paginated
+response by adding two query parameters, `page` and `per_page`. Setting `page`
+is required, counting of pages starts at `1`. By default, `per_page` is set to
+`10`, so this parameter is optional.
+
+In case a paginated response is requested, a couple of header values will be added:
+
+| Header                     | Description                                     |
+|----------------------------|-------------------------------------------------|
+| `X-Acrolinx-Page`          | The index of the current page, starting at `1`. |
+| `X-Acrolinx-Next-Page`     | The index of the next page.                     |
+| `X-Acrolinx-Previous-Page` | The index of the previous page.                 |
+| `X-Acrolinx-Total-Pages`   | The total number of pages.                      |
+| `X-Acrolinx-Total`         | The total number of items.                      |
+
+In addition to the header values, the response object contains a couple of URLs
+within the `links` object:
+
+| Relation | Description                       |
+|----------|-----------------------------------|
+| `next`   | The URL to get the next page.     |
+| `prev`   | The URL to get the previous page. |
+| `first`  | The URL to get the first page.    |
+| `last`   | The URL to get the last page.     |
+
+
 + Request Get a list of all users (application/json)
 
 + Parameters
