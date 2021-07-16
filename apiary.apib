@@ -1329,6 +1329,8 @@ within the `links` object:
 | `first`  | The URL to get the first page.    |
 | `last`   | The URL to get the last page.     |
 
+The example response contains the pagination URLs in the `links` object to show
+what can be expected.
 
 + Request Get a list of all users (application/json)
 
@@ -1351,6 +1353,10 @@ within the `links` object:
             + `licenseType`
             + `licenseStatus`
 
+    + page (number, optional) - Optional query parameter for pagination
+    + per_page (number, optional) - Optional query parameter for sizing a page
+      + Default: `10`
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -1360,7 +1366,12 @@ within the `links` object:
     + Body
 
             {
-                "links": {},
+                "links": {
+                    "prev": "https://tenant.acrolinx.cloud/api/v1/user?page=2&per_page=2",
+                    "next": "https://tenant.acrolinx.cloud/api/v1/user?page=4&per_page=2",
+                    "first": "https://tenant.acrolinx.cloud/api/v1/user?page=1&per_page=2",
+                    "last": "https://tenant.acrolinx.cloud/api/v1/user?page=60&per_page=2"
+                },
                 "data": [
                     {
                         "id": "eb323701-839f-4998-b56e-3e20c70259c5",
