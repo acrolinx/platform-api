@@ -1355,12 +1355,12 @@ what can be expected.
 
     + page (number, optional) - Optional query parameter for pagination
     + per_page (number, optional) - Optional query parameter for sizing a page
-      + Default: `10`
+        + Default: `10`
 
 + Response 200 (application/json)
 
     + Attributes (object)
-        + links (object)
+        + links (Pagination)
         + data (array[User])
     
     + Body
@@ -5052,3 +5052,9 @@ Debug API:
 ### Concurrent
 + licensed (number) - The total number of concurrent licenses available
 + existing (number) - The number of concurrent lincenses used
+
+### Pagination
++ prev (string) - URI of the previous page
++ next (string) - URI of the next page
++ first (string) - URI of the first page
++ last  (string) - URI of the last page
