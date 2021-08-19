@@ -445,14 +445,14 @@ privileges and identity owned by the user that signed in.
 
 When polling returned a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
 
++ Parameters
+    + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
+
 + Request
 
     + Header
 
             X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45
-
-+ Parameters
-    + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
 
 + Response 200 (application/json)
    A user has completed the sign-in process and the server has created a new access token.
@@ -1260,8 +1260,8 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API token contains a new privilege token with the right Reporting.read.
 
-    + Parameters
-        + batchId: `XYZ-10-22-33` (required, string) - the batch check id
++ Parameters
+    + batchId: `XYZ-10-22-33` (required, string) - the batch check id
 
 + Request
 
@@ -1362,13 +1362,6 @@ within the `links` object:
 The example response contains the pagination URLs in the `links` object to show
 what can be expected.
 
-+ Request Get a list of all users (application/json)
-
-    + Headers
-
-            X-Acrolinx-Auth: your_access_token
-
-
 + Parameters
 
     + sort (enum[string], optional) - Optional query parameter for sorting by an attribute. 
@@ -1391,6 +1384,12 @@ what can be expected.
     + page (number, optional) - Optional query parameter for pagination
     + per_page (number, optional) - Optional query parameter for sizing a page
         + Default: `10`
+
++ Request Get a list of all users (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 200 (application/json)
 
