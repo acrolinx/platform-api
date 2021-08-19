@@ -3078,14 +3078,14 @@ This method uses the *id* to release an active license consumed by a user.
 
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
 
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+
 + Request Release an Active Named User License by user id
 
     + Headers
 
             X-Acrolinx-Auth: your_access_token
-
-    + Parameters
-        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
 
 + Response 204
 
@@ -4694,9 +4694,6 @@ This lets you update a role that was identified by its *id* in the database.
 
             X-Acrolinx-Auth: your_access_token
 
-    + Parameters
-        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
-
     + Attributes (object)
         + default (boolean, required) - Possible values are 'true' or 'false'
 
@@ -4763,6 +4760,9 @@ This lets you delete a specified role based on its *id*.
 - The role isn’t a preconfigured built-in role such as "Author", "Super Administrator", or "Term Browser".
 - The role isn’t selected as a default role.
 - The role isn’t currently assigned to one or more users.
+
++ Parameters
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
 
 + Request Delete by id
 
