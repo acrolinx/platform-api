@@ -3473,6 +3473,12 @@ To read more about role-based access control in Acrolinx, see the [Acrolinx role
 
 Returns a list of all roles including the associated privileges.
 
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -3628,6 +3634,12 @@ This returns a list of all supported privileges.
 In newer platform releases, there are rare instances where privileges might be introduced or removed. 
 To find out which privileges come with your installation, submit this request and compare it to the example response.  
 
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -3730,6 +3742,10 @@ This lets you add new roles.
 
 
 + Request Create a role (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateOrUpdateRole)
 
@@ -3876,6 +3892,10 @@ This lets you add new roles.
         }
 
 + Request Create a default role (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateOrUpdateRole)
 
@@ -4026,8 +4046,14 @@ This lets you add new roles.
 
 This returns a role that was identified by its *id* in the database.
 
-+ Parameters
-    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Parameters
+        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
 
 + Response 200 (application/json)
 
@@ -4093,7 +4119,11 @@ This lets you update a role that was identified by its *id* in the database.
 
     **Note:** Check the other request examples to see how to update individual attributes and validations.
 
-     + Parameters
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
 
     + Attributes (CreateOrUpdateRole)
@@ -4165,6 +4195,10 @@ This lets you update a role that was identified by its *id* in the database.
 
     **Note:**
     - The name needs to be unique and must be between 1 and 254 characters.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
@@ -4312,6 +4346,10 @@ This lets you update a role that was identified by its *id* in the database.
     **Warning:** This action **permanently** updates the privileges that belong to a role. 
     When you change the privileges for a role, all users with that role will get the updated set of privileges.
 
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
     + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
 
@@ -4458,6 +4496,10 @@ This lets you update a role that was identified by its *id* in the database.
     **Note:**
     - You can have multiple default roles.
 
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
     + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
 
@@ -4540,6 +4582,10 @@ This lets you update a role that was identified by its *id* in the database.
     **Note:**
     - You aren’t required to have default roles.
 
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
     + Parameters
         + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
 
@@ -4609,6 +4655,12 @@ This lets you delete a specified role based on its *id*.
 - The role isn’t a preconfigured built-in role such as "Author", "Super Administrator", or "Term Browser".
 - The role isn’t selected as a default role.
 - The role isn’t currently assigned to one or more users.
+
++ Request Delete by id
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 204 (application/json)
 
