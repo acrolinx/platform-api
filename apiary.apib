@@ -503,6 +503,13 @@ If the server runs in Targets Mode, the goals contain an additional string field
 `required` (meaning this goal will be included in the calculation of the overall score so it is required to take this goal into account
 when creating content) or `recommended` (meaning this goal is a recommendation only and does not count towards the overall document score).
 
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
+
 + Response 200 (application/json)
 
         {
@@ -600,63 +607,69 @@ The same information is available in the checking capabilities.
 
 + Request (application/json)
 
+    + Headers
 
-        A minimal request declaring the format only:
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
 
-        {
-            "content": "text to check",                  // required
-            "checkOptions": {
-                "contentFormat": "markdown",                 // optional, default: auto
-            },
-        }
+    + Body
 
-        A minimal request using a document reference to tell the format:
+            // A minimal request declaring the format only:
 
-        {
-            "content": "text to check",                  // required
-            "document": {                                // optional, default: empty "document" object
-                "reference": "C:\\abc.md",              // optional, used to determine the input format and correlate multiple checks of the same document
+            {
+                "content": "text to check",                  // required
+                "checkOptions": {
+                    "contentFormat": "markdown",                 // optional, default: auto
+                },
             }
-        }
+
+            // A minimal request using a document reference to tell the format:
+
+            {
+                "content": "text to check",                  // required
+                "document": {                                // optional, default: empty "document" object
+                    "reference": "C:\\abc.md",              // optional, used to determine the input format and correlate multiple checks of the same document
+                }
+            }
 
 
-        If a standard format is configured on the server, the minimal request is even shorter:
+            // If a standard format is configured on the server, the minimal request is even shorter:
 
-        {
-            "content": "text to check",                  // required
-        }
+            {
+                "content": "text to check",                  // required
+            }
 
-        A request can be much more specific, this is the full set of attributes:
+            // A request can be much more specific, this is the full set of attributes:
 
-        {
-            "content": "text to check",                  // required
-            "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
-            "checkOptions": {
-                "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
-                "reportTypes": ["scorecard"],  // optional, default: scorecard
-                "contentFormat": "markdown",                 // optional, default: auto
-                "checkType": "batch",                        // optional, default: interactive
-                                                             // the use case of the check, can be:
-                                                             //   interactive =  human user checks own document
-                                                             //   batch       =  human user checks many own documents
-                                                             //   baseline    =  a repository of documents is checked, the user doesn't own the documents
-                                                             //   automated   =  check of a single document for automated scenarios as for example a git hook
-                "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
-                "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
-            },
-            "document": {                                // optional, default: empty "document" object
-                "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
-                "customFields": [                       // optional
-                    {
-                        "key": "field1",
-                        "value": "value1"
-                    },{
-                        "key": "field2",
-                        "value": "value2"
-                    }
-                ]
-             }
-        }
+            {
+                "content": "text to check",                  // required
+                "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
+                "checkOptions": {
+                    "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
+                    "reportTypes": ["scorecard"],  // optional, default: scorecard
+                    "contentFormat": "markdown",                 // optional, default: auto
+                    "checkType": "batch",                        // optional, default: interactive
+                                                                 // the use case of the check, can be:
+                                                                 //   interactive =  human user checks own document
+                                                                 //   batch       =  human user checks many own documents
+                                                                 //   baseline    =  a repository of documents is checked, the user doesn't own the documents
+                                                                 //   automated   =  check of a single document for automated scenarios as for example a git hook
+                    "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
+                    "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
+                },
+                "document": {                                // optional, default: empty "document" object
+                    "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
+                    "customFields": [                       // optional
+                        {
+                            "key": "field1",
+                            "value": "value1"
+                        },{
+                            "key": "field2",
+                            "value": "value2"
+                        }
+                    ]
+                 }
+            }
 
 + Response 201 (application/json)
 
@@ -705,6 +718,13 @@ Note that not all occurrences of an issue always have the same suggestions. In t
 ### Poll Check Result [GET]
 
 Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
 
 + Parameters
     + id: `AB-153` (required, string) ... the check id
@@ -1217,8 +1237,15 @@ Polls the check result. Either a progress or the completed result is returned. T
 
         Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
 
-+ Parameters
-   + id: `153` (required, number) ... the check id
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
+
+    + Parameters
+        + id: `153` (required, number) ... the check id
 
 
 + Response 200 (application/json)
@@ -1234,8 +1261,15 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API token contains a new privilege token with the right Reporting.read.
 
-+ Parameters
-    + batchId: `XYZ-10-22-33` (required, string) ... the batch check id
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
+
+    + Parameters
+        + batchId: `XYZ-10-22-33` (required, string) ... the batch check id
 
 + Response 200 (application/json)
 
