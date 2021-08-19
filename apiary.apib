@@ -1334,6 +1334,11 @@ what can be expected.
 
 + Request Get a list of all users (application/json)
 
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+
 + Parameters
 
     + sort (enum[string], optional) - Optional query parameter for sorting by an attribute. 
@@ -1513,6 +1518,10 @@ what can be expected.
 
 + Request Get specified user by id (application/json)
 
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
@@ -1629,6 +1638,10 @@ what can be expected.
      This will create a new user if you add a username, fullName, and password to the request. 
 
     **Note:** By default, Acrolinx will automatically assign the user the license type `named` and the role `Author`.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateUser)
     
@@ -1805,6 +1818,10 @@ what can be expected.
     This request will create a new user with the `named` license type explicitly specified in the request model. 
     
     **Note:** Acrolinx will automatically assign the default role `Author` to the user.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateUser)
 
@@ -2179,6 +2196,10 @@ what can be expected.
     **Note:**
     - You can delete the `fullName` by changing the attribute to empty.
 
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
     + Parameters
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
 
@@ -2286,6 +2307,10 @@ what can be expected.
     You can update a user’s role.
 
     In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn’t apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn’t exist, the call will fail and the error message will show the unknown roles that were referenced.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Parameters
         + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
@@ -2411,6 +2436,10 @@ what can be expected.
 
 + Request Set a custom field (application/json)
 
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
     + Attributes (object)
         + customFields (array[CustomField])
 
@@ -2491,6 +2520,10 @@ what can be expected.
             }
 
 + Request Clear a custom field (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (object)
         + customFields (array[CustomField])
@@ -2644,8 +2677,14 @@ This method deletes a specified user based on its *id*.
 
 To read more about managing users and built-in users, see [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users) in the Acrolinx documentation.
 
-+ Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
++ Request Delete user by id
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
 + Response 204
 
@@ -2845,8 +2884,14 @@ Typical use cases for this API:
     Sometimes an admin might want to impersonate a user to help troubleshoot. 
     If a user comes across a bug, for example, an admin may want to impersonate the user to try and duplicate the problem.   
 
-+ Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
++ Request Create an API token for someone by user id
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
 + Response 200 (application/json)
 
@@ -2916,8 +2961,14 @@ This method uses the *id* to release an active license consumed by a user.
 
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
 
-+ Parameters
-      + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
++ Request Release an Active Named User License by user id
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Parameters
+        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
 
 + Response 204
 
@@ -3011,6 +3062,7 @@ The header parameters are set as follows:
     + Headers
 
             Accept: text/csv
+            X-Acrolinx-Auth: your_access_token
 
 + Response 200 (text/csv)
 
@@ -3061,6 +3113,7 @@ The header parameters are set as follows:
     + Headers
 
             Accept: text/html
+            X-Acrolinx-Auth: your_access_token
 
 + Response 406
 
@@ -3096,6 +3149,10 @@ noted in the Create User API section.
     This request lets you create 5 new users by specifying some basic fields (`username`, `fullName`, `password`) in the request model.
 
     **Note:** Acrolinx will assign a license type and role automatically. These are typically the license type `named` and the role `Author`.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (BulkCreateUser)
     
