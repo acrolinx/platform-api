@@ -25,7 +25,7 @@ You can get an Access Token by using the Acrolinx sign-in workflow.
 
 How to use an Access Token?
 
-Every request you're doing with the Acrolinx Platform API must contain a [header](#header-access-token) providing the Access Token:
+Every request you make with the Acrolinx Platform API must contain a [header](#header-access-token) that provides the Access Token:
 
 ```
     X-Acrolinx-Auth: WERTZUIOP
@@ -1265,7 +1265,7 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
-In the User API, Acrolinx defines a user as an entity that has an id, a sign-in name, a name, custom properties (set by the client), and user information.
+In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
 You’re _required_ to provide user information for the following:
 * Interactive integrations: When you sign in to the Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
@@ -1274,6 +1274,8 @@ You’re _required_ to provide user information for the following:
 Security:
 * A user can read and update its own data.
 * Only privileged users (admin, for example) can read or update other users' data.
+
+**Note:** Before you get started, be sure to read the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements for the Acrolinx Platform API. 
 
 ## Current User [/api/v1/user/self]
 
@@ -3370,6 +3372,8 @@ You can use roles to group sets of privileges and assign them to different users
 Mark roles as default if you want to automatically assign at least one default role to all new users.
 
 To read more about role-based access control in Acrolinx, see the [Acrolinx roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles).
+
+**Note:** Before you get started, be sure to read the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements for the Acrolinx Platform API. 
 
 ## Roles [/api/v1/roles/]
 
