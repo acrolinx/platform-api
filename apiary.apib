@@ -3259,7 +3259,7 @@ In this model, the incoming bulk request includes a list of objects that need to
 The response to the request is `207 Multi-Status`. The response includes a list of `results` for the objects that were processed successfully 
 and a list of `errors` for the objects that couldn’t be processed.
 
-**Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
+**Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is non-transactional.
 
 ### Create Users in Bulk [POST /api/v1/user/bulk]
 
@@ -5181,7 +5181,7 @@ Checking Profiles:
 * get and update user settings? get and update profile user settings? what is this?
 
 Feedback API:
-* submit issue feedback - will be reimplemented anyway
+* submit issue feedback - will be re-implemented anyway
 
 Reuse API:
 * deprecated anyway
@@ -5273,11 +5273,11 @@ Debug API:
 + licensed (number) - The total number of named licenses available
 + active (number) - The number of active named users
 + inactive (number) - The number of inactive named users
-+ available (number) - The numer of avialable licenses (licensed - active)
++ available (number) - The number of available licenses (licensed - active)
 
 ### Concurrent
 + licensed (number) - The total number of concurrent licenses available
-+ existing (number) - The number of concurrent lincenses used
++ existing (number) - The number of concurrent licenses used
 
 ### Pagination
 + prev (string) - URI of the previous page
