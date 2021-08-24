@@ -1337,7 +1337,7 @@ Alternatively, you can always leave out the `+` character as it will default to 
 Instead of getting the entire list of users, you can also request a paginated
 response by adding two query parameters, `page` and `per_page`. Setting `page`
 is required, counting of pages starts at `1`. By default, `per_page` is set to
-`10`, so this parameter is optional.
+`10`, this parameter is optional and has a maximum limit of 500.
 
 In case a paginated response is requested, a couple of header values will be added:
 
@@ -1358,6 +1358,9 @@ within the `links` object:
 | `prev`   | The URL to get the previous page. |
 | `first`  | The URL to get the first page.    |
 | `last`   | The URL to get the last page.     |
+
+The `next` and `prev` link will be omitted when those pages do not exist. For example when
+viewing page 1 there `prev` link will be omitted because there is no resource to page 0.
 
 The example response contains the pagination URLs in the `links` object to show
 what can be expected.
@@ -1512,6 +1515,26 @@ what can be expected.
                         "detail": "must match \"[+-]?[A-Za-z0-9_]{1,50}\"",
                         "invalidValue": "+"
                     }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the per_page parameter exceeds the 500 per page limit
+        {
+            "links": {},
+            "error": {
+                "reference": "196f8b88-493c-46d7-b7bc-5da32d0a58d7",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                {
+                    "title": "Validation error",
+                    "constraint": "Range",
+                    "detail": "must be between 1 and 500",
+                    "invalidValue": "900"
+                }
                 ],
                 "status": 400
             }
