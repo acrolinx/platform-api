@@ -25,7 +25,7 @@ You can get an Access Token by using the Acrolinx sign-in workflow.
 
 How to use an Access Token?
 
-Every request you're doing with the Acrolinx Platform API must contain a [header](#header-access-token) providing the Access Token:
+Every request you make with the Acrolinx Platform API must contain a [header](#header-access-token) that provides the Access Token:
 
 ```
     X-Acrolinx-Auth: WERTZUIOP
@@ -502,6 +502,8 @@ for filtering purposes, but they can only select one (complete) guidance profile
 If the server runs in Targets Mode, the goals contain an additional string field called `scoring`. It can have the values
 `required` (meaning this goal will be included in the calculation of the overall score so it is required to take this goal into account
 when creating content) or `recommended` (meaning this goal is a recommendation only and does not count towards the overall document score).
+
+**Note:** Before you get started with the Checking API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
 + Request
 
@@ -1299,7 +1301,7 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
-In the User API, Acrolinx defines a user as an entity that has an id, a sign-in name, a name, custom properties (set by the client), and user information.
+In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
 You’re _required_ to provide user information for the following:
 * Interactive integrations: When you sign in to the Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
@@ -1308,6 +1310,8 @@ You’re _required_ to provide user information for the following:
 Security:
 * A user can read and update its own data.
 * Only privileged users (admin, for example) can read or update other users' data.
+
+**Note:** Before you get started with the User API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
 ## User Resource [/api/v1/user]
 
@@ -3583,6 +3587,8 @@ Mark roles as default if you want to automatically assign at least one default r
 
 To read more about role-based access control in Acrolinx, see the [Acrolinx roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles).
 
+**Note:** Before you get started with the Role API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+
 ## Roles [/api/v1/roles/]
 
 ### Get All Roles [GET]
@@ -5171,7 +5177,7 @@ Checking Profiles:
 * get and update user settings? get and update profile user settings? what is this?
 
 Feedback API:
-* submit issue feedback - will be reimplemented anyway
+* submit issue feedback - will be re-implemented anyway
 
 Reuse API:
 * deprecated anyway
@@ -5180,7 +5186,6 @@ Debug API:
 * not needed for now - special use case
 
 
-// https://apiblueprint.org/documentation/specification.html#data-structures-section
 # Data Structures
 
 ## Role (object) 
@@ -5263,11 +5268,11 @@ Debug API:
 + licensed (number) - The total number of named licenses available
 + active (number) - The number of active named users
 + inactive (number) - The number of inactive named users
-+ available (number) - The numer of avialable licenses (licensed - active)
++ available (number) - The number of available licenses (licensed - active)
 
 ### Concurrent
 + licensed (number) - The total number of concurrent licenses available
-+ existing (number) - The number of concurrent lincenses used
++ existing (number) - The number of concurrent licenses used
 
 ### Pagination
 + prev (string) - URI of the previous page
