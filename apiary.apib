@@ -1367,6 +1367,11 @@ The `next` and `prev` link will be omitted when those pages do not exist. For ex
 viewing page 1 there `prev` link will be omitted because there is no resource to page 0. This
 also hold true for the values in the headers.
 
+**Note:** Going to the next or previous page will display the current paginated view at the time
+the API call is made. Any changes to the underlying data source is reflected. For example; if
+you are at page 2 of 10 at 10 records per page and before calling the API to fetch the 3rd page, 10 users
+are deleted, then the response will show that you are at page 3 of 9.
+
 The example response contains the pagination URLs in the `links` object to show
 what can be expected.
 
