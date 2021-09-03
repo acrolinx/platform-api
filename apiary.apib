@@ -1338,12 +1338,12 @@ Alternatively, you can always leave out the `+` character as it will default to 
 
 **Pagination**
 
-Instead of getting the entire list of users, you can also request a paginated
-response by adding two query parameters, `page` and `per_page`. Setting `page`
-is required, counting of pages starts at `1`. By default, `per_page` is set to
-`10`, this parameter is optional and has a maximum limit of 500.
+For a better overview, you might like to view the list of users in pages instead of in one long list.
+To request a paginated response, add the query parameters `page` and `per_page`. 
+You’ll need to set the `page` parameter. The page count always starts at `1`. 
+By default, `per_page` is set to `10`. You can display as many as 500 users per page. This is an optional parameter. 
 
-In case a paginated response is requested, a couple of header values will be added:
+If you request a paginated response, Acrolinx will add the following header values:
 
 | Header                     | Description                                     |
 |----------------------------|-------------------------------------------------|
@@ -1353,7 +1353,7 @@ In case a paginated response is requested, a couple of header values will be add
 | `X-Acrolinx-Total-Pages`   | The total number of pages.                      |
 | `X-Acrolinx-Total`         | The total number of items.                      |
 
-In addition to the header values, the response object contains a couple of URLs
+In addition to the header values, the response object contains a few URLs
 within the `links` object:
 
 | Relation | Description                       |
@@ -1363,17 +1363,15 @@ within the `links` object:
 | `first`  | The URL to get the first page.    |
 | `last`   | The URL to get the last page.     |
 
-The `next` and `prev` link will be omitted when those pages do not exist. For example when
-viewing page 1 there `prev` link will be omitted because there is no resource to page 0. This
-also hold true for the values in the headers.
+If there aren’t any next or previous pages, you won’t see the `next` and `prev` links. 
+For example, when you view page 1, you won't see a `prev` link because there's no page 0. 
+This is also the case for the values in the headers.
 
-**Note:** Going to the next or previous page will display the current paginated view at the time
-the API call is made. Any changes to the underlying data source is reflected. For example; if
-you are at page 2 of 10 at 10 records per page and before calling the API to fetch the 3rd page, 10 users
-are deleted, then the response will show that you are at page 3 of 9.
+**Note:** When you switch to the next or previous page, you'll see the current paginated view at the time of the API call. 
+This will also reflect any changes to the underlying data source. Say you're on page 2 of 10 with 10 records per page. 
+You then decide to delete 10 users before you call the API to fetch page 3. Now when you switch to page 3, the response will show page 3 of 9.
 
-The example response contains the pagination URLs in the `links` object to show
-what can be expected.
+The example response includes the pagination URLs in the `links` object so you know what to expect.
 
 + Parameters
 
