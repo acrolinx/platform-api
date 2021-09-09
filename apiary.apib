@@ -2465,7 +2465,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // When the provided custom field value is not in the possible values
+        // when the provided custom field value is not in the possible values
         {
             "links": {},
             "error": {
@@ -2483,6 +2483,30 @@ This is an alternative way of getting information about the current (in request 
                             "Example Department"
                         ],
                         "type": "InvalidValue"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the provided custom filed does not exists
+        {
+            "links": {},
+            "error": {
+                "detail": "Cannot set custom field \"T-Shirt size\" as its value is not one of \"Department\".",
+                "type": "customFieldsIncorrect",
+                "title": "Custom field values are incorrect",
+                "validationDetails": [
+                    {
+                        "title": "Invalid custom field name",
+                        "constraint": "Must be one of \"Department\".",
+                        "attributePath": "customFields.T-Shirt size",
+                        "detail": "Cannot set custom field \"T-Shirt size\" as its value is not one of \"Department\".",
+                        "invalidValue": "T-Shirt size",
+                        "possibleValues": [
+                            "Department"
+                        ],
+                        "type": "InvalidField"
                     }
                 ],
                 "status": 400
