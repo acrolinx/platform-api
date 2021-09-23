@@ -25,7 +25,7 @@ You can get an Access Token by using the Acrolinx sign-in workflow.
 
 How to use an Access Token?
 
-Every request you're doing with the Acrolinx Platform API must contain a [header](#header-access-token) providing the Access Token:
+Every request you make with the Acrolinx Platform API must contain a [header](#header-access-token) that provides the Access Token:
 
 ```
     X-Acrolinx-Auth: WERTZUIOP
@@ -445,14 +445,14 @@ privileges and identity owned by the user that signed in.
 
 When polling returned a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
 
++ Parameters
+    + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
+
 + Request
 
     + Header
 
             X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45
-
-+ Parameters
-    + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
 
 + Response 200 (application/json)
    A user has completed the sign-in process and the server has created a new access token.
@@ -502,6 +502,15 @@ for filtering purposes, but they can only select one (complete) guidance profile
 If the server runs in Targets Mode, the goals contain an additional string field called `scoring`. It can have the values
 `required` (meaning this goal will be included in the calculation of the overall score so it is required to take this goal into account
 when creating content) or `recommended` (meaning this goal is a recommendation only and does not count towards the overall document score).
+
+**Note:** Before you get started with the Checking API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
 
 + Response 200 (application/json)
 
@@ -600,63 +609,69 @@ The same information is available in the checking capabilities.
 
 + Request (application/json)
 
+    + Headers
 
-        A minimal request declaring the format only:
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
 
-        {
-            "content": "text to check",                  // required
-            "checkOptions": {
-                "contentFormat": "markdown",                 // optional, default: auto
-            },
-        }
+    + Body
 
-        A minimal request using a document reference to tell the format:
+            // A minimal request declaring the format only:
 
-        {
-            "content": "text to check",                  // required
-            "document": {                                // optional, default: empty "document" object
-                "reference": "C:\\abc.md",              // optional, used to determine the input format and correlate multiple checks of the same document
+            {
+                "content": "text to check",                  // required
+                "checkOptions": {
+                    "contentFormat": "markdown",                 // optional, default: auto
+                },
             }
-        }
+
+            // A minimal request using a document reference to tell the format:
+
+            {
+                "content": "text to check",                  // required
+                "document": {                                // optional, default: empty "document" object
+                    "reference": "C:\\abc.md",              // optional, used to determine the input format and correlate multiple checks of the same document
+                }
+            }
 
 
-        If a standard format is configured on the server, the minimal request is even shorter:
+            // If a standard format is configured on the server, the minimal request is even shorter:
 
-        {
-            "content": "text to check",                  // required
-        }
+            {
+                "content": "text to check",                  // required
+            }
 
-        A request can be much more specific, this is the full set of attributes:
+            // A request can be much more specific, this is the full set of attributes:
 
-        {
-            "content": "text to check",                  // required
-            "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
-            "checkOptions": {
-                "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
-                "reportTypes": ["scorecard"],  // optional, default: scorecard
-                "contentFormat": "markdown",                 // optional, default: auto
-                "checkType": "batch",                        // optional, default: interactive
-                                                             // the use case of the check, can be:
-                                                             //   interactive =  human user checks own document
-                                                             //   batch       =  human user checks many own documents
-                                                             //   baseline    =  a repository of documents is checked, the user doesn't own the documents
-                                                             //   automated   =  check of a single document for automated scenarios as for example a git hook
-                "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
-                "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
-            },
-            "document": {                                // optional, default: empty "document" object
-                "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
-                "customFields": [                       // optional
-                    {
-                        "key": "field1",
-                        "value": "value1"
-                    },{
-                        "key": "field2",
-                        "value": "value2"
-                    }
-                ]
-             }
-        }
+            {
+                "content": "text to check",                  // required
+                "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
+                "checkOptions": {
+                    "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
+                    "reportTypes": ["scorecard"],  // optional, default: scorecard
+                    "contentFormat": "markdown",                 // optional, default: auto
+                    "checkType": "batch",                        // optional, default: interactive
+                                                                 // the use case of the check, can be:
+                                                                 //   interactive =  human user checks own document
+                                                                 //   batch       =  human user checks many own documents
+                                                                 //   baseline    =  a repository of documents is checked, the user doesn't own the documents
+                                                                 //   automated   =  check of a single document for automated scenarios as for example a git hook
+                    "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
+                    "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
+                },
+                "document": {                                // optional, default: empty "document" object
+                    "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
+                    "customFields": [                       // optional
+                        {
+                            "key": "field1",
+                            "value": "value1"
+                        },{
+                            "key": "field2",
+                            "value": "value2"
+                        }
+                    ]
+                 }
+            }
 
 + Response 201 (application/json)
 
@@ -707,7 +722,14 @@ Note that not all occurrences of an issue always have the same suggestions. In t
 Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
 
 + Parameters
-    + id: `AB-153` (required, string) ... the check id
+    + id: `AB-153` (required, string) - the check id
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
 
 + Response 202 (application/json)
 
@@ -1218,8 +1240,14 @@ Polls the check result. Either a progress or the completed result is returned. T
         Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
 
 + Parameters
-   + id: `153` (required, number) ... the check id
+    + id: `AB-153` (required, string) - the check id
 
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
 
 + Response 200 (application/json)
 
@@ -1235,7 +1263,15 @@ Polls the check result. Either a progress or the completed result is returned. T
 Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API token contains a new privilege token with the right Reporting.read.
 
 + Parameters
-    + batchId: `XYZ-10-22-33` (required, string) ... the batch check id
+    + batchId: `XYZ-10-22-33` (required, string) - the batch check id
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
+
 
 + Response 200 (application/json)
 
@@ -1265,7 +1301,7 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
-In the User API, Acrolinx defines a user as an entity that has an id, a sign-in name, a name, custom properties (set by the client), and user information.
+In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
 You’re _required_ to provide user information for the following:
 * Interactive integrations: When you sign in to the Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
@@ -1275,13 +1311,11 @@ Security:
 * A user can read and update its own data.
 * Only privileged users (admin, for example) can read or update other users' data.
 
-## Current User [/api/v1/user/self]
-
-This request returns information about the current user. The information includes the user id, username, the user’s full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status. You’ll also see properties, roles, and custom fields.
+**Note:** Before you get started with the User API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
 ## User Resource [/api/v1/user]
 
-### Get All Users [GET /api/v1/user{?sort}]
+### Get All Users [GET /api/v1/user{?sort,page,per_page}]
 
 This request retrieves a list of all users in the order that they were added.
 
@@ -1302,7 +1336,42 @@ So that the `+` character encoded to `%2B` stays valid, make sure that the query
 with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
 Alternatively, you can always leave out the `+` character as it will default to ascending order.
 
-+ Request Get a list of all users (application/json)
+**Pagination**
+
+For a better overview, you might like to view the list of users in pages instead of in one long list.
+To request a paginated response, add the query parameters `page` and `per_page`. 
+You’ll need to set the `page` parameter. The page count always starts at `1`. 
+By default, `per_page` is set to `10`. You can display as many as 500 users per page. This is an optional parameter. 
+
+If you request a paginated response, Acrolinx will add the following header values:
+
+| Header                     | Description                                     |
+|----------------------------|-------------------------------------------------|
+| `X-Acrolinx-Page`          | The index of the current page, starting at `1`. |
+| `X-Acrolinx-Next-Page`     | The index of the next page.                     |
+| `X-Acrolinx-Previous-Page` | The index of the previous page.                 |
+| `X-Acrolinx-Total-Pages`   | The total number of pages.                      |
+| `X-Acrolinx-Total`         | The total number of items.                      |
+
+In addition to the header values, the response object contains a few URLs
+within the `links` object:
+
+| Relation | Description                       |
+|----------|-----------------------------------|
+| `next`   | The URL to get the next page.     |
+| `prev`   | The URL to get the previous page. |
+| `first`  | The URL to get the first page.    |
+| `last`   | The URL to get the last page.     |
+
+If there aren’t any next or previous pages, you won’t see the `next` and `prev` links. 
+For example, when you view page 1, you won't see a `prev` link because there's no page 0. 
+This is also the case for the values in the headers.
+
+**Note:** When you switch to the next or previous page, you'll see the current paginated view at the time of the API call. 
+This will also reflect any changes to the underlying data source. Say you're on page 2 of 10 with 10 records per page. 
+You then decide to delete 10 users before you call the API to fetch page 3. Now when you switch to page 3, the response will show page 3 of 9.
+
+The example response includes the pagination URLs in the `links` object so you know what to expect.
 
 + Parameters
 
@@ -1323,16 +1392,31 @@ Alternatively, you can always leave out the `+` character as it will default to 
             + `licenseType`
             + `licenseStatus`
 
+    + page (number, optional) - Optional query parameter for pagination
+    + per_page (number, optional) - Optional query parameter for sizing a page
+        + Default: `10`
+
++ Request Get a list of all users (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
 + Response 200 (application/json)
 
     + Attributes (object)
-        + links (object)
+        + links (Pagination)
         + data (array[User])
     
     + Body
 
             {
-                "links": {},
+                "links": {
+                    "prev": "https://tenant.acrolinx.cloud/api/v1/user?page=2&per_page=2",
+                    "next": "https://tenant.acrolinx.cloud/api/v1/user?page=4&per_page=2",
+                    "first": "https://tenant.acrolinx.cloud/api/v1/user?page=1&per_page=2",
+                    "last": "https://tenant.acrolinx.cloud/api/v1/user?page=60&per_page=2"
+                },
                 "data": [
                     {
                         "id": "eb323701-839f-4998-b56e-3e20c70259c5",
@@ -1444,6 +1528,26 @@ Alternatively, you can always leave out the `+` character as it will default to 
             }
         }
 
+        // when the per_page parameter exceeds the 500 per page limit
+        {
+            "links": {},
+            "error": {
+                "reference": "196f8b88-493c-46d7-b7bc-5da32d0a58d7",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                {
+                    "title": "Validation error",
+                    "constraint": "Range",
+                    "detail": "must be between 1 and 500",
+                    "invalidValue": "900"
+                }
+                ],
+                "status": 400
+            }
+        }
+
 + Response 401 (application/json)
 
         // when the access token in the request is missing or invalid
@@ -1472,10 +1576,19 @@ Alternatively, you can always leave out the `+` character as it will default to 
 
 ### Get a User [GET /api/v1/user/{id}]
 
-+ Request Get specified user by id (application/json)
+This request returns information about an user. 
+The information includes the user id, username, the user’s full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status. 
+You’ll also see properties, roles, and custom fields.
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+
++ Request Get specified user by id (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 200 (application/json)
 
@@ -1567,6 +1680,94 @@ Alternatively, you can always leave out the `+` character as it will default to 
             }
         }
 
+
+### Get a User (Self) [GET /api/v1/user/self]
+
+This is an alternative way of getting information about the current (in request authorized) user. 
+
++ Request Get current user (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the user couldn’t be identified by its *id* in the database
+        {
+        "links": {},
+            "error": {
+                "reference": "652b5c86-de20-4629-9df6-84265f2722ec",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
 ### Create a User [POST /api/v1/user]
 
 **Note:**
@@ -1590,6 +1791,10 @@ Alternatively, you can always leave out the `+` character as it will default to 
      This will create a new user if you add a username, fullName, and password to the request. 
 
     **Note:** By default, Acrolinx will automatically assign the user the license type `named` and the role `Author`.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateUser)
     
@@ -1766,6 +1971,10 @@ Alternatively, you can always leave out the `+` character as it will default to 
     This request will create a new user with the `named` license type explicitly specified in the request model. 
     
     **Note:** Acrolinx will automatically assign the default role `Author` to the user.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateUser)
 
@@ -2129,7 +2338,7 @@ Alternatively, you can always leave out the `+` character as it will default to 
 ### Update a User [PUT /api/v1/user/{id}]
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
 
 + Request Update fullName attribute (application/json)
 
@@ -2140,8 +2349,9 @@ Alternatively, you can always leave out the `+` character as it will default to 
     **Note:**
     - You can delete the `fullName` by changing the attribute to empty.
 
-    + Parameters
-        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (object)
         + fullName (string, required)
@@ -2248,8 +2458,9 @@ Alternatively, you can always leave out the `+` character as it will default to 
 
     In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn’t apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn’t exist, the call will fail and the error message will show the unknown roles that were referenced.
 
-    + Parameters
-        + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (object)
         + roles (array[Role], required)
@@ -2372,6 +2583,10 @@ Alternatively, you can always leave out the `+` character as it will default to 
 
 + Request Set a custom field (application/json)
 
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
     + Attributes (object)
         + customFields (array[CustomField])
 
@@ -2452,6 +2667,10 @@ Alternatively, you can always leave out the `+` character as it will default to 
             }
 
 + Request Clear a custom field (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (object)
         + customFields (array[CustomField])
@@ -2606,7 +2825,13 @@ This method deletes a specified user based on its *id*.
 To read more about managing users and built-in users, see [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users) in the Acrolinx documentation.
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+
++ Request Delete user by id
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 204
 
@@ -2804,10 +3029,16 @@ Typical use cases for this API:
 **Alternative use case:** Create an API token to impersonate a user
 
     Sometimes an admin might want to impersonate a user to help troubleshoot. 
-    If a user comes across a bug, for example, an admin may want to impersonate the user to try and duplicate the problem.   
+    If a user comes across a bug, for example, an admin may want to impersonate the user to try and duplicate the problem.
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+
++ Request Create an API token for someone by user id
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 200 (application/json)
 
@@ -2878,7 +3109,13 @@ This method uses the *id* to release an active license consumed by a user.
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
 
 + Parameters
-      + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) ... UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+
++ Request Release an Active Named User License by user id
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 204
 
@@ -2972,6 +3209,7 @@ The header parameters are set as follows:
     + Headers
 
             Accept: text/csv
+            X-Acrolinx-Auth: your_access_token
 
 + Response 200 (text/csv)
 
@@ -3022,6 +3260,7 @@ The header parameters are set as follows:
     + Headers
 
             Accept: text/html
+            X-Acrolinx-Auth: your_access_token
 
 + Response 406
 
@@ -3057,6 +3296,10 @@ noted in the Create User API section.
     This request lets you create 5 new users by specifying some basic fields (`username`, `fullName`, `password`) in the request model.
 
     **Note:** Acrolinx will assign a license type and role automatically. These are typically the license type `named` and the role `Author`.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (BulkCreateUser)
     
@@ -3371,11 +3614,19 @@ Mark roles as default if you want to automatically assign at least one default r
 
 To read more about role-based access control in Acrolinx, see the [Acrolinx roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles).
 
+**Note:** Before you get started with the Role API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+
 ## Roles [/api/v1/roles/]
 
 ### Get All Roles [GET]
 
 Returns a list of all roles including the associated privileges.
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 200 (application/json)
 
@@ -3532,6 +3783,12 @@ This returns a list of all supported privileges.
 In newer platform releases, there are rare instances where privileges might be introduced or removed. 
 To find out which privileges come with your installation, submit this request and compare it to the example response.  
 
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -3634,6 +3891,10 @@ This lets you add new roles.
 
 
 + Request Create a role (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateOrUpdateRole)
 
@@ -3780,6 +4041,10 @@ This lets you add new roles.
         }
 
 + Request Create a default role (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateOrUpdateRole)
 
@@ -3931,7 +4196,13 @@ This lets you add new roles.
 This returns a role that was identified by its *id* in the database.
 
 + Parameters
-    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 200 (application/json)
 
@@ -3991,14 +4262,18 @@ This lets you update a role that was identified by its *id* in the database.
     - Acrolinx comes with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
 - You can use one request to update role attributes individually or completely. The request will ignore missing attributes or attributes with `null` values.
 
++ Parameters
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
+
 + Request Update entire model (application/json)
 
     You can use one request to update all attributes of a role.
 
     **Note:** Check the other request examples to see how to update individual attributes and validations.
 
-     + Parameters
-        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateOrUpdateRole)
 
@@ -4070,8 +4345,9 @@ This lets you update a role that was identified by its *id* in the database.
     **Note:**
     - The name needs to be unique and must be between 1 and 254 characters.
 
-    + Parameters
-        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (object)
         + name (string, required)
@@ -4216,8 +4492,9 @@ This lets you update a role that was identified by its *id* in the database.
     **Warning:** This action **permanently** updates the privileges that belong to a role. 
     When you change the privileges for a role, all users with that role will get the updated set of privileges.
 
-    + Parameters
-        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (object)
         + privileges (array[string], required)
@@ -4362,8 +4639,9 @@ This lets you update a role that was identified by its *id* in the database.
     **Note:**
     - You can have multiple default roles.
 
-    + Parameters
-        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (object)
         + default (boolean, required) - Possible values are 'true' or 'false'
@@ -4444,8 +4722,9 @@ This lets you update a role that was identified by its *id* in the database.
     **Note:**
     - You aren’t required to have default roles.
 
-    + Parameters
-        + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) ... UUID
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
     + Attributes (object)
         + default (boolean, required) - Possible values are 'true' or 'false'
@@ -4513,6 +4792,15 @@ This lets you delete a specified role based on its *id*.
 - The role isn’t a preconfigured built-in role such as "Author", "Super Administrator", or "Term Browser".
 - The role isn’t selected as a default role.
 - The role isn’t currently assigned to one or more users.
+
++ Parameters
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
+
++ Request Delete by id
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
 
 + Response 204 (application/json)
 
@@ -4893,39 +5181,6 @@ A general summary of the health of the Acrolinx Platform.
           }
         }
 
-
-
-# Group Other Methods in Existing API - DRAFT
-
-Checking API:
-* Contribute as Term (may be moved to Terminology API)
-
-Core Service:
-* get broadcast messages - integrate into "index" call?
-* is user self-registration enabled - integrate into "index" call?
-* create user - not needed right now? should be part of User API
-
-Findability:
-* get/update target keywords - may link to existing methods?
-* get keyword info - maybe link to existing method for now?
-
-ExtraInfo API:
-* get extra info tab infos - maybe link to existing methods in "index" call for now?
-
-Checking Profiles:
-* get and update user settings? get and update profile user settings? what is this?
-
-Feedback API:
-* submit issue feedback - will be reimplemented anyway
-
-Reuse API:
-* deprecated anyway
-
-Debug API:
-* not needed for now - special use case
-
-
-// https://apiblueprint.org/documentation/specification.html#data-structures-section
 # Data Structures
 
 ## Role (object) 
@@ -5008,8 +5263,14 @@ Debug API:
 + licensed (number) - The total number of named licenses available
 + active (number) - The number of active named users
 + inactive (number) - The number of inactive named users
-+ available (number) - The numer of avialable licenses (licensed - active)
++ available (number) - The number of available licenses (licensed - active)
 
 ### Concurrent
 + licensed (number) - The total number of concurrent licenses available
-+ existing (number) - The number of concurrent lincenses used
++ existing (number) - The number of concurrent licenses used
+
+### Pagination
++ prev (string) - URI of the previous page
++ next (string) - URI of the next page
++ first (string) - URI of the first page
++ last  (string) - URI of the last page
