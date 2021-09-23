@@ -2334,6 +2334,240 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
++ Request Create a user with specified custom field values (application/json)
+
+    This request will create a new user with specified custom field values.
+
+    + Attributes (CreateUser)
+    
+    + Body
+
+            {
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "password": "P@ssW0rd12345!",
+                "customFields": [
+                    {
+                        "key": "Department",
+                        "value": "Example Department"
+                    }
+                ]
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor",
+                            "privileges": []
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator",
+                            "privileges": []
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 400 (application/json)
+
+        // when the request format is invalid 
+        {
+            "links": {},
+            "error": {
+                "detail": "Unexpected character ....",
+                "type": "client",
+                "title": "Could not parse request body.",
+                "status": 400
+            }
+        }
+
+        // when the password does not meet strict requirements
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 1 and 128",
+                        "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the licenseType is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f04a1a1e-0046-4b86-b9c3-da491d3343b5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Deserialization error",
+                        "constraint": "Must be one of [NAMED, CONCURRENT, BUILTIN].",
+                        "attributePath": "licenseType",
+                        "detail": "Cannot deserialize enum 'LicenseType' from value 'asd'. Possible values are [NAMED, CONCURRENT, BUILTIN].",
+                        "invalidValue": "asd",
+                        "possibleValues": [
+                            "NAMED",
+                            "CONCURRENT",
+                            "BUILTIN"
+                        ]
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the provided custom field value is not in the list of possible values
+        {
+            "links": {},
+            "error": {
+                "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
+                "type": "customFieldsIncorrect",
+                "title": "Custom field values are incorrect",
+                "validationDetails": [
+                    {
+                        "title": "Invalid custom field value",
+                        "constraint": "Must be one of \"Example Department\".",
+                        "attributePath": "customFields.Department",
+                        "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
+                        "invalidValue": "My Department",
+                        "possibleValues": [
+                            "Example Department"
+                        ],
+                        "type": "InvalidValue"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the provided custom field does not exists
+        {
+            "links": {},
+            "error": {
+                "detail": "Cannot set custom field \"T-Shirt size\" as its value is not one of \"Department\".",
+                "type": "customFieldsIncorrect",
+                "title": "Custom field values are incorrect",
+                "validationDetails": [
+                    {
+                        "title": "Invalid custom field name",
+                        "constraint": "Must be one of \"Department\".",
+                        "attributePath": "customFields.T-Shirt size",
+                        "detail": "Cannot set custom field \"T-Shirt size\" as its value is not one of \"Department\".",
+                        "invalidValue": "T-Shirt size",
+                        "possibleValues": [
+                            "Department"
+                        ],
+                        "type": "InvalidField"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when the same user was created more than once
+        {
+        "links": {},
+            "error": {
+                "reference": "a159c153-e99b-4d49-9987-ca457670ef86",
+                "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'fred' already exists. Please provide a different user name or spell the user name appropriately.)",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "4f356c86-aac1-4cae-8d78-518aea6cebe0",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+
 
 ### Update a User [PUT /api/v1/user/{id}]
 
