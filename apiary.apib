@@ -1546,6 +1546,30 @@ The example response includes the pagination URLs in the `links` object so you k
             }
         }
 
+        // when key the sort by customFields.key is not specified
+        {
+          "links": {},
+          "error": {
+            "reference": "f744d41f-7eb6-4df6-81cb-7ddb43eb8900",
+            "detail": "customFields cannot be null or empty.",
+            "type": "client",
+            "title": "Bad Request",
+            "status": 400
+          }
+        }
+
+        // when key the sort by customFields.key is not in customFields list for example customFields.Department
+        {
+          "links": {},
+          "error": {
+            "reference": "f744d41f-7eb6-4df6-81cb-7ddb43eb8900",
+            "detail": "Department is not a valid user custom sortable field",
+            "type": "client",
+            "title": "Bad Request",
+            "status": 400
+          }
+        }
+
 + Response 401 (application/json)
 
         // when the access token in the request is missing or invalid
