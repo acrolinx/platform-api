@@ -1331,6 +1331,7 @@ You can add a `+` or `-` to display the list in ascending or descending order re
 - Query parameter can't be empty or filled with blank spaces.
 - Query parameter can only accept mixed-case alpha numeric characters and underscores.
 - By default, the list appears in ascending order.
+- To sort by custom field, sort value must have `customFields` followed by `.` then the `{key}`, which is the name of the custom field
 
 So that the `+` character encoded to `%2B` stays valid, make sure that the query parameters are encoded in accordance
 with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
@@ -1380,7 +1381,9 @@ The example response includes the pagination URLs in the `links` object so you k
         + Prefix the field with:
             + **"+"** for ascending order, or
             + **"-"** for descending order. 
-        + **Note:** Omitting a prefix will sort in ascending order.
+        + **Note:** 
+            + Omitting a prefix will sort in ascending order.
+            + Use `customFields.{key}` to sort by custom fields, `{key}` is the name of the custom field
 
         + Default: username
         + Members
@@ -1391,6 +1394,7 @@ The example response includes the pagination URLs in the `links` object so you k
             + `checkingFrequency`
             + `licenseType`
             + `licenseStatus`
+            + `customFields.{key}`
 
     + page (number, optional) - Optional query parameter for pagination
     + per_page (number, optional) - Optional query parameter for sizing a page
@@ -1517,7 +1521,7 @@ The example response includes the pagination URLs in the `links` object so you k
                     {
                         "title": "Validation error",
                         "constraint": "Pattern",
-                        "detail": "must match \"[+-]?[A-Za-z0-9_]{1,50}\"",
+                        "detail": "must match \"[+-]?[A-Za-z0-9_.]{1,50}\"",
                         "invalidValue": "+"
                     }
                 ],
@@ -1541,6 +1545,30 @@ The example response includes the pagination URLs in the `links` object so you k
                     "invalidValue": "900"
                 }
                 ],
+                "status": 400
+            }
+        }
+
+        // when the custom field name cannot be found
+        {
+            "links": {},
+            "error": {
+                "reference": "1095ac3c-4418-467d-930e-d517b8e34beb",
+                "detail": "Telephone is not a valid user custom sortable field",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
+        // when the custom field name is null or empty
+        {
+            "links": {},
+            "error": {
+                "reference": "1095ac3c-4418-467d-930e-d517b8e34beb",
+                "detail": "customFields cannot be null or empty.",
+                "type": "client",
+                "title": "Bad Request",
                 "status": 400
             }
         }
