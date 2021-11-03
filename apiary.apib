@@ -3401,6 +3401,63 @@ This method uses the *id* to release an active license consumed by a user.
             }
         }
 
+### Request actualize Custom field values  [PUT /api/v1/user/{id}/_request_cf_update]
+
+The user specified by the *id* in this request will be notified to actualize his custom field values. 
+When the user signs-in the next time the system will force him to re-enter the custom field values via a form.
+
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+
++ Request Request one User to actualize his custom field values
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 204
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the user wasn’t found in the database by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "e49d3cd5-330a-408d-84a1-e9ecf20677bf",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
 ### Export a List of Users [GET /api/v1/user/_export]
 
 This API provides an easy way to export a concise user list in various file formats.
