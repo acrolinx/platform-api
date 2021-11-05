@@ -3822,6 +3822,82 @@ noted in the Create User API section.
             }
         }
 
+
+### Request actualize Custom field values in Bulk  [PUT /api/v1/user/bulk/_request_cf_update]
+
+This API is the bulk variant of the same "Request actualize Custom field values" from the User Commands group.
+It lets you request multiple users to actialize their custom field values. 
+
+**Note:** Currently there is no limitations in terms of the maximal users a client could request for update.
+
++ Request Request multiple Users to actualize their Custom field values (application/json)
+
+  + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+    
+    + Body
+
+            [
+                "1f17395a-770f-439e-b2b4-65c6c03717db",
+                "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "3f17395a-770f-439e-b2b4-65c6c03717db",
+            ]
+    
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            // All success
+            {
+                "results": [
+                    {
+                        "status": 204,
+                        "id": "1f17395a-770f-439e-b2b4-65c6c03717db",
+                    },
+                    {
+                        "status": 201,
+                        "id": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                    },
+                    {
+                        "status": 201,
+                        "id": "3f17395a-770f-439e-b2b4-65c6c03717db",
+                    }
+                ],
+                "errors": []
+            }
+
++ Response 403 (application/json)
+
+        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
 # Group Licenses API
 
 License information is provided by the following set of APIs.
