@@ -3406,7 +3406,7 @@ This method uses the *id* to release an active license consumed by a user.
 The user specified by the *id* in this request will be notified to actualize his custom field values. 
 
 **Note:**
-- When the user signs-in the next time the system will force him to re-enter the custom field values via a form.
+- When the user signs-in the next time the system will force them to re-enter the custom field values via a form.
 - If you repeat the request with a user id who had been request earlier, you won't see an error. 
 - To do this, you need the `UserAndRoles.editUser` privilege.
 
@@ -3852,7 +3852,6 @@ It lets you request multiple users to actialize their custom field values.
 
     + Body
 
-            // All success
             {
                 "results": [
                     {
@@ -3869,6 +3868,82 @@ It lets you request multiple users to actialize their custom field values.
                     }
                 ],
                 "errors": []
+            }
+
++ Response 403 (application/json)
+
+        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
++ Request Example with invalid or unknown user ids in request (application/json)
+
+  + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+    
+    + Body
+
+            [
+                "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f",
+                "no-user-with-this-id-for-sure",
+                null
+            ]
+    
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+           {
+                "results": [
+                    {
+                        "status": 204,
+                        "id": "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f"
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": 400,
+                        "id": null,
+                        "type": "client",
+                        "title": "Bad Request",
+                        "detail": "The provided uuid is not a valid user id.",
+                        "reference": "d18c9c62-faed-4753-b4f4-6a6d6e967d9e"
+                    },
+                    {
+                        "status": 404,
+                        "id": "no-user-with-this-id-for-sure",
+                        "type": "client",
+                        "title": "Not Found",
+                        "detail": "User does not exist with the given id.",
+                        "reference": "592577df-4526-4eea-a4bb-1628102a063c"
+                    }
+                ]
             }
 
 + Response 403 (application/json)
