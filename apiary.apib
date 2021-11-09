@@ -3403,17 +3403,17 @@ This method uses the *id* to release an active license consumed by a user.
 
 ### Request actualize Custom field values  [PUT /api/v1/user/{id}/_request_cf_update]
 
-The user specified by the *id* in this request will be notified to actualize his custom field values. 
+The user specified by the *id* in this request will be notified to actualize their custom field values. 
 
 **Note:**
 - When the user signs-in the next time the system will force them to re-enter the custom field values via a form.
-- If you repeat the request with a user id who had been request earlier, you won't see an error. 
+- If you repeat the request with the same user UUID, you won't see an error. 
 - To do this, you need the `UserAndRoles.editUser` privilege.
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
 
-+ Request Request one User to actualize his custom field values
++ Request Request one User to actualize their custom field values
 
     + Headers
 
