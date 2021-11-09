@@ -3773,9 +3773,11 @@ noted in the Delete User API section.
     This request lets you delete 5 users by specifying user UUIDs in the request object.
 
     + Headers
+
             X-Acrolinx-Auth: your_access_token
     
     + Body
+
             [   
                 "d6601a5b-c74e-4753-8d7a-4a7d15e71149", 
                 "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
@@ -3919,6 +3921,55 @@ noted in the Delete User API section.
                 "status": 400
             }
         }
+
++ Request Example with invalid or unknown user ids in request (application/json)
+
+  + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+
+    + Body
+
+            [
+                "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f",
+                "no-user-with-this-id-for-sure",
+                null
+            ]
+    
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body 
+            
+            {
+                "results": [
+                    {
+                        "status": 204,
+                        "id": "33b5b2e3-6870-4ecb-92f9-ac496a9ac2c3"
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": 404,
+                        "id": "no-user-with-this-id-for-sure",
+                        "type": "client",
+                        "title": "Not Found",
+                        "detail": "HTTP 404 Not Found",
+                        "reference": "8aafe860-8fa7-4f5f-89c6-40dda1c444c4"
+                    },
+                    {
+                        "status": 404,
+                        "id": null,
+                        "type": "client",
+                        "title": "Not Found",
+                        "detail": "HTTP 404 Not Found",
+                        "reference": "9ed80619-16fa-4458-a2ba-758411281e8f"
+                    }
+                ]
+            }
 
 + Response 403 (application/json)
 
