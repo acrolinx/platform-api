@@ -3761,6 +3761,199 @@ noted in the Create User API section.
             }
         }
 
+### Delete Users in Bulk [DELETE /api/v1/user/bulk]
+
+This API lets you delete a list of users. All user ids follow the requirements and constraints
+noted in the Delete User API section.
+
+**Note:** You can delete up to 100 users per bulk request, the minimum is 1.
+
++ Request Delete Users in Bulk (application/json)
+
+    This request lets you delete 5 users by specifying user uuids in the request object.
+
+    + Headers
+            X-Acrolinx-Auth: your_access_token
+    
+    + Body
+            [   
+                "d6601a5b-c74e-4753-8d7a-4a7d15e71149", 
+                "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
+                "bb284474-e107-413e-9c15-d813ed7209e9",
+                "c4eba54b-4cb6-4045-85f1-88e72fd9be6f",
+                "b08309c7-87ee-4270-8d94-de5a916d24be"
+            ]
+
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            // When all users were successfully delete
+            {
+                "results": [
+                    {
+                    "status": 204,
+                    "id": "d6601a5b-c74e-4753-8d7a-4a7d15e71149",
+                    "location": null
+                    },
+                    {
+                    "status": 204,
+                    "id": "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
+                    "location": null
+                    },
+                    {
+                    "status": 204,
+                    "id": "bb284474-e107-413e-9c15-d813ed7209e9",
+                    "location": null
+                    }, 
+                    {
+                    "status": 204,
+                    "id": "c4eba54b-4cb6-4045-85f1-88e72fd9be6f",
+                    "location": null
+                    },
+                    {
+                    "status": 204,
+                    "id": "b08309c7-87ee-4270-8d94-de5a916d24be",
+                    "location": null
+                    }
+                ],
+                "errors": []
+                }
+
+
+            // when 4 users were deleted successfully but 1 wasn’t
+            {
+                "results": [
+                    {
+                    "status": 204,
+                    "id": "d6601a5b-c74e-4753-8d7a-4a7d15e71149",
+                    "location": null
+                    },
+                    {
+                    "status": 204,
+                    "id": "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
+                    "location": null
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": 409,
+                        "id": "b08309c7-87ee-4270-8d94-de5a916d24be",
+                        "type": "client",
+                        "title": "Conflict",
+                        "detail": "Cannot delete own account",
+                        "reference": "06bc308c-c65d-45eb-a626-a9cc5908798c"
+                    },
+                    {
+                        "status": 409,
+                        "id": "d6601a5b-c74e-4753-8d7a-4a7d15e71149",
+                        "type": "client",
+                        "title": "Conflict",
+                        "detail": "Built-in user \"admin (admin) \" cannot be deleted",
+                        "reference": "b08309c7-87ee-4270-8d94-de5a916d24be"
+                    },
+                    {
+                        "status": 404,
+                        "id": "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
+                        "type": "client",
+                        "title": "Not Found",
+                        "detail": "An unspecific client error occurred.",
+                        "reference": "c0c67650-4fd6-42a4-9300-1f9431274912"
+                    }
+                ]
+            }
+
++ Response 400 (application/json)
+
+        // when a bulk delete request is sent with an empty list
+        {
+            "links": {},
+            "error": {
+                "reference": "ea0ef815-435b-4311-8937-c32ece0c7cc4",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                {
+                    "title": "Validation error",
+                    "constraint": "Size",
+                    "detail": "size must be between 1 and 100",
+                    "invalidValue": "[]"
+                }
+                ],
+                "status": 400
+            }
+        }
+
+        // when a bulk delete request exceeds the maximum valid limit
+        {
+            "links": {},
+            "error": {
+                "reference": "a2616dcb-1009-47c6-a6cd-34fe71776dd5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                {
+                    "title": "Validation error",
+                    "constraint": "Size",
+                    "detail": "size must be between 1 and 2",
+                    "invalidValue": "[d6601a5b-c74e-4753-8d7a-4a7d15e71149, d7b6d898-79b2-4a8b-9afd-760fdda9c921, bb284474-e107-413e-9c15-d813ed7209e9, c4eba54b-4cb6-4045-85f1-88e72fd9be6f, b08309c7-87ee-4270-8d94-de5a916d24be]"
+                }
+                ],
+                "status": 400
+            }
+        }
+
+        // when a bulk request is sent without a payload body
+        {
+            "links": {},
+            "error": {
+                "reference": "f36cbe4d-0ebb-44c1-9771-2555cb17f025",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                {
+                    "title": "Validation error",
+                    "constraint": "NotNull",
+                    "detail": "must not be null",
+                    "invalidValue": null
+                }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to delete users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
 # Group Licenses API
 
 License information is provided by the following set of APIs.
