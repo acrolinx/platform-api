@@ -3819,6 +3819,29 @@ noted in the "Delete User API" section.
                 "errors": []
                 }
 
++ Request when 2 users were deleted successfully but 3 weren't (application/json)
+
+  + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+
+    + Body
+
+            [   
+                "d6601a5b-c74e-4753-8d7a-4a7d15e71149", 
+                "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
+                "bb284474-e107-413e-9c15-d813ed7209e9",
+                "c4eba54b-4cb6-4045-85f1-88e72fd9be6f",
+                "b08309c7-87ee-4270-8d94-de5a916d24be"
+            ]
+
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
 
             // when 2 users were deleted successfully but 3 weren't
             {
