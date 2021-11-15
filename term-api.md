@@ -564,10 +564,10 @@ Return codes:
 - If the input data contains more than one entry (which is allowed), all will be created or updated respectively, but
   the Location header will only contain the URL of one of them.
 
-Example (sending [example-entry.actif.xml](./example-entry.actif.xml)):
+Example (sending [example-entry.actif.xml](doc/example-entry.actif.xml)):
 
 ```bash
-curl -i -H "Accept: application/json" -H "Content-Type: application/vnd.acrolinx.actif+xml" -H "Authorization: session ee7ac269aed25b4e" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries -d "`cat example-entry.actif.xml`"
+curl -i -H "Accept: application/json" -H "Content-Type: application/vnd.acrolinx.actif+xml" -H "Authorization: session ee7ac269aed25b4e" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries -d "`cat doc/example-entry.actif.xml`"
 ```
 
 ```text

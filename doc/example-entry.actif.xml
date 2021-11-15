@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<actif xmlns="http://www.acrolinx.com" version="1.0">
+    <origin date="2014-01-28T18:44:07.491+01:00">
+        <tool/>
+    </origin>
+    <data>
+        <source-languages>
+            <lang>en</lang>
+        </source-languages>
+        <entry>
+            <value field="entry/id">13</value>
+            <value field="entry/uuid">a918fccf-4a94-4398-b260-4d792289952c</value>
+            <head>
+                <term>
+                    <name>return air</name>
+                    <language>en</language>
+                    <value field="term/status">proposed</value>
+                    <value field="term/domain">undefined domain</value>
+                    <value field="term/uuid">120bdf01-4818-4a2c-bcea-4f875b6b129a</value>
+                    <value field="term/id">1371197695606</value>
+                    <value field="term/frequency">0</value>
+                    <value field="term/creation-date-time">2011-06-28T11:55:28+02:00</value>
+                    <value field="term/creator-user-name">admin</value>
+                    <value field="term/last-modification-date-time">2011-06-28T12:01:57+02:00</value>
+                    <value field="term/last-modifier">admin</value>
+                    <value field="Core">undefined</value>
+                    <value field="partOfSpeech">undefined</value>
+                    <value field="gender">undefined</value>
+                    <value field="processStatus">unprocessed</value>
+                    <value field="termType">undefined</value>
+                    <complex-value field="term/msr">
+                        <attribute name="analysisMode">string</attribute>
+                    </complex-value>
+                </term>
+            </head>
+            <term>
+                <name>Abluftmenge</name>
+                <language>de</language>
+                <value field="term/status">proposed</value>
+                <value field="term/domain">undefined domain</value>
+                <value field="term/uuid">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</value>
+                <value field="term/id">1371197695646</value>
+                <value field="term/frequency">0</value>
+                <value field="term/creation-date-time">2011-06-28T11:55:28+02:00</value>
+                <value field="term/creator-user-name">admin</value>
+                <value field="term/last-modification-date-time">2011-06-30T10:50:48+02:00</value>
+                <value field="term/last-modifier">admin</value>
+                <value field="Core">undefined</value>
+                <value field="partOfSpeech">undefined</value>
+                <value field="gender">undefined</value>
+                <value field="processStatus">unprocessed</value>
+                <value field="termType">undefined</value>
+                <complex-value field="term/msr">
+                    <attribute name="analysisMode">string</attribute>
+                </complex-value>
+            </term>
+            <term>
+                <name>débit d'air repris</name>
+                <language>fr</language>
+                <value field="term/status">proposed</value>
+                <value field="term/domain">undefined domain</value>
+                <value field="term/uuid">5334a674-848b-44a3-8b42-1756d38717ef</value>
+                <value field="term/id">1371197695614</value>
+                <value field="term/frequency">0</value>
+                <value field="term/creation-date-time">2011-06-28T11:55:28+02:00</value>
+                <value field="term/creator-user-name">admin</value>
+                <value field="term/last-modification-date-time">2011-06-28T12:01:39+02:00</value>
+                <value field="term/last-modifier">admin</value>
+                <value field="Core">undefined</value>
+                <value field="partOfSpeech">undefined</value>
+                <value field="gender">undefined</value>
+                <value field="processStatus">unprocessed</value>
+                <value field="termType">undefined</value>
+                <complex-value field="term/msr">
+                    <attribute name="analysisMode">string</attribute>
+                </complex-value>
+            </term>
+            <term>
+                <name>débit d'évacuation</name>
+                <language>fr</language>
+                <value field="term/status">proposed</value>
+                <value field="term/domain">undefined domain</value>
+                <value field="term/uuid">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</value>
+                <value field="term/id">1371197695654</value>
+                <value field="term/frequency">0</value>
+                <value field="term/creation-date-time">2011-06-28T11:55:28+02:00</value>
+                <value field="term/creator-user-name">admin</value>
+                <value field="term/last-modification-date-time">2011-06-28T12:01:54+02:00</value>
+                <value field="term/last-modifier">admin</value>
+                <value field="Core">undefined</value>
+                <value field="partOfSpeech">undefined</value>
+                <value field="gender">undefined</value>
+                <value field="processStatus">unprocessed</value>
+                <value field="termType">undefined</value>
+                <complex-value field="term/msr">
+                    <attribute name="analysisMode">string</attribute>
+                </complex-value>
+            </term>
+        </entry>
+    </data>
+</actif>
