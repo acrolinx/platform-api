@@ -1333,6 +1333,7 @@ You can add a `+` or `-` to display the list in ascending or descending order re
 - By default, the list appears in ascending order.
 - Query parameter `licenseType` sorts by two fields: `licenseType` and `licenseStatus`.
 - To sort by custom field, sort value must have `customFields` followed by `.` then the `{key}`, which is the name of the custom field
+- The following special characters are allowed in the custom field `{key}`: `` !@$^*()_+-=,./;'[]<>?:|~` ``
 
 So that the `+` character encoded to `%2B` stays valid, make sure that the query parameters are encoded in accordance
 with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
