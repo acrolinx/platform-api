@@ -561,7 +561,7 @@ Return codes:
   URL of the inserted/updated entry.
 - If no new entry was created or updated but it’s no error (for example, the input data could be empty and not contain any
   insertable entry), the return code is 204 (No Content).
-- If the input data contains more than one entry (which is allowed), all will be created or updated respectively, but
+- If the input data contains more than one entry (which is allowed), all entries in the input data will be created or updated respectively, but
   the Location header will only contain the URL of one of them.
 
 Example (sending [example-entry.actif.xml](doc/example-entry.actif.xml)):
