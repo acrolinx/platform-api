@@ -557,10 +557,10 @@ Required privileges:
 
 Return codes:
 
-- In both cases, creation or update, the return code of the service is 201 (Created) and the Location header gets the
+- For both creation and update, the return code is 201 (created) and the "Location" header gets the
   URL of the inserted/updated entry.
-- If the input data does not contain entry to create or update, the return code is 204 (No Content).
-- If the input data contains more than one entry (which is allowed), all entries in the input data will be created or updated respectively, but
+- If the input data doesn't contain an entry that needs to be created or updated, you'll see a 204 (no content).
+- If the input data contains more than one entry (which is allowed), all entries in the input data will be created or updated respectively. However,
   the "Location" header will only contain the URL of one of them.
 
 Example (sending [example-entry.actif.xml](doc/example-entry.actif.xml)):
