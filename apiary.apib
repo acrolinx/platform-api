@@ -2121,6 +2121,19 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
++ Response 403 (application/json)
+
+        // when you can't assign privileges you don't have when you create users
+        {
+        "links": {},
+            "error": {
+                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 + Response 409 (application/json)
 
         // when the user was created more than once
@@ -3200,6 +3213,19 @@ This is an alternative way of getting information about the current (in request 
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you can't assign privileges you don't have when you edit users
+        {
+        "links": {},
+            "error": {
+                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
