@@ -645,6 +645,24 @@ The same information is available in the checking capabilities.
 
             {
                 "content": "text to check",                  // required
+                "externalContent": { // optional, default: empty. External content to resolve references in XML content
+                    "textReplacements": [ // optional, literal replacements e.g. internal entities in XML 
+                        {"id": "internal-key1", "content": "literal-replacement-string1"}, // e.g. <p>&greet; world</p> id: "greet", content: "Hello"
+                        {"id": "internal-key2", "content": "literal-replacement-string2"}
+                    ],
+                    "entities": [ // optional, external entities in XML
+                        {"id": "external-key1","content": "content-to-be-parsed1"}, // e.g. <p>Dates &list</p> 
+                        {"id": "external-key2", "content": "content-to-be-parsed2"} // id: "list", content: "<li><el>1 Jan 2000</el><el>2 Jan 2000</el></li>"
+                    ],
+                    "ditaReferences": [ // optional, dita references e.g. topicref, keyref, conref, conkeyref
+                        {"id": "dita-key1","content": "dita-value1"}, // e.g. <map><topicref href="intro.dita"/></map>
+                        {"id": "dita-key2", "content": "dita-value2"} // id: "intro.dita", content: "<topic><title>Introduction</title></topic>" 
+                    ],
+                    "xincludeReferences": [ //optional, <xi:include> references 
+                        {"id": "xinclude-key1","content": "xinclude-value1"}, // e.g. <x><xi:include href="y.xml"></xi:include>
+                        {"id": "xinclude-key2", "content": "xinclude-value2"} // id: "y.xml", content: "<y>some text</y>"
+                    ]
+                },
                 "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
                 "checkOptions": {
                     "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
