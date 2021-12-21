@@ -1322,19 +1322,27 @@ This request retrieves a list of all users in the order that they were added.
 **Sorting**
 
 If you use the `sort` query parameter, you can only sort the list of users by 1 field. 
-You can add a `+` or `-` to display the list in ascending or descending order respectively.
+To display the list in ascending or descending order respectively, you can add a `+` or `-`.
 
 **Note:**
 
 - You can only sort by 1 field.
-- Query parameter max. length is 50 characters, excluding order direction prefixes "+" and "-".
-- Query parameter can't be empty or filled with blank spaces.
-- Query parameter can only accept mixed-case alpha numeric characters and underscores.
+- A query parameter can be any length and can include the order direction prefixes "+" and "-".
+- A query parameter can't be empty or include blank spaces.
+- A query parameter can accept a mix of characters.
 - By default, the list appears in ascending order.
+- The query parameter `licenseType` sorts by two fields: `licenseType` and `licenseStatus`.
+- To sort by a custom field, the sort value needs to include `customFields`, `.`, and the `{key}`. The key is the name of the custom field.
 
-So that the `+` character encoded to `%2B` stays valid, make sure that the query parameters are encoded in accordance
+When you sort by `customFields` in ascending order, empty `customFields` values will appear at the beginning of the list. If you sort
+in descending order, empty values will appear at the end of the list.
+
+To make sure that the sorting behavior for custom fields is consistent, the following special characters can be sorted: `` !@$^*()_+-=,./;'[]<>?:|~` ``
+If you use any additional special characters, the sorting behavior may be inconsistent.
+
+So that the `+` character encoded to `%2B` stays valid, the query parameters need to be encoded in accordance
 with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
-Alternatively, you can always leave out the `+` character as it will default to ascending order.
+You can always leave out the `+` character, because the user list appears in ascending order by default. 
 
 **Pagination**
 
@@ -1380,7 +1388,9 @@ The example response includes the pagination URLs in the `links` object so you k
         + Prefix the field with:
             + **"+"** for ascending order, or
             + **"-"** for descending order. 
-        + **Note:** Omitting a prefix will sort in ascending order.
+        + **Note:** 
+            + Omitting a prefix will sort in ascending order.
+            + Use `customFields.{key}` to sort by custom fields, `{key}` is the name of the custom field
 
         + Default: username
         + Members
@@ -1391,6 +1401,7 @@ The example response includes the pagination URLs in the `links` object so you k
             + `checkingFrequency`
             + `licenseType`
             + `licenseStatus`
+            + `customFields.{key}`
 
     + page (number, optional) - Optional query parameter for pagination
     + per_page (number, optional) - Optional query parameter for sizing a page
@@ -1435,13 +1446,11 @@ The example response includes the pagination URLs in the `links` object so you k
                         "roles": [
                             {
                                 "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                                "name": "Term Contributor",
-                                "privileges": []
+                                "name": "Term Contributor"
                             },
                             {
                                 "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                                "name": "Term Browser Administrator",
-                                "privileges": []
+                                "name": "Term Browser Administrator"
                             }
                         ],
                         "customFields": [
@@ -1474,8 +1483,7 @@ The example response includes the pagination URLs in the `links` object so you k
                         "roles": [
                             {
                                 "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
-                                "name": "Analytics Read-Only User",
-                                "privileges": []
+                                "name": "Analytics Read-Only User"
                             }
                         ],
                         "customFields": [
@@ -1485,6 +1493,163 @@ The example response includes the pagination URLs in the `links` object so you k
                                 "inputType": "optional",
                                 "type": "list",
                                 "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+
++ Request Get a list of all users sorted by license type in ascending order (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (Pagination)
+        + data (array[User])
+
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    {
+                        "id": "5894f2bb-5b34-4874-bc40-ec64e9a4ca63",
+                        "username": "analyticsReadOnlyUser",
+                        "fullName": "",
+                        "createdOn": "2021-10-07T08:40:53.646Z",
+                        "activeTokenId": "",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "builtin",
+                        "licenseStatus": "active",
+                        "checkingFrequency": "infrequent",
+                        "roles": [
+                            {
+                                "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                                "name": "Analytics Read-Only User",
+                                "default": false
+                            }
+                        ],
+                        "properties": {
+                            "Segmentation.xml.DTDs": ""
+                        },
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "c85030fd-2e03-4c69-9946-0b4f5689522c",
+                        "username": "termcontribution",
+                        "fullName": "",
+                        "createdOn": "2021-10-07T08:40:53.642Z",
+                        "activeTokenId": "",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "builtin",
+                        "licenseStatus": "inactive",
+                        "checkingFrequency": "infrequent",
+                        "roles": [
+                            {
+                                "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                                "name": "Term Contributor",
+                                "default": false
+                            }
+                        ],
+                        "properties": {
+                            "Segmentation.xml.DTDs": ""
+                        },
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "bb284474-e107-413e-9c15-d813ed7209e9",
+                        "username": "fred",
+                        "fullName": "Fred Freelancer",
+                        "createdOn": "2021-10-21T11:52:36.912Z",
+                        "activeTokenId": "touxmkywwmu5vk6nyqto2m75x6",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "named",
+                        "licenseStatus": "active",
+                        "checkingFrequency": "infrequent",
+                        "roles": [
+                            {
+                                "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                                "name": "Author",
+                                "default": false
+                            },
+                            {
+                                "id": "bc5c91f3-fae1-49f7-8d60-d325077c6ef9",
+                                "name": "Super Administrator",
+                                "default": false
+                            }
+                        ],
+                        "properties": {
+                            "Segmentation.xml.DTDs": ""
+                        },
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "C",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "0593c6b4-99d9-4d43-886b-f67cb66df7ed",
+                        "username": "franz",
+                        "fullName": "Franz Hubendobler",
+                        "createdOn": "2021-11-01T07:31:18.365Z",
+                        "activeTokenId": "",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "named",
+                        "licenseStatus": "inactive",
+                        "checkingFrequency": "infrequent",
+                        "roles": [
+                            {
+                                "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
+                                "name": "Author",
+                                "default": false
+                            }
+                        ],
+                        "properties": {
+                            "Segmentation.xml.DTDs": ""
+                        },
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "B",
                                 "possibleValues": [
                                     "Example Department"
                                 ]
@@ -1520,7 +1685,7 @@ The example response includes the pagination URLs in the `links` object so you k
                     {
                         "title": "Validation error",
                         "constraint": "Pattern",
-                        "detail": "must match \"[+-]?[A-Za-z0-9_]{1,50}\"",
+                        "detail": "must match \"[+-]?.+\"",
                         "invalidValue": "+"
                     }
                 ],
@@ -1544,6 +1709,30 @@ The example response includes the pagination URLs in the `links` object so you k
                     "invalidValue": "900"
                 }
                 ],
+                "status": 400
+            }
+        }
+
+        // when the custom field name cannot be found
+        {
+            "links": {},
+            "error": {
+                "reference": "1095ac3c-4418-467d-930e-d517b8e34beb",
+                "detail": "Telephone is not a valid user custom sortable field",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
+        // when the custom field name is null or empty
+        {
+            "links": {},
+            "error": {
+                "reference": "1095ac3c-4418-467d-930e-d517b8e34beb",
+                "detail": "customFields cannot be null or empty.",
+                "type": "client",
+                "title": "Bad Request",
                 "status": 400
             }
         }
@@ -1617,13 +1806,11 @@ You’ll also see properties, roles, and custom fields.
                     "roles": [
                         {
                             "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                            "name": "Term Contributor",
-                            "privileges": []
+                            "name": "Term Contributor"
                         },
                         {
                             "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                            "name": "Term Browser Administrator",
-                            "privileges": []
+                            "name": "Term Browser Administrator"
                         }
                     ],
                     "customFields": [
@@ -1718,13 +1905,11 @@ This is an alternative way of getting information about the current (in request 
                     "roles": [
                         {
                             "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                            "name": "Term Contributor",
-                            "privileges": []
+                            "name": "Term Contributor"
                         },
                         {
                             "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                            "name": "Term Browser Administrator",
-                            "privileges": []
+                            "name": "Term Browser Administrator"
                         }
                     ],
                     "customFields": [
@@ -1833,8 +2018,7 @@ This is an alternative way of getting information about the current (in request 
                     "roles": [
                         {
                             "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
-                            "name": "Author",
-                            "privileges": []
+                            "name": "Author"
                         }
                     ],
                     "customFields": [
@@ -1937,6 +2121,19 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
++ Response 403 (application/json)
+
+        // when you can't assign privileges you don't have when you create users
+        {
+        "links": {},
+            "error": {
+                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 + Response 409 (application/json)
 
         // when the user was created more than once
@@ -2014,8 +2211,7 @@ This is an alternative way of getting information about the current (in request 
                     "roles": [
                         {
                             "id": "8c66c4e2-174a-4f77-b8d4-71bfa9ca4d2e",
-                            "name": "Author",
-                            "privileges": []
+                            "name": "Author"
                         }
                     ],
                     "customFields": [
@@ -2197,13 +2393,11 @@ This is an alternative way of getting information about the current (in request 
                     "roles": [
                         {
                             "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                            "name": "Term Contributor",
-                            "privileges": []
+                            "name": "Term Contributor"
                         },
                         {
                             "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                            "name": "Term Browser Administrator",
-                            "privileges": []
+                            "name": "Term Browser Administrator"
                         }
                     ],
                     "customFields": [
@@ -2334,6 +2528,238 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
++ Request Create a user with specified custom field values (application/json)
+
+    This request will create a new user with specified custom field values.
+
+    + Attributes (CreateUser)
+    
+    + Body
+
+            {
+                "username": "fred",
+                "fullName": "Fred Freelancer",
+                "password": "P@ssW0rd12345!",
+                "customFields": [
+                    {
+                        "key": "Department",
+                        "value": "Example Department"
+                    }
+                ]
+            }
+
++ Response 201 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+    
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "Fred Freelancer",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor"
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator"
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
+
++ Response 400 (application/json)
+
+        // when the request format is invalid 
+        {
+            "links": {},
+            "error": {
+                "detail": "Unexpected character ....",
+                "type": "client",
+                "title": "Could not parse request body.",
+                "status": 400
+            }
+        }
+
+        // when the password does not meet strict requirements
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "attributePath": "password",
+                        "detail": "size must be between 1 and 128",
+                        "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the licenseType is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f04a1a1e-0046-4b86-b9c3-da491d3343b5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Deserialization error",
+                        "constraint": "Must be one of [NAMED, CONCURRENT, BUILTIN].",
+                        "attributePath": "licenseType",
+                        "detail": "Cannot deserialize enum 'LicenseType' from value 'asd'. Possible values are [NAMED, CONCURRENT, BUILTIN].",
+                        "invalidValue": "asd",
+                        "possibleValues": [
+                            "NAMED",
+                            "CONCURRENT",
+                            "BUILTIN"
+                        ]
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the provided custom field value is not in the list of possible values
+        {
+            "links": {},
+            "error": {
+                "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
+                "type": "customFieldsIncorrect",
+                "title": "Custom field values are incorrect",
+                "validationDetails": [
+                    {
+                        "title": "Invalid custom field value",
+                        "constraint": "Must be one of \"Example Department\".",
+                        "attributePath": "customFields.Department",
+                        "detail": "Cannot set custom field \"Department\" as its value is not one of \"Example Department\".",
+                        "invalidValue": "My Department",
+                        "possibleValues": [
+                            "Example Department"
+                        ],
+                        "type": "InvalidValue"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the provided custom field does not exists
+        {
+            "links": {},
+            "error": {
+                "detail": "Cannot set custom field \"T-Shirt size\" as its value is not one of \"Department\".",
+                "type": "customFieldsIncorrect",
+                "title": "Custom field values are incorrect",
+                "validationDetails": [
+                    {
+                        "title": "Invalid custom field name",
+                        "constraint": "Must be one of \"Department\".",
+                        "attributePath": "customFields.T-Shirt size",
+                        "detail": "Cannot set custom field \"T-Shirt size\" as its value is not one of \"Department\".",
+                        "invalidValue": "T-Shirt size",
+                        "possibleValues": [
+                            "Department"
+                        ],
+                        "type": "InvalidField"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 409 (application/json)
+
+        // when the same user was created more than once
+        {
+        "links": {},
+            "error": {
+                "reference": "a159c153-e99b-4d49-9987-ca457670ef86",
+                "detail": "Licensing error (Invalid user id (message ID #2): A user with the name 'fred' already exists. Please provide a different user name or spell the user name appropriately.)",
+                "type": "client",
+                "title": "Conflict",
+                "status": 409
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "4f356c86-aac1-4cae-8d78-518aea6cebe0",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+
 
 ### Update a User [PUT /api/v1/user/{id}]
 
@@ -2389,13 +2815,11 @@ This is an alternative way of getting information about the current (in request 
                     "roles": [
                         {
                             "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                            "name": "Term Contributor",
-                            "privileges": []
+                            "name": "Term Contributor"
                         },
                         {
                             "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                            "name": "Term Browser Administrator",
-                            "privileges": []
+                            "name": "Term Browser Administrator"
                         }
                     ],
                     "customFields": [
@@ -2496,13 +2920,11 @@ This is an alternative way of getting information about the current (in request 
                     "roles": [
                         {
                             "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                            "name": "Term Contributor",
-                            "privileges": []
+                            "name": "Term Contributor"
                         },
                         {
                             "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                            "name": "Term Browser Administrator",
-                            "privileges": []
+                            "name": "Term Browser Administrator"
                         }
                     ],
                     "customFields": [
@@ -2632,13 +3054,11 @@ This is an alternative way of getting information about the current (in request 
                     "roles": [
                         {
                             "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                            "name": "Term Contributor",
-                            "privileges": []
+                            "name": "Term Contributor"
                         },
                         {
                             "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                            "name": "Term Browser Administrator",
-                            "privileges": []
+                            "name": "Term Browser Administrator"
                         }
                     ],
                     "customFields": [
@@ -2717,13 +3137,11 @@ This is an alternative way of getting information about the current (in request 
                     "roles": [
                         {
                             "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
-                            "name": "Term Contributor",
-                            "privileges": []
+                            "name": "Term Contributor"
                         },
                         {
                             "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
-                            "name": "Term Browser Administrator",
-                            "privileges": []
+                            "name": "Term Browser Administrator"
                         }
                     ],
                     "customFields": [
@@ -2795,6 +3213,19 @@ This is an alternative way of getting information about the current (in request 
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you can't assign privileges you don't have when you edit users
+        {
+        "links": {},
+            "error": {
+                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3160,6 +3591,67 @@ This method uses the *id* to release an active license consumed by a user.
             }
         }
 
+### Request User Information Update  [PUT /api/v1/user/{id}/_request_cf_update]
+
+The user specified by the *id* in this request will be asked to update their user information.
+
+**Note:**
+- The next time the user signs in, they'll need to re-enter their user information via a form.
+- If you repeat the request for the same user UUID, you won't be notified that a request was already submitted.
+- To do this, you need the `UserAndRoles.editUser` privilege.
+
++ Parameters
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+
++ Request Ask one user to update their user information
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 204
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the user wasn’t found in the database by its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "e49d3cd5-330a-408d-84a1-e9ecf20677bf",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
 ### Export a List of Users [GET /api/v1/user/_export]
 
 This API provides an easy way to export a concise user list in various file formats.
@@ -3496,6 +3988,417 @@ noted in the Create User API section.
 + Response 403 (application/json)
 
         // when you don’t have the privilege to create users
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+
+### Request User Information Update in Bulk  [PUT /api/v1/user/bulk/_request_cf_update]
+
+This API is the bulk operation for "Request User Information Update" from the "User Commands" group.
+It lets you ask multiple users to update their user information.
+
+**Note:** There are currently no limitations on the number of users a client can ask for an information update.
+
++ Request Ask multiple users to update their user information (application/json)
+
+  + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+
+    + Body
+
+            [
+                "1f17395a-770f-439e-b2b4-65c6c03717db",
+                "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "3f17395a-770f-439e-b2b4-65c6c03717db",
+            ]
+
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            {
+                "results": [
+                    {
+                        "status": 204,
+                        "id": "1f17395a-770f-439e-b2b4-65c6c03717db",
+                    },
+                    {
+                        "status": 204,
+                        "id": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                    },
+                    {
+                        "status": 204,
+                        "id": "3f17395a-770f-439e-b2b4-65c6c03717db",
+                    }
+                ],
+                "errors": []
+            }
+
++ Response 403 (application/json)
+
+        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
++ Request Error Example - If user ids in the request are invalid or unknown (application/json)
+
+  + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+
+    + Body
+
+            [
+                "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f",
+                "no-user-with-this-id-for-sure",
+                null
+            ]
+
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            {
+                 "results": [
+                     {
+                         "status": 204,
+                         "id": "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f"
+                     }
+                 ],
+                 "errors": [
+                     {
+                         "status": 400,
+                         "id": null,
+                         "type": "client",
+                         "title": "Bad Request",
+                         "detail": "The provided uuid is not a valid user id.",
+                         "reference": "d18c9c62-faed-4753-b4f4-6a6d6e967d9e"
+                     },
+                     {
+                         "status": 404,
+                         "id": "no-user-with-this-id-for-sure",
+                         "type": "client",
+                         "title": "Not Found",
+                         "detail": "User does not exist with the given id.",
+                         "reference": "592577df-4526-4eea-a4bb-1628102a063c"
+                     }
+                 ]
+             }
+
++ Response 403 (application/json)
+
+        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 500 (application/json)
+
+        // when there’s an unspecified error
+        {
+            "links": {},
+            "error": {
+                "reference": "2f17395a-770f-439e-b2b4-65c6c03717db",
+                "detail": "An unspecific server error occurred. Details may be found in the Acrolinx log files.",
+                "type": "server",
+                "title": "Unspecific server error",
+                "status": 500
+            }
+        }
+
+### Delete Users in Bulk [DELETE /api/v1/user/bulk]
+
+This API lets you delete a list of users. All user ids follow the requirements and constraints
+noted in the "Delete User API" section.
+
+**Note:** You can delete up to 100 users per bulk request, the minimum is 1.
+
++ Request Delete users in bulk (application/json)
+
+    This request lets you delete 5 users by specifying user UUIDs in the request object.
+
+    Example when all users were successfully deleted
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Body
+
+            [
+                "d6601a5b-c74e-4753-8d7a-4a7d15e71149",
+                "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
+                "bb284474-e107-413e-9c15-d813ed7209e9",
+                "c4eba54b-4cb6-4045-85f1-88e72fd9be6f",
+                "b08309c7-87ee-4270-8d94-de5a916d24be"
+            ]
+
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            {
+                "results": [
+                    {
+                        "status": 204,
+                        "id": "d6601a5b-c74e-4753-8d7a-4a7d15e71149"
+                    },
+                    {
+                        "status": 204,
+                        "id": "d7b6d898-79b2-4a8b-9afd-760fdda9c921"
+                    },
+                    {
+                        "status": 204,
+                        "id": "bb284474-e107-413e-9c15-d813ed7209e9"
+                    },
+                    {
+                        "status": 204,
+                        "id": "c4eba54b-4cb6-4045-85f1-88e72fd9be6f"
+                    },
+                    {
+                        "status": 204,
+                        "id": "b08309c7-87ee-4270-8d94-de5a916d24be"
+                    }
+                ],
+                "errors": []
+                }
+
++ Request Example with users that can't be deleted (application/json)
+
+  + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+
+    + Body
+
+            [
+                "d6601a5b-c74e-4753-8d7a-4a7d15e71149",
+                "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
+                "bb284474-e107-413e-9c15-d813ed7209e9",
+                "c4eba54b-4cb6-4045-85f1-88e72fd9be6f",
+                "b08309c7-87ee-4270-8d94-de5a916d24be"
+            ]
+
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            {
+                "results": [
+                    {
+                        "status": 204,
+                        "id": "d6601a5b-c74e-4753-8d7a-4a7d15e71149"
+                    },
+                    {
+                        "status": 204,
+                        "id": "d7b6d898-79b2-4a8b-9afd-760fdda9c921"
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": 409,
+                        "id": "b08309c7-87ee-4270-8d94-de5a916d24be",
+                        "type": "client",
+                        "title": "Conflict",
+                        "detail": "Cannot delete own account",
+                        "reference": "06bc308c-c65d-45eb-a626-a9cc5908798c"
+                    },
+                    {
+                        "status": 409,
+                        "id": "d6601a5b-c74e-4753-8d7a-4a7d15e71149",
+                        "type": "client",
+                        "title": "Conflict",
+                        "detail": "Built-in user \"admin (admin) \" cannot be deleted",
+                        "reference": "b08309c7-87ee-4270-8d94-de5a916d24be"
+                    },
+                    {
+                        "status": 404,
+                        "id": "d7b6d898-79b2-4a8b-9afd-760fdda9c921",
+                        "type": "client",
+                        "title": "Not Found",
+                        "detail": "An unspecific client error occurred.",
+                        "reference": "c0c67650-4fd6-42a4-9300-1f9431274912"
+                    }
+                ]
+            }
+
++ Response 400 (application/json)
+
+        // when a bulk delete request is sent with an empty list
+        {
+            "links": {},
+            "error": {
+                "reference": "ea0ef815-435b-4311-8937-c32ece0c7cc4",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "detail": "size must be between 1 and 100",
+                        "invalidValue": "[]"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when a bulk delete request exceeds the maximum valid limit
+        {
+            "links": {},
+            "error": {
+                "reference": "a2616dcb-1009-47c6-a6cd-34fe71776dd5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Size",
+                        "detail": "size must be between 1 and 100",
+                        "invalidValue": "[d6601a5b-c74e-4753-8d7a-4a7d15e71149, d7b6d898-79b2-4a8b-9afd-760fdda9c921, ...]"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when a bulk request is sent without a payload body
+        {
+            "links": {},
+            "error": {
+                    "reference": "f36cbe4d-0ebb-44c1-9771-2555cb17f025",
+                    "detail": "Check the request for invalid values or missing parameters.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "NotNull",
+                            "detail": "must not be null",
+                            "invalidValue": null
+                        }
+                ],
+                "status": 400
+            }
+        }
+
++ Request Example with invalid or unknown user ids in request (application/json)
+
+  + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+
+    + Body
+
+            [
+                "f265a1b7-4fed-4ff3-b2d4-9dc6e29e268f",
+                "no-user-with-this-id-for-sure",
+                null
+            ]
+
++ Response 207 (application/json)
+
+    + Attributes (BulkResultResponse)
+
+    + Body
+
+            {
+                "results": [
+                    {
+                        "status": 204,
+                        "id": "33b5b2e3-6870-4ecb-92f9-ac496a9ac2c3"
+                    }
+                ],
+                "errors": [
+                    {
+                        "status": 404,
+                        "id": "no-user-with-this-id-for-sure",
+                        "type": "client",
+                        "title": "Not Found",
+                        "detail": "HTTP 404 Not Found",
+                        "reference": "8aafe860-8fa7-4f5f-89c6-40dda1c444c4"
+                    },
+                    {
+                        "status": 400,
+                        "id": null,
+                        "type": "client",
+                        "title": "Bad Request",
+                        "detail": "The provided uuid is not a valid user id.",
+                        "reference": "cc3c4907-5fa2-40e9-988a-3623a5c358d7"
+                    }
+                ]
+            }
+
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to delete users
         {
         "links": {},
             "error": {

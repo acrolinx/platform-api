@@ -1,5 +1,7 @@
 # Acrolinx Platform API
 
+![Build](https://github.com/acrolinx/platform-api/actions/workflows/actions.yml/badge.svg)
+
 Hello and welcome to the Acrolinx Platform API.
 This documentation is for you if you plan to use:
 
