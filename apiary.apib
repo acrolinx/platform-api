@@ -1315,7 +1315,7 @@ Security:
 
 ## User Resource [/api/v1/user]
 
-### Get All Users [GET /api/v1/user{?sort,page,per_page}]
+### Get All Users [GET /api/v1/user{?sort,page,per_page,username,fullName}]
 
 This request retrieves a list of all users in the order that they were added.
 
@@ -1323,6 +1323,12 @@ This request retrieves a list of all users in the order that they were added.
 
 If you use the `sort` query parameter, you can only sort the list of users by 1 field. 
 To display the list in ascending or descending order respectively, you can add a `+` or `-`.
+
+**Searching/Filtering**
+
+- You can use the `username` and `fullName` to search or filter users.
+- The `username` and `fullName` query parameters are limited to 255 characters, are optional and cannot be `null`.
+- If `username` and `fullName` parameters are set, the API will list users matching both parameters.
 
 **Note:**
 
@@ -1383,6 +1389,8 @@ The example response includes the pagination URLs in the `links` object so you k
 
 + Parameters
 
+    + username (string, optional) - Optional query parameter for searching by username.
+    + fullName (string, optional) - Optional query parameter for searching by full name.
     + sort (enum[string], optional) - Optional query parameter for sorting by an attribute. 
             
         + Prefix the field with:
