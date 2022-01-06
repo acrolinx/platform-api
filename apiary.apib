@@ -1319,11 +1319,6 @@ Security:
 
 This request retrieves a list of all users in the order that they were added.
 
-**Sorting**
-
-If you use the `sort` query parameter, you can only sort the list of users by 1 field. 
-To display the list in ascending or descending order respectively, you can add a `+` or `-`.
-
 **Searching/Filtering**
 
 - You can use the `username` and `fullName` to search or filter users.
@@ -1331,6 +1326,12 @@ To display the list in ascending or descending order respectively, you can add a
 - If `username` and `fullName` parameters are set, the API will list users matching both parameters.
 - You can use the `roles` parameter to filter users by multiple role ids.
 - Invalid role ids will return an empty list.
+
+
+**Sorting**
+
+If you use the `sort` query parameter, you can only sort the list of users by 1 field.
+To display the list in ascending or descending order respectively, you can add a `+` or `-`.
 
 **Note:**
 
