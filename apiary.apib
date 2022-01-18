@@ -1389,7 +1389,7 @@ This is also the case for the values in the headers.
 This will also reflect any changes to the underlying data source. Say you're on page 2 of 10 with 10 records per page. 
 You then decide to delete 10 users before you call the API to fetch page 3. Now when you switch to page 3, the response will show page 3 of 9.
 
-The example response includes the pagination URLs in the `links` object so you know what to expect.
+The example response includes the pagination URLs and query parameters in the `links` object so you know what to expect. 
 
 + Parameters
 
@@ -1435,10 +1435,10 @@ The example response includes the pagination URLs in the `links` object so you k
 
             {
                 "links": {
-                    "prev": "https://tenant.acrolinx.cloud/api/v1/user?page=2&per_page=2",
-                    "next": "https://tenant.acrolinx.cloud/api/v1/user?page=4&per_page=2",
-                    "first": "https://tenant.acrolinx.cloud/api/v1/user?page=1&per_page=2",
-                    "last": "https://tenant.acrolinx.cloud/api/v1/user?page=60&per_page=2"
+                    "prev": "https://tenant.acrolinx.cloud/api/v1/user?page=2&per_page=2&sort=username&fullName=Fred Freelancer&username=fred",
+                    "next": "https://tenant.acrolinx.cloud/api/v1/user?page=4&per_page=2&sort=username&fullName=Fred Freelancer&username=fred",
+                    "first": "https://tenant.acrolinx.cloud/api/v1/user?page=1&per_page=2&sort=username&fullName=Fred Freelancer&username=fred",
+                    "last": "https://tenant.acrolinx.cloud/api/v1/user?page=60&per_page=2&sort=username&fullName=Fred Freelancer&username=fred"
                 },
                 "data": [
                     {
