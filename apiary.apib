@@ -645,10 +645,10 @@ The same information is available in the checking capabilities.
 
             {
                 "content": "text to check",                  // required
-                "contentEncoding": "base64",             // optional, default: none = HTTP request encoding
+                "contentEncoding": "base64",                 // optional, default: none = HTTP request encoding
                 "checkOptions": {
-                    "guidanceProfileId": "aud-1",                       // optional, default: first guidance profile
-                    "reportTypes": ["scorecard"],  // optional, default: scorecard
+                    "guidanceProfileId": "aud-1",                // optional, default: first guidance profile. In Targets Mode: optional target name/target id, default: detected by Automatic Target Assignment
+                    "reportTypes": ["scorecard"],                // optional, default: scorecard
                     "contentFormat": "markdown",                 // optional, default: auto
                     "checkType": "batch",                        // optional, default: interactive
                                                                  // the use case of the check, can be:
@@ -659,7 +659,7 @@ The same information is available in the checking capabilities.
                     "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
                     "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
                 },
-                "document": {                                // optional, default: empty "document" object
+                "document": {                               // optional, default: empty "document" object
                     "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
                     "customFields": [                       // optional
                         {
@@ -670,7 +670,8 @@ The same information is available in the checking capabilities.
                             "value": "value2"
                         }
                     ]
-                 }
+                 },
+                 "language": "en"                           // optional: force language for Automatic Target Assignment, default: detected by Automatic Target Assignment
             }
 
 + Response 201 (application/json)
