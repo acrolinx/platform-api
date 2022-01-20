@@ -1302,6 +1302,8 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
+**Available since Core Platform 2018.10**
+
 In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
 You’re _required_ to provide user information for the following:
@@ -1317,6 +1319,8 @@ Security:
 ## User Resource [/api/v1/user]
 
 ### Get All Users [GET /api/v1/user{?sort,page,per_page,username,fullName}]
+
+**Added in Core Platform 2021.05**
 
 This request retrieves a list of all users in the order that they were added.
 
@@ -1883,6 +1887,8 @@ You’ll also see properties, roles, and custom fields.
 
 ### Get a User (Self) [GET /api/v1/user/self]
 
+**Added in Core Platform 2018.12**
+
 This is an alternative way of getting information about the current (in request authorized) user. 
 
 + Request Get current user (application/json)
@@ -1967,6 +1973,8 @@ This is an alternative way of getting information about the current (in request 
         }
 
 ### Create a User [POST /api/v1/user]
+
+**Added in Core Platform 2021.05**
 
 **Note:**
 
@@ -3260,6 +3268,8 @@ This is an alternative way of getting information about the current (in request 
         }
 
 ### Delete a User [DELETE /api/v1/user/{id}]
+
+**Added in Core Platform 2021.05**
 
 This method deletes a specified user based on its *id*.
 
