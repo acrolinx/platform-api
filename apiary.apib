@@ -3569,6 +3569,8 @@ These administrative commands can help govern users in your Acrolinx instance. T
 
 ### Release an Active Named User License [PUT /api/v1/user/{id}/_release]
 
+**Added in Core Platform 2021.05**
+
 This method uses the *id* to release an active license consumed by a user.
 
 **Note:**
@@ -3632,6 +3634,8 @@ This method uses the *id* to release an active license consumed by a user.
 
 ### Request User Information Update  [PUT /api/v1/user/{id}/_request_cf_update]
 
+**Added in Core Platform 2021.12**
+
 The user specified by the *id* in this request will be asked to update their user information.
 
 **Note:**
@@ -3692,6 +3696,8 @@ The user specified by the *id* in this request will be asked to update their use
         }
 
 ### Export a List of Users [GET /api/v1/user/_export]
+
+**Added in Core Platform 2021.06**
 
 This API provides an easy way to export a concise user list in various file formats.
 
@@ -3816,6 +3822,8 @@ and a list of `errors` for the objects that couldn’t be processed.
 **Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
 
 ### Create Users in Bulk [POST /api/v1/user/bulk]
+
+**Added in Core Platform 2021.06**
 
 This API lets you create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
@@ -4054,6 +4062,8 @@ noted in the Create User API section.
 
 ### Request User Information Update in Bulk  [PUT /api/v1/user/bulk/_request_cf_update]
 
+**Added in Core Platform 2021.12**
+
 This API is the bulk operation for "Request User Information Update" from the "User Commands" group.
 It lets you ask multiple users to update their user information.
 
@@ -4203,6 +4213,8 @@ It lets you ask multiple users to update their user information.
         }
 
 ### Delete Users in Bulk [DELETE /api/v1/user/bulk]
+
+**Added in Core Platform 2021.12**
 
 This API lets you delete a list of users. All user ids follow the requirements and constraints
 noted in the "Delete User API" section.
