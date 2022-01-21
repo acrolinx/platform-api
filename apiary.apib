@@ -1302,7 +1302,7 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
-**Available since Core Platform 2018.10**
+**Available since Core Platform version 2018.10**
 
 In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
@@ -1320,7 +1320,7 @@ Security:
 
 ### Get All Users [GET /api/v1/user{?sort,page,per_page,username,fullName,roles}]
 
-**Added in Core Platform 2021.05**
+**Added in Core Platform version 2021.05**
 
 **Note:** Specific API request parameters are available with the Core Platform version as outlined below.
 
@@ -1897,7 +1897,7 @@ You’ll also see properties, roles, and custom fields.
 
 ### Get a User (Self) [GET /api/v1/user/self]
 
-**Added in Core Platform 2018.12**
+**Added in Core Platform version 2018.12**
 
 This is an alternative way of getting information about the current (in request authorized) user. 
 
@@ -1984,7 +1984,7 @@ This is an alternative way of getting information about the current (in request 
 
 ### Create a User [POST /api/v1/user]
 
-**Added in Core Platform 2021.05**
+**Added in Core Platform version 2021.05**
 
 **Note:**
 
@@ -2794,7 +2794,7 @@ This is an alternative way of getting information about the current (in request 
 
 ### Update a User [PUT /api/v1/user/{id}]
 
-**Added in Core Platform 2021.05**
+**Added in Core Platform version 2021.05**
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
@@ -3281,7 +3281,7 @@ This is an alternative way of getting information about the current (in request 
 
 ### Delete a User [DELETE /api/v1/user/{id}]
 
-**Added in Core Platform 2021.05**
+**Added in Core Platform version 2021.05**
 
 This method deletes a specified user based on its *id*.
 
@@ -3388,7 +3388,7 @@ Be aware that you can only be bound to one API token at a time.
 
 ### Create an API Token (Self)  [POST /api/v1/user/self/tokens]
 
-**Added in Core Platform 2021.06**
+**Added in Core Platform version 2021.06**
 
 Use this method to create an API token for the current user.
 
@@ -3478,7 +3478,7 @@ Use this method to create an API token for the current user.
 
 ### Create an API Token for User(s) [POST /api/v1/user/{id}/tokens]
 
-**Added in Core Platform 2021.05**
+**Added in Core Platform version 2021.05**
 
 This method lets you create an API token for users based on their *id*.
 
@@ -3569,7 +3569,7 @@ These administrative commands can help govern users in your Acrolinx instance. T
 
 ### Release an Active Named User License [PUT /api/v1/user/{id}/_release]
 
-**Added in Core Platform 2021.05**
+**Added in Core Platform version 2021.05**
 
 This method uses the *id* to release an active license consumed by a user.
 
@@ -3634,7 +3634,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 ### Request User Information Update  [PUT /api/v1/user/{id}/_request_cf_update]
 
-**Added in Core Platform 2021.12**
+**Added in Core Platform version 2021.12**
 
 The user specified by the *id* in this request will be asked to update their user information.
 
@@ -3697,7 +3697,7 @@ The user specified by the *id* in this request will be asked to update their use
 
 ### Export a List of Users [GET /api/v1/user/_export]
 
-**Added in Core Platform 2021.06**
+**Added in Core Platform version 2021.06**
 
 This API provides an easy way to export a concise user list in various file formats.
 
@@ -3823,7 +3823,7 @@ and a list of `errors` for the objects that couldn’t be processed.
 
 ### Create Users in Bulk [POST /api/v1/user/bulk]
 
-**Added in Core Platform 2021.06**
+**Added in Core Platform version 2021.06**
 
 This API lets you create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
@@ -4062,7 +4062,7 @@ noted in the Create User API section.
 
 ### Request User Information Update in Bulk  [PUT /api/v1/user/bulk/_request_cf_update]
 
-**Added in Core Platform 2021.12**
+**Added in Core Platform version 2021.12**
 
 This API is the bulk operation for "Request User Information Update" from the "User Commands" group.
 It lets you ask multiple users to update their user information.
@@ -4214,7 +4214,7 @@ It lets you ask multiple users to update their user information.
 
 ### Delete Users in Bulk [DELETE /api/v1/user/bulk]
 
-**Added in Core Platform 2021.12**
+**Added in Core Platform version 2021.12**
 
 This API lets you delete a list of users. All user ids follow the requirements and constraints
 noted in the "Delete User API" section.
@@ -4476,7 +4476,7 @@ noted in the "Delete User API" section.
 
 # Group Licenses API
 
-**Available since Core Platform 2021.06**
+**Available since Core Platform version 2021.06**
 
 License information is provided by the following set of APIs.
 
@@ -4564,7 +4564,7 @@ Details of the statistics attributes in the table below:
 
 # Group Role API
 
-**Available since Core Platform 2021.05**
+**Available since Core Platform version 2021.05**
 
 In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role. 
 You can use roles to group sets of privileges and assign them to different users.
