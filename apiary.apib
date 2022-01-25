@@ -1990,9 +1990,27 @@ This is an alternative way of getting information about the current (in request 
 
 - The username needs to be unique and is limited to 255 characters.
 - The `fullName` field is limited to 255 characters (optional).
-- The password needs to have between 1 and 128 characters (optional).
 - The license type can either be "named" or "concurrent" (optional).
 - You need `UserAndRoles.editUser` privileges to perform this request.
+
+**Password Requirements**
+
+As of Core Platform version 2022.02 password field is mandatory for creating a user.
+Below are the following password requirements:
+
+- Composed of ASCII printable characters
+- Must include at least 1 lower case letter
+- Must include at least 1 upper case letter
+- Must include at least 1 digit
+- Must include at least 1 special character symbol
+- Must be minimum 10 characters long
+- Must not exceed 64 characters long
+
+For Core Platform version 2021.05 up to 2022.02 the following apply:
+
+- Password is optional
+- Must be minimum of 1 character long
+- Must not exceed 128 characters
 
 **Be extra careful in the following cases:** 
 - There are no configured default roles. That means that no roles will be automatically assigned to new users.
@@ -2080,7 +2098,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password doesn’t meet the strictness requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2095,6 +2113,48 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -3991,7 +4051,7 @@ noted in the Create User API section.
             }
         }
 
-        // when a bulk request includes validation errors such as an empty password
+        // when a bulk request includes validation errors such as an empty password 
         {
             "links": {},
             "error": {
@@ -4002,9 +4062,9 @@ noted in the Create User API section.
                 "validationDetails": [
                     {
                         "title": "Validation error",
-                        "constraint": "Size",
+                        "constraint": "NotEmpty",
                         "attributePath": "password",
-                        "detail": "size must be between 1 and 128",
+                        "detail": "must not be empty",
                         "invalidValue": ""
                     }
                 ],
