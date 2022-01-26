@@ -1990,9 +1990,27 @@ This is an alternative way of getting information about the current (in request 
 
 - The username needs to be unique and is limited to 255 characters.
 - The `fullName` field is limited to 255 characters (optional).
-- The password needs to have between 1 and 128 characters (optional).
 - The license type can either be "named" or "concurrent" (optional).
 - You need `UserAndRoles.editUser` privileges to perform this request.
+
+**Password Requirements**
+
+If you want to create a user, the password field is required as of Core Platform version 2022.02.
+Your password needs to meet the following requirements:
+
+- Composed of ASCII printable characters
+- Needs to include at least 1 lower case letter
+- Needs to include at least 1 upper case letter
+- Needs to include at least 1 digit
+- Needs to include at least 1 special character symbol
+- At least 10 characters long
+- No more than 64 characters long
+
+For Core Platform versions 2021.05 to 2022.02, the following apply:
+
+- Password is optional
+- At least 1 character long
+- No more than 128 characters
 
 **Be extra careful in the following cases:** 
 - There are no configured default roles. That means that no roles will be automatically assigned to new users.
@@ -2080,7 +2098,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password doesn’t meet the strictness requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2095,6 +2113,48 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -2273,7 +2333,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password doesn’t meet the strictness requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2288,6 +2348,48 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -2459,7 +2561,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password does not meet strict requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2474,6 +2576,48 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -2641,7 +2785,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password does not meet strict requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2656,6 +2800,90 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -3222,6 +3450,171 @@ This is an alternative way of getting information about the current (in request 
                             "Example Department"
                         ],
                         "type": "InvalidValue"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to update custom fields
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you can't assign privileges you don't have when you edit users
+        {
+        "links": {},
+            "error": {
+                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when a role wasn’t found in the database based on its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
++ Request Update password attribute (application/json)
+
+    You can update the password attribute for a user.
+
+    In this example, only the `password` attribute will change for the user `fred`. This was identified in the database by its *id*.
+
+    **Note:**
+    - You can update the `password` field as of Core Platform version 2022.02
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+        + fullName (string, required)
+
+    + Body
+
+            {
+                "password": "New_Secure_P@ssW0rd"
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "New Full Name",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor"
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator"
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
++ Response 400 (application/json)
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -3991,7 +4384,7 @@ noted in the Create User API section.
             }
         }
 
-        // when a bulk request includes validation errors such as an empty password
+        // when a bulk request includes validation errors such as an empty password 
         {
             "links": {},
             "error": {
@@ -4002,9 +4395,9 @@ noted in the Create User API section.
                 "validationDetails": [
                     {
                         "title": "Validation error",
-                        "constraint": "Size",
+                        "constraint": "NotEmpty",
                         "attributePath": "password",
-                        "detail": "size must be between 1 and 128",
+                        "detail": "must not be empty",
                         "invalidValue": ""
                     }
                 ],
