@@ -3952,6 +3952,101 @@ Typical use cases for this API:
 
         // when the user wasn’t found in the database based on its *id*
 
+## User-Generated Random Passwords [/api/v1/user/random-passwords]
+
+You can generate random passwords that comply with the Acrolinx password policy.
+This API is available for convenience when creating new users.
+
+### Get a Randomly Generated Compliant Password [GET /api/v1/user/random-passwords]
+
+**Added in Core Platform version 2022.02**
+
+**Password Requirements**
+
+A compliant password meets the following requirements:
+
+- Composed of ASCII printable characters
+- Needs to include at least 1 lower case letter
+- Needs to include at least 1 upper case letter
+- Needs to include at least 1 digit
+- Needs to include at least 1 special character symbol
+- At least 10 characters long
+- No more than 64 characters long
+
+**Note:**
+- A valid access token is required
+- You must have the `UserAndRoles.editUser` privilege
+- The password generated is random and not saved anywhere
+- The HTTP requests are not cached
+- The generated random passwords are always 20 characters long
+
++ Request Get a random password from the API
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Cache-Control: private, no-cache, no-transform, must-revalidate, max-age=0
+            Pragma: no-Cache
+            Expires: Thu, 01 Jan 1970 00:00:00 GMT
+
+    + Attributes (object)
+        + links (object)
+        + data (RandomPassword)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "value": "#n(Y2Ne|=ODfEV @,y8I"
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when the user does not have privileges to modify users ("UserAndRoles.editUser")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 503 (application/json)
+
+        // when the random password generator is not able to produce a compliant result in timely fashion
+        {
+            "links": {},
+            "error": {
+                "detail": "the service was unable to process your request at this time, please try again",
+                "type": "temporaryUnavailable",
+                "title": "Temporarily unable to process the request",
+                "status": 503
+            }
+        }
+
 ## User Commands [/api/v1/user/{id}/_{command}]
 
 The APIs in this group follow the API design command style.   
@@ -6625,3 +6720,6 @@ A general summary of the health of the Acrolinx Platform.
 + next (string) - URI of the next page
 + first (string) - URI of the first page
 + last  (string) - URI of the last page
+
+## RandomPassword
++ value (string) - a random policy compliant password
