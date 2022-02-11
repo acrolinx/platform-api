@@ -5821,6 +5821,29 @@ This request retrieves `scorecardPrivacy` and `anonymousChecking` values.
                 }
             }
 
+### Set Privacy [PUT /api/v1/privacy]
+
+This API lets you update the privacy values in the database.
+
++ Request Update privacy values (application/json)
+
+    **Note:** `scorecardPrivacy` and `anonymousChecking` values are mandatory.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (Privacy)
+
+    + Body
+
+            {
+                "scorecardPrivacy": "public",
+                "anonymousChecking": false
+            }
+
++ Response 204
+
 # Group Document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
