@@ -6359,6 +6359,16 @@ This request retrieves `scorecardPrivacy` and `anonymousChecking` values.
 
 + Response 401
 
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
 ### Set Privacy [PUT /api/v1/privacy]
 
 This API lets you update the privacy values in the database.
