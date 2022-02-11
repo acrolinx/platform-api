@@ -5844,6 +5844,34 @@ This API lets you update the privacy values in the database.
 
 + Response 204
 
++ Request Update privacy with `scorecardPrivacy` `personal` and `anonymousChecking` `true` (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (Privacy)
+
+    + Body
+
+            {
+                "scorecardPrivacy": "personal",
+                "anonymousChecking": true
+            }
+
++ Response 409 (application/json)
+
+        {
+            "links": {},
+            "error": {
+                "reference": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "detail": "It is not possible to enable anonymous checking and set scorecard privacy to personal.",
+                "type": "privacySettingsIncompatible",
+                "title": "Privacy Settings Incompatible",
+                "status": 409
+            }
+        }
+
 # Group Document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
