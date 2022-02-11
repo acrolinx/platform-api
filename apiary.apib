@@ -5872,6 +5872,92 @@ This API lets you update the privacy values in the database.
             }
         }
 
++ Request Update privacy with `null` values (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (Privacy)
+
+    + Body
+
+            {
+                "scorecardPrivacy": null,
+                "anonymousChecking": null
+            }
+
++ Response 400 (application/json)
+
+        {
+            "links": {},
+            "error": {
+                "reference": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails" : [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotNull",
+                        "attributePath": "scorecardPrivacy",
+                        "detail": "must not be null",
+                        "invalidValue": null
+                    },
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotNull",
+                        "attributePath": "anonymousChecking",
+                        "detail": "must not be null",
+                        "invalidValue": null
+                    }
+                ]
+                "status": 400
+            }
+        }
+
++ Request Update privacy with invalid `scorecardPrivacy` value (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (Privacy)
+
+    + Body
+
+            {
+                "scorecardPrivacy": "invalidValue",
+                "anonymousChecking": true
+            }
+
++ Response 400 (application/json)
+
+        {
+            "links": {},
+            "error": {
+                "reference": "eb323701-839f-4998-b56e-3e20c70259c5",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails" : [
+                    {
+                        "title": "Deserialization error",
+                        "constraint": "Must be one of [public, limited, personal].",
+                        "attributePath": "scorecardPrivacy",
+                        "detail": "Cannot deserialize enum 'ScorecardPrivacy'. Possible values are [public, limited, personal].",
+                        "invalidValue": null,
+                        "possibleValues": [
+                            "public",
+                            "limited",
+                            "personal"
+                        ]
+                    }
+                ]
+                "status": 400
+            }
+        }
+
 # Group Document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
