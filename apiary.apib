@@ -5795,6 +5795,32 @@ Privacy information is provided and set by the following set of APIs. There are 
 - Scorecard privacy
 - Anonymous checking
 
+### Get Privacy [GET /api/v1/privacy]
+
+This request retrieves `scorecardPrivacy` and `anonymousChecking` values.
+
++ Request Get privacy (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (Privacy)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "scorecardPrivacy": "public",
+                    "anonymousChecking": false
+                }
+            }
+
 # Group Document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
@@ -6196,3 +6222,7 @@ A general summary of the health of the Acrolinx Platform.
 + next (string) - URI of the next page
 + first (string) - URI of the first page
 + last  (string) - URI of the last page
+
+### Privacy
++ scorecardPrivacy (string) - Indicates the type of privacy as one of ['public' | 'limited' | 'personal']
++ anonymousChecking (boolean) - Indicates if anonymous checking is enabled [ true | false ]
