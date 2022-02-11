@@ -1302,6 +1302,8 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
+**Available since Core Platform version 2018.10**
+
 In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
 You’re _required_ to provide user information for the following:
@@ -1316,15 +1318,27 @@ Security:
 
 ## User Resource [/api/v1/user]
 
-### Get All Users [GET /api/v1/user{?sort,page,per_page,username,fullName}]
+### Get All Users [GET /api/v1/user{?sort,page,per_page,username,fullName,roles}]
+
+**Added in Core Platform version 2021.05**
+
+**Note:** The table below shows the specific API request parameters by Core Platform version.
+
+| API Request                                                 | Core Platform Version |
+|:------------------------------------------------------------|-----------------------|
+| `[GET /api/v1/user{?sort}]`                                 | `2021.06`             |
+| `[GET /api/v1/user{?page,per_page}]`                        | `2021.08`             |
+| `[GET /api/v1/user{?sort=customFields.{customFieldName}}]`  | `2021.12`             |
+| `[GET /api/v1/user{?username,fullName}]`                    | `2022.02`             |
+| `[GET /api/v1/user{?roles}]`                                | `2022.02`             |
 
 This request retrieves a list of all users in the order that they were added.
 
 **Searching/Filtering**
 
-- You can use the `username` and `fullName` to search or filter users.
-- The `username` and `fullName` query parameters are limited to 255 characters, are optional and cannot be `null`.
-- If `username` and `fullName` parameters are set, the API will list users matching both parameters.
+- You can use the `username` and `fullName` parameters to search or filter users.
+- The `username` and `fullName` query parameters are limited to 255 characters, are optional, and can't be `null`.
+- If the `username` and `fullName` parameters are set, the API will list users that match both parameters.
 - You can use the `roles` parameter to filter users by multiple role ids.
 - Invalid role ids will return an empty list.
 
@@ -1883,7 +1897,9 @@ You’ll also see properties, roles, and custom fields.
 
 ### Get a User (Self) [GET /api/v1/user/self]
 
-This is an alternative way of getting information about the current (in request authorized) user. 
+**Added in Core Platform version 2018.12**
+
+This is an alternative way of getting information about the current (in request authorized) user.
 
 + Request Get current user (application/json)
 
@@ -1968,15 +1984,35 @@ This is an alternative way of getting information about the current (in request 
 
 ### Create a User [POST /api/v1/user]
 
+**Added in Core Platform version 2021.05**
+
 **Note:**
 
 - The username needs to be unique and is limited to 255 characters.
 - The `fullName` field is limited to 255 characters (optional).
-- The password needs to have between 1 and 128 characters (optional).
 - The license type can either be "named" or "concurrent" (optional).
 - You need `UserAndRoles.editUser` privileges to perform this request.
 
-**Be extra careful in the following cases:** 
+**Password Requirements**
+
+If you want to create a user, the password field is required as of Core Platform version 2022.02.
+Your password needs to meet the following requirements:
+
+- Composed of ASCII printable characters
+- Needs to include at least 1 lower case letter
+- Needs to include at least 1 upper case letter
+- Needs to include at least 1 digit
+- Needs to include at least 1 special character symbol
+- At least 10 characters long
+- No more than 64 characters long
+
+For Core Platform versions 2021.05 to 2022.02, the following apply:
+
+- Password is optional
+- At least 1 character long
+- No more than 128 characters
+
+**Be extra careful in the following cases:**
 - There are no configured default roles. That means that no roles will be automatically assigned to new users.
 - Federated authentication is enabled:
   - Users are created automatically with federated authentication.
@@ -2062,7 +2098,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password doesn’t meet the strictness requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2077,6 +2113,48 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -2255,7 +2333,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password doesn’t meet the strictness requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2270,6 +2348,48 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -2441,7 +2561,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password does not meet strict requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2456,6 +2576,48 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -2623,7 +2785,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-        // when the password does not meet strict requirements
+        // when the password doesn’t meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2638,6 +2800,90 @@ This is an alternative way of getting information about the current (in request 
                         "attributePath": "password",
                         "detail": "size must be between 1 and 128",
                         "invalidValue": "simple"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
                     }
                 ],
                 "status": 400
@@ -2775,6 +3021,8 @@ This is an alternative way of getting information about the current (in request 
 
 
 ### Update a User [PUT /api/v1/user/{id}]
+
+**Added in Core Platform version 2021.05**
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
@@ -3259,7 +3507,174 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
++ Request Update password attribute (application/json)
+
+    You can update the password attribute for a user.
+
+    In this example, only the `password` attribute will change for the user `fred`. This was identified in the database by its *id*.
+
+    **Note:**
+    - You can update the `password` field as of Core Platform version 2022.02
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
+    + Attributes (object)
+        + fullName (string, required)
+
+    + Body
+
+            {
+                "password": "New_Secure_P@ssW0rd"
+            }
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                    "username": "fred",
+                    "fullName": "New Full Name",
+                    "createdOn": "2021-04-15T15:00:26.495Z",
+                    "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                    "licenseType": "named",
+                    "licenseStatus": "inactive",
+                    "tenantId": "smarttech",
+                    "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                    "checkingFrequency": "infrequent",
+                    "properties" : {
+                        "customkey": "customvalue",
+                    },
+                    "roles": [
+                        {
+                            "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                            "name": "Term Contributor"
+                        },
+                        {
+                            "id": "6a0ebe93-f735-4b08-b6f2-66f7ecc70190",
+                            "name": "Term Browser Administrator"
+                        }
+                    ],
+                    "customFields": [
+                        {
+                            "key": "Department",
+                            "displayName": "Department",
+                            "inputType": "optional",
+                            "type": "list",
+                            "value": "Example Department",
+                            "possibleValues": [
+                                "Example Department"
+                            ]
+                        }
+                    ]
+                }
+            }
++ Response 400 (application/json)
+
+        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "attributePath": "password",
+                        "detail": "Password must be composed of printable ASCII characters and contain at least 1 lower-case, 1 upper-case letter, 1 digit, one symbol and must be between 10 to 64 characters in length",
+                        "invalidValue": "not a secure password"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the password is omitted starting from v2022.02
+        {
+            "links": {},
+            "error": {
+                "reference": "30c5db1e-fabd-4815-890a-a55416e6c3be",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "constraint": "NotEmpty",
+                        "attributePath": "password",
+                        "detail": "must not be empty",
+                        "invalidValue": ""
+                    }
+                ],
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
++ Response 403 (application/json)
+
+        // when you don’t have the privilege to update custom fields
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you can't assign privileges you don't have when you edit users
+        {
+        "links": {},
+            "error": {
+                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when a role wasn’t found in the database based on its *id*
+        {
+        "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
+
 ### Delete a User [DELETE /api/v1/user/{id}]
+
+**Added in Core Platform version 2021.05**
 
 This method deletes a specified user based on its *id*.
 
@@ -3366,6 +3781,8 @@ Be aware that you can only be bound to one API token at a time.
 
 ### Create an API Token (Self)  [POST /api/v1/user/self/tokens]
 
+**Added in Core Platform version 2021.06**
+
 Use this method to create an API token for the current user.
 
 **Note:** You don't need extra privileges or roles to create a new personal API token bound to the user authorized in the request.
@@ -3454,6 +3871,8 @@ Use this method to create an API token for the current user.
 
 ### Create an API Token for User(s) [POST /api/v1/user/{id}/tokens]
 
+**Added in Core Platform version 2021.05**
+
 This method lets you create an API token for users based on their *id*.
 
 Typical use cases for this API:
@@ -3533,6 +3952,101 @@ Typical use cases for this API:
 
         // when the user wasn’t found in the database based on its *id*
 
+## Random Passwords [/api/v1/user/random-passwords]
+
+You can generate random passwords that meet the Acrolinx password policy.
+This API is convenient when you want to create new users.
+
+### Get a Randomly Generated Compliant Password [GET /api/v1/user/random-passwords]
+
+**Added in Core Platform version 2022.03**
+
+**Password Requirements**
+
+A password needs to meet the following requirements:
+
+- Composed of ASCII printable characters
+- Includes at least 1 lowercase letter
+- Includes at least 1 uppercase letter
+- Includes at least 1 digit
+- Includes at least 1 special character
+- At least 10 characters long
+- No more than 64 characters long
+
+**Note:**
+- You'll need a valid access token.
+- You need the `UserAndRoles.editUser` privilege.
+- The randomly generated password isn't saved anywhere.
+- The HTTP requests aren't cached.
+- The randomly generated passwords are always 20 characters long.
+
++ Request Get a random password from the API
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Cache-Control: private, no-cache, no-transform, must-revalidate, max-age=0
+            Pragma: no-Cache
+            Expires: Thu, 01 Jan 1970 00:00:00 GMT
+
+    + Attributes (object)
+        + links (object)
+        + data (RandomPassword)
+
+    + Body
+
+            {
+                "links": {},
+                "data": {
+                    "value": "#n(Y2Ne|=ODfEV @,y8I"
+                }
+            }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when the user doesn't have the privilege to modify users ("UserAndRoles.editUser")
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 503 (application/json)
+
+        // when the random password generator takes too long to generate an acceptable password
+        {
+            "links": {},
+            "error": {
+                "detail": "the service was unable to process your request at this time, please try again",
+                "type": "temporaryUnavailable",
+                "title": "Temporarily unable to process the request",
+                "status": 503
+            }
+        }
+
 ## User Commands [/api/v1/user/{id}/_{command}]
 
 The APIs in this group follow the API design command style.   
@@ -3542,6 +4056,8 @@ These administrative commands can help govern users in your Acrolinx instance. T
 **Note:** You can apply these requests multiple times without changing the result (idempotent). 
 
 ### Release an Active Named User License [PUT /api/v1/user/{id}/_release]
+
+**Added in Core Platform version 2021.05**
 
 This method uses the *id* to release an active license consumed by a user.
 
@@ -3606,6 +4122,8 @@ This method uses the *id* to release an active license consumed by a user.
 
 ### Request User Information Update  [PUT /api/v1/user/{id}/_request_cf_update]
 
+**Added in Core Platform version 2021.12**
+
 The user specified by the *id* in this request will be asked to update their user information.
 
 **Note:**
@@ -3666,6 +4184,8 @@ The user specified by the *id* in this request will be asked to update their use
         }
 
 ### Export a List of Users [GET /api/v1/user/_export]
+
+**Added in Core Platform version 2021.06**
 
 This API provides an easy way to export a concise user list in various file formats.
 
@@ -3790,6 +4310,8 @@ and a list of `errors` for the objects that couldn’t be processed.
 **Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
 
 ### Create Users in Bulk [POST /api/v1/user/bulk]
+
+**Added in Core Platform version 2021.06**
 
 This API lets you create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
@@ -3968,9 +4490,9 @@ noted in the Create User API section.
                 "validationDetails": [
                     {
                         "title": "Validation error",
-                        "constraint": "Size",
+                        "constraint": "NotEmpty",
                         "attributePath": "password",
-                        "detail": "size must be between 1 and 128",
+                        "detail": "must not be empty",
                         "invalidValue": ""
                     }
                 ],
@@ -4027,6 +4549,8 @@ noted in the Create User API section.
 
 
 ### Request User Information Update in Bulk  [PUT /api/v1/user/bulk/_request_cf_update]
+
+**Added in Core Platform version 2021.12**
 
 This API is the bulk operation for "Request User Information Update" from the "User Commands" group.
 It lets you ask multiple users to update their user information.
@@ -4177,6 +4701,8 @@ It lets you ask multiple users to update their user information.
         }
 
 ### Delete Users in Bulk [DELETE /api/v1/user/bulk]
+
+**Added in Core Platform version 2021.12**
 
 This API lets you delete a list of users. All user ids follow the requirements and constraints
 noted in the "Delete User API" section.
@@ -4438,6 +4964,8 @@ noted in the "Delete User API" section.
 
 # Group Licenses API
 
+**Available since Core Platform version 2021.06**
+
 License information is provided by the following set of APIs.
 
 ## Statistics [/api/v1/licenses/statistics]
@@ -4524,7 +5052,9 @@ Details of the statistics attributes in the table below:
 
 # Group Role API
 
-In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role. 
+**Available since Core Platform version 2021.05**
+
+In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role.
 You can use roles to group sets of privileges and assign them to different users.
 Mark roles as default if you want to automatically assign at least one default role to all new users.
 
@@ -6359,6 +6889,9 @@ A general summary of the health of the Acrolinx Platform.
 + next (string) - URI of the next page
 + first (string) - URI of the first page
 + last  (string) - URI of the last page
+
+## RandomPassword
++ value (string) - a random, policy-compliant password
 
 ### Privacy
 + scorecardPrivacy (string) - Indicates the type of privacy as one of ['public' | 'limited' | 'personal']
