@@ -6321,6 +6321,8 @@ This lets you delete a specified role based on its *id*.
 
 # Group Privacy API
 
+## Privacy [/api/v1/privacy]
+
 Privacy information is provided and set by the following set of APIs. There are two values associated with these APIs:
 - Scorecard privacy
 - Anonymous checking
@@ -6329,8 +6331,7 @@ Privacy information is provided and set by the following set of APIs. There are 
 - A valid access token and `Reporting.administration` privilege is required to access the APIs.
 - When `scorecardPrivacy` is set to `personal`, `anonymousChecking` can't be enabled. More information about scorecard privacy and anonymous checking can be found in the
 [Acrolinx documentation](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/access-and-confidentiality/secure-access-to-scorecards).
-
-### Get Privacy [GET /api/v1/privacy]
+### Get Privacy [GET]
 
 This request retrieves `scorecardPrivacy` and `anonymousChecking` values.
 
@@ -6356,14 +6357,9 @@ This request retrieves `scorecardPrivacy` and `anonymousChecking` values.
                 }
             }
 
-+ Request Get privacy with invalid or missing access token (application/json)
-
-    + Headers
-
-            X-Acrolinx-Auth: invalid_token
-
 + Response 401
 
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -6374,14 +6370,9 @@ This request retrieves `scorecardPrivacy` and `anonymousChecking` values.
             }
         }
 
-+ Request Get privacy missing required privilege (application/json)
-
-    + Headers
-
-            X-Acrolinx-Auth: invalid_token
-
 + Response 403
 
+        // when you don’t have the privilege to delete roles
         {
             "links": {},
             "error": {
@@ -6393,7 +6384,7 @@ This request retrieves `scorecardPrivacy` and `anonymousChecking` values.
             }
         }
 
-### Set Privacy [PUT /api/v1/privacy]
+### Set Privacy [PUT]
 
 This API lets you update the privacy values in the database.
 
@@ -6415,6 +6406,33 @@ This API lets you update the privacy values in the database.
             }
 
 + Response 204
+
++ Response 401
+
+        // when the access token in the request is missing or invalid
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403
+
+        // when you don’t have the privilege to delete roles
+        {
+            "links": {},
+            "error": {
+                "reference": "77a791b4-3e6d-4553-bd93-0a4c664bf94a",
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
 
 + Request Update privacy with `scorecardPrivacy` `personal` and `anonymousChecking` `true` (application/json)
 
