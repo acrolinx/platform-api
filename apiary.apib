@@ -5017,6 +5017,19 @@ This request retrieves the list of defined user custom fields.
                 ]
             }
 
++ Response 401 (application/json)
+
+        // When the access token is missing or is invalid in the request
+        {
+            "links": {},
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
 # Group Licenses API
 
 **Available since Core Platform version 2021.06**
