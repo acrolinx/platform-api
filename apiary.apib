@@ -4962,6 +4962,59 @@ noted in the "Delete User API" section.
             }
         }
 
+# Group Custom Fields API
+
+**Available since Core Platform version 2022.02**
+
+Custom Fields information is provided and set by the following API.
+
+## Custom Fields [/api/v1/custom-fields/user]
+
+### Get Custom Fields [GET]
+
+This request retrieves the list of defined user custom fields.
+
++ Request Get Custom Fields (application/json)
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (CustomField)
+
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    {
+                        "key": "key1",
+                        "displayName": "displayName1",
+                        "inputType": "required",
+                        "type": "list",
+                        "value": "",
+                        "possibleValues": [
+                            "",
+                            "possibleValue1",
+                            "possibleValue2"
+                        ]
+                    },
+                    {
+                        "key": "key2",
+                        "displayName": "displayName2",
+                        "inputType": "optional",
+                        "type": "text",
+                        "value": "",
+                        "possibleValues": [
+                        ]
+                    }
+                ]
+            }
+
 # Group Licenses API
 
 **Available since Core Platform version 2021.06**
