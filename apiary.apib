@@ -671,7 +671,11 @@ The same information is available in the checking capabilities.
                         }
                     ]
                  },
-                 "language": "en"                           // optional: force language for Automatic Target Assignment, default: detected by Automatic Target Assignment
+                 "language": "en"                           // optional: force language for Target Assignment using
+                                                            //           guidanceProfile.language.id codes (see
+                                                            //           checking capabilities)
+                                                            // default: target language if target is set in checkOptions.guidanceProfileId, 
+                                                            //          otherwise auto-detected
             }
 
 + Response 201 (application/json)
