@@ -4970,15 +4970,15 @@ noted in the "Delete User API" section.
 
 **Available since Core Platform version 2022.03**
 
-Custom Fields information is provided and set by the following API.
+This API lets you set and view user custom fields.
 
-**Note:** No special privilege is required for this call, only a valid access token.
+**Note:** You only need a valid access token for this request (no special privileges needed).
 
 ## Custom Fields [/api/v1/custom-fields/user]
 
 ### Get Custom Fields [GET]
 
-This request retrieves the list of defined user custom fields.
+This shows a list of your user custom fields.
 
 + Request Get Custom Fields (application/json)
 
@@ -5019,7 +5019,7 @@ This request retrieves the list of defined user custom fields.
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
