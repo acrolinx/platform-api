@@ -3773,7 +3773,7 @@ To read more about managing users and built-in users, see [Manage Your Users](ht
 
 You can query users with missing required custom fields.
 
-**What is a missing required custom field?** The user API representation returns the user related custom fields in the `customFields[]` array. In case there is a required custom field object (with `"inputType": "required"`) and empty value (`"value": ""`), this custom field considred as missing until the value did not provided. So the user has a missing required custom field. 
+**What's a missing required custom field?** The User API returns your user-related custom fields in the `customFields[]` array. If a custom field is required (marked with `"inputType": "required"`) and is missing a value (`"value": ""`), the field is considered to be missing.
 
 **Note:**
 - You'll need a valid access token.
