@@ -3766,6 +3766,184 @@ To read more about managing users and built-in users, see [Manage Your Users](ht
             }
         }
 
+
+## Missing Required User Custom Fields [/api/v1/user/custom-fields-missing]
+
+**Added in Core Platform version 2022.04**
+
+You can query users who don't have required custom fields.
+
+**What's a missing required custom field?** The User API returns your user-related custom fields in the `customFields[]` array. If a custom field is required (marked with `"inputType": "required"`) and is missing a value (`"value": ""`), the field is considered to be missing.
+
+**Note:**
+- You'll need a valid access token.
+- You need the `UserAndRoles.editUser` privilege.
+
+### Count Users [HEAD /api/v1/user/custom-fields-missing]
+
+Returns the total number of users who are missing one or more required user custom field.
+
+**Note:**
+- The response has no content. 
+- The user count will be shown in the header `X-Acrolinx-Total`.
+- The header value is a numeral.
+- It returns a 0 (zero) when no required custom fields are missing. 
+
++ Request
+
+    Query the number of users who are missing information in one or more required user custom fields.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 204
+
+    + Headers
+
+            X-Acrolinx-Total: 5
+
++ Response 401 (application/json) 
+
++ Response 403 (application/json) 
+
+### Get Users [GET /api/v1/user/custom-fields-missing{?page,per_page}]
+
+Returns a list of users who are missing one or more required user custom fields. 
+
+**Note:** Similar to the User Resource > Get All Users request, it supports pagination. See more details there.
+
++ Request 
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+
+    + Body
+
+               {
+                "links": {},
+                "data": [
+                    {
+                        "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                        "username": "fred",
+                        "fullName": "Fred Freelancer",
+                        "createdOn": "2021-04-15T15:00:26.495Z",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "named",
+                        "licenseStatus": "inactive",
+                        "tenantId": "smarttech",
+                        "activeTokenId": "",
+                        "checkingFrequency": "infrequent",
+                        "properties" : {
+                            "customkey": "customvalue",
+                        },
+                        "roles": [
+                            {
+                                "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                                "name": "Author"
+                            }
+                        ],
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            },
+                            {
+                            // Note that the value is empty ("") and the inputType is "required", so it's missing!
+                                "key": "Employee number",
+                                "displayName": "Employee number",
+                                "inputType": "required",
+                                "type": "text",
+                                "value": "",
+                                "possibleValues": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
+                        "username": "franz",
+                        "fullName": "Franz Hubendobler",
+                        "createdOn": "2021-02-23T17:24:01.131Z",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "builtin",
+                        "licenseStatus": "active",
+                        "tenantId": "smarttech",
+                        "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                        "checkingFrequency": "infrequent",
+                        "properties" : {
+                            "customkey": "customvalue",
+                        },
+                        "roles": [
+                            {
+                                "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                                "name": "Analytics Read-Only User"
+                            }
+                        ],
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            },
+                            {
+                            // Note that the value is empty ("") and the inputType is "required", so it's missing!
+                                "key": "Employee number",
+                                "displayName": "Employee number",
+                                "inputType": "required",
+                                "type": "text",
+                                "value": "", 
+                                "possibleValues": []
+                            }
+                        ]
+                    }
+                ]
+            }
+
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
++ Response 403 (application/json)
+
+        // when you don’t have sufficent privileges 
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+
+
 ## User-Generated API Tokens [/api/v1/user/{id}/tokens]
 
 You can generate long-lasting API tokens for programmatic access to the Platform APIs.
