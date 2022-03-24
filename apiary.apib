@@ -3840,7 +3840,7 @@ Returns a list of users who are missing one or more required user custom fields.
 
     + Body
 
-               {
+            {
                 "links": {},
                 "data": [
                     {
@@ -3930,6 +3930,19 @@ Returns a list of users who are missing one or more required user custom fields.
                 ]
             }
 
++ Response 400 (appplication/json)
+
+        // when the page parameter has an invalid value such as 0 or negative number
+        {
+            "links": {},
+            "error": {
+                "reference": "b2045b7f-1dce-49e7-880a-93874f427554",
+                "detail": "Invalid page request attribute, it must be greater than zero",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
 
 + Response 401 (application/json)
 
@@ -3942,6 +3955,7 @@ Returns a list of users who are missing one or more required user custom fields.
                 "status": 401
             }
         }
+
 + Response 403 (application/json)
 
         // when you don't have sufficent privileges 
@@ -3955,7 +3969,19 @@ Returns a list of users who are missing one or more required user custom fields.
             }
         }
 
++ Response 404 (application/json)
 
+        // when the page parameter has a non-numeric value, which is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f1926760-f2e7-4af7-a3a6-f274bcb9a00f",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
+            }
+        }
 
 ## User-Generated API Tokens [/api/v1/user/{id}/tokens]
 
