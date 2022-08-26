@@ -6912,6 +6912,30 @@ A general summary of the health of the Acrolinx Platform.
           }
         }
 
+## Get Health Metrics [GET /api/v1/monitoring/health/status]
+
+Returns 200 when there is at least one language server available for checking
+
+**Available since Core Platform version 2022.03**
+
++ Response 200
+
++ Response 503
+
+        {
+            "links": {},
+            "error": {
+                "reference": "abee2169-66ce-4566-b21a-f086d0c2c82a",
+                "detail": "Not all languages are available for checking.",
+                "type": "server",
+                "title": "Service Unavailable",
+                "status": 503
+            }
+        }
+
+
+
+
 # Data Structures
 
 ## Role (object) 
