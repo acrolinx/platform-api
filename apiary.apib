@@ -6935,6 +6935,22 @@ The respnse of his api will not contain a data body, just a 200 response code. A
             }
         }
 
+## Get Health Liveliness [GET /api/v1/monitoring/health/live]
+
+Returns a successful response when the server is accepting and processing web requests.
+This does not entail that the server is ready for processing check requests. However
+making an API call to `api/v1/monitoring/health/status` will give that information.
+
+The respnse of his api will contain a plain text message "OK" and a 200 response code. Access to the
+"Access to monitoring API" permission is not needed to use this API. An unsucesful response would
+mean any other response that is not `200`.
+
+**Available since Core Platform version 2022.09**
+
++ Response 200 (text/plain)
+
+        OK
+
 # Data Structures
 
 ## Role (object) 
