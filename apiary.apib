@@ -6914,7 +6914,9 @@ A general summary of the health of the Acrolinx Platform.
 
 ## Get Health Metrics [GET /api/v1/monitoring/health/status]
 
-Returns 200 when there is at least one language server available for checking
+Returns a successful response when there is at least one language server available for checking.
+The respnse of his api will not contain a data body, just a 200 response code. Access to the
+"Access to monitoring API" permission is not needed to use this API.
 
 **Available since Core Platform version 2022.03**
 
@@ -6932,8 +6934,6 @@ Returns 200 when there is at least one language server available for checking
                 "status": 503
             }
         }
-
-
 
 
 # Data Structures
