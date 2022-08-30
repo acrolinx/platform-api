@@ -6904,13 +6904,53 @@ A general summary of the health of the Acrolinx Platform.
 + Response 200 (application/json)
 
         {
-          "data": {
-            "languagesReady": {
-                "en": true,
-                "fr": true,
-                "ja": false
-          }
+            "data": {
+                "languagesReady": {
+                    "en": true,
+                    "fr": true,
+                    "ja": false
+                }
+            }
         }
+
+## Get Health Status [GET /api/v1/monitoring/health/status]
+
+This returns a successful response when at least one language server is available for checking.
+This API response will only contain `200` response code. You don't need
+access to the permission "Access to monitoring API" to use this API.
+
+**Available since Core Platform version 2022.03**
+
++ Response 200
+
++ Response 503
+
+        {
+            "links": {},
+            "error": {
+                "reference": "abee2169-66ce-4566-b21a-f086d0c2c82a",
+                "detail": "Not all languages are available for checking.",
+                "type": "server",
+                "title": "Service Unavailable",
+                "status": 503
+            }
+        }
+
+## Get Health Liveliness [GET /api/v1/monitoring/health/live]
+
+This returns a successful response when the server can accept and process web requests.
+This does not tell you if the server is ready to process check requests. To get that information,
+you can make an API call to `api/v1/monitoring/health/status`.
+
+This API response will contain the plain-text message "OK" and a `200` response code. You don't need
+access to the permission "Access to monitoring API" to use this API. If a response is unsuccessful,
+you'll see a response that isn't `200`.
+
+**Available since Core Platform version 2022.09**
+
++ Response 200 (text/plain)
+
+        OK
 
 # Data Structures
 
