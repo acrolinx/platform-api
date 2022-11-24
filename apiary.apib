@@ -499,7 +499,7 @@ writing guide or a Checking Profile. If Sublanguages are activated, they're fold
 For each guidance profile, the server provides information about the language, activated goals, and term sets. The client may use this
 for filtering purposes, but they can only select one (complete) guidance profile for checking (for example, not deselect goals).
 
-If the server runs in Targets Mode, the guidance profiles contain an additional flag 'quickSuggest'. This flag is true iff modern reuse is
+If the server runs in Targets Mode, the guidance profiles contain an additional flag 'acrolinxLive'. This flag is true iff modern reuse is
 enabled on the server, the current user has the document checking privilege and the guidance profile contains an active modern reuse guideline with
 at least one reuse set configured.
 
@@ -528,7 +528,7 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
                         "id": "en-gb",
                         "displayName": "English (Great Britain)"
                     },
-                    "quickSuggest": true,
+                    "acrolinxLive": false,
                     "goals": [{
                         "id": "CORRECTNESS",
                         "displayName": "Correctness",
@@ -561,6 +561,7 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
                         "id": "de",
                         "displayName": "German"
                     },
+                    "acrolinxLive": false,
                     "goals": [{
                         "id": "CORRECTNESS",
                         "displayName": "Correctness",
