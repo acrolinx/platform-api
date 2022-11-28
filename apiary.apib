@@ -723,7 +723,7 @@ The integration can also remember the `positionalInformation.hashes.issue` attri
 Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue.
 
 To apply a suggestion to all occurrences of an issue, use the `groupId` attribute to find the corresponding suggestion.
-If an occurrence of an issue doesn’t have a suggestion with the same `groupId` or if the `groupId` is empty, then it can't be replaced with a replace-all operation.
+If an occurrence of an issue doesn't have a suggestion with the same `groupId` or if the `groupId` is empty, then it can't be replaced with a replace-all operation.
 
 Note that not all occurrences of an issue always have the same suggestions. In this case, the replace-all operation only applies to issues with the same suggestion.
 
@@ -873,6 +873,7 @@ Polls the check result. Either a progress or the completed result is returned. T
             "issues": [
                 {
                     "goalId": "CORRECTNESS",
+                    "guidelineId": "EN20111291451MK",
                     "internalName": "title_case_chicago",
                     "displayNameHtml": "Use Chicago style for the title case?",
                     "guidanceHtml": "<div class=\"shortHelp\" lang=\"en\" xml:lang=\"en\">\n<p>According to the <q>Chicago Manual of Style</q>, here's how you write titles:</p>\n<ul>\n<li>Capitalize the first word and the last word.</li>\n<li>Capitalize all \"main\" words.</li>\n<li>Don't capitalize articles and conjunctions (example: <q>a</q>, <q>and</q>).</li>\n<li>Don't capitalize prepositions independent of their length (example: <q>about</q>, <q>around</q>).</li>\n</ul>\n</div>",
@@ -931,6 +932,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 },
                 {
                     "goalId": "WORDS_AND_PHRASES",
+                    "guidelineId": "b4a5192e-5f9e-4f10-a849-a16be4b9cb18",
                     "internalName": "term_flag",
                     "displayNameHtml": "<b>Illegal sublanguage variant</b> of preferred term",
                     "guidanceHtml": "<div class=\"guidance term\">\n\t<b>Domains</b>\n\t\t\t<br/><i>Switches</i>\n\t\t\t\t\t<br/>\n\t\t<b>Note</b>\n\t\t<br/>\n\t\tUse &#39;please&#39; in presale materials only. Do NOT use &#39;please&#39; in postsale material.\n\t</div>\n",
@@ -977,6 +979,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 },
                 {
                     "goalId": "CLARITY",
+                    "guidelineId": "EN40111231459",
                     "internalName": "en-clarity-medium",
                     "displayNameHtml": "Too complex? Your readers need a medium level of clarity. ",
                     "guidanceHtml": "",
@@ -1013,6 +1016,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                     },
                     "subIssues": [{
                         "goalId": "CLARITY",
+                        "guidelineId": "EN92712627329",
                         "internalName": "phenomenon_embedded_or_complex_sentence",
                         "displayNameHtml": "Try to split up this sentence.",
                         "guidanceHtml": "<p>This sentence doesn't seem to flow smoothly. We found a few embedded phrases in there that could be messing with your flow somehow.</p>",
@@ -1049,6 +1053,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                         }
                     }, {
                         "goalId": "CLARITY",
+                        "guidelineId": "EN12771268128",
                         "internalName": "phenomenon_passive",
                         "displayNameHtml": "The active voice is usually clearer.",
                         "guidanceHtml": "<p>This one could do with a bit of pep. It's probably because it feels kind of passive. We love it when you're assertive.</p>",
@@ -1094,6 +1099,7 @@ Polls the check result. Either a progress or the completed result is returned. T
                 },
                 {
                     "goalId": "CLARITY",
+                    "guidelineId": "EN85291241038",
                     "internalName": "guideline_FleschReadingEaseAsGuideline",
                     "displayNameHtml": "<span><b>Flesch Reading Ease: 47</b><br>Flesch Reading Ease is a classic readability metric.</span>",
                     "guidanceHtml": "",
@@ -1316,7 +1322,7 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
-You’re _required_ to provide user information for the following:
+You're _required_ to provide user information for the following:
 * Interactive integrations: When you sign in to the Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
 * Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter customer user information. This lets you generate an API token for the user that’s signed in.
 
@@ -1383,7 +1389,7 @@ You can always leave out the `+` character, because the user list appears in asc
 
 For a better overview, you might like to view the list of users in pages instead of in one long list.
 To request a paginated response, add the query parameters `page` and `per_page`. 
-You’ll need to set the `page` parameter. The page count always starts at `1`. 
+You'll need to set the `page` parameter. The page count always starts at `1`. 
 By default, `per_page` is set to `10`. You can display as many as 500 users per page. This is an optional parameter. 
 
 If you request a paginated response, Acrolinx will add the following header values:
@@ -1406,7 +1412,7 @@ within the `links` object:
 | `first`  | The URL to get the first page.    |
 | `last`   | The URL to get the last page.     |
 
-If there aren’t any next or previous pages, you won’t see the `next` and `prev` links. 
+If there aren't any next or previous pages, you won't see the `next` and `prev` links. 
 For example, when you view page 1, you won't see a `prev` link because there's no page 0. 
 This is also the case for the values in the headers.
 
@@ -1750,6 +1756,18 @@ The example response includes the pagination URLs and query parameters in the `l
             }
         }
 
+        // when the page parameter has an invalid value such as 0 or negative number
+        {
+            "links": {},
+            "error": {
+                "reference": "b2045b7f-1dce-49e7-880a-93874f427554",
+                "detail": "Invalid page request attribute, it must be greater than zero",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
         // when the custom field name cannot be found
         {
             "links": {},
@@ -1787,24 +1805,25 @@ The example response includes the pagination URLs and query parameters in the `l
             }
         }
 
-+ Response 403 (application/json)
++ Response 404 (application/json)
 
-        // when you don’t have the privilege to list users
+        // when the page parameter has a non-numeric value, which is invalid
         {
-        "links": {},
+            "links": {},
             "error": {
-                "detail": "The user does not have the required privileges to perform the operation.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
+                "reference": "f1926760-f2e7-4af7-a3a6-f274bcb9a00f",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
             }
         }
 
 ### Get a User [GET /api/v1/user/{id}]
 
 This request returns information about an user. 
-The information includes the user id, username, the user’s full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status. 
-You’ll also see properties, roles, and custom fields.
+The information includes the user id, username, the user's full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status. 
+You'll also see properties, roles, and custom fields.
 
 + Parameters
 
@@ -1879,7 +1898,7 @@ You’ll also see properties, roles, and custom fields.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to fetch users
+        // when you don't have the privilege to fetch users
         {
         "links": {},
             "error": {
@@ -1892,7 +1911,7 @@ You’ll also see properties, roles, and custom fields.
 
 + Response 404 (application/json)
 
-        // when the user couldn’t be identified by its *id* in the database
+        // when the user couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -1980,7 +1999,7 @@ This is an alternative way of getting information about the current (in request 
 
 + Response 404 (application/json)
 
-        // when the user couldn’t be identified by its *id* in the database
+        // when the user couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -2108,7 +2127,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2021.05
+        // when the password doesn't meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2129,7 +2148,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2211,7 +2230,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to create users
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -2228,7 +2247,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         {
         "links": {},
             "error": {
-                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -2343,7 +2362,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2021.05
+        // when the password doesn't meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2364,7 +2383,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2446,7 +2465,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to create users
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -2473,7 +2492,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 500 (application/json)
 
-        // when there’s an unspecified error
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -2571,7 +2590,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2021.05
+        // when the password doesn't meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2592,7 +2611,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2674,7 +2693,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to create users
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -2701,7 +2720,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 500 (application/json)
 
-        // when there’s an unspecified error
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -2795,7 +2814,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2021.05
+        // when the password doesn't meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2816,7 +2835,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2858,7 +2877,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2989,7 +3008,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to create users
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -3016,7 +3035,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 500 (application/json)
 
-        // when there’s an unspecified error
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -3122,7 +3141,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to update users
+        // when you don't have the privilege to update users
         {
         "links": {},
             "error": {
@@ -3135,7 +3154,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 404 (application/json)
 
-        // when the user couldn’t be identified by its *id* in the database
+        // when the user couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -3149,9 +3168,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Request Update roles (application/json)
 
-    You can update a user’s role.
+    You can update a user's role.
 
-    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn’t apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn’t exist, the call will fail and the error message will show the unknown roles that were referenced.
+    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
 
     + Headers
 
@@ -3250,7 +3269,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to grant a role
+        // when you don't have the privilege to grant a role
         {
         "links": {},
             "error": {
@@ -3442,7 +3461,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        // when any of the updated fields are invalid, you’ll see a detailed error message
+        // when any of the updated fields are invalid, you'll see a detailed error message
         {
             "links": {},
             "error": {
@@ -3479,7 +3498,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         }
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to update custom fields
+        // when you don't have the privilege to update custom fields
         {
         "links": {},
             "error": {
@@ -3496,7 +3515,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         {
         "links": {},
             "error": {
-                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3505,7 +3524,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 404 (application/json)
 
-        // when a role wasn’t found in the database based on its *id*
+        // when a role wasn't found in the database based on its *id*
         {
         "links": {},
             "error": {
@@ -3589,7 +3608,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
 + Response 400 (application/json)
 
-        // when the password doesn’t meet the strictness requirements starting from v2022.02
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -3644,7 +3663,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         }
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to update custom fields
+        // when you don't have the privilege to update custom fields
         {
         "links": {},
             "error": {
@@ -3661,7 +3680,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         {
         "links": {},
             "error": {
-                "detail": "It’s not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3670,7 +3689,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 404 (application/json)
 
-        // when a role wasn’t found in the database based on its *id*
+        // when a role wasn't found in the database based on its *id*
         {
         "links": {},
             "error": {
@@ -3733,7 +3752,7 @@ To read more about managing users and built-in users, see [Manage Your Users](ht
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to delete a user
+        // when you don't have the privilege to delete a user
         {
         "links": {},
             "error": {
@@ -3746,7 +3765,7 @@ To read more about managing users and built-in users, see [Manage Your Users](ht
 
 + Response 404 (application/json)
 
-        // when the user wasn’t found in the database based on its *id*
+        // when the user wasn't found in the database based on its *id*
         {
         "links": {},
             "error": {
@@ -3760,7 +3779,7 @@ To read more about managing users and built-in users, see [Manage Your Users](ht
 
 + Response 409 (application/json)
 
-        // when you can’t delete a user
+        // when you can't delete a user
         {
             "links": {},
             "error": {
@@ -3769,6 +3788,210 @@ To read more about managing users and built-in users, see [Manage Your Users](ht
                 "type": "client",
                 "title": "Conflict",
                 "status": 409
+            }
+        }
+
+
+## Missing Required User Custom Fields [/api/v1/user/custom-fields-missing]
+
+**Added in Core Platform version 2022.04**
+
+You can query users who don't have required custom fields.
+
+**What's a missing required custom field?** The User API returns your user-related custom fields in the `customFields[]` array. If a custom field is required (marked with `"inputType": "required"`) and is missing a value (`"value": ""`), the field is considered to be missing.
+
+**Note:**
+- You'll need a valid access token.
+- You need the `UserAndRoles.editUser` privilege.
+
+### Count Users [HEAD /api/v1/user/custom-fields-missing]
+
+Returns the total number of users who are missing one or more required user custom field.
+
+**Note:**
+- The response has no content. 
+- The user count will be shown in the header `X-Acrolinx-Total`.
+- The header value is a numeral.
+- It returns a 0 (zero) when no required custom fields are missing. 
+
++ Request
+
+    Query the number of users who are missing information in one or more required user custom fields.
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 204
+
+    + Headers
+
+            X-Acrolinx-Total: 5
+
++ Response 401 (application/json) 
+
++ Response 403 (application/json) 
+
+### Get Users [GET /api/v1/user/custom-fields-missing{?page,per_page}]
+
+Returns a list of users who are missing one or more required user custom fields. 
+
+**Note:** Similar to the User Resource > Get All Users request, it supports pagination. See more details there.
+
++ Request 
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + links (object)
+        + data (User)
+
+    + Body
+
+            {
+                "links": {},
+                "data": [
+                    {
+                        "id": "eb323701-839f-4998-b56e-3e20c70259c5",
+                        "username": "fred",
+                        "fullName": "Fred Freelancer",
+                        "createdOn": "2021-04-15T15:00:26.495Z",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "named",
+                        "licenseStatus": "inactive",
+                        "tenantId": "smarttech",
+                        "activeTokenId": "",
+                        "checkingFrequency": "infrequent",
+                        "properties" : {
+                            "customkey": "customvalue",
+                        },
+                        "roles": [
+                            {
+                                "id": "d66d4d00-3381-11e0-bc8e-0800200c9a66",
+                                "name": "Author"
+                            }
+                        ],
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            },
+                            {
+                            // Note that the value is empty ("") and the inputType is "required", so it's missing!
+                                "key": "Employee number",
+                                "displayName": "Employee number",
+                                "inputType": "required",
+                                "type": "text",
+                                "value": "",
+                                "possibleValues": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "fd3eaa89-a6b7-463a-ba12-b7ded410bda0",
+                        "username": "franz",
+                        "fullName": "Franz Hubendobler",
+                        "createdOn": "2021-02-23T17:24:01.131Z",
+                        "lastIntegrationAccess": "1970-01-01T00:00:00Z",
+                        "licenseType": "builtin",
+                        "licenseStatus": "active",
+                        "tenantId": "smarttech",
+                        "activeTokenId": "uqlyxi3cdxrdqn7bzwdfffyvzr",
+                        "checkingFrequency": "infrequent",
+                        "properties" : {
+                            "customkey": "customvalue",
+                        },
+                        "roles": [
+                            {
+                                "id": "898a7c32-2c39-4cde-becb-16f22243e9b8",
+                                "name": "Analytics Read-Only User"
+                            }
+                        ],
+                        "customFields": [
+                            {
+                                "key": "Department",
+                                "displayName": "Department",
+                                "inputType": "optional",
+                                "type": "list",
+                                "value": "Example Department",
+                                "possibleValues": [
+                                    "Example Department"
+                                ]
+                            },
+                            {
+                            // Note that the value is empty ("") and the inputType is "required", so it's missing!
+                                "key": "Employee number",
+                                "displayName": "Employee number",
+                                "inputType": "required",
+                                "type": "text",
+                                "value": "", 
+                                "possibleValues": []
+                            }
+                        ]
+                    }
+                ]
+            }
+
++ Response 400 (appplication/json)
+
+        // when the page parameter has an invalid value such as 0 or negative number
+        {
+            "links": {},
+            "error": {
+                "reference": "b2045b7f-1dce-49e7-880a-93874f427554",
+                "detail": "Invalid page request attribute, it must be greater than zero",
+                "type": "client",
+                "title": "Bad Request",
+                "status": 400
+            }
+        }
+
++ Response 401 (application/json)
+
+        // when the access token in the request is missing or invalid
+        {
+            "error": {
+                "detail": "Valid authentication has either not been provided or is insufficient.",
+                "type": "auth",
+                "title": "Invalid authentication",
+                "status": 401
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you don't have sufficent privileges 
+        {
+        "links": {},
+            "error": {
+                "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 404 (application/json)
+
+        // when the page parameter has a non-numeric value, which is invalid
+        {
+            "links": {},
+            "error": {
+                "reference": "f1926760-f2e7-4af7-a3a6-f274bcb9a00f",
+                "detail": "An unspecific client error occurred.",
+                "type": "client",
+                "title": "Not Found",
+                "status": 404
             }
         }
 
@@ -3785,7 +4008,7 @@ Be aware that you can only be bound to one API token at a time.
 
 **Warning:** Follow these security guidelines when you work with API tokens:
 + Store your API token securely and never share it with others.
-+ Don’t bake your API token into any custom code that interacts with the Acrolinx Platform APIs.
++ Don't bake your API token into any custom code that interacts with the Acrolinx Platform APIs.
 
 **Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/authentication/create-an-api-token) in the Acrolinx documentation.
 
@@ -3946,7 +4169,7 @@ Typical use cases for this API:
 
 + Response 403 (application/json)
 
-        // when the user can’t create an API token for others ("UserAndRoles.setApiTokensForOthers")
+        // when the user can't create an API token for others ("UserAndRoles.setApiTokensForOthers")
         {
             "links": {},
             "error": {
@@ -3960,7 +4183,7 @@ Typical use cases for this API:
 
 + Response 404 (application/json)
 
-        // when the user wasn’t found in the database based on its *id*
+        // when the user wasn't found in the database based on its *id*
 
 ## Random Passwords [/api/v1/user/random-passwords]
 
@@ -4073,7 +4296,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 **Note:**
 - You can only release users with the `named` license type.
-- If you release the license of a user who doesn’t consume a license, you won’t see an error. 
+- If you release the license of a user who doesn't consume a license, you won't see an error. 
 - To do this, you need the `UserAndRoles.deleteSessions` privilege.
 
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
@@ -4104,7 +4327,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to release other users' licenses ("UserAndRoles.deleteSessions")
+        // when you don't have the privilege to release other users' licenses ("UserAndRoles.deleteSessions")
         {
             "links": {},
             "error": {
@@ -4118,7 +4341,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 + Response 404 (application/json)
 
-        // when the user wasn’t found in the database by its *id*
+        // when the user wasn't found in the database by its *id*
         {
         "links": {},
             "error": {
@@ -4167,7 +4390,7 @@ The user specified by the *id* in this request will be asked to update their use
 
 + Response 403 (application/json)
 
-        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        // when you don't have the neccessary privileges ("UserAndRoles.editUser")
         {
             "links": {},
             "error": {
@@ -4181,7 +4404,7 @@ The user specified by the *id* in this request will be asked to update their use
 
 + Response 404 (application/json)
 
-        // when the user wasn’t found in the database by its *id*
+        // when the user wasn't found in the database by its *id*
         {
         "links": {},
             "error": {
@@ -4204,7 +4427,7 @@ The endpoint uses content negotiation to determine the format of the export. You
 **Supported formats:**
 + `text/csv` (default, file extension is `.csv`)
 
-**Note:** If you don’t specify the format in the `Accept` header, the default will be used.
+**Note:** If you don't specify the format in the `Accept` header, the default will be used.
 
 **Content-Disposition:**
 
@@ -4221,14 +4444,14 @@ The header parameters are set as follows:
     Each line of the file is a user data record. Each record consists of one or more user fields and the actual value, separated by column delimiter.
     You can use the CSV file with most spreadsheet programs, such as Microsoft Excel or Google Sheets.
 
-    You’ll see the following user fields in the file (in the following order):
+    You'll see the following user fields in the file (in the following order):
     + **user_id**: The user's unique identifier (string, UUID).
     + **Username**: The user's username, which can be used for sign in and user identification.
     + **Full Name**: The full name of the user.
     + **Roles**: A list of assigned roles.
     + **Created On**: Indicates when the user was created.
-    + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn’t accessed an integration, the default value is `Never`.
-    + **Checking Frequency**: Displays a rough idea of the user’s usage pattern based on checking frequency across the user’s lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
+    + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn't accessed an integration, the default value is `Never`.
+    + **Checking Frequency**: Displays a rough idea of the user's usage pattern based on checking frequency across the user's lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
     + **License Type**: Indicates the type of license. Its value can be ["named", "concurrent", "builtin"].
     + **{Custom Field name}**: Users can have multiple (0...N) custom fields that are also attached to the schema. 
         + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be added to the end of the sheet dynamically. 
@@ -4237,7 +4460,7 @@ The header parameters are set as follows:
     + Column headers are also written into the first row of the file.
     + Fields are separated by a semicolon `;` (as column delimiter). 
     + Date and time values are exported in `UTC`, for example `2021-05-12T15:40:00.876Z`.
-        + When there’s no stored value for a given Date time type field, the cell should contain `Never` or an empty value.
+        + When there's no stored value for a given Date time type field, the cell should contain `Never` or an empty value.
     + Values of a list type field are separated with a colon `:` (as the "in-cell" delimiter).
     + Values that contain space characters are in double quotes in the file, for example, `user_id;Username;"Full Name";...`.
 
@@ -4276,7 +4499,7 @@ The header parameters are set as follows:
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to export users ("UsersAndRoles.editUser")
+        // when you don't have the privilege to export users ("UsersAndRoles.editUser")
         {
             "links": {},
             "error": {
@@ -4315,7 +4538,7 @@ The header parameters are set as follows:
 These APIs let you perform bulk operations. Bulk operations follow the multi-status request and response model.
 In this model, the incoming bulk request includes a list of objects that need to be processed (as opposed to using the same API many times). 
 The response to the request is `207 Multi-Status`. The response includes a list of `results` for the objects that were processed successfully 
-and a list of `errors` for the objects that couldn’t be processed.
+and a list of `errors` for the objects that couldn't be processed.
 
 **Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
 
@@ -4408,7 +4631,7 @@ noted in the Create User API section.
             }
 
 
-            // when 3 users were created successfully but 2 weren’t
+            // when 3 users were created successfully but 2 weren't
             {
                 "results": [
                     {
@@ -4532,7 +4755,7 @@ noted in the Create User API section.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to create users
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -4545,7 +4768,7 @@ noted in the Create User API section.
 
 + Response 500 (application/json)
 
-        // when there’s an unspecified error
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -4609,7 +4832,7 @@ It lets you ask multiple users to update their user information.
 
 + Response 403 (application/json)
 
-        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        // when you don't have the neccessary privileges ("UserAndRoles.editUser")
         {
         "links": {},
             "error": {
@@ -4622,7 +4845,7 @@ It lets you ask multiple users to update their user information.
 
 + Response 500 (application/json)
 
-        // when there’s an unspecified error
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -4685,7 +4908,7 @@ It lets you ask multiple users to update their user information.
 
 + Response 403 (application/json)
 
-        // when you don’t have the neccessary privileges ("UserAndRoles.editUser")
+        // when you don't have the neccessary privileges ("UserAndRoles.editUser")
         {
         "links": {},
             "error": {
@@ -4698,7 +4921,7 @@ It lets you ask multiple users to update their user information.
 
 + Response 500 (application/json)
 
-        // when there’s an unspecified error
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -4947,7 +5170,7 @@ noted in the "Delete User API" section.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to delete users
+        // when you don't have the privilege to delete users
         {
         "links": {},
             "error": {
@@ -4960,7 +5183,7 @@ noted in the "Delete User API" section.
 
 + Response 500 (application/json)
 
-        // when there’s an unspecified error
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -4976,15 +5199,15 @@ noted in the "Delete User API" section.
 
 **Available since Core Platform version 2022.03**
 
-Custom Fields information is provided and set by the following API.
+This API lets you set and view user custom fields.
 
-**Note:** No special privilege is required for this call, only a valid access token.
+**Note:** You only need a valid access token for this request (no special privileges needed).
 
 ## Custom Fields [/api/v1/custom-fields/user]
 
 ### Get Custom Fields [GET]
 
-This request retrieves the list of defined user custom fields.
+This shows a list of your user custom fields.
 
 + Request Get Custom Fields (application/json)
 
@@ -5025,7 +5248,7 @@ This request retrieves the list of defined user custom fields.
 
 + Response 401 (application/json)
 
-        // When the access token is missing or is invalid in the request
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -5279,7 +5502,7 @@ Returns a list of all roles including the associated privileges.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to view users and roles ("UserAndRoles.read")
+        // when you don't have the privilege to view users and roles ("UserAndRoles.read")
         {
         "links": {},
             "error": {
@@ -5498,7 +5721,7 @@ This lets you add new roles.
                 }
             }
 
-            // when privilege keys that don’t exist were referenced
+            // when privilege keys that don't exist were referenced
             {
                 "links": {},
                 "error": {
@@ -5534,7 +5757,7 @@ This lets you add new roles.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to edit roles
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -5649,7 +5872,7 @@ This lets you add new roles.
                 }
             }
 
-            // when privilege keys that don’t exist were referenced
+            // when privilege keys that don't exist were referenced
             {
                 "links": {},
                 "error": {
@@ -5685,7 +5908,7 @@ This lets you add new roles.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to edit roles
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -5746,7 +5969,7 @@ This returns a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        // when the user doesn’t have the privilege to view roles
+        // when the user doesn't have the privilege to view roles
         {
         "links": {},
             "error": {
@@ -5760,7 +5983,7 @@ This returns a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        // when the specified role ID can’t be found
+        // when the specified role ID can't be found
         {
         "links": {},
             "error": {
@@ -5778,7 +6001,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 **Note:** 
 - To update roles, you need the privilege `UserAndRoles.editUser`.
-- You can’t edit the preconfigured roles!
+- You can't edit the preconfigured roles!
     - Acrolinx comes with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
 - You can use one request to update role attributes individually or completely. The request will ignore missing attributes or attributes with `null` values.
 
@@ -5829,7 +6052,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to edit roles
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -5843,7 +6066,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        // when the role couldn’t be identified by its *id* in the database
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -5943,7 +6166,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        // when the user doesn’t have the privilege to edit roles
+        // when the user doesn't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -5957,7 +6180,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        // when the role couldn’t be identified by its *id* in the database
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -6124,7 +6347,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        // when the role couldn’t be identified by its *id* in the database
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -6207,7 +6430,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to edit roles
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6221,7 +6444,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        // when the role couldn’t be identified by its *id* in the database
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -6235,12 +6458,12 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Request Remove a role from defaults (application/json)
 
-    You may want to remove a default role so it isn’t automatically assigned to newly created users.
+    You may want to remove a default role so it isn't automatically assigned to newly created users.
 
     In this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.
 
     **Note:**
-    - You aren’t required to have default roles.
+    - You aren't required to have default roles.
 
     + Headers
 
@@ -6290,7 +6513,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to edit roles
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6309,9 +6532,9 @@ This lets you update a role that was identified by its *id* in the database.
 This lets you delete a specified role based on its *id*.
 
 **Note:** You can only successfully delete a role if all of the following conditions are met:
-- The role isn’t a preconfigured built-in role such as "Author", "Super Administrator", or "Term Browser".
-- The role isn’t selected as a default role.
-- The role isn’t currently assigned to one or more users.
+- The role isn't a preconfigured built-in role such as "Author", "Super Administrator", or "Term Browser".
+- The role isn't selected as a default role.
+- The role isn't currently assigned to one or more users.
 
 + Parameters
     + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
@@ -6353,7 +6576,7 @@ This lets you delete a specified role based on its *id*.
 
 + Response 403 (application/json)
 
-        // when you don’t have the privilege to delete roles
+        // when you don't have the privilege to delete roles
         {
         "links": {},
             "error": {
@@ -6367,7 +6590,7 @@ This lets you delete a specified role based on its *id*.
 
 + Response 404 (application/json)
 
-        // when the role couldn’t be identified by its *id* in the database
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -6381,7 +6604,7 @@ This lets you delete a specified role based on its *id*.
 
 + Response 409 (application/json)
 
-        // when the preconditions to delete a role aren’t met
+        // when the preconditions to delete a role aren't met
         {
             "links": {},
             "error": {
@@ -6630,7 +6853,7 @@ Retrieves active notifications from the platform.
 **Since Core Platform 2019.10**
 
 The resources in this group provide information about the health and performance of the Acrolinx Platform.
-Accessing this information requires the permission "Access to monitoring API." This privilege isn’t granted
+Accessing this information requires the permission "Access to monitoring API." This privilege isn't granted
 to all users. Make sure the user associated with your API token has the requisite roles.
 
 For a quick check of your permissions see if the [metrics index](#monitoring-api-get-available-metrics)
@@ -6663,7 +6886,7 @@ Provides a summary of the check activity on the Acrolinx Platform.
 |Field                    |Contents
 |-------------------------|-------------------
 |`receivedChecks`         |Total number of checks received by the platform.
-|`successfulChecks`       |Total number of completed checks that didn’t result in an error.
+|`successfulChecks`       |Total number of completed checks that didn't result in an error.
 |`failedChecks`           |Total number of completed checks that resulted in an error.
 |`unparseableDocuments`   |Total number of checks that failed due to parsing errors.
 |`currentQueueLength`     |Current number of checks waiting for a free language server.
@@ -6693,13 +6916,53 @@ A general summary of the health of the Acrolinx Platform.
 + Response 200 (application/json)
 
         {
-          "data": {
-            "languagesReady": {
-                "en": true,
-                "fr": true,
-                "ja": false
-          }
+            "data": {
+                "languagesReady": {
+                    "en": true,
+                    "fr": true,
+                    "ja": false
+                }
+            }
         }
+
+## Get Health Status [GET /api/v1/monitoring/health/status]
+
+This returns a successful response when at least one language server is available for checking.
+This API response will only contain `200` response code. You don't need
+access to the permission "Access to monitoring API" to use this API.
+
+**Available since Core Platform version 2022.03**
+
++ Response 200
+
++ Response 503
+
+        {
+            "links": {},
+            "error": {
+                "reference": "abee2169-66ce-4566-b21a-f086d0c2c82a",
+                "detail": "Not all languages are available for checking.",
+                "type": "server",
+                "title": "Service Unavailable",
+                "status": 503
+            }
+        }
+
+## Get Health Liveliness [GET /api/v1/monitoring/health/live]
+
+This returns a successful response when the server can accept and process web requests.
+This does not tell you if the server is ready to process check requests. To get that information,
+you can make an API call to `api/v1/monitoring/health/status`.
+
+This API response will contain the plain-text message "OK" and a `200` response code. You don't need
+access to the permission "Access to monitoring API" to use this API. If a response is unsuccessful,
+you'll see a response that isn't `200`.
+
+**Available since Core Platform version 2022.09**
+
++ Response 200 (text/plain)
+
+        OK
 
 # Data Structures
 
