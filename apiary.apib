@@ -72,7 +72,7 @@ Example:
 ## Client Locale
 
 All methods accept a header `X-Acrolinx-Client-Locale`, with which the client can identify its own locale (for example, UI language).
-The value of the header field must be a single language tag that is compliant to BCP 47. The Acrolinx Platform will try to return message strings
+The value of the header field must be a single language tag that is compliant to [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). The Acrolinx Platform will try to return message strings
 and other locale-specific parts of the response in the requested language.
 
 Example:
@@ -91,7 +91,7 @@ The "index" request returns the list of supported locales. The server falls back
 ## Signature
 
 If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid signature. The request
-returns an error, if the header is omitted or the given signature isn't valid.
+returns an error, if the header is omitted or the given signature is invalid.
 
 The format of the signature is `Signature;Version`, where `Signature` is the signature as configured in the Acrolinx license and
 `Version` is the version number of the client.
@@ -138,7 +138,7 @@ Content-Type: application/problem+json
 * `title` is a short description of the error. It can be displayed to the user as title of the error.
 * `detail` is a more verbose description of the error. It's suitable to be displayed to the user.
 * `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
-* An optional `reference` field with an id may be present. If there, this id can be found in the Acrolinx log files to support better problem analysis.
+* An optional `reference` field with an id may be present. If present, this id can be found in the Acrolinx log files to support better problem analysis.
 
 Depending on `type`, additional fields may be part of the response providing more detailed information.
 
@@ -152,23 +152,23 @@ Type | Description| What to do
 -----|------------|------------
 `client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
 `server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
-`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to acquire a valid license.
-`clientSignatureRejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | Contact Acrolinx, how to acquire a valid license.
+`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://www.acrolinx.com/contact/), how to acquire a valid license.
+`clientSignatureRejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://www.acrolinx.com/contact/), how to acquire a valid license.
 `sso` | Returned for any single sign-on errors. | Most probably this is a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
 `insufficientPrivileges` | Insufficient privileges. | Assign the required privileges to the user.
-`interactiveSignInTimedOut` | The interactive sign-in process timed out. | Start new.
+`interactiveSignInTimedOut` | The interactive sign-in process timed out. | Start the sign-in process again from the beginning.
 `checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
 `checkFailed` | The check failed. | Check logs and configuration.
 `invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
 `customFieldsIncorrect` | Custom field values are incorrect. |Please provide valid values for all required custom fields before or when checking a document.
 `validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
-`guidanceProfileDoesntExist` | Guidance profile doesn't exist | The guidance profile doesn't exist or isn't available for the user id and language given.
-`noGuidanceProfileConfigured` | No guidance profile configured | For the user id and language given no guidance profile is configured.
-`contentTooLarge` | Content to large | Without reconfiguration of the Acrolinx platform the document can't be checked.
-`queueLimitExceeded` | Queue limit exceeded | Retry to submit the check after waiting at least as long as suggested in the retry-after header.
-`conflict` | Concurrent write access | Conflict with a concurrent write access. Retry the operation with fresh data.
-`licenseLimitExceeded` | License limit exceeded | You exceeded a limit set by your licensing terms. The error description contains more details. Please check [the documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/user-licenses) for more information.
+`guidanceProfileDoesntExist` | Guidance profile doesn't exist. | The guidance profile doesn't exist or isn't available for the user id and language given.
+`noGuidanceProfileConfigured` | No guidance profile configured. | For the user id and language given no guidance profile is configured.
+`contentTooLarge` | Content to large. | Without reconfiguration of the Acrolinx platform the document can't be checked.
+`queueLimitExceeded` | Queue limit exceeded. | Retry to submit the check after waiting at least as long as suggested in the retry-after header.
+`conflict` | Concurrent write access. | Conflict with a concurrent write access. Retry the operation with fresh data.
+`licenseLimitExceeded` | License limit exceeded. | You exceeded a limit set by your licensing terms. The error description contains more details. Please check [the documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/user-licenses) for more information.
 
 
 
@@ -258,7 +258,7 @@ Content-Type: application/json
 
 # HTML Fields
 
-Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
+Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related fields with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
 
 All HTML fields contain only non-dangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
 
@@ -354,7 +354,7 @@ Interactive clients with a human user use SSO or the interactive process.
 The sign-in collection allows Acrolinx API clients to request user authentication and to check
 the validity and privileges of existing access tokens.
 
-If the Core Platform is configured for Single Sign-on, this endpoint will accept the configured credentials
+If the Core Platform is configured for single sign-on, this endpoint will accept the configured credentials
 to authenticate the request.
 
 + Request (application/json)
@@ -373,7 +373,7 @@ to authenticate the request.
     successful sign-in procedure. The following conditions may lead to this response:
 
     - The `X-Acrolinx-Auth` header contained a valid token.
-    - Single Sign-on is configured and valid credentials are supplied.
+    - Single sign-on is configured and valid credentials are supplied.
 
     + Attributes (object)
 
@@ -596,7 +596,7 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
 
 ##  Submit a Check [POST /api/v1/checking/checks]
 
-Submits a document for checking. After uploading the document it will be scheduled for analysis. Once Acrolinx is done checking the document
+Submits a document for checking. After uploading the document, it will be scheduled for analysis. Once Acrolinx is done checking the document
 all results will be collected and made available. This leads to the following steps when using the check API:
 
 * submit a check
@@ -5273,8 +5273,8 @@ The following conditions are checked for all users in order to qualify them to b
 - All other `named` licensed users will be considered `inactive`
 - All `concurrent` licensed users will be `existing` if a license exists
 
-**Note:** Builtin users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`
-are included in the statistics calculation along with all the non-builtin users but are subject to the conditions above.
+**Note:** Built-in users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`
+are included in the statistics calculation along with all the non-built-in users but are subject to the conditions above.
 
 Details of the statistics attributes in the table below:
 
