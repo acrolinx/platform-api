@@ -136,7 +136,7 @@ Content-Type: application/problem+json
 
 * `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
 * `title` is a short description of the error. You can display this to users as the title of the error message.
-* `detail` is a more verbose description of the error. It's suitable to be displayed to the user.
+* `detail` is a longer description of the error. You can also display this for users.
 * `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
 * You might also see an optional `reference` field with an ID. If present, you can find this ID in the Acrolinx log files to help with troubleshooting.
 
