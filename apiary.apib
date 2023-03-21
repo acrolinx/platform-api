@@ -157,7 +157,7 @@ Type | Description| What to do
 `sso` | Returned for any single sign-on errors. | This is likely a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
 `insufficientPrivileges` | Insufficient privileges. | Assign the required privileges to the user.
-`interactiveSignInTimedOut` | The interactive sign-in process timed out. | Start the sign-in process again from the beginning.
+`interactiveSignInTimedOut` | The interactive sign-in process timed out. | Sign in again.
 `checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
 `checkFailed` | The check failed. | Check logs and configuration.
 `invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
