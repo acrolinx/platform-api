@@ -91,7 +91,7 @@ The "index" request returns the list of supported locales. The server falls back
 ## Signature
 
 If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid signature. The request
-returns an error, if the header is omitted or the given signature is invalid.
+returns an error if the header is omitted or if the signature provided is invalid.
 
 The format of the signature is `Signature;Version`, where `Signature` is the signature as configured in the Acrolinx license and
 `Version` is the version number of the client.
