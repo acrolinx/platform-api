@@ -138,7 +138,7 @@ Content-Type: application/problem+json
 * `title` is a short description of the error. It can be displayed to the user as title of the error.
 * `detail` is a more verbose description of the error. It's suitable to be displayed to the user.
 * `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
-* An optional `reference` field with an id may be present. If present, this id can be found in the Acrolinx log files to support better problem analysis.
+* You might also see an optional `reference` field with an ID. If present, you can find this ID in the Acrolinx log files to help with troubleshooting.
 
 Depending on `type`, additional fields may be part of the response providing more detailed information.
 
