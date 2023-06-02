@@ -3146,6 +3146,20 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
++ Response 403 (application/json)
+
+        // when external authentication is enable you should not be able to change password through the API
+        {
+        	"links": {},
+        	"error": {
+        		"reference": "82a781cb-059a-4039-a17d-af8e20bec019",
+        		"detail": "The user is not allowed to change password.",
+        		"type": "passwordChangeForbidden",
+        		"title": "Password change is not allowed",
+        		"status": 403
+        	}
+        }
+
 + Response 404 (application/json)
 
         // when the user couldn't be identified by its *id* in the database
