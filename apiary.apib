@@ -3137,12 +3137,26 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
         // when you don't have the privilege to update users
         {
-        "links": {},
-            "error": {
-                "detail": "The user does not have the required privileges to perform the operation.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
+            "links": {},
+                "error": {
+                    "detail": "The user doesn't have the privileges required to perform the operation.",
+                    "type": "insufficientPrivileges",
+                    "title": "Insufficient privileges",
+                    "status": 403
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when external authentication is enabled, you shouldn't be able to change password through the API
+        {
+            "links": {},
+                "error": {
+                    "reference": "82a781cb-059a-4039-a17d-af8e20bec019",
+                    "detail": "The user isn't allowed to change the password.",
+                    "type": "passwordChangeForbidden",
+                    "title": "Password change is not allowed",
+                    "status": 403
             }
         }
 
