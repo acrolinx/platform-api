@@ -2235,19 +2235,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you create users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 + Response 409 (application/json)
 
         // when the user was created more than once
@@ -2692,6 +2679,19 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
++ Response 403 (application/json)
+
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you create users
+        {
+        "links": {},
+            "error": {
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3288,6 +3288,19 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
++ Response 403 (application/json)
+
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
+        {
+        "links": {},
+            "error": {
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
 + Response 409 (application/json)
 
         // when you try to update a built-in user
@@ -3517,19 +3530,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 + Response 404 (application/json)
 
         // when a role wasn't found in the database based on its *id*
@@ -3676,19 +3676,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
-+ Response 403 (application/json)
-
-        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
