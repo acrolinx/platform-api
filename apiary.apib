@@ -2237,11 +2237,11 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you can't assign privileges you don't have when you create users
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you create users
         {
         "links": {},
             "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3519,11 +3519,11 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you can't assign privileges you don't have when you edit users
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
         {
         "links": {},
             "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3684,11 +3684,11 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        // when you can't assign privileges you don't have when you edit users
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
         {
         "links": {},
             "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
