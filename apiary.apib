@@ -2233,19 +2233,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when you can't assign privileges you don't have when you create users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 + Response 409 (application/json)
 
         // when the user was created more than once
@@ -2690,6 +2677,17 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you create users
+        {
+        "links": {},
+            "error": {
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3144,20 +3142,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when external authentication is enabled, you shouldn't be able to change the password through the API
-        {
-            "links": {},
-                "error": {
-                    "reference": "82a781cb-059a-4039-a17d-af8e20bec019",
-                    "detail": "The user isn't allowed to change the password.",
-                    "type": "passwordChangeForbidden",
-                    "title": "Password change is not allowed",
-                    "status": 403
-            }
-        }
-
 + Response 404 (application/json)
 
         // when the user couldn't be identified by its *id* in the database
@@ -3176,7 +3160,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
     You can update a user's role.
 
-    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
+    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only assign Super Administrator role if you have Super Administrator role. If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
 
     + Headers
 
@@ -3280,6 +3264,17 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
+        {
+        "links": {},
+            "error": {
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3515,19 +3510,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when you can't assign privileges you don't have when you edit users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 + Response 404 (application/json)
 
         // when a role wasn't found in the database based on its *id*
@@ -3674,19 +3656,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
-+ Response 403 (application/json)
-
-        // when you can't assign privileges you don't have when you edit users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
