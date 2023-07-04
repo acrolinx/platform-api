@@ -3178,7 +3178,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
     You can update a user's role.
 
-    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
+    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only assign Super Administrator role if you have Super Administrator role. If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
 
     + Headers
 
