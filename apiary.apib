@@ -1424,7 +1424,7 @@ If you're managing a large number of users, you can benefit from the query param
 
 By default all custom fields are returned nested in the user model.
 Using the `includeCustomField` can help reduce the data transferred and only fetch custom fields that are needed. 
-When specified, only the few custom fields are returned, that are found with the given key passed in the param value. 
+When specified, the custom fields returned are limited to those matching the key passed in the param value.
 To include more than one simply append N times the `&includeCustomField={Key}` to the request.
 
 + Parameters
