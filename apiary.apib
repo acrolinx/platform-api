@@ -1341,6 +1341,8 @@ Security:
 | `[GET /api/v1/user{?sort=customFields.{customFieldName}}]`  | `2021.12`             |
 | `[GET /api/v1/user{?username,fullName}]`                    | `2022.02`             |
 | `[GET /api/v1/user{?roles}]`                                | `2022.02`             |
+| `[GET /api/v1/user{?excludeProperties={true|false}}]`       | `2023.10`             |
+| `[GET /api/v1/user{?includeCustomField={key}}]`             | `2023.10`             |
 
 This request retrieves a list of all users in the order that they were added.
 
@@ -1415,6 +1417,15 @@ This will also reflect any changes to the underlying data source. Say you're on 
 You then decide to delete 10 users before you call the API to fetch page 3. Now when you switch to page 3, the response will show page 3 of 9.
 
 The example response includes the pagination URLs and query parameters in the `links` object so you know what to expect. 
+
+**Dynamically include/exclude nested data**
+
+If you're managing a large number of users, you can benefit from the query params `includeCustomField` and `excludeProperties`.
+
+By default all custom field is returned nested in the user model. 
+Using the `includeCustomField` can help reduce the data transferred and fetch the only custom fields that are needed. 
+When specified, only the few custom fields are returned, that are found with the given key passed in the param value. 
+To include more than one simply append N times the `&includeCustomField={Key}` to the request.
 
 + Parameters
 
