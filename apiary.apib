@@ -3789,7 +3789,6 @@ You can query users who don't have required custom fields.
 **What's a missing required custom field?** The User API returns your user-related custom fields in the `customFields[]` array. If a custom field is required (marked with `"inputType": "required"`) and is missing a value (`"value": ""`), the field is considered to be missing.
 
 **Note:**
-- You'll need a valid access token.
 - You need the `UserAndRoles.editUser` privilege.
 
 ### Count Users [HEAD /api/v1/user/custom-fields-missing]
@@ -4195,7 +4194,6 @@ A password needs to meet the following requirements:
 - No more than 64 characters long
 
 **Note:**
-- You'll need a valid access token.
 - You need the `UserAndRoles.editUser` privilege.
 - The randomly generated password isn't saved anywhere.
 - The HTTP requests aren't cached.
