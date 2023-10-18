@@ -2244,19 +2244,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when you can't assign privileges you don't have when you create users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 + Response 409 (application/json)
 
         // when the user was created more than once
@@ -3760,19 +3747,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
-+ Response 403 (application/json)
-
-        // when you can't assign privileges you don't have when you edit users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -5522,7 +5496,7 @@ This shows a list of your user custom fields.
 
     + Attributes (object)
         + links (object)
-        + data (array[CustomField], fixed-type)
+        + data (CustomField)
 
     + Body
 
