@@ -2,4 +2,5 @@
 /.idea/vcs.xml
 /.idea/workspace.xml
 /.idea/modules.xml
+.project
 node_modules
