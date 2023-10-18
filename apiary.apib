@@ -672,7 +672,7 @@ The same information is available in the checking capabilities.
                  "language": "en"                           // optional: force language for Target Assignment using
                                                             //           guidanceProfile.language.id codes (see
                                                             //           checking capabilities)
-                                                            // default: target language if target is set in checkOptions.guidanceProfileId, 
+                                                            // default: target language if target is set in checkOptions.guidanceProfileId,
                                                             //          otherwise auto-detected
             }
 
@@ -1383,7 +1383,7 @@ You can always leave out the `+` character, because the user list appears in asc
 
 For a better overview, you might like to view the list of users in pages instead of in one long list.
 To request a paginated response, add the query parameters `page` and `per_page`. 
-You'll need to set the `page` parameter. The page count always starts at `1`. 
+You'll need to set the `page` parameter. The page count always starts at `1`.
 By default, `per_page` is set to `10`. You can display as many as 500 users per page. This is an optional parameter. 
 
 If you request a paginated response, Acrolinx will add the following header values:
@@ -1406,7 +1406,7 @@ within the `links` object:
 | `first`  | The URL to get the first page.    |
 | `last`   | The URL to get the last page.     |
 
-If there aren't any next or previous pages, you won't see the `next` and `prev` links. 
+If there aren't any next or previous pages, you won't see the `next` and `prev` links.
 For example, when you view page 1, you won't see a `prev` link because there's no page 0. 
 This is also the case for the values in the headers.
 
@@ -1825,7 +1825,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 ### Get a User [GET /api/v1/user/{id}]
 
 This request returns information about an user. 
-The information includes the user id, username, the user's full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status. 
+The information includes the user id, username, the user's full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status.
 You'll also see properties, roles, and custom fields.
 
 + Parameters
@@ -3794,10 +3794,10 @@ You can query users who don't have required custom fields.
 Returns the total number of users who are missing one or more required user custom field.
 
 **Note:**
-- The response has no content. 
+- The response has no content.
 - The user count will be shown in the header `X-Acrolinx-Total`.
 - The header value is a numeral.
-- It returns a 0 (zero) when no required custom fields are missing. 
+- It returns a 0 (zero) when no required custom fields are missing.
 
 + Request
 
@@ -3813,17 +3813,17 @@ Returns the total number of users who are missing one or more required user cust
 
             X-Acrolinx-Total: 5
 
-+ Response 401 (application/json) 
++ Response 401 (application/json)
 
-+ Response 403 (application/json) 
++ Response 403 (application/json)
 
 ### Get Users [GET /api/v1/user/custom-fields-missing{?page,per_page}]
 
-Returns a list of users who are missing one or more required user custom fields. 
+Returns a list of users who are missing one or more required user custom fields.
 
 **Note:** Similar to the User Resource > Get All Users request, it supports pagination. See more details there.
 
-+ Request 
++ Request
 
     + Headers
 
@@ -3919,7 +3919,7 @@ Returns a list of users who are missing one or more required user custom fields.
                                 "displayName": "Employee number",
                                 "inputType": "required",
                                 "type": "text",
-                                "value": "", 
+                                "value": "",
                                 "possibleValues": []
                             }
                         ]
@@ -3955,7 +3955,7 @@ Returns a list of users who are missing one or more required user custom fields.
 
 + Response 403 (application/json)
 
-        // when you don't have sufficent privileges 
+        // when you don't have sufficent privileges
         {
         "links": {},
             "error": {
@@ -4579,7 +4579,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 **Note:**
 - You can only release users with the `named` license type.
-- If you release the license of a user who doesn't consume a license, you won't see an error. 
+- If you release the license of a user who doesn't consume a license, you won't see an error.
 - To do this, you need the `UserAndRoles.deleteSessions` privilege.
 
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
