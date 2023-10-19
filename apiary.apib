@@ -71,8 +71,8 @@ Example:
 
 ## Client Locale
 
-All methods accept a header `X-Acrolinx-Client-Locale`, with which the client can identify its own locale (for example, UI language).
-The value of the header field must be a single language tag that is compliant to BCP 47. The Acrolinx Platform will try to return message strings
+All methods accept a header `X-Acrolinx-Client-Locale` that the client can use to identify its own locale (for example, UI language).
+The value of the header field needs to be a single language tag that complies with [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). The Acrolinx Platform will try to return message strings
 and other locale-specific parts of the response in the requested language.
 
 Example:
@@ -90,8 +90,8 @@ The "index" request returns the list of supported locales. The server falls back
 
 ## Signature
 
-If not otherwise documented, all methods require a header `X-Acrolinx-Client` to be set. The header must be a valid signature. The request
-returns an error, if the header is omitted or the given signature isn't valid.
+If not otherwise documented, all methods require you to set a header `X-Acrolinx-Client`. The header needs to be a valid signature. The request
+returns an error if the header is omitted or if the signature provided is invalid.
 
 The format of the signature is `Signature;Version`, where `Signature` is the signature as configured in the Acrolinx license and
 `Version` is the version number of the client.
@@ -135,10 +135,10 @@ Content-Type: application/problem+json
 ```
 
 * `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
-* `title` is a short description of the error. It can be displayed to the user as title of the error.
-* `detail` is a more verbose description of the error. It's suitable to be displayed to the user.
+* `title` is a short description of the error. You can display this to users as the title of the error message.
+* `detail` is a longer description of the error. You can also display this for users.
 * `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
-* An optional `reference` field with an id may be present. If there, this id can be found in the Acrolinx log files to support better problem analysis.
+* You might also see an optional `reference` field with an ID. If present, you can find this ID in the Acrolinx log files to help with troubleshooting.
 
 Depending on `type`, additional fields may be part of the response providing more detailed information.
 
@@ -152,23 +152,23 @@ Type | Description| What to do
 -----|------------|------------
 `client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
 `server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
-`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | Contact Acrolinx, how to acquire a valid license.
-`clientSignatureRejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | Contact Acrolinx, how to acquire a valid license.
-`sso` | Returned for any single sign-on errors. | Most probably this is a configuration issue.
+`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://www.acrolinx.com/contact/) to learn how to get a valid license.
+`clientSignatureRejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://www.acrolinx.com/contact/) to learn how to get a valid license.
+`sso` | Returned for any single sign-on errors. | This is likely a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
 `insufficientPrivileges` | Insufficient privileges. | Assign the required privileges to the user.
-`interactiveSignInTimedOut` | The interactive sign-in process timed out. | Start new.
+`interactiveSignInTimedOut` | The interactive sign-in process timed out. | Sign in again.
 `checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
 `checkFailed` | The check failed. | Check logs and configuration.
 `invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
 `customFieldsIncorrect` | Custom field values are incorrect. |Please provide valid values for all required custom fields before or when checking a document.
 `validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
-`guidanceProfileDoesntExist` | Guidance profile doesn't exist | The guidance profile doesn't exist or isn't available for the user id and language given.
-`noGuidanceProfileConfigured` | No guidance profile configured | For the user id and language given no guidance profile is configured.
-`contentTooLarge` | Content to large | Without reconfiguration of the Acrolinx platform the document can't be checked.
-`queueLimitExceeded` | Queue limit exceeded | Retry to submit the check after waiting at least as long as suggested in the retry-after header.
-`conflict` | Concurrent write access | Conflict with a concurrent write access. Retry the operation with fresh data.
-`licenseLimitExceeded` | License limit exceeded | You exceeded a limit set by your licensing terms. The error description contains more details. Please check [the documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/user-licenses) for more information.
+`guidanceProfileDoesntExist` | Guidance profile doesn't exist. | The guidance profile doesn't exist or isn't available for the user ID and language provided.
+`noGuidanceProfileConfigured` | No guidance profile configured. | No guidance profile is configured for the user ID and language provided.
+`contentTooLarge` | File too large. | Try checking less content.
+`queueLimitExceeded` | Queue limit exceeded. | Wait at least as long as suggested in the retry-after header and try another check.
+`conflict` | Concurrent write access. | Conflict with a concurrent write access. Try again with fresh data.
+`licenseLimitExceeded` | License limit exceeded. | You exceeded a limit set by the terms of your license. The error description contains more details. Please check [the documentation](https://support.acrolinx.com/hc/en-us/articles/10306079192082-License-Types) for more information.
 
 
 
@@ -258,9 +258,9 @@ Content-Type: application/json
 
 # HTML Fields
 
-Responses may have fields, that contain HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with Html, for example, guidanceHtml. There may be related field with the same content in plain text. If such a field exists, it ends with Text as for example, guidanceText.
+Responses may have fields with HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with "Html", for example, "guidanceHtml". There may be related fields with the same content in plain text. If such a field exists, it ends with "Text" like in the example, "guidanceText".
 
-All HTML fields contain only non-dangerous formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
+All HTML fields only contain formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
 
 # Group Index
 
@@ -352,7 +352,7 @@ Interactive clients with a human user use SSO or the interactive process.
 The sign-in collection allows Acrolinx API clients to request user authentication and to check
 the validity and privileges of existing access tokens.
 
-If the Core Platform is configured for Single Sign-on, this endpoint will accept the configured credentials
+If the Acrolinx Platform is configured for single sign-on, this endpoint will accept the configured credentials
 to authenticate the request.
 
 + Request (application/json)
@@ -371,7 +371,7 @@ to authenticate the request.
     successful sign-in procedure. The following conditions may lead to this response:
 
     - The `X-Acrolinx-Auth` header contained a valid token.
-    - Single Sign-on is configured and valid credentials are supplied.
+    - Single sign-on is configured and valid credentials are supplied.
 
     + Attributes (object)
 
@@ -594,7 +594,7 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
 
 ##  Submit a Check [POST /api/v1/checking/checks]
 
-Submits a document for checking. After uploading the document it will be scheduled for analysis. Once Acrolinx is done checking the document
+Submits a file for checking. After the file is uploaded, it will be scheduled for checking. Once Acrolinx is done checking the document,
 all results will be collected and made available. This leads to the following steps when using the check API:
 
 * submit a check
@@ -602,7 +602,7 @@ all results will be collected and made available. This leads to the following st
 * download check results
 
 For an overview on what documents and file types are supported by Acrolinx please consult the list of
-[Supported Input Types](https://docs.acrolinx.com/coreplatform/latest/en/compatibility/supported-input-types).
+[Supported Input Types](https://support.acrolinx.com/hc/en-us/articles/10211264846482-Supported-Input-Types).
 The same information is available in the checking capabilities.
 
 + Request (application/json)
@@ -1339,6 +1339,8 @@ Security:
 | `[GET /api/v1/user{?sort=customFields.{customFieldName}}]`  | `2021.12`             |
 | `[GET /api/v1/user{?username,fullName}]`                    | `2022.02`             |
 | `[GET /api/v1/user{?roles}]`                                | `2022.02`             |
+| `[GET /api/v1/user{?excludeProperties={true|false}}]`       | `2023.10`             |
+| `[GET /api/v1/user{?includeCustomField={key}}]`             | `2023.10`             |
 
 This request retrieves a list of all users in the order that they were added.
 
@@ -1413,6 +1415,15 @@ This will also reflect any changes to the underlying data source. Say you're on 
 You then decide to delete 10 users before you call the API to fetch page 3. Now when you switch to page 3, the response will show page 3 of 9.
 
 The example response includes the pagination URLs and query parameters in the `links` object so you know what to expect. 
+
+**Dynamically include/exclude nested data**
+
+If you manage a large number of users, you can use the query params `includeCustomField` and `excludeProperties` to filter nested data.
+
+By default, all custom fields are nested in the user model.
+You can use the parameter `includeCustomField` to limit the returned fields to those that match the key passed in the param value.
+This is helpful if you want to fetch a specific set of custom fields to reduce data transfer.
+To include more than one custom field, add `&includeCustomField={Key}` to the request N times.
 
 + Parameters
 
@@ -2233,19 +2244,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when you can't assign privileges you don't have when you create users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 + Response 409 (application/json)
 
         // when the user was created more than once
@@ -2690,6 +2688,17 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you create users
+        {
+        "links": {},
+            "error": {
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3367,12 +3376,12 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
         // when you don't have the privilege to update users
         {
-        "links": {},
-            "error": {
-                "detail": "The user does not have the required privileges to perform the operation.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
+            "links": {},
+                "error": {
+                    "detail": "The user doesn't have the privileges required to perform the operation.",
+                    "type": "insufficientPrivileges",
+                    "title": "Insufficient privileges",
+                    "status": 403
             }
         }
 
@@ -3394,7 +3403,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
     You can update a user's role.
 
-    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only grant privileges that you yourself have (privilege escalation). If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
+    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only assign Super Administrator role if you have Super Administrator role. If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
 
     + Headers
 
@@ -3498,6 +3507,17 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
         "links": {},
             "error": {
                 "detail": "The user does not have the required privileges to perform the operation.",
+                "type": "insufficientPrivileges",
+                "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
+        {
+        "links": {},
+            "error": {
+                "detail": "It's not possible to make these changes. You need Super Administrator role to create or edit a user with this role.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
                 "status": 403
@@ -3733,19 +3753,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when you can't assign privileges you don't have when you edit users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 + Response 404 (application/json)
 
         // when a role wasn't found in the database based on its *id*
@@ -3898,19 +3905,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-+ Response 403 (application/json)
-
-        // when you can't assign privileges you don't have when you edit users
-        {
-        "links": {},
-            "error": {
-                "detail": "It's not possible to make these changes. You can only create or edit a user with privileges that also apply to your user account.",
-                "type": "insufficientPrivileges",
-                "title": "Insufficient privileges",
-                "status": 403
-            }
-        }
-
 + Response 404 (application/json)
 
         // when a role wasn't found in the database based on its *id*
@@ -3934,7 +3928,7 @@ This method deletes a specified user based on its *id*.
 **Note:** You can only delete a user successfully if all of the following conditions are met:
 - The user isn't a preconfigured, built-in user such as "admin", "termcontribution", or "analyticsReadOnlyUser".
 
-To read more about managing users and built-in users, see [Manage Your Users](https://docs.acrolinx.com/coreplatform/latest/en/user-management/manage-your-users) in the Acrolinx documentation.
+To read more about managing users and built-in users, see [User Management](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management) in the Acrolinx documentation.
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
@@ -4025,7 +4019,6 @@ You can query users who don't have required custom fields.
 **What's a missing required custom field?** The User API returns your user-related custom fields in the `customFields[]` array. If a custom field is required (marked with `"inputType": "required"`) and is missing a value (`"value": ""`), the field is considered to be missing.
 
 **Note:**
-- You'll need a valid access token.
 - You need the `UserAndRoles.editUser` privilege.
 
 ### Count Users [HEAD /api/v1/user/custom-fields-missing]
@@ -4234,7 +4227,7 @@ Be aware that you can only be bound to one API token at a time.
 + Store your API token securely and never share it with others.
 + Don't bake your API token into any custom code that interacts with the Acrolinx Platform APIs.
 
-**Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://docs.acrolinx.com/coreplatform/latest/en/security-and-identity/authentication/create-an-api-token) in the Acrolinx documentation.
+**Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://support.acrolinx.com/hc/en-us/articles/10306041244818-Create-an-API-Token) in the Acrolinx documentation.
 
 ### Create an API Token (Self)  [POST /api/v1/user/self/tokens]
 
@@ -4831,7 +4824,7 @@ The header parameters are set as follows:
     + **Roles**: A list of assigned roles.
     + **Created On**: Indicates when the user was created.
     + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn't accessed an integration, the default value is `Never`.
-    + **Checking Frequency**: Displays a rough idea of the user's usage pattern based on checking frequency across the user's lifetime in days. Its value can be [ "frequent", "infrequent", "regular" ].
+    + **Checking Frequency**: Displays a rough idea of the user's usage pattern based on checking frequency across the user's lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
     + **License Type**: Indicates the type of license. Its value can be ["named", "concurrent", "builtin"].
     + **{Custom Field name}**: Users can have multiple (0...N) custom fields that are also attached to the schema. 
         + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be added to the end of the sheet dynamically. 
@@ -5659,8 +5652,8 @@ The following conditions are checked for all users in order to qualify them to b
 - All other `named` licensed users will be considered `inactive`
 - All `concurrent` licensed users will be `existing` if a license exists
 
-**Note:** Builtin users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess` and `AnalyticsReadOnlyUser`
-are included in the statistics calculation along with all the non-builtin users but are subject to the conditions above.
+**Note:** Built-in users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess`, and `AnalyticsReadOnlyUser`
+are included in the license statistics along with all other users, but they are subject to the conditions above.
 
 Details of the statistics attributes in the table below:
 
@@ -5735,7 +5728,7 @@ In the Role API, Acrolinx defines a role as an entity that has an id, a name and
 You can use roles to group sets of privileges and assign them to different users.
 Mark roles as default if you want to automatically assign at least one default role to all new users.
 
-To read more about role-based access control in Acrolinx, see the [Acrolinx roles documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management/roles).
+To read more about role-based access control in Acrolinx, see [User Roles](https://support.acrolinx.com/hc/en-us/articles/10210994316562-User-Roles).
 
 **Note:** Before you get started with the Role API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
@@ -7238,7 +7231,7 @@ to all users. Make sure the user associated with your API token has the requisit
 
 For a quick check of your permissions see if the [metrics index](#monitoring-api-get-available-metrics)
 contains links. More information about permission management can be found in the
-[Acrolinx documentation](https://docs.acrolinx.com/coreplatform/latest/en/user-management).
+[Acrolinx documentation](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management).
 
 ## Get Available Metrics [GET /api/v1/monitoring]
 
