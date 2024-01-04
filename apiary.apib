@@ -1705,11 +1705,26 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 400 (application/json)
 
-        // when input parameters are invalid,
-        // e.g.
         // when the sort query parameter uses an invalid field name
-        // when the per_page parameter exceeds the 500 per page limit
-        // `validationDetails` describes the nature of the validation issue
+        {
+            "links": {},
+            "error": {
+                "reference": "b4c323ab-413b-4bf5-be60-93e13c3aad93",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Couldn't parse 'sort' query parameter",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "detail": "sort param must not be null",
+                        "invalidValue": "null"
+                    }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the field name is omitted in the sort query parameter
         {
             "links": {},
             "error": {
@@ -1723,14 +1738,40 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
                         "constraint": "Pattern",
                         "detail": "must match \"[+-]?.+\"",
                         "invalidValue": "+"
-                    },
-                    {
-                        "title": "Validation error",
-                        "constraint": "Range",
-                        "detail": "must be between 1 and 500",
-                        "invalidValue": "900"
                     }
                 ],
+                "status": 400
+            }
+        }
+
+        // when the per_page parameter exceeds the 500 per page limit
+        {
+            "links": {},
+            "error": {
+                "reference": "196f8b88-493c-46d7-b7bc-5da32d0a58d7",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Invalid request attributes",
+                "validationDetails": [
+                {
+                    "title": "Validation error",
+                    "constraint": "Range",
+                    "detail": "must be between 1 and 500",
+                    "invalidValue": "900"
+                }
+                ],
+                "status": 400
+            }
+        }
+
+        // when the page parameter has an invalid value such as 0 or negative number
+        {
+            "links": {},
+            "error": {
+                "reference": "b2045b7f-1dce-49e7-880a-93874f427554",
+                "detail": "Invalid page request attribute, it must be greater than zero",
+                "type": "client",
+                "title": "Bad Request",
                 "status": 400
             }
         }
