@@ -169,7 +169,7 @@ Type | Description| What to do
 `queueLimitExceeded` | Queue limit exceeded. | Wait at least as long as suggested in the retry-after header and try another check.
 `conflict` | Concurrent write access. | Conflict with a concurrent write access. Try again with fresh data.
 `licenseLimitExceeded` | License limit exceeded. | You exceeded a limit set by the terms of your license. The error description contains more details. Please check [the documentation](https://support.acrolinx.com/hc/en-us/articles/10306079192082-License-Types) for more information.
-
+`entityToAssociateNotFound` | One or more associates to an entity could not be found. | Make sure that the given associates actually exist.
 
 
 ### Additional Information On Validation Errors
@@ -3125,6 +3125,20 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                     ]
                 }
             }
+
++ Response 400 (application/json)
+
+        // when one or more of the roles are specified that do not exist
+        {
+            "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "The following role(s) could not be found when trying to assign them to user with ID eb323701-839f-4998-b56e-3e20c70259c5: [Role One], [Role Two]",
+                "type": "entityToAssociateNotFound",
+                "title": "The requested role(s) could not be found.",
+                "status": 400
+            }
+        }
 
 + Response 401 (application/json)
 
