@@ -1712,10 +1712,17 @@ To exclude all custom fields, you can use the parameter `&excludeCustomFields=tr
         {
             "links": {},
             "error": {
-                "reference": "f38d5eba-c68c-4ea3-b0db-ce987a5a16f4",
-                "detail": "Invalid user sortable field",
-                "type": "client",
-                "title": "Bad Request",
+                "reference": "b4c323ab-413b-4bf5-be60-93e13c3aad93",
+                "detail": "Check the request for invalid values or missing parameters.",
+                "type": "validation",
+                "title": "Couldn't parse 'sort' query parameter",
+                "validationDetails": [
+                    {
+                        "title": "Validation error",
+                        "detail": "sort param must not be null",
+                        "invalidValue": "null"
+                    }
+                ],
                 "status": 400
             }
         }
@@ -4150,6 +4157,30 @@ Typical use cases for this API:
                 "detail": "The user does not have the required privileges to perform the operation.",
                 "type": "insufficientPrivileges",
                 "title": "Insufficient privileges",
+                "status": 403
+            }
+        }
+
+        // when the creator or receiver of the token is the built-in `admin`
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "The built-in user `admin` mustn\'\'t create or retrieve any API tokens.",
+                "type": "insufficientPrivileges",
+                "title": "Can't Create API Token For `admin`",
+                "status": 403
+            }
+        }
+
+        // when the user tries to create a token for another user with more elevated roles
+        {
+            "links": {},
+            "error": {
+                "reference": "64311fe7-2a7e-4e3b-849e-4e9ff8651400",
+                "detail": "Operating user attempted to assign more elevated privileges than their own. This isn't allowed.",
+                "type": "insufficientPrivileges",
+                "title": "Privilege Escalation (Insufficient Privileges)",
                 "status": 403
             }
         }
