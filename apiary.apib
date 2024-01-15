@@ -3126,20 +3126,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                 }
             }
 
-+ Response 400 (application/json)
-
-        // when one or more of the roles are specified that do not exist
-        {
-            "links": {},
-            "error": {
-                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
-                "detail": "The following role(s) could not be found when trying to assign them to user with ID eb323701-839f-4998-b56e-3e20c70259c5: [Role One], [Role Two]",
-                "type": "entityToAssociateNotFound",
-                "title": "The requested role(s) could not be found.",
-                "status": 400
-            }
-        }
-
 + Response 401 (application/json)
 
         // when the access token in the request is missing or invalid
@@ -3263,6 +3249,18 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                         "invalidValue": "[]"
                     }
                 ],
+                "status": 400
+            }
+        }
+
+        // when one or more of the roles are specified that do not exist
+        {
+            "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "The following role(s) could not be found when trying to assign them to user with ID eb323701-839f-4998-b56e-3e20c70259c5: [Role One], [Role Two]",
+                "type": "entityToAssociateNotFound",
+                "title": "The requested role(s) could not be found.",
                 "status": 400
             }
         }
