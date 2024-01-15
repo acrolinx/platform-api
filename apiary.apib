@@ -756,7 +756,6 @@ Polls the check result. Either a progress or the completed result is returned. T
         configuration, request and the document. The 'scoring' field in the
         goals are only present if the server runs in Targets Mode.
 
-    + Body
         {
           "data":{
             "id": "AB-153",
@@ -1195,7 +1194,6 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 + Response 400 (application/json)
 
-    + Body
         {
           "error": {
             "message": "Custom field values are missing",
@@ -1221,9 +1219,7 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 + Response 400 (application/json)
 
-        If any of the given custom fields is invalid, a detailed error information is given.
-
-        + Body
+        // if any of the given custom fields is invalid, a detailed error information is given.
         {
           "error": {
             "detail": "The value for document custom field \"Field\" cannot be \"Wrong Value\".",
@@ -1264,7 +1260,6 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 + Response 200 (application/json)
 
-        + Body
         {
           "data": {
             "id": "153"
@@ -1289,7 +1284,6 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 + Response 200 (application/json)
 
-        + Body
         {
             "links": {},
             "data": {
@@ -1711,9 +1705,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 400 (application/json)
 
-        When the sort query parameter uses an invalid field name
-
-        + Body
+        // when the sort query parameter uses an invalid field name
         {
             "links": {},
             "error": {
@@ -1734,9 +1726,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 400 (application/json)
 
-        When the field name is omitted in the sort query parameter
-
-        + Body
+        // when the field name is omitted in the sort query parameter
         {
             "links": {},
             "error": {
@@ -1758,9 +1748,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 400 (application/json)
 
-        When the per_page parameter exceeds the 500 per page limit
-
-        + Body
+        // when the per_page parameter exceeds the 500 per page limit
         {
             "links": {},
             "error": {
@@ -1782,9 +1770,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 400 (application/json)
 
-        When the page parameter has an invalid value such as 0 or negative number
-
-        + Body
+        // when the page parameter has an invalid value such as 0 or negative number
         {
             "links": {},
             "error": {
@@ -1798,9 +1784,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 400 (application/json)
 
-        When the custom field name cannot be found
-
-        + Body
+        // when the custom field name cannot be found
         {
             "links": {},
             "error": {
@@ -1814,9 +1798,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 400 (application/json)
 
-        When the custom field name is null or empty
-
-        + Body
+        // when the custom field name is null or empty
         {
             "links": {},
             "error": {
@@ -1830,9 +1812,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -1845,9 +1825,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
 
 + Response 404 (application/json)
 
-        When the page parameter has a non-numeric value, which is invalid
-
-        + Body
+        // when the page parameter has a non-numeric value, which is invalid
         {
             "links": {},
             "error": {
@@ -1925,9 +1903,7 @@ You'll also see properties, roles, and custom fields.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -1939,9 +1915,7 @@ You'll also see properties, roles, and custom fields.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to fetch users
-
-        + Body
+        // when you don't have the privilege to fetch users
         {
         "links": {},
             "error": {
@@ -1954,9 +1928,7 @@ You'll also see properties, roles, and custom fields.
 
 + Response 404 (application/json)
 
-        When the user couldn't be identified by its *id* in the database
-
-        + Body
+        // when the user couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -2031,9 +2003,7 @@ This is an alternative way of getting information about the current (in request 
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -2045,9 +2015,7 @@ This is an alternative way of getting information about the current (in request 
 
 + Response 404 (application/json)
 
-        When the user couldn't be identified by its *id* in the database
-
-        + Body
+        // when the user couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -2163,9 +2131,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the request format is invalid
-
-        + Body
+        // when the request format is invalid 
         {
             "links": {},
             "error": {
@@ -2178,9 +2144,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2021.05
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2203,9 +2167,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2022.02
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2228,9 +2190,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password is omitted starting from v2022.02
-
-        + Body
+        // when the password is omitted starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2253,9 +2213,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the licenseType is invalid
-
-        + Body
+        // when the licenseType is invalid
         {
             "links": {},
             "error": {
@@ -2283,9 +2241,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -2297,9 +2253,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to create users
-
-        + Body
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -2312,9 +2266,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 409 (application/json)
 
-        When the user was created more than once
-
-        + Body
+        // when the user was created more than once
         {
         "links": {},
             "error": {
@@ -2328,9 +2280,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 500 (application/json)
 
-        When an unspecified error occurs
-
-        + Body
+        // when an unspecified error occurs
         {
             "links": {},
             "error": {
@@ -2410,9 +2360,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the request format is invalid
-
-        + Body
+        // when the request format is invalid 
         {
             "links": {},
             "error": {
@@ -2425,9 +2373,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2021.05
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2450,9 +2396,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2022.02
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2475,9 +2419,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password is omitted starting from v2022.02
-
-        + Body
+        // when the password is omitted starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2500,9 +2442,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the licenseType is invalid
-
-        + Body
+        // when the licenseType is invalid
         {
             "links": {},
             "error": {
@@ -2530,9 +2470,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -2544,9 +2482,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to create users
-
-        + Body
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -2559,9 +2495,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 409 (application/json)
 
-        When the same user is created more than once
-
-        + Body
+        // when the same user is created more than once
         {
         "links": {},
             "error": {
@@ -2575,9 +2509,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 500 (application/json)
 
-        When there's an unspecified error
-
-        + Body
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -2663,9 +2595,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the request format is invalid
-
-        + Body
+        // when the request format is invalid 
         {
             "links": {},
             "error": {
@@ -2678,9 +2608,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2021.05
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2703,9 +2631,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2022.02
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2728,9 +2654,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password is omitted starting from v2022.02
-
-        + Body
+        // when the password is omitted starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2753,9 +2677,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the licenseType is invalid
-
-        + Body
+        // when the licenseType is invalid
         {
             "links": {},
             "error": {
@@ -2783,9 +2705,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -2797,9 +2717,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to create users
-
-        + Body
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -2812,9 +2730,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        When you can't assign Super Administrator role because you don't have the Super Administrator role when you create users
-
-        + Body
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you create users
         {
         "links": {},
             "error": {
@@ -2827,9 +2743,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 409 (application/json)
 
-        When the same user was created more than once
-
-        + Body
+        // when the same user was created more than once
         {
         "links": {},
             "error": {
@@ -2843,9 +2757,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 500 (application/json)
 
-        When there's an unspecified error
-
-        + Body
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -2927,9 +2839,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the request format is invalid
-
-        + Body
+        // when the request format is invalid 
         {
             "links": {},
             "error": {
@@ -2942,9 +2852,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2021.05
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2021.05
         {
             "links": {},
             "error": {
@@ -2967,9 +2875,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2022.02
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -2992,9 +2898,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password is omitted starting from v2022.02
-
-        + Body
+        // when the password is omitted starting from v2022.02
         {
             "links": {},
             "error": {
@@ -3017,9 +2921,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2022.02
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -3042,9 +2944,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password is omitted starting from v2022.02
-
-        + Body
+        // when the password is omitted starting from v2022.02
         {
             "links": {},
             "error": {
@@ -3067,9 +2967,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the licenseType is invalid
-
-        + Body
+        // when the licenseType is invalid
         {
             "links": {},
             "error": {
@@ -3097,9 +2995,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the provided custom field value is not in the list of possible values
-
-        + Body
+        // when the provided custom field value is not in the list of possible values
         {
             "links": {},
             "error": {
@@ -3125,9 +3021,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the provided custom field does not exists
-
-        + Body
+        // when the provided custom field does not exists
         {
             "links": {},
             "error": {
@@ -3154,9 +3048,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -3168,9 +3060,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to create users
-
-        + Body
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -3183,9 +3073,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 409 (application/json)
 
-        When the same user was created more than once
-
-        + Body
+        // when the same user was created more than once
         {
         "links": {},
             "error": {
@@ -3199,9 +3087,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 500 (application/json)
 
-        When there's an unspecified error
-
-        + Body
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -3294,9 +3180,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -3308,9 +3192,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to update users
-
-        + Body
+        // when you don't have the privilege to update users
         {
             "links": {},
                 "error": {
@@ -3323,9 +3205,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 404 (application/json)
 
-        When the user couldn't be identified by its *id* in the database
-
-        + Body
+        // when the user couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -3404,9 +3284,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the roles array is empty
-
-        + Body
+        // when the roles array is empty
         {
             "links": {},
             "error": {
@@ -3429,9 +3307,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When one or more of the roles that are specified that do not exist
-
-        + Body
+        // when one or more of the roles that are specified that do not exist
         {
             "links": {},
             "error": {
@@ -3445,9 +3321,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -3459,9 +3333,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to grant a role
-
-        + Body
+        // when you don't have the privilege to grant a role
         {
         "links": {},
             "error": {
@@ -3472,9 +3344,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-        When you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
-
-        + Body
+        // when you can't assign Super Administrator role because you don't have the Super Administrator role when you edit users
         {
         "links": {},
             "error": {
@@ -3487,9 +3357,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 409 (application/json)
 
-        When you try to update a built-in user
-
-        + Body
+        // when you try to update a built-in user
         {
         "links": {},
             "error": {
@@ -3666,9 +3534,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When any of the updated fields are invalid, you'll see a detailed error message
-
-        + Body
+        // when any of the updated fields are invalid, you'll see a detailed error message
         {
             "links": {},
             "error": {
@@ -3694,9 +3560,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -3705,12 +3569,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                 "status": 401
             }
         }
-
 + Response 403 (application/json)
 
-        When you don't have the privilege to update custom fields
-
-        + Body
+        // when you don't have the privilege to update custom fields
         {
         "links": {},
             "error": {
@@ -3723,9 +3584,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 404 (application/json)
 
-        When a role wasn't found in the database based on its *id*
-
-        + Body
+        // when a role wasn't found in the database based on its *id*
         {
         "links": {},
             "error": {
@@ -3808,9 +3667,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
 + Response 400 (application/json)
 
-        When the password doesn't meet the strictness requirements starting from v2022.02
-
-        + Body
+        // when the password doesn't meet the strictness requirements starting from v2022.02
         {
             "links": {},
             "error": {
@@ -3833,9 +3690,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 400 (application/json)
 
-        When the password is omitted starting from v2022.02
-
-        + Body
+        // when the password is omitted starting from v2022.02
         {
             "links": {},
             "error": {
@@ -3858,9 +3713,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -3869,12 +3722,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                 "status": 401
             }
         }
-
 + Response 403 (application/json)
 
-        When you don't have the privilege to update custom fields
-
-        + Body
+        // when you don't have the privilege to update custom fields
         {
         "links": {},
             "error": {
@@ -3887,9 +3737,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 + Response 404 (application/json)
 
-        When a role wasn't found in the database based on its *id*
-
-        + Body
+        // when a role wasn't found in the database based on its *id*
         {
         "links": {},
             "error": {
@@ -3925,9 +3773,7 @@ To read more about managing users and built-in users, see [User Management](http
 
 + Response 400 (application/json)
 
-        When the request is invalid because of a typo, for example
-
-        + Body
+        // when the request is invalid because of a typo, for example
         {
             "links": {},
             "error": {
@@ -3941,9 +3787,7 @@ To read more about managing users and built-in users, see [User Management](http
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -3956,9 +3800,7 @@ To read more about managing users and built-in users, see [User Management](http
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to delete a user
-
-        + Body
+        // when you don't have the privilege to delete a user
         {
         "links": {},
             "error": {
@@ -3971,9 +3813,7 @@ To read more about managing users and built-in users, see [User Management](http
 
 + Response 404 (application/json)
 
-        When the user wasn't found in the database based on its *id*
-
-        + Body
+        // when the user wasn't found in the database based on its *id*
         {
         "links": {},
             "error": {
@@ -3987,9 +3827,7 @@ To read more about managing users and built-in users, see [User Management](http
 
 + Response 409 (application/json)
 
-        When you can't delete a user
-
-        + Body
+        // when you can't delete a user
         {
             "links": {},
             "error": {
@@ -4151,9 +3989,7 @@ Returns a list of users who are missing one or more required user custom fields.
 
 + Response 400 (appplication/json)
 
-        When the page parameter has an invalid value such as 0 or negative number
-
-        + Body
+        // when the page parameter has an invalid value such as 0 or negative number
         {
             "links": {},
             "error": {
@@ -4167,9 +4003,7 @@ Returns a list of users who are missing one or more required user custom fields.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "error": {
                 "detail": "Valid authentication has either not been provided or is insufficient.",
@@ -4181,9 +4015,7 @@ Returns a list of users who are missing one or more required user custom fields.
 
 + Response 403 (application/json)
 
-        When you don't have sufficent privileges
-
-        + Body
+        // when you don't have sufficent privileges
         {
         "links": {},
             "error": {
@@ -4196,9 +4028,7 @@ Returns a list of users who are missing one or more required user custom fields.
 
 + Response 404 (application/json)
 
-        When the page parameter has a non-numeric value, which is invalid
-
-        + Body
+        // when the page parameter has a non-numeric value, which is invalid
         {
             "links": {},
             "error": {
@@ -4306,9 +4136,7 @@ Use this method to create an API token for the current user.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4373,9 +4201,7 @@ Typical use cases for this API:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4388,9 +4214,7 @@ Typical use cases for this API:
 
 + Response 403 (application/json)
 
-        When the user can't create an API token for others ("UserAndRoles.setApiTokensForOthers")
-
-        + Body
+        // when the user can't create an API token for others ("UserAndRoles.setApiTokensForOthers")
         {
             "links": {},
             "error": {
@@ -4402,9 +4226,7 @@ Typical use cases for this API:
             }
         }
 
-        When the creator or receiver of the token is the built-in `admin`
-
-        + Body
+        // when the creator or receiver of the token is the built-in `admin`
         {
             "links": {},
             "error": {
@@ -4416,9 +4238,7 @@ Typical use cases for this API:
             }
         }
 
-        When the user tries to create a token for another user with more elevated roles
-
-        + Body
+        // when the user tries to create a token for another user with more elevated roles
         {
             "links": {},
             "error": {
@@ -4432,7 +4252,7 @@ Typical use cases for this API:
 
 + Response 404 (application/json)
 
-        When the user wasn't found in the database based on its *id*
+        // when the user wasn't found in the database based on its *id*
 
 ## Random Passwords [/api/v1/user/random-passwords]
 
@@ -4490,9 +4310,7 @@ A password needs to meet the following requirements:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4505,9 +4323,7 @@ A password needs to meet the following requirements:
 
 + Response 403 (application/json)
 
-        When the user doesn't have the privilege to modify users ("UserAndRoles.editUser")
-
-        + Body
+        // when the user doesn't have the privilege to modify users ("UserAndRoles.editUser")
         {
             "links": {},
             "error": {
@@ -4521,9 +4337,7 @@ A password needs to meet the following requirements:
 
 + Response 503 (application/json)
 
-        When the random password generator takes too long to generate an acceptable password
-
-        + Body
+        // when the random password generator takes too long to generate an acceptable password
         {
             "links": {},
             "error": {
@@ -4568,9 +4382,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4583,9 +4395,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to release other users' licenses ("UserAndRoles.deleteSessions")
-
-        + Body
+        // when you don't have the privilege to release other users' licenses ("UserAndRoles.deleteSessions")
         {
             "links": {},
             "error": {
@@ -4599,9 +4409,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 + Response 404 (application/json)
 
-        When the user wasn't found in the database by its *id*
-
-        + Body
+        // when the user wasn't found in the database by its *id*
         {
         "links": {},
             "error": {
@@ -4637,9 +4445,7 @@ The user specified by the *id* in this request will be asked to update their use
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -4652,9 +4458,7 @@ The user specified by the *id* in this request will be asked to update their use
 
 + Response 403 (application/json)
 
-        When you don't have the neccessary privileges ("UserAndRoles.editUser")
-
-        + Body
+        // when you don't have the neccessary privileges ("UserAndRoles.editUser")
         {
             "links": {},
             "error": {
@@ -4668,9 +4472,7 @@ The user specified by the *id* in this request will be asked to update their use
 
 + Response 404 (application/json)
 
-        When the user wasn't found in the database by its *id*
-
-        + Body
+        // when the user wasn't found in the database by its *id*
         {
         "links": {},
             "error": {
@@ -4752,9 +4554,7 @@ The header parameters are set as follows:
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or is invalid
-
-        + Body
+        // when the access token in the request is missing or is invalid
         {
             "links": {},
             "error": {
@@ -4767,9 +4567,7 @@ The header parameters are set as follows:
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to export users ("UsersAndRoles.editUser")
-
-        + Body
+        // when you don't have the privilege to export users ("UsersAndRoles.editUser")
         {
             "links": {},
             "error": {
@@ -4866,9 +4664,9 @@ noted in the Create User API section.
 
     + Attributes (BulkResultResponse)
 
-            When all users were successfully created
+    + Body
 
-            + Body
+            // When all users were successfully created
             {
                 "results": [
                     {
@@ -4901,9 +4699,7 @@ noted in the Create User API section.
             }
 
 
-            When 3 users were created successfully but 2 weren't
-
-            + Body
+            // when 3 users were created successfully but 2 weren't
             {
                 "results": [
                     {
@@ -4944,9 +4740,7 @@ noted in the Create User API section.
 
 + Response 400 (application/json)
 
-        When a bulk request is sent with an empty list
-
-        + Body
+        // when a bulk request is sent with an empty list
         {
             "links": {},
             "error": {
@@ -4966,9 +4760,7 @@ noted in the Create User API section.
             }
         }
 
-        When a bulk request exceeds the maximum valid limit
-
-        + Body
+        // when a bulk request exceeds the maximum valid limit
         {
             "links": {},
             "error": {
@@ -4988,9 +4780,7 @@ noted in the Create User API section.
             }
         }
 
-        When a bulk request includes validation errors such as an empty password
-
-        + Body
+        // when a bulk request includes validation errors such as an empty password 
         {
             "links": {},
             "error": {
@@ -5011,9 +4801,7 @@ noted in the Create User API section.
             }
         }
 
-        When a bulk request is sent without a payload body
-
-        + Body
+        // when a bulk request is sent without a payload body
         {
             "links": {},
             "error": {
@@ -5035,9 +4823,7 @@ noted in the Create User API section.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to create users
-
-        + Body
+        // when you don't have the privilege to create users
         {
         "links": {},
             "error": {
@@ -5050,9 +4836,7 @@ noted in the Create User API section.
 
 + Response 500 (application/json)
 
-        When there's an unspecified error
-
-        + Body
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -5116,9 +4900,7 @@ It lets you ask multiple users to update their user information.
 
 + Response 403 (application/json)
 
-        When you don't have the neccessary privileges ("UserAndRoles.editUser")
-
-        + Body
+        // when you don't have the neccessary privileges ("UserAndRoles.editUser")
         {
         "links": {},
             "error": {
@@ -5131,9 +4913,7 @@ It lets you ask multiple users to update their user information.
 
 + Response 500 (application/json)
 
-        When there's an unspecified error
-
-        + Body
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -5196,9 +4976,7 @@ It lets you ask multiple users to update their user information.
 
 + Response 403 (application/json)
 
-        When you don't have the neccessary privileges ("UserAndRoles.editUser")
-
-        + Body
+        // when you don't have the neccessary privileges ("UserAndRoles.editUser")
         {
         "links": {},
             "error": {
@@ -5211,9 +4989,7 @@ It lets you ask multiple users to update their user information.
 
 + Response 500 (application/json)
 
-        When there's an unspecified error
-
-        + Body
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -5351,9 +5127,7 @@ noted in the "Delete User API" section.
 
 + Response 400 (application/json)
 
-        When a bulk delete request is sent with an empty list
-
-        + Body
+        // when a bulk delete request is sent with an empty list
         {
             "links": {},
             "error": {
@@ -5373,9 +5147,7 @@ noted in the "Delete User API" section.
             }
         }
 
-        When a bulk delete request exceeds the maximum valid limit
-
-        + Body
+        // when a bulk delete request exceeds the maximum valid limit
         {
             "links": {},
             "error": {
@@ -5395,9 +5167,7 @@ noted in the "Delete User API" section.
             }
         }
 
-        When a bulk request is sent without a payload body
-
-        + Body
+        // when a bulk request is sent without a payload body
         {
             "links": {},
             "error": {
@@ -5468,9 +5238,7 @@ noted in the "Delete User API" section.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to delete users
-
-        + Body
+        // when you don't have the privilege to delete users
         {
         "links": {},
             "error": {
@@ -5483,9 +5251,7 @@ noted in the "Delete User API" section.
 
 + Response 500 (application/json)
 
-        When there's an unspecified error
-
-        + Body
+        // when there's an unspecified error
         {
             "links": {},
             "error": {
@@ -5550,9 +5316,7 @@ This shows a list of your user custom fields.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -5627,9 +5391,7 @@ Details of the statistics attributes in the table below:
 
 + Response 401 (application/json)
 
-        When the access token is missing or is invalid in the request
-
-        + Body
+        // When the access token is missing or is invalid in the request
         {
             "links": {},
             "error": {
@@ -5642,9 +5404,7 @@ Details of the statistics attributes in the table below:
 
 + Response 403 (application/json)
 
-        When there is insufficient privileges to fetch license statistics
-
-        + Body
+        // when there is insufficient privileges to fetch license statistics
         {
             "links": {},
             "error": {
@@ -5797,9 +5557,7 @@ Returns a list of all roles including the associated privileges.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -5812,9 +5570,7 @@ Returns a list of all roles including the associated privileges.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to view users and roles ("UserAndRoles.read")
-
-        + Body
+        // when you don't have the privilege to view users and roles ("UserAndRoles.read")
         {
         "links": {},
             "error": {
@@ -5908,9 +5664,7 @@ To find out which privileges come with your installation, submit this request an
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -5923,9 +5677,7 @@ To find out which privileges come with your installation, submit this request an
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to view users and roles ("UserAndRoles.read")
-
-        + Body
+        // when you don't have the privilege to view users and roles ("UserAndRoles.read")
         {
         "links": {},
             "error": {
@@ -5988,9 +5740,7 @@ This lets you add new roles.
 
 + Response 400 (application/json)
 
-            When an empty name was provided or the name provided is longer than 254 characters
-
-            + Body
+            // when an empty name was provided or the name provided is longer than 254 characters
             {
                 "links": {},
                 "error": {
@@ -6020,9 +5770,7 @@ This lets you add new roles.
 
 + Response 400 (application/json)
 
-            When empty privileges were provided
-
-            + Body
+            // when empty privileges were provided 
             {
                 "links": {},
                 "error": {
@@ -6045,9 +5793,7 @@ This lets you add new roles.
 
 + Response 400 (application/json)
 
-            When privilege keys that don't exist were referenced
-
-            + Body
+            // when privilege keys that don't exist were referenced
             {
                 "links": {},
                 "error": {
@@ -6070,9 +5816,7 @@ This lets you add new roles.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -6085,9 +5829,7 @@ This lets you add new roles.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to edit roles
-
-        + Body
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6101,9 +5843,7 @@ This lets you add new roles.
 
 + Response 409 (application/json)
 
-        When a role with the same name already exists
-
-        + Body
+        // when a role with the same name already exists
         {
             "links": {},
             "error": {
@@ -6155,9 +5895,7 @@ This lets you add new roles.
 
 + Response 400 (application/json)
 
-            When an empty name was provided or the name provided is longer than 254 characters
-
-            + Body
+            // when an empty name was provided or the name provided is longer than 254 characters
             {
                 "links": {},
                 "error": {
@@ -6187,9 +5925,7 @@ This lets you add new roles.
 
 + Response 400 (application/json)
 
-            When empty privileges were provided
-
-            + Body
+            // when empty privileges were provided 
             {
                 "links": {},
                 "error": {
@@ -6212,9 +5948,7 @@ This lets you add new roles.
 
 + Response 400 (application/json)
 
-            When privilege keys that don't exist were referenced
-
-            + Body
+            // when privilege keys that don't exist were referenced
             {
                 "links": {},
                 "error": {
@@ -6237,9 +5971,7 @@ This lets you add new roles.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -6252,9 +5984,7 @@ This lets you add new roles.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to edit roles
-
-        + Body
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6268,9 +5998,7 @@ This lets you add new roles.
 
 + Response 409 (application/json)
 
-        When a role with the same name already exists
-
-        + Body
+        // when a role with the same name already exists
         {
             "links": {},
             "error": {
@@ -6317,9 +6045,7 @@ This returns a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        When the user doesn't have the privilege to view roles
-
-        + Body
+        // when the user doesn't have the privilege to view roles
         {
         "links": {},
             "error": {
@@ -6333,9 +6059,7 @@ This returns a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        When the specified role ID can't be found
-
-        + Body
+        // when the specified role ID can't be found
         {
         "links": {},
             "error": {
@@ -6404,9 +6128,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to edit roles
-
-        + Body
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6420,9 +6142,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        When the role couldn't be identified by its *id* in the database
-
-        + Body
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -6479,9 +6199,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 400 (application/json)
 
-            When an empty name was provided or the name provided is longer than 254 characters
-
-            + Body
+            // when an empty name was provided or the name provided is longer than 254 characters
             {
                 "links": {},
                 "error": {
@@ -6511,9 +6229,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -6526,9 +6242,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        When the user doesn't have the privilege to edit roles
-
-        + Body
+        // when the user doesn't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6542,9 +6256,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        When the role couldn't be identified by its *id* in the database
-
-        + Body
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -6558,9 +6270,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 409 (application/json)
 
-        When you update a preconfigured built-in role
-
-        + Body
+        // when you update a preconfigured built-in role
         {
             "links": {},
             "error": {
@@ -6572,9 +6282,7 @@ This lets you update a role that was identified by its *id* in the database.
             }
         }
 
-        When a role with the same name already exists
-
-        + Body
+        // when a role with the same name already exists
         {
             "links": {},
             "error": {
@@ -6642,9 +6350,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 400 (application/json)
 
-        When an unknown privilege is provided in the request ("Example.privilege")
-
-        + Body
+        // when an unknown privilege is provided in the request ("Example.privilege")
         {
             "links": {},
             "error": {
@@ -6667,9 +6373,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 400 (application/json)
 
-        When empty privileges are provided in the request
-
-        + Body
+        // when empty privileges are provided in the request
         {
             "links": {},
             "error": {
@@ -6692,9 +6396,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -6707,9 +6409,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to edit roles
-
-        + Body
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6723,9 +6423,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        When the role couldn't be identified by its *id* in the database
-
-        + Body
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -6739,9 +6437,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 409 (application/json)
 
-        When you update a preconfigured built-in role
-
-        + Body
+        // when you update a preconfigured built-in role
         {
             "links": {},
             "error": {
@@ -6797,9 +6493,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -6812,9 +6506,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to edit roles
-
-        + Body
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6828,9 +6520,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-        When the role couldn't be identified by its *id* in the database
-
-        + Body
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -6886,9 +6576,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -6901,9 +6589,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to edit roles
-
-        + Body
+        // when you don't have the privilege to edit roles
         {
         "links": {},
             "error": {
@@ -6939,9 +6625,7 @@ This lets you delete a specified role based on its *id*.
 
 + Response 400 (application/json)
 
-        When the request is invalid because of a typo, for example
-
-        + Body
+        // when the request is invalid because of a typo, for example
         {
             "links": {},
             "error": {
@@ -6955,9 +6639,7 @@ This lets you delete a specified role based on its *id*.
 
 + Response 401 (application/json)
 
-        When the access token in the request is missing or invalid
-
-        + Body
+        // when the access token in the request is missing or invalid
         {
             "links": {},
             "error": {
@@ -6970,9 +6652,7 @@ This lets you delete a specified role based on its *id*.
 
 + Response 403 (application/json)
 
-        When you don't have the privilege to delete roles
-
-        + Body
+        // when you don't have the privilege to delete roles
         {
         "links": {},
             "error": {
@@ -6986,9 +6666,7 @@ This lets you delete a specified role based on its *id*.
 
 + Response 404 (application/json)
 
-        When the role couldn't be identified by its *id* in the database
-
-        + Body
+        // when the role couldn't be identified by its *id* in the database
         {
         "links": {},
             "error": {
@@ -7002,9 +6680,7 @@ This lets you delete a specified role based on its *id*.
 
 + Response 409 (application/json)
 
-        When the preconditions to delete a role aren't met
-
-        + Body
+        // when the preconditions to delete a role aren't met
         {
             "links": {},
             "error": {
