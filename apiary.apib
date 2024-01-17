@@ -1341,6 +1341,7 @@ Security:
 | `[GET /api/v1/user{?roles}]`                                | `2022.02`             |
 | `[GET /api/v1/user{?excludeProperties={true|false}}]`       | `2023.10`             |
 | `[GET /api/v1/user{?includeCustomField={key}}]`             | `2023.10`             |
+| `[GET /api/v1/user{?excludeCustomFields={true|false}}]`     | `2024.02`             |
 
 This request retrieves a list of all users in the order that they were added.
 
@@ -1424,6 +1425,8 @@ By default, all custom fields are nested in the user model.
 You can use the parameter `includeCustomField` to limit the returned fields to those that match the key passed in the param value.
 This is helpful if you want to fetch a specific set of custom fields to reduce data transfer.
 To include more than one custom field, add `&includeCustomField={Key}` to the request N times.
+To exclude all custom fields, you can use the parameter `&excludeCustomFields=true`. This takes priority over any
+`includeCustomField` parameters that are present, and will always result in no custom fields being returned.
 
 + Parameters
 
