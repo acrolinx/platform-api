@@ -4226,6 +4226,8 @@ Typical use cases for this API:
             }
         }
 
++ Response 403 (application/json)
+
         // when the creator or receiver of the token is the built-in `admin`
         {
             "links": {},
@@ -4238,7 +4240,9 @@ Typical use cases for this API:
             }
         }
 
-        // when the user tries to create a token for another user with more elevated roles
++ Response 403 (application/json)
+
+        // when the user tries to create a token for a Super Administrator user, when they are not a Super Administrator themselves
         {
             "links": {},
             "error": {
