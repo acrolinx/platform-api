@@ -9,6 +9,9 @@
     "scripts": {
         "lint": "node scripts/lint.js"
     },
+    "engines": {
+      "node": ">=20"
+    },
     "devDependencies": {
         "drafter": "^2.0.0"
     },
