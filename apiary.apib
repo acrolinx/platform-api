@@ -1497,6 +1497,9 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
                                 "name": "Term Browser Administrator"
                             }
                         ],
+                        "idpUser": true,
+                        "staffUser": true,
+                        "rolesSetByIdp": false,
                         "customFields": [
                             {
                                 "key": "Department",
@@ -1529,6 +1532,9 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
                                 "name": "Analytics Read-Only User"
                             }
                         ],
+                        "idpUser": true,
+                        "staffUser": true,
+                        "rolesSetByIdp": false,
                         "customFields": [
                             {
                                 "key": "Department",
@@ -1579,6 +1585,9 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
                                 "default": false
                             }
                         ],
+                        "idpUser": true,
+                        "staffUser": true,
+                        "rolesSetByIdp": false,
                         "properties": {
                             "Segmentation.xml.DTDs": ""
                         },
@@ -1612,6 +1621,9 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
                                 "default": false
                             }
                         ],
+                        "idpUser": true,
+                        "staffUser": true,
+                        "rolesSetByIdp": false,
                         "properties": {
                             "Segmentation.xml.DTDs": ""
                         },
@@ -1650,6 +1662,9 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
                                 "default": false
                             }
                         ],
+                        "idpUser": true,
+                        "staffUser": true,
+                        "rolesSetByIdp": false,
                         "properties": {
                             "Segmentation.xml.DTDs": ""
                         },
@@ -1683,6 +1698,9 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
                                 "default": false
                             }
                         ],
+                        "idpUser": true,
+                        "staffUser": true,
+                        "rolesSetByIdp": false,
                         "properties": {
                             "Segmentation.xml.DTDs": ""
                         },
@@ -1885,6 +1903,9 @@ You'll also see properties, roles, and custom fields.
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": true,
+                    "staffUser": true,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -1985,6 +2006,9 @@ This is an alternative way of getting information about the current (in request 
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": true,
+                    "staffUser": true,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -2113,6 +2137,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Author"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -2342,6 +2369,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Author"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -2577,6 +2607,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -2821,6 +2854,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -3162,6 +3198,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -3266,6 +3305,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -3314,6 +3356,20 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                 "detail": "The following role(s) could not be found when trying to assign them to user with ID eb323701-839f-4998-b56e-3e20c70259c5: [Role One], [Role Two]",
                 "type": "entityToAssociateNotFound",
                 "title": "The requested role(s) could not be found.",
+                "status": 400
+            }
+        }
+
++ Response 400 (application/json)
+
+        // when the user has their roles managed by their identity provider
+        {
+            "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "You cannot update this users roles, because they are managed by the user's IDP"
+                "type": "validation",
+                "title": "Cannot update roles"
                 "status": 400
             }
         }
@@ -3424,6 +3480,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -3506,6 +3565,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -3650,6 +3712,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
                             "name": "Term Browser Administrator"
                         }
                     ],
+                    "idpUser": false,
+                    "staffUser": false,
+                    "rolesSetByIdp": false,
                     "customFields": [
                         {
                             "key": "Department",
@@ -3920,6 +3985,9 @@ Returns a list of users who are missing one or more required user custom fields.
                                 "name": "Author"
                             }
                         ],
+                        "idpUser": false,
+                        "staffUser": false,
+                        "rolesSetByIdp": false,
                         "customFields": [
                             {
                                 "key": "Department",
@@ -3961,6 +4029,9 @@ Returns a list of users who are missing one or more required user custom fields.
                                 "name": "Analytics Read-Only User"
                             }
                         ],
+                        "idpUser": false,
+                        "staffUser": false,
+                        "rolesSetByIdp": false,
                         "customFields": [
                             {
                                 "key": "Department",
@@ -7065,6 +7136,9 @@ you'll see a response that isn't `200`.
 + checkingFrequency (UserStatus) - Displays a rough idea of the usage pattern of the user by checking their frequency across the lifetime of the user in days
 + properties (object) - Key/Value pair of properties
 + roles (array[Role]) - List of assigned roles
++ idpUser (boolean) - Indicates whether the user has any linked identity providers
++ staffUser (boolean) - Indicates whether the user is an Acrolinx staff member
++ rolesSetByIdp (boolean) - Indicates whether the user has their roles managed by their identity provider
 + customFields (array[CustomField]) - List of custom fields
 
 ### UserStatus (enum)
