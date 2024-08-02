@@ -3361,6 +3361,20 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
++ Response 400 (application/json)
+
+        // when the user has their roles managed by their identity provider
+        {
+            "links": {},
+            "error": {
+                "reference": "57380cf5-7f4d-481f-9490-375c950afe9d",
+                "detail": "You cannot update this users roles, because they are managed by the user's IDP"
+                "type": "validation",
+                "title": "Cannot update roles"
+                "status": 400
+            }
+        }
+
 + Response 401 (application/json)
 
         // when the access token in the request is missing or invalid
