@@ -7149,7 +7149,7 @@ you'll see a response that isn't `200`.
 The reporting API provides direct access to raw checks and issues data. 
 The data is provided in a downloadable CSV format that further enables data analysis.
 
-## Checks data [/api/v1/reporting/data/checks?{start, end}]
+## Checks data [/api/v1/reporting/data/checks?{start={YYYY-MM-DD}&end={YYYY-MM-DD}}]
 ### Get checks data [GET]
 
 Download checking data in CSV format
@@ -7268,7 +7268,7 @@ Download checking data in CSV format
             "message": "Internal Server Error"
         } 
 
-## Issues data [/api/v1/reporting/data/issues]
+## Issues data [/api/v1/reporting/data/issues?{start={YYYY-MM-DD}&end={YYYY-MM-DD}}]
 ### Get issues data [GET]
 
 Download issues found in documents in CSV format
