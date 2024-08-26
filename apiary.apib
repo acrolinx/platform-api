@@ -7149,6 +7149,29 @@ you'll see a response that isn't `200`.
 The reporting API provides direct access to raw checks and issues data. 
 The data is provided in a downloadable CSV format that further enables data analysis.
 
+### Restrictions:
+#### Available Data
+Default: 12 month
+
+Past 12 months data can be downloaded by default. Please contact Acrolinx support for more information.
+
+#### Concurrent Requests
+Default: 3 requests per tenant
+
+Limits the number of concurrent downloads, The default is 3 concurrent downloads.
+Quota violation will be indicated by a 429 status code and a reason of Too many concurrent requests. Appropriate Retry-After, RateLimit-Limit, and RateLimit-Remaining headers will be present on the response.
+
+#### Download Volume
+Default: 1000 days of data can be downloaded per API (checks, issues), replenishing at 5 days per day
+
+Any day of data downloaded, regardless of the amount of data contained, counts as a day of downloaded data. Even empty days. The big initial buffer is meant to allow experimentation and initial download of all available historic data.
+
+The refill rate is 5 days of data per day. This way multiple entities or processes in the tenants org can mirror the data. The refill rate should also replenish the buffer over a longer time frame to allow new experimentation.
+
+The quota is applied per resource. For example downloads of check data won’t affect the quota for issues.
+
+Quota violation will be indicated by a 429 status code. Appropriate Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset headers will be present on the response.
+
 ## Get checks data [GET /api/v1/reporting/data/checks?{start,end}]
 
 Download checking data in CSV format
@@ -7227,16 +7250,16 @@ Download checking data in CSV format
 + Attributes (object)
     + Checks CSV data structure (object)
         + Check ID (string) - Unique check ID
-        + Check start time (string) - Start time of the check in the form `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, e.g. `2022-08-01T23:49:14.627Z` 
+        + Check start time (string) - Start time of the check in the form `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z` 
         + Language (string) - Checking language 
         + Scorecard URI (string) - Uniform Resource Identifier (URI) of the Scorecard 
-        + File  ID (string) - Unique file ID 
+        + File ID (string) - Unique file ID 
         + Content reference (string) - Acrolinx assigns the file a content reference the first time you run a check. Files with the same content reference are treated as the same file 
         + File path (string) - The file's location when it’s first checked 
         + File name (string) - Name of the file 
         + Content ID (string) - Unique check ID for batch checks 
-        + Acrolinx Score (number) - Overall Acrolinx Score 
-        + Acrolinx Score color (string) - Color coding of the Acrolinx Score 
+        + Acrolinx score (number) - Overall Acrolinx Score 
+        + Acrolinx Score color (string) - Color coding of the Acrolinx score 
         + All issues (number) - Count of all issues found 
         + Words (number) - Number of words in the file 
         + Sentences (number) - Number of sentences in the file 
@@ -7258,7 +7281,7 @@ Download checking data in CSV format
         + Goal Scannability score (number) - Score for the goal scannability 
         + Goal Terminology score (number) - Score for the goal terminology 
         + Goal Tone score (number) - Score for the goal tone 
-        + Goal Words and Phrases score (number) -Score for the goal words & phrases
+        + Goal Words and Phrases score (number) -Score for the goal words and phrases
         + Goal {NAME} issues (string) - Number of issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
         + Goal Clarity issues (number) - Number of issues found for the goal Clarity 
         + Goal Consistency issues (number) - Number of Issues found for the goal consistency 
@@ -7268,7 +7291,7 @@ Download checking data in CSV format
         + Goal Terminology issues (number) - Number of Issues found for the goal terminology 
         + Goal Tone issues (number) - Number of issues found for the goal Tone 
         + Goal Words and Phrases issues (number) - Number of issues found for the goal Words and Phrases 
-        + Metric {NAME} (string) - Metrics suffix by actual name. If there are 10 Metrics then CSV will have 10 coulms for metrics suffix by name of the matric
+        + Metric {NAME} (string) - Metrics suffix by actual name. If there are 10 Metrics then the CSV will have 10 coulms for metrics suffix by name of the metric
 
 ## Get Issues data [GET /api/v1/reporting/data/issues?{start,end}]
 
@@ -7281,7 +7304,7 @@ Download issues found in documents in CSV format
             X-Acrolinx-Auth:your_access_token
 
 + Parameters
-    + start: `2024-08-23` (string, required) - downlaod data from this date
+    + start: `2024-08-23` (string, required) - download data from this date
     + end: `2024-08-28` (string, required) - download data until this date
 
 + Response 200 (text/csv)
@@ -7348,7 +7371,7 @@ Download issues found in documents in CSV format
 + Attributes (object)
     + Issues CSV data structure (object)
         + Check ID (string) - Unique check ID
-        + Date (string) - Date when issue is found in the form `yyyy-MM-dd`, e.g. `2022-01-20` 
+        + Date (string) - Date when the issue is found in the form `yyyy-MM-dd`, for example, `2022-01-20` 
         + Context (string) - Sentence or paragraph where the issue occurred. 
         + Issue (string) - Content that Acrolinx highlighted 
         + Structural context (string) - Structural location where the issue occurred in the file 
