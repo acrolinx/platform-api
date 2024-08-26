@@ -7190,7 +7190,7 @@ Download checking data in CSV format
 + Goal Tone score (number) - Score for the goal tone 
 + Goal Words and Phrases score (number) -Score for the goal words & phrases
 + Goal {NAME} issues (string) - Number of issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
-+ Goal Clarity issues (number) - 	Number of issues found for the goal Clarity 
++ Goal Clarity issues (number) - Number of issues found for the goal Clarity 
 + Goal Consistency issues (number) - Number of Issues found for the goal consistency 
 + Goal Correctness issues (number) - Number of Issues found for the goal correctness 
 + Goal Inclusive language issues  (number) - Number of Issues found for the goal inclusive 
@@ -7219,7 +7219,7 @@ Download checking data in CSV format
         {
             "code": 400,
             "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. 'start' date must be before 'end' date."
-        } 
+        }
 
 + Response 400 (application/json)
 
@@ -7275,8 +7275,8 @@ Download issues found in documents in CSV format
 # Data Structures
 
 ## Issues CSV (object)
-+ Check ID (string) -Unique check ID
-+ Datedate Date when issue is found in the form `yyyy-MM-dd`, e.g. `2022-01-20` 
++ Check ID (string) - Unique check ID
++ Date (date) - Date when issue is found in the form `yyyy-MM-dd`, e.g. `2022-01-20` 
 + Context (string) - Sentence or paragraph where the issue occurred. 
 + Issue (string) - Content that Acrolinx highlighted 
 + Structural context (string) - Structural location where the issue occurred in the file 
