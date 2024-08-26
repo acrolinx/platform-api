@@ -7149,13 +7149,15 @@ you'll see a response that isn't `200`.
 The reporting API provides direct access to raw checks and issues data. 
 The data is provided in a downloadable CSV format that further enables data analysis.
 
-## Get checks data [GET /api/v1/reporting/data/checks?{start=YYYY-MM-DD&end=YYYY-MM-DD}]
+## Get checks data [GET /api/v1/reporting/data/checks?{start,end}]
 
 Download checking data in CSV format
 
-+ Headers
++ Request
 
-    X-Acrolinx-Auth: your_access_token
+    + Headers
+
+            X-Acrolinx-Auth:your_access_token
 
 + Parameters
     + start: `2024-08-23` (string, required) - downlaod data from this date
@@ -7178,7 +7180,7 @@ Download checking data in CSV format
 
         {
             "code": 400,
-            "message": ""Invalid 'end' date 2024-08-28. 'end' date must be before 2024-08-28, Data until yesterday can be downloaded."
+            "message": "Invalid 'end' date 2024-08-28. 'end' date must be before 2024-08-28, Data until yesterday can be downloaded."
         } 
 
 + Response 401 (application/json)
@@ -7214,67 +7216,69 @@ Download checking data in CSV format
             "code": 429,
             "message": "HTTP 429 Too Many Requests"
         }  
-
+        
 + Response 500 (application/json)
+
         {
             "code": 500,
             "message": "Internal Server Error"
         } 
 
-# Data Structures
++ Attributes (object)
+    + Checks CSV data structure (object)
+        + Check ID (string) - Unique check ID
+        + Check start time (string) - Start time of the check in the form `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, e.g. `2022-08-01T23:49:14.627Z` 
+        + Language (string) - Checking language 
+        + Scorecard URI (string) - Uniform Resource Identifier (URI) of the Scorecard 
+        + File  ID (string) - Unique file ID 
+        + Content reference (string) - Acrolinx assigns the file a content reference the first time you run a check. Files with the same content reference are treated as the same file 
+        + File path (string) - The file's location when it’s first checked 
+        + File name (string) - Name of the file 
+        + Content ID (string) - Unique check ID for batch checks 
+        + Acrolinx Score (number) - Overall Acrolinx Score 
+        + Acrolinx Score color (string) - Color coding of the Acrolinx Score 
+        + All issues (number) - Count of all issues found 
+        + Words (number) - Number of words in the file 
+        + Sentences (number) - Number of sentences in the file 
+        + Target (number) - Name of the Target used 
+        + Target ID (string) - Unique Target ID 
+        + Content group ID (string) - Unique content group ID 
+        + Content group (string) - Name of the content group 
+        + User ID (string) - Unique user ID 
+        + Full name (string) - Full name of user 
+        + Integration (string) - Integration used to run the check 
+        + Integration version (string) - Integration version 
+        + Content profile (string) - Content profile used 
+        + Custom field {NAME} (string) - Custom fields. The number of columns in the CSV file will correspond to the number of custom fields. For example, if there are 10 custom fields, the CSV file will have 10 columns for custom fields.
+        + Goal {NAME} score (string) - Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
+        + Goal Clarity score (number) - Score for the goal Clarity  
+        + Goal Consistency score (number) - Score for the goal consistency 
+        + Goal Correctness score (number) - Score for the goal correctness 
+        + Goal Inclusive language score (number) - Score for the goal inclusive 
+        + Goal Scannability score (number) - Score for the goal scannability 
+        + Goal Terminology score (number) - Score for the goal terminology 
+        + Goal Tone score (number) - Score for the goal tone 
+        + Goal Words and Phrases score (number) -Score for the goal words & phrases
+        + Goal {NAME} issues (string) - Number of issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
+        + Goal Clarity issues (number) - Number of issues found for the goal Clarity 
+        + Goal Consistency issues (number) - Number of Issues found for the goal consistency 
+        + Goal Correctness issues (number) - Number of Issues found for the goal correctness 
+        + Goal Inclusive language issues  (number) - Number of Issues found for the goal inclusive 
+        + Goal Scannability issues (number) - Number of Issues found for the goal scannability 
+        + Goal Terminology issues (number) - Number of Issues found for the goal terminology 
+        + Goal Tone issues (number) - Number of issues found for the goal Tone 
+        + Goal Words and Phrases issues (number) - Number of issues found for the goal Words and Phrases 
+        + Metric {NAME} (string) - Metrics suffix by actual name. If there are 10 Metrics then CSV will have 10 coulms for metrics suffix by name of the matric
 
-## Checks CSV (object)
-+ Check ID (string) - Unique check ID
-+ Check start time (date or time) - Start time of the check in the form `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, e.g. `2022-08-01T23:49:14.627Z` 
-+ Language (string) - Checking language 
-+ Scorecard URI (string) - Uniform Resource Identifier (URI) of the Scorecard 
-+ File  ID (string) - Unique file ID 
-+ Content reference (string) - Acrolinx assigns the file a content reference the first time you run a check. Files with the same content reference are treated as the same file 
-+ File path (string) - The file's location when it’s first checked 
-+ File name (string) - Name of the file 
-+ Content ID (string) - Unique check ID for batch checks 
-+ Acrolinx Score (number) - Overall Acrolinx Score 
-+ Acrolinx Score color (string) - Color coding of the Acrolinx Score 
-+ All issues (number) - Count of all issues found 
-+ Words (number) - Number of words in the file 
-+ Sentences (number) - Number of sentences in the file 
-+ Target (number) - Name of the Target used 
-+ Target ID (string) - Unique Target ID 
-+ Content group ID (string) - Unique content group ID 
-+ Content group (string) - Name of the content group 
-+ User ID (string) - Unique user ID 
-+ Full name (string) - Full name of user 
-+ Integration (string) - Integration used to run the check 
-+ Integration version (string) - Integration version 
-+ Content profile (string) - Content profile used 
-+ Custom field {NAME} (string) - Custom fields. The number of columns in the CSV file will correspond to the number of custom fields. For example, if there are 10 custom fields, the CSV file will have 10 columns for custom fields.
-+ Goal {NAME} score (string) - Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
-+ Goal Clarity score (number) - Score for the goal Clarity  
-+ Goal Consistency score (number) - Score for the goal consistency 
-+ Goal Correctness score (number) - Score for the goal correctness 
-+ Goal Inclusive language score (number) - Score for the goal inclusive 
-+ Goal Scannability score (number) - Score for the goal scannability 
-+ Goal Terminology score (number) - Score for the goal terminology 
-+ Goal Tone score (number) - Score for the goal tone 
-+ Goal Words and Phrases score (number) -Score for the goal words & phrases
-+ Goal {NAME} issues (string) - Number of issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
-+ Goal Clarity issues (number) - Number of issues found for the goal Clarity 
-+ Goal Consistency issues (number) - Number of Issues found for the goal consistency 
-+ Goal Correctness issues (number) - Number of Issues found for the goal correctness 
-+ Goal Inclusive language issues  (number) - Number of Issues found for the goal inclusive 
-+ Goal Scannability issues (number) - Number of Issues found for the goal scannability 
-+ Goal Terminology issues (number) - Number of Issues found for the goal terminology 
-+ Goal Tone issues (number) - Number of issues found for the goal Tone 
-+ Goal Words and Phrases issues (number) - Number of issues found for the goal Words and Phrases 
-+ Metric {NAME} (string) - Metrics suffix by actual name. If there are 10 Metrics then CSV will have 10 coulms for metrics suffix by name of the matric
-
-## Get Issues data [GET /api/v1/reporting/data/issues?{start=YYYY-MM-DD&end=YYYY-MM-DD}]
+## Get Issues data [GET /api/v1/reporting/data/issues?{start,end}]
 
 Download issues found in documents in CSV format
 
-+ Headers
++ Request
 
-    X-Acrolinx-Auth: your_access_token
+    + Headers
+    
+            X-Acrolinx-Auth:your_access_token
 
 + Parameters
     + start: `2024-08-23` (string, required) - downlaod data from this date
@@ -7297,7 +7301,7 @@ Download issues found in documents in CSV format
 
         {
             "code": 400,
-            "message": ""Invalid 'end' date 2024-08-28. 'end' date must be before 2024-08-28, Data until yesterday can be downloaded."
+            "message": "Invalid 'end' date 2024-08-28. 'end' date must be before 2024-08-28, Data until yesterday can be downloaded."
         } 
 
 + Response 401 (application/json)
@@ -7341,15 +7345,14 @@ Download issues found in documents in CSV format
             "message": "Internal Server Error"
         } 
 
-# Data Structures
-
-## Issues CSV (object)
-+ Check ID (string) - Unique check ID
-+ Date (date) - Date when issue is found in the form `yyyy-MM-dd`, e.g. `2022-01-20` 
-+ Context (string) - Sentence or paragraph where the issue occurred. 
-+ Issue (string) - Content that Acrolinx highlighted 
-+ Structural context (string) - Structural location where the issue occurred in the file 
-+ Guideline ID (string) - Unique ID of the guideline  
-+ Guideline name (string) - Name of the guideline 
-+ Language (string) - Checking language 
-+ Issue type (string) - Type of issue 
++ Attributes (object)
+    + Issues CSV data structure (object)
+        + Check ID (string) - Unique check ID
+        + Date (string) - Date when issue is found in the form `yyyy-MM-dd`, e.g. `2022-01-20` 
+        + Context (string) - Sentence or paragraph where the issue occurred. 
+        + Issue (string) - Content that Acrolinx highlighted 
+        + Structural context (string) - Structural location where the issue occurred in the file 
+        + Guideline ID (string) - Unique ID of the guideline  
+        + Guideline name (string) - Name of the guideline 
+        + Language (string) - Checking language 
+        + Issue type (string) - Type of issue 
