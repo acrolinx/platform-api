@@ -7279,7 +7279,7 @@ Download check data as a CSV file
         + Goal Inclusive Language score (number) - Score for the goal Inclusive Language 
         + Goal Scannability score (number) - Score for the goal Scannability 
         + Goal Terminology score (number) - Score for the goal Terminology   
-        + Goal Tone score (number) - Score for the goal tone 
+        + Goal Tone score (number) - Score for the goal Tone 
         + Goal Words and Phrases score (number) -Score for the goal words and phrases
         + Goal {NAME} issues (string) - Number of Issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
         + Goal Clarity issues (number) - Number of Issues found for the goal Clarity 
@@ -7323,7 +7323,7 @@ Download issues found as a CSV file
 
         {
             "code": 400,
-            "message": "Invalid 'end' date 2024-08-28. 'end' date must be before 2024-08-28, Data until yesterday can be downloaded."
+            "message": "Invalid 'end' date 2024-08-28. 'end' date must be before 2024-08-28. The most recent data available for download is from yesterday."
         } 
 
 + Response 401 (application/json)
@@ -7371,7 +7371,7 @@ Download issues found as a CSV file
     + Issues CSV data structure (object)
         + Check ID (string) - Unique check ID
         + Date (string) - Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20` 
-        + Context (string) - Sentence or paragraph where the issue occurred. 
+        + Context (string) - Sentence or paragraph where the issue occurred
         + Issue (string) - Content that Acrolinx highlighted 
         + Structural context (string) - Structural location where the issue occurred in the file 
         + Guideline ID (string) - Unique ID of the guideline  
