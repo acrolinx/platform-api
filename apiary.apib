@@ -7146,8 +7146,8 @@ you'll see a response that isn't `200`.
 
 # Reporting API
 
-The reporting API provides direct access to raw checks and issues data. 
-The data is provided in a downloadable CSV format that further enables data analysis.
+The reporting API provides direct access to raw check data and raw issue data.
+You can download the data as a CSV file and add it to your preferred analysis tool.
 
 ### Restrictions
 #### Available Data
@@ -7162,10 +7162,9 @@ This limits the number of concurrent downloads. The default is 3 concurrent down
 If you exceed the quota, you'll get a message that reads "Too many concurrent requests" (429 status code). The response will include the headers Retry-After, RateLimit-Limit, and RateLimit-Remaining.
 
 #### Download Volume
-Default: 1000 days of data can be downloaded per API (checks, issues), replenishing at 5 days per day
+Default: 1000 days of raw check data and 1000 days of raw issue data. The data will replenish at 5 days of data per day.
 
 If you download any amount of data for a specific day, that day counts toward the default. This includes empty days. The 1000-day default is designed to give you access to all available historic data.
-The refill rate is 5 days of data per day.
 
 The quota is set for each type of data. For example, when you download check data it won't affect the amount of issue data you can download.
 
@@ -7229,7 +7228,7 @@ Download check data as a CSV file
 
         {
             "code": 409,
-            "message": "Data is not available to download, please try again after sometime."
+            "message": "Data is not available to download. Try again later."
         } 
 
 + Response 429 (application/json)
@@ -7350,7 +7349,7 @@ Download issues found as a CSV file
 
         {
             "code": 409,
-            "message": "Data is not available to download, please try again after sometime."
+            "message": "Data is not available to download. Try again later."
         } 
 
 + Response 429 (application/json)
