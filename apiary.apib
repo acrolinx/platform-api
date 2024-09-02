@@ -7194,41 +7194,41 @@ Download check data as a CSV file
 
         {
             "code": 400,
-            "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. 'start' date must be before 'end' date."
+            "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. The 'start' date must be before the 'end' date."
         }
 
 + Response 400 (application/json)
 
         {
             "code": 400,
-            "message": "Invalid 'end' date 2024-08-28. 'end' date must be before 2024-08-28, Data until yesterday can be downloaded."
+            "message": "Invalid 'end' date 2024-08-28. The 'end' date must be before 2024-08-28. The most recent data available for download is from yesterday."
         } 
 
 + Response 401 (application/json)
 
         {
             "code": 401,
-            "message": "Unautherized access to reporting API, please contact admin/support."
+            "message": "Unauthorized access to reporting API. Contact your Acrolinx administrator for more information."
         } 
 
 + Response 403 (application/json)
 
         {
             "code": 403,
-            "message": "The Reporting API feature is disabled."
+            "message": "The Reporting API feature is inactive."
         } 
 + Response 409 (application/json)
 
         {
             "code": 409,
-            "message": "Data before 2024-08-01 is available to download. Please change the dates if you would like to download the data until 2024-08-01."
+            "message": "Data before 2024-08-01 is available to download. To download data up to 2024-08-01, adjust the dates."
         } 
 
 + Response 409 (application/json)
 
         {
             "code": 409,
-            "message": "Data is not available to download. Try again later."
+            "message": "No data is available for download. Try again later."
         } 
 
 + Response 429 (application/json)
@@ -7286,7 +7286,7 @@ Download check data as a CSV file
         + Scannability goal score (number) - Score for the goal Scannability 
         + Terminology goal score (number) - Score for the goal Terminology   
         + Tone goal score (number) - Score for the goal Tone 
-        + Words and Phrases goal score (number) -Score for the goal words and phrases
+        + Words and Phrases goal score (number) -Score for the goal Words and Phrases
         + {NAME} goal issues (string) - Number of Issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
         + Clarity goal issues (number) - Number of Issues found for the goal Clarity 
         + Consistency goal issues (number) - Number of Issues found for the goal Consistency 
@@ -7296,7 +7296,7 @@ Download check data as a CSV file
         + Terminology goal issues (number) - Number of Issues found for the goal Terminology 
         + Tone goal issues (number) - Number of issues found for the goal Tone 
         + Words and Phrases goal issues (number) - Number of issues found for the goal Words and Phrases 
-        + {NAME} metric score (string) - Metrics suffix by actual name. If there are 10 Metrics then the CSV will have 10 coulms for metrics suffix by name of the metric
+        + {NAME} metric score (string) - Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffix by name of the metric
 
 ## Get issues data [GET /api/v1/reporting/data/issues?{start,end}]
 
@@ -7322,21 +7322,21 @@ Download issues found as a CSV file
 
         {
             "code": 400,
-            "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. 'start' date must be before 'end' date."
+            "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. The 'start' date must be before the 'end' date."
         } 
 
 + Response 400 (application/json)
 
         {
             "code": 400,
-            "message": "Invalid 'end' date 2024-08-28. 'end' date must be before 2024-08-28. The most recent data available for download is from yesterday."
+            "message": "Invalid 'end' date 2024-08-28. The 'end' date must be before 2024-08-28. The most recent data available for download is from yesterday."
         } 
 
 + Response 401 (application/json)
 
         {
             "code": 401,
-            "message": "Unauthorized access to reporting API. Contact your Acrolinx administrator for help."
+            "message": "Unauthorized access to reporting API. Contact your Acrolinx administrator for more information."
         } 
 
 + Response 403 (application/json)
@@ -7349,14 +7349,14 @@ Download issues found as a CSV file
 
         {
             "code": 409,
-            "message": "Data from before 2024-08-01 is available for download. If you would like to download the data up to 2024-08-01, adjust the dates."
+            "message": "Data before 2024-08-01 is available to download. To download data up to 2024-08-01, adjust the dates."
         }   
 
 + Response 409 (application/json)
 
         {
             "code": 409,
-            "message": "Data is not available to download. Try again later."
+            "message": "No data is available for download. Try again later."
         } 
 
 + Response 429 (application/json)
