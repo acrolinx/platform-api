@@ -7243,7 +7243,7 @@ The quota is set for each type of data. For example, when you download check dat
 
 If you exceed the download quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset headers.
 
-## Get check data [GET /api/v1/reporting/data/checks?{start,end}]
+## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
 
 Download check data as a CSV file
 
@@ -7371,7 +7371,7 @@ Download check data as a CSV file
         + Words and Phrases goal issues (number) - Number of issues found for the goal Words and Phrases 
         + {NAME} metric score (string) - Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffix by name of the metric
 
-## Get issues data [GET /api/v1/reporting/data/issues?{start,end}]
+## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
 Download issues found as a CSV file
 
