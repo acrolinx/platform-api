@@ -7235,8 +7235,15 @@ Download check data as a CSV file
 
         {
             "code": 429,
-            "message": "HTTP 429 Too Many Requests"
-        }  
+            "message": "Too many requests. Try again later. If you still have trouble, contact Acrolinx Support."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Download volume reached. The data will replenish at a rate of 5 days of data per day."
+        } 
         
 + Response 500 (application/json)
 
@@ -7356,7 +7363,14 @@ Download issues found as a CSV file
 
         {
             "code": 429,
-            "message": "HTTP 429 Too Many Requests"
+            "message": "Too many requests. Try again later. If you still have trouble, contact Acrolinx Support."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Download volume reached. The data will replenish at a rate of 5 days of data per day."
         } 
 
 + Response 500 (application/json)
