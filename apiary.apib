@@ -7216,3 +7216,251 @@ you'll see a response that isn't `200`.
 
 ## RandomPassword
 + value (string) - a random, policy-compliant password
+
+# Reporting API
+
+The reporting API provides direct access to raw check data and raw issue data.
+You can download the data as a CSV file and add it to your preferred analysis tool.
+
+### Restrictions
+#### Available Data
+Default: 12 months
+
+You can download data from the past 12 months by default. Contact Acrolinx Support for more information.
+
+#### Concurrent Requests
+Default: 3 requests per tenant
+
+This limits the number of concurrent downloads. The default is 3 concurrent downloads.
+If you exceed the quota, you'll get a message that reads "Too many concurrent requests" (429 status code). The response will include the headers Retry-After, RateLimit-Limit, and RateLimit-Remaining.
+
+#### Download Volume
+Default: 1000 days of raw check data and 1000 days of raw issue data. The data will replenish at 5 days of data per day.
+
+If you download any amount of data for a specific day, that day counts toward the default. This includes empty days. The 1000-day default is designed to give you access to all available historic data.
+
+The quota is set for each type of data. For example, when you download check data it won't affect the amount of issue data you can download.
+
+If you exceed the download quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset headers.
+
+## Get check data [GET /api/v1/reporting/data/checks?{start,end}]
+
+Download check data as a CSV file
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth:your_access_token
+
++ Parameters
+    + start: `2024-08-23` (string, required) - download data from this date
+    + end: `2024-08-28` (string, required) - download data until this date
+
++ Response 200 (text/csv)
+
+        "Check ID","Check start time",Language,"Scorecard URI","File ID","Content reference","File path","File name","Content ID","Acrolinx Score","Acrolinx Score color","All issues",Words,Sentences,Target,"Target ID","Content group ID","Content group","User ID","Full name",Integration,"Integration version","Content profile","Custom field department","Custom field role","Custom field status","Clarity goal score","Consistency goal score","Correctness goal score","Inclusive language goal score","Scannability goal score","Terminology goal score","Tone goal score","Words and phrases goal score","Clarity goal issues","Consistency goal issues","Correctness goal issues","Inclusive language goal issues","Scannability goal issues","Terminology goal issues","Tone goal issues","Words and phrases goal issues"
+        "4265b702-9a69-38ca-bb45-bcad9ee7d910",2024-01-14T23:06:58Z,en,"api/v1/checking/scorecards/4265b702-9a69-38ca-bb45-bcad9ee7d910","9d38800b-89ae-396c-ae11-1de419f13a8f",Yak-1,,Yak-1,,35,red,20,1119,47,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2",,,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",developers,junior,draft,57,6,76,40,19,45,42,0,3,2,8,2,5,5,3,7
+        "0521406f-ccf1-3acf-904a-7452766df8d7",2024-01-15T05:34:06Z,en,"api/v1/checking/scorecards/0521406f-ccf1-3acf-904a-7452766df8d7","77ad4993-80f1-31ec-9aef-1a33d2021a86",Su-22,,Su-22,,52,yellow,20,504,41,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2","710eed98-732b-3668-8a67-f4294d9a7ff4",Wade,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",developers,senior,draft,15,64,84,42,43,30,85,56,4,2,6,6,3,0,9,4
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. The 'start' date must be before the 'end' date."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Invalid 'end' date 2024-08-28. The 'end' date must be before 2024-08-28. The most recent data available for download is from yesterday."
+        } 
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "message": "Unauthorized access to reporting API. Contact your Acrolinx administrator for more information."
+        } 
+
++ Response 403 (application/json)
+
+        {
+            "code": 403,
+            "message": "The Reporting API feature is inactive."
+        } 
++ Response 409 (application/json)
+
+        {
+            "code": 409,
+            "message": "Data before 2024-08-01 is available to download. To download data up to 2024-08-01, adjust the dates."
+        } 
+
++ Response 409 (application/json)
+
+        {
+            "code": 409,
+            "message": "No data is available for download. Try again later."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Too many requests. Try again later. If you still have trouble, contact Acrolinx Support."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Download volume reached. The data will replenish at a rate of 5 days of data per day."
+        } 
+        
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "message": "Something went wrong. Try again or contact Acrolinx Support."
+        } 
+
++ Attributes (object)
+    + Checks CSV data structure (object)
+        + Check ID (string) - Unique check ID
+        + Check start time (string) - Start time of the check in the format `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z` 
+        + Language (string) - Checking language 
+        + Scorecard URI (string) - Uniform Resource Identifier (URI) of the Scorecard 
+        + File ID (string) - Unique file ID 
+        + Content reference (string) - Acrolinx assigns the file a content reference the first time you run a check. Files with the same content reference are treated as the same file.
+        + File path (string) - The file's location when it’s first checked 
+        + File name (string) - Name of the file 
+        + Content ID (string) - Unique check ID for batch checks 
+        + Acrolinx Score (number) - Overall Acrolinx Score 
+        + Acrolinx Score color (string) - Color coding of the Acrolinx Score 
+        + All issues (number) - Count of all issues found 
+        + Words (number) - Number of words in the file 
+        + Sentences (number) - Number of sentences in the file 
+        + Target (number) - Name of the Target used 
+        + Target ID (string) - Unique Target ID 
+        + Content group ID (string) - Unique content group ID 
+        + Content group (string) - Name of the content group 
+        + User ID (string) - Unique user ID 
+        + Full name (string) - Full name of user 
+        + Integration (string) - Integration used to run the check 
+        + Integration version (string) - Integration version 
+        + Content profile (string) - Content profile used 
+        + Custom field {NAME} (string) - Custom fields. The number of columns in the CSV file will correspond to the number of custom fields. For example, if there are 10 custom fields, the CSV file will have 10 columns for custom fields.
+        + {NAME} goal score (string) - Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
+        + Clarity goal score (number) - Score for the goal Clarity  
+        + Consistency goal score (number) - Score for the goal Consistency 
+        + Correctness goal score (number) - Score for the goal Correctness 
+        + Inclusive Language goal score (number) - Score for the goal Inclusive Language 
+        + Scannability goal score (number) - Score for the goal Scannability 
+        + Terminology goal score (number) - Score for the goal Terminology   
+        + Tone goal score (number) - Score for the goal Tone 
+        + Words and Phrases goal score (number) -Score for the goal Words and Phrases
+        + {NAME} goal issues (string) - Number of Issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for custom fields.
+        + Clarity goal issues (number) - Number of Issues found for the goal Clarity 
+        + Consistency goal issues (number) - Number of Issues found for the goal Consistency 
+        + Correctness goal issues (number) - Number of Issues found for the goal Correctness 
+        + Inclusive Language goal issues  (number) - Number of Issues found for the goal Inclusive Language 
+        + Scannability goal issues (number) - Number of Issues found for the goal Scannability 
+        + Terminology goal issues (number) - Number of Issues found for the goal Terminology 
+        + Tone goal issues (number) - Number of issues found for the goal Tone 
+        + Words and Phrases goal issues (number) - Number of issues found for the goal Words and Phrases 
+        + {NAME} metric score (string) - Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffix by name of the metric
+
+## Get issues data [GET /api/v1/reporting/data/issues?{start,end}]
+
+Download issues found as a CSV file
+
++ Request
+
+    + Headers
+    
+            X-Acrolinx-Auth:your_access_token
+
++ Parameters
+    + start: `2024-08-23` (string, required) - download data from this date
+    + end: `2024-08-28` (string, required) - download data until this date
+
++ Response 200 (text/csv)
+
+        "Check ID",Date,Context,Issue,"Structural context","Guideline ID","Guideline name",Language,"Issue type"
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-29,"hello woorld",woorld,sentence,"en_CONSISTENCY_Guideline_id-9","CONSISTENCY guideline id 9 display name",en,syntax
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-29,"hello woorld",woorld,sentence,"en_CONSISTENCY_Guideline_id-2","CONSISTENCY guideline id 2 display name",en,syntax
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. The 'start' date must be before the 'end' date."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Invalid 'end' date 2024-08-28. The 'end' date must be before 2024-08-28. The most recent data available for download is from yesterday."
+        } 
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "message": "Unauthorized access to reporting API. Contact your Acrolinx administrator for more information."
+        } 
+
++ Response 403 (application/json)
+
+        {
+            "code": 403,
+            "message": "The Reporting API feature is inactive."
+        } 
++ Response 409 (application/json)
+
+        {
+            "code": 409,
+            "message": "Data before 2024-08-01 is available to download. To download data up to 2024-08-01, adjust the dates."
+        }   
+
++ Response 409 (application/json)
+
+        {
+            "code": 409,
+            "message": "No data is available for download. Try again later."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Too many requests. Try again later. If you still have trouble, contact Acrolinx Support."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Download volume reached. The data will replenish at a rate of 5 days of data per day."
+        } 
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "message": "Something went wrong. Try again or contact Acrolinx Support."
+        } 
+
++ Attributes (object)
+    + Issues CSV data structure (object)
+        + Check ID (string) - Unique check ID
+        + Date (string) - Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20` 
+        + Context (string) - Sentence or paragraph where the issue occurred
+        + Issue (string) - Content that Acrolinx highlighted 
+        + Structural context (string) - Structural location where the issue occurred in the file 
+        + Guideline ID (string) - Unique ID of the guideline  
+        + Guideline name (string) - Name of the guideline 
+        + Language (string) - Checking language 
+        + Issue type (string) - Type of issue 
