@@ -7155,7 +7155,7 @@ Default: 12 months
 
 You can download data from the past 12 months by default. Contact Acrolinx Support for more information.
 
-#### Days limit
+#### Time Limit
 
 You can only download 31 days of data per request.
 
@@ -7174,11 +7174,11 @@ The quota is set for each type of data. For example, when you download check dat
 
 If you exceed the download quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset headers.
 
-**Note:** To access the Reporting API, you'll need to be authorized and authenticated. This is done by providing an Access Token. Before you get started with the Reporting API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements.
+**Note:** To access the Reporting API, you'll need to be authorized and authenticated via an access token. Before you get started with the Reporting API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements.
 
 ## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
 
-Download check data as a CSV file. You can access the data using cURL.
+Download check data as a CSV file. You can access the data with cURL.
 
 ```
 curl \
@@ -7194,8 +7194,8 @@ curl \
             X-Acrolinx-Auth:your_access_token
 
 + Parameters
-    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data from this date
-    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data until this date
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
 
 + Response 200 (text/csv)
 
@@ -7355,7 +7355,7 @@ curl \
 
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
-Download issues data as a CSV file. You can access the data using cURL.
+Download issue data as a CSV file. You can access the data with cURL.
 
 ```
 curl \
@@ -7371,8 +7371,8 @@ curl \
             X-Acrolinx-Auth:your_access_token
 
 + Parameters
-    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data from this date
-    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data until this date
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
 
 + Response 200 (text/csv)
 
