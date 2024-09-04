@@ -7228,6 +7228,10 @@ Default: 12 months
 
 You can download data from the past 12 months by default. Contact Acrolinx Support for more information.
 
+#### Time Limit
+
+You can only download 31 days of data per request.
+
 #### Concurrent Requests
 Default: 3 requests per tenant
 
@@ -7243,9 +7247,18 @@ The quota is set for each type of data. For example, when you download check dat
 
 If you exceed the download quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset headers.
 
+**Note:** To access the Reporting API, you'll need to be authorized and authenticated via an access token. Before you get started with the Reporting API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements.
+
 ## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
 
-Download check data as a CSV file
+Download check data as a CSV file. You can access the data with cURL.
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/checks?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -o <replace_file_name>.csv
+```
 
 + Request
 
@@ -7254,8 +7267,8 @@ Download check data as a CSV file
             X-Acrolinx-Auth:your_access_token
 
 + Parameters
-    + start: `2024-08-23` (string, required) - download data from this date
-    + end: `2024-08-28` (string, required) - download data until this date
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
 
 + Response 200 (text/csv)
 
@@ -7316,7 +7329,7 @@ Download check data as a CSV file
 
         {
             "code": 400,
-            "message": You can only download 30 days of data at a time. Adjust the date range."
+            "message": You can only download 31 days of data at a time. Adjust the date range."
         } 
 
 + Response 401 (application/json)
@@ -7415,7 +7428,14 @@ Download check data as a CSV file
 
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
-Download issues found as a CSV file
+Download issue data as a CSV file. You can access the data with cURL.
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -o <replace_file_name>.csv
+```
 
 + Request
 
@@ -7424,8 +7444,8 @@ Download issues found as a CSV file
             X-Acrolinx-Auth:your_access_token
 
 + Parameters
-    + start: `2024-08-23` (string, required) - download data from this date
-    + end: `2024-08-28` (string, required) - download data until this date
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
 
 + Response 200 (text/csv)
 
@@ -7486,7 +7506,7 @@ Download issues found as a CSV file
 
         {
             "code": 400,
-            "message": You can only download 30 days of data at a time. Adjust the date range."
+            "message": You can only download 31 days of data at a time. Adjust the date range."
         } 
 
 + Response 401 (application/json)
