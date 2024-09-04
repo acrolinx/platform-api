@@ -7159,7 +7159,7 @@ Default: 12 months
 
 You can download data from the past 12 months by default. Contact Acrolinx Support for more information.
 
-#### Time limit
+#### Time Limit
 
 You can only download 31 days of data per request.
 
@@ -7474,7 +7474,7 @@ curl \
 
         {
             "code": 400,
-            "message": You can only download 30 days of data at a time. Adjust the date range."
+            "message": You can only download 31 days of data at a time. Adjust the date range."
         } 
 
 + Response 401 (application/json)
@@ -7529,47 +7529,6 @@ curl \
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
 ##### Download issue data as a CSV file
-
-You can access the data with cURL. 
-
-**Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
-
-```
-curl \
-    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
-    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
-    -o <replace_file_name>.csv
-```
-
-#####  Download issue data as a JSON file
-
-You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
-
-```
-curl \
-    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
-    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
-    -H "Accept: application/json"
-    -o <replace_file_name>.json
-```
-
-### CSV data structure for issues
-|Column name|Data type|Description|Length|
-|----------------|------------|------------|------------|
-|Check ID|string|Unique check ID|36|
-|Date|string|Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20`||
-|Context|string|Sentence or paragraph where the issue occurred|1024|
-|Issue|text|Content that Acrolinx highlighted||
-|Structural context|string|Structural location where the issue occurred in the file|1024|
-|Goal ID|string|ID of the goal|255|
-|Goal name|string|Name of the goal|255|
-|Guideline ID|string|Unique ID of the guideline|255|
-|Guideline name|string|Name of the guideline|255|
-|Language|string|Checking language|255|
-|Issue type|string|Type of issue|20|
-|Term|string|Actual word or phrase highlighted during the Acrolinx check|255|
-|Domain or Term filter|string|Internal category for the highlighted term|255|
-|Term status|string|How Acrolinx checked for the highlighted term ["admitted", "deprecated", "preferred"]. Read more about term statuses in the article [Term Settings](https://support.acrolinx.com/hc/en-us/articles/10228296536082-Term-Settings).|15|
 
 + Request
 
@@ -7733,7 +7692,7 @@ curl \
 
         {
             "code": 400,
-            "message": You can only download 30 days of data at a time. Adjust the date range."
+            "message": You can only download 31 days of data at a time. Adjust the date range."
         } 
 
 + Response 401 (application/json)
