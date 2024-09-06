@@ -6,14 +6,14 @@
     "author": "Acrolinx",
     "url": "https://www.acrolinx.com",
     "repository": "https://github.com/acrolinx/platform-api",
-    "engines": {
-        "node": ">=8.9.4"
-    },
     "scripts": {
         "lint": "node scripts/lint.js"
     },
+    "engines": {
+      "node": ">=20"
+    },
     "devDependencies": {
-        "drafter": "^2.0.0-pre.1"
+        "drafter": "^2.0.0"
     },
     "dependencies": {}
 }
