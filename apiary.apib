@@ -7236,7 +7236,7 @@ You can only download 31 days of data per request.
 Default: 3 requests per tenant
 
 This limits the number of concurrent downloads. The default is 3 concurrent downloads.
-If you exceed the quota, you'll get a message that reads "Too many concurrent requests" (429 status code). The response will include the headers Retry-After, RateLimit-Limit, and RateLimit-Remaining.
+If you exceed the quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, and RateLimit-Remaining.
 
 #### Download Volume
 Default: 1000 days of raw check data and 1000 days of raw issue data. The data will replenish at 5 days of data per day.
