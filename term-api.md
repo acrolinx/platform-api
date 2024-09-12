@@ -546,7 +546,6 @@ Otherwise, that is, no entry of the same UUID exists, a new entry will be create
 
 Supported media types are:
 
-- `application/vnd.acrolinx.actif+json`: ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: ACTIF in XML
 - `application/vnd.acrolinx.mtf+xml`: SDL MultiTerm XML
 
@@ -566,7 +565,7 @@ Return codes:
 Example (sending [example-entry.actif.xml](doc/example-entry.actif.xml)):
 
 ```bash
-curl -i -H "Accept: application/json" -H "Content-Type: application/vnd.acrolinx.actif+xml" -H "Authorization: session ee7ac269aed25b4e" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries -d "`cat doc/example-entry.actif.xml`"
+curl -i -H "Accept: application/xml" -H "Content-Type: application/vnd.acrolinx.actif+xml" -H "Authorization: session ee7ac269aed25b4e" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries -d "`cat doc/example-entry.actif.xml`"
 ```
 
 ```text
