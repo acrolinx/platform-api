@@ -139,7 +139,6 @@ The supported media types are listed where applicable.
 
 Supported media types:
 
-- `application/vnd.acrolinx.actif+json`: return entries as ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: return entries as ACTIF in XML
 - `application/vnd.acrolinx.mtf+xml`: return entries as SDL MultiTerm XML
 
@@ -206,7 +205,6 @@ recommend exceeding the value of 4000 characters.**
 
 Supported media types:
 
-- `application/vnd.acrolinx.actif+json`: return schema as ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: return schema as ACTIF in XML
 - `application/vnd.acrolinx.mtf+xdt`: return entries as SDL MultiTerm XDT
 
@@ -428,7 +426,6 @@ any criteria, the result includes all terms.
 The desired result format needs to be specified in the required `format` attribute of the request object (not in the
 `Accept` HTTP header). The supported media types are the same as for the "get entries" method above:
 
-- `application/vnd.acrolinx.actif+json`: return terms as ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: return terms as ACTIF in XML
 - `application/vnd.acrolinx.mtf+xml`: return terms as SDL MultiTerm XML
 
@@ -546,7 +543,6 @@ Otherwise, that is, no entry of the same UUID exists, a new entry will be create
 
 Supported media types are:
 
-- `application/vnd.acrolinx.actif+json`: ACTIF in JSON
 - `application/vnd.acrolinx.actif+xml`: ACTIF in XML
 - `application/vnd.acrolinx.mtf+xml`: SDL MultiTerm XML
 
