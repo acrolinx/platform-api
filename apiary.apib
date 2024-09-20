@@ -7253,7 +7253,7 @@ If you exceed the download quota, you'll get a 429 status code. The response wil
 
 Download check data as a CSV file. You can access the data with cURL. 
 
-**Note:** If no data is available i.e. no checks are done for the requested time range then an empty result is indicated by a CSV file with headers and zero rows of data.
+**Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
 
 ```
 curl \
@@ -7433,7 +7433,7 @@ curl \
 
 Download issue data as a CSV file. You can access the data with cURL. 
 
-**Note:** If no data is available i.e. no checks are done for the requested time range then an empty result is indicated by a CSV file with headers and zero rows of data.
+**Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
 
 ```
 curl \
