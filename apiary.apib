@@ -7512,54 +7512,31 @@ curl \
             "message": "Something went wrong. Try again or contact Acrolinx Support."
         } 
 
-+ Attributes (object)
-    + Checks CSV data structure (object)
-        + Check ID (string) - Unique check ID
-        + Check start time (string) - Start time of the check in the format `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z` 
-        + Language (string) - Checking language 
-        + Scorecard URI (string) - Uniform Resource Identifier (URI) of the Scorecard 
-        + File ID (string) - Unique file ID 
-        + Content reference (string) - Acrolinx assigns the file a content reference the first time you run a check. Files with the same content reference are treated as the same file.
-        + File path (string) - The file's location when it’s first checked 
-        + File name (string) - Name of the file 
-        + Content ID (string) - Unique check ID for batch checks 
-        + Acrolinx Score (number) - Overall Acrolinx Score 
-        + Acrolinx Score color (string) - Color coding of the Acrolinx Score 
-        + All issues (number) - Count of all issues found 
-        + Words (number) - Number of words in the file 
-        + Sentences (number) - Number of sentences in the file 
-        + Target (number) - Name of the Target used 
-        + Target ID (string) - Unique Target ID 
-        + Content group ID (string) - Unique content group ID 
-        + Content group (string) - Name of the content group 
-        + User ID (string) - Unique user ID 
-        + Full name (string) - Full name of user 
-        + Integration (string) - Integration used to run the check 
-        + Integration version (string) - Integration version 
-        + Content profile (string) - Content profile used 
-        + Check scope (string) - Indicates whether a complete file or a specific selection of content is checked ['check' | 'check selection'].
-        + Custom field {NAME} (string) - Custom fields. The number of columns in the CSV file will correspond to the number of custom fields. For example, if there are 10 custom fields, the CSV file will have 10 columns for custom fields.
-        + {NAME} goal score (number) - Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.
-        + Clarity goal score (number) - Score for the goal Clarity  
-        + Consistency goal score (number) - Score for the goal Consistency 
-        + Correctness goal score (number) - Score for the goal Correctness 
-        + Inclusive Language goal score (number) - Score for the goal Inclusive Language 
-        + Scannability goal score (number) - Score for the goal Scannability 
-        + Terminology goal score (number) - Score for the goal Terminology   
-        + Tone goal score (number) - Score for the goal Tone 
-        + {NAME} goal issues (number) - Number of Issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.
-        + Clarity goal issues (number) - Number of Issues found for the goal Clarity 
-        + Consistency goal issues (number) - Number of Issues found for the goal Consistency 
-        + Correctness goal issues (number) - Number of Issues found for the goal Correctness 
-        + Inclusive Language goal issues  (number) - Number of Issues found for the goal Inclusive Language 
-        + Scannability goal issues (number) - Number of Issues found for the goal Scannability 
-        + Terminology goal issues (number) - Number of Issues found for the goal Terminology 
-        + Tone goal issues (number) - Number of issues found for the goal Tone 
-        + {NAME} metric score (number) - Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffix by name of the metric
-
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
-##### Download issue data as a CSV file
+Download issue data as a CSV file. You can access the data with cURL. 
+
+**Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -o <replace_file_name>.csv
+```
+
+### Issues CSV data structure
+|Column name|Data type|Description|Length|
+|----------------|------------|------------|------------|
+|Check ID|string|Unique check ID|36|
+|Date|string|Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20`||
+|Context|string|Sentence or paragraph where the issue occurred|1024|
+|Issue|string|Content that Acrolinx highlighted|255|
+|Structural context|string|Structural location where the issue occurred in the file|1024|
+|Guideline ID|string|Unique ID of the guideline|255|
+|Guideline name|string|Name of the guideline|255|
+|Language|string|Checking language|255|
+|Issue type|string|Type of issue|20|
 
 + Request
 
