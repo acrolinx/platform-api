@@ -3,7 +3,7 @@ HOST: https://tenant.acrolinx.cloud
 
 # Acrolinx API
 
-The Acrolinx API is the new REST like API for accessing the Core Platform.
+The Acrolinx API is a REST-like API for accessing the platform.
 
 **NOTE:** All listed (future) features, which aren't yet or only partially implemented, are marked with the keyword DRAFT. Please consider this while using the Acrolinx API!
 
@@ -31,7 +31,7 @@ Every request you make with the Acrolinx API must contain a [header](#header-acc
     X-Acrolinx-Auth: WERTZUIOP
 ```
 
-## API Token
+## API token
 An API Token is an Access Token but with special characteristics:
 
 * It has a lifetime of 4 years
@@ -69,7 +69,7 @@ Example:
     X-Acrolinx-Base-Url: https://example.com/path/
 ```
 
-## Client Locale
+## Client locale
 
 All methods accept a header `X-Acrolinx-Client-Locale` that the client can use to identify its own locale (for example, UI language).
 The value of the header field needs to be a single language tag that complies with [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). Acrolinx will try to return message strings
@@ -102,7 +102,7 @@ Example:
     X-Acrolinx-Client: SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5; 1.0.1.45
 ```
 
-# Response Format
+# Response format
 
 The API provides a consistent format for all responses. Each response has a field `links` and one of the three fields `error`, `progress`, `data`.
 
@@ -111,9 +111,9 @@ The `links` field contains further URLs that can be used as a next step in the w
 `progress` means that the processing isn't finished yet and the client has to poll for the final result.
 `data` contains the actual result data, the processing is successfully finished.
 
-## Error Responses
+## Error responses
 
-### General Format
+### General format
 
 The API provides a consistent format for errors, which is based on [RFC7807](https://datatracker.ietf.org/doc/rfc7807/?include_text=1).
 The format is JSON and the API guarantees to send the fields `type`, `title`, `detail`, `status` with each error response.
@@ -146,7 +146,7 @@ Additional fields may be added in future. A client must not break because of une
 
 
 
-### Error Types
+### Error types
 
 Type | Description| What to do
 -----|------------|------------
@@ -172,7 +172,7 @@ Type | Description| What to do
 `entityToAssociateNotFound` | One or more associates to an entity could not be found. | Make sure that the given associates actually exist.
 
 
-### Additional Information On Validation Errors
+### Additional information on validation errors
 
 Errors with type `validation` come with a list of constraint violation descriptions in an additional property `validationDetails`:
 
@@ -201,7 +201,7 @@ Values are not guaranteed to be always present or in a uniform format.
 
 
 
-## Progress Responses
+## Progress responses
 
 A progress response always contains a field `retryAfter`, which tells the client how many seconds to wait until the next poll request.
 Optionally the response can have the fields `message`, that contains a human user readable text about the current status, and `percent`, that
@@ -236,7 +236,7 @@ Content-Type: application/json
 }
 ```
 
-## Successful Responses
+## Successful responses
 
 The fields of a successful response with data depend on the request.
 
@@ -256,13 +256,13 @@ Content-Type: application/json
 }
 ```
 
-# HTML Fields
+# HTML fields
 
 Responses may have fields with HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with "Html", for example, "guidanceHtml". There may be related fields with the same content in plain text. If such a field exists, it ends with "Text" like in the example, "guidanceText".
 
 All HTML fields only contain formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
 
-# Group Index
+# Group index
 
 ## Index [GET /api/v1]
 
@@ -327,7 +327,7 @@ Note: This is the only web service method that provides a 200 response if no acc
           "links": {}
         }
 
-## Platform Capabilities [GET /api/v1/capabilities]
+## Platform capabilities [GET /api/v1/capabilities]
 
 An aggregation of the capabilities of the APIs sub-resources. This resource serves a single entry point for clients that need
 to use more than one feature of the API.
@@ -340,13 +340,13 @@ to use more than one feature of the API.
         + links (object)
 
 
-# Group Authentication API
+# Group authentication API
 
 Authentication is handled either with a configured access token, with single sign-on (SSO) or in an interactive process by signing in with the Acrolinx sign-in web page.
 Embedded integrations use either the configured access token or SSO.
 Interactive clients with a human user use SSO or the interactive process.
 
-## Request/Validate an API Token [POST /api/v1/auth/sign-ins]
+## Request or validate an API token [POST /api/v1/auth/sign-ins]
 
 The sign-in collection allows Acrolinx API clients to request user authentication and to check
 the validity and privileges of existing access tokens.
@@ -433,7 +433,7 @@ to authenticate the request.
 
     + Attributes (object)
 
-## Poll for a New API Token [GET /api/v1/auth/sign-ins/{id}]
+## Poll for a new API token [GET /api/v1/auth/sign-ins/{id}]
 
 This resource lets a client wait for a user to authenticate and authorize it to use the
 privileged parts of the Acrolinx API. Once the user has completed the sign-in process,
@@ -484,11 +484,11 @@ When polling returned a final result, the polling endpoint will disappear and re
          + detail: `The interactive sign-in process timed out. Please start a sign-in.` (string, required)
 
 
-# Group Checking API
+# Group checking API
 
 The API for checking documents.
 
-## List Checking Capabilities [GET /api/v1/checking/capabilities]
+## List checking capabilities [GET /api/v1/checking/capabilities]
 
 The new checking API replaces writing guides and Content Profiles with a flat list of guidance profiles. Each guidance profile corresponds to a
 writing guide or a Checking Profile. If Sublanguages are activated, they're folded into the list of guidance profiles.
@@ -591,7 +591,7 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
           }
         }
 
-##  Submit a Check [POST /api/v1/checking/checks]
+##  Submit a check [POST /api/v1/checking/checks]
 
 Submits a file for checking. After the file is uploaded, it will be scheduled for checking. Once Acrolinx is done checking the document,
 all results will be collected and made available. This leads to the following steps when using the check API:
@@ -701,16 +701,16 @@ The same information is available in the checking capabilities.
         }
 
 
-## Check Result [/api/v1/checking/checks/{id}]
+## Check result [/api/v1/checking/checks/{id}]
 
-### Check Result How-To
+### Check result guide
 
-#### Ignore All Issue Occurrences
+#### Ignore all issue occurrences
 Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue. All these issues can be ignored together.
 
 The integration can also remember the `positionalInformation.hashes.issue` attribute after an ignore-all operation. This lets you filter out all previously ignored occurrences of an issue after a recheck.
 
-#### Replace All Issue Occurrences with a Suggestion
+#### Replace all issue occurrences with a suggestion
 Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue.
 
 To apply a suggestion to all occurrences of an issue, use the `groupId` attribute to find the corresponding suggestion.
@@ -719,7 +719,7 @@ If an occurrence of an issue doesn't have a suggestion with the same `groupId` o
 Note that not all occurrences of an issue always have the same suggestions. In this case, the replace-all operation only applies to issues with the same suggestion.
 
 
-### Poll Check Result [GET]
+### Poll check result [GET]
 
 Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
 
@@ -836,7 +836,7 @@ Polls the check result. Either a progress or the completed result is returned. T
             },
             "counts": {
                 "issues": 4,
-                "scoredIssues": 2, // **Since Core Platform 2020.11**
+                "scoredIssues": 2, // **Since Acrolinx 2020.11**
                 "sentences": 10,
                 "words": 121
             },
@@ -1243,7 +1243,7 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 
 
-### Cancel Check [DELETE]
+### Cancel check [DELETE]
 
         Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
 
@@ -1266,7 +1266,7 @@ Polls the check result. Either a progress or the completed result is returned. T
         }
 
 
-## Get Link to Content Analysis Dashboard [GET /api/v1/checking/{batchId}/contentanalysis]
+## Get link to Content Analysis Dashboard [GET /api/v1/checking/{batchId}/contentanalysis]
 
 Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API token contains a new privilege token with the right Reporting.read.
 
@@ -1307,9 +1307,9 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
             }
         }
 
-# Group User API
+# Group user API
 
-**Available since Core Platform version 2018.10**
+**Available since Acrolinx version 2018.10**
 
 In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
@@ -1318,7 +1318,7 @@ You're _required_ to provide user information for the following:
 * Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter customer user information. This lets you generate an API token for the user that’s signed in.
 
 Security:
-* A user can read and update its own data.
+* A user can read and update their own data.
 * Only privileged users (admin, for example) can read or update other users' data.
 
 **Note:** Before you get started with the User API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
@@ -1356,7 +1356,7 @@ This request retrieves a list of all users in the order that they were added.
 If you use the `sort` query parameter, you can only sort the list of users by 1 field.
 To display the list in ascending or descending order respectively, you can add a `+` or `-`.
 
-**Sorting Notes:**
+**Sorting notes:**
 
 - You can only sort by 1 field.
 - A query parameter can be any length and can include the order direction prefixes "+" and "-".
@@ -1415,7 +1415,7 @@ You then decide to delete 10 users before you call the API to fetch page 3. Now 
 
 The example response includes the pagination URLs and query parameters in the `links` object so you know what to expect. 
 
-**Dynamically include/exclude nested data**
+**Dynamically include or exclude nested data**
 
 If you manage a large number of users, you can use the query params `includeCustomField` and `excludeProperties` to filter nested data.
 
@@ -1854,7 +1854,7 @@ To include more than one custom field, add `&includeCustomField={Key}` to the re
             }
         }
 
-### Get a User [GET /api/v1/user/{id}]
+### Get a user [GET /api/v1/user/{id}]
 
 This request returns information about an user. 
 The information includes the user id, username, the user's full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status.
@@ -1961,9 +1961,9 @@ You'll also see properties, roles, and custom fields.
         }
 
 
-### Get a User (Self) [GET /api/v1/user/self]
+### Get a user (Self) [GET /api/v1/user/self]
 
-**Added in Core Platform version 2018.12**
+**Added in Platform version 2018.12**
 
 This is an alternative way of getting information about the current (in request authorized) user. 
 
@@ -2050,9 +2050,9 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-### Create a User [POST /api/v1/user]
+### Create a user [POST /api/v1/user]
 
-**Added in Core Platform version 2021.05**
+**Added in Platform version 2021.05**
 
 **Note:**
 
@@ -2061,7 +2061,7 @@ This is an alternative way of getting information about the current (in request 
 - The license type can either be "named" or "concurrent" (optional).
 - You need `UserAndRoles.editUser` privileges to perform this request.
 
-**Password Requirements**
+**Password requirements**
 
 If you want to create a user, the password field is required as of Core Platform version 2022.02.
 Your password needs to meet the following requirements:
@@ -3136,9 +3136,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 
 
-### Update a User [PUT /api/v1/user/{id}]
+### Update a user [PUT /api/v1/user/{id}]
 
-**Added in Core Platform version 2021.05**
+**Added in Platform version 2021.05**
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
@@ -3813,9 +3813,9 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-### Delete a User [DELETE /api/v1/user/{id}]
+### Delete a user [DELETE /api/v1/user/{id}]
 
-**Added in Core Platform version 2021.05**
+**Added in Platform version 2021.05**
 
 This method deletes a specified user based on its *id*.
 
@@ -3904,9 +3904,9 @@ To read more about managing users and built-in users, see [User Management](http
         }
 
 
-## Missing Required User Custom Fields [/api/v1/user/custom-fields-missing]
+## Missing required custom user fields [/api/v1/user/custom-fields-missing]
 
-**Added in Core Platform version 2022.04**
+**Added in Platform version 2022.04**
 
 You can query users who don't have required custom fields.
 
@@ -3915,7 +3915,7 @@ You can query users who don't have required custom fields.
 **Note:**
 - You need the `UserAndRoles.editUser` privilege.
 
-### Count Users [HEAD /api/v1/user/custom-fields-missing]
+### Count users [HEAD /api/v1/user/custom-fields-missing]
 
 Returns the total number of users who are missing one or more required user custom field.
 
@@ -3943,7 +3943,7 @@ Returns the total number of users who are missing one or more required user cust
 
 + Response 403 (application/json)
 
-### Get Users [GET /api/v1/user/custom-fields-missing{?page,per_page}]
+### Get users [GET /api/v1/user/custom-fields-missing{?page,per_page}]
 
 Returns a list of users who are missing one or more required user custom fields.
 
@@ -4110,7 +4110,7 @@ Returns a list of users who are missing one or more required user custom fields.
             }
         }
 
-## User-Generated API Tokens [/api/v1/user/{id}/tokens]
+## User-generated API tokens [/api/v1/user/{id}/tokens]
 
 You can generate long-lasting API tokens for programmatic access to the Platform APIs.
 
@@ -4127,7 +4127,7 @@ Be aware that you can only be bound to one API token at a time.
 
 **Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://support.acrolinx.com/hc/en-us/articles/10306041244818-Create-an-API-Token) in the Acrolinx documentation.
 
-### Create an API Token (Self)  [POST /api/v1/user/self/tokens]
+### Create an API token (Self)  [POST /api/v1/user/self/tokens]
 
 **Added in Core Platform version 2021.06**
 
@@ -4217,9 +4217,9 @@ Use this method to create an API token for the current user.
             }
         }
 
-### Create an API Token for User(s) [POST /api/v1/user/{id}/tokens]
+### Create an API token for users [POST /api/v1/user/{id}/tokens]
 
-**Added in Core Platform version 2021.05**
+**Added in Platform version 2021.05**
 
 This method lets you create an API token for users based on their *id*.
 
@@ -4324,12 +4324,12 @@ Typical use cases for this API:
 
         // when the user wasn't found in the database based on its *id*
 
-## Random Passwords [/api/v1/user/random-passwords]
+## Random passwords [/api/v1/user/random-passwords]
 
 You can generate random passwords that meet the Acrolinx password policy.
 This API is convenient when you want to create new users.
 
-### Get a Randomly Generated Compliant Password [GET /api/v1/user/random-passwords]
+### Get a randomly generated compliant password [GET /api/v1/user/random-passwords]
 
 **Added in Core Platform version 2022.03**
 
@@ -4418,7 +4418,7 @@ A password needs to meet the following requirements:
             }
         }
 
-## User Commands [/api/v1/user/{id}/_{command}]
+## User commands [/api/v1/user/{id}/_{command}]
 
 The APIs in this group follow the API design command style.   
 
@@ -4426,7 +4426,7 @@ These administrative commands can help govern users in your Acrolinx instance. T
 
 **Note:** You can apply these requests multiple times without changing the result (idempotent). 
 
-### Release an Active Named User License [PUT /api/v1/user/{id}/_release]
+### Release an active named user license [PUT /api/v1/user/{id}/_release]
 
 **Added in Core Platform version 2021.05**
 
@@ -4491,9 +4491,9 @@ This method uses the *id* to release an active license consumed by a user.
             }
         }
 
-### Request User Information Update  [PUT /api/v1/user/{id}/_request_cf_update]
+### Request user information update  [PUT /api/v1/user/{id}/_request_cf_update]
 
-**Added in Core Platform version 2021.12**
+**Added in Platform version 2021.12**
 
 The user specified by the *id* in this request will be asked to update their user information.
 
@@ -4554,7 +4554,7 @@ The user specified by the *id* in this request will be asked to update their use
             }
         }
 
-### Export a List of Users [GET /api/v1/user/_export]
+### Export a list of users [GET /api/v1/user/_export]
 
 **Added in Core Platform version 2021.06**
 
@@ -4671,7 +4671,7 @@ The header parameters are set as follows:
             }
         }
 
-## User Bulk Operations [/api/v1/user/bulk]
+## User bulk operations [/api/v1/user/bulk]
 
 These APIs let you perform bulk operations. Bulk operations follow the multi-status request and response model.
 In this model, the incoming bulk request includes a list of objects that need to be processed (as opposed to using the same API many times). 
@@ -4680,7 +4680,7 @@ and a list of `errors` for the objects that couldn't be processed.
 
 **Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
 
-### Create Users in Bulk [POST /api/v1/user/bulk]
+### Create users in bulk [POST /api/v1/user/bulk]
 
 **Added in Core Platform version 2021.06**
 
@@ -4919,9 +4919,9 @@ noted in the Create User API section.
         }
 
 
-### Request User Information Update in Bulk  [PUT /api/v1/user/bulk/_request_cf_update]
+### Request user information update in bulk  [PUT /api/v1/user/bulk/_request_cf_update]
 
-**Added in Core Platform version 2021.12**
+**Added in Platform version 2021.12**
 
 This API is the bulk operation for "Request User Information Update" from the "User Commands" group.
 It lets you ask multiple users to update their user information.
@@ -5071,9 +5071,9 @@ It lets you ask multiple users to update their user information.
             }
         }
 
-### Delete Users in Bulk [DELETE /api/v1/user/bulk]
+### Delete users in bulk [DELETE /api/v1/user/bulk]
 
-**Added in Core Platform version 2021.12**
+**Added in Platform version 2021.12**
 
 This API lets you delete a list of users. All user ids follow the requirements and constraints
 noted in the "Delete User API" section.
@@ -5333,17 +5333,17 @@ noted in the "Delete User API" section.
             }
         }
 
-# Group Custom Fields API
+# Group custom fields API
 
-**Available since Core Platform version 2022.03**
+**Available since Acrolinx version 2022.03**
 
 This API lets you set and view user custom fields.
 
 **Note:** You only need a valid access token for this request (no special privileges needed).
 
-## Custom Fields [/api/v1/custom-fields/user]
+## Custom fields [/api/v1/custom-fields/user]
 
-### Get Custom Fields [GET]
+### Get custom fields [GET]
 
 This shows a list of your user custom fields.
 
@@ -5399,13 +5399,13 @@ This shows a list of your user custom fields.
 
 # Group Licenses API
 
-**Available since Core Platform version 2021.06**
+**Available since Acrolinx version 2021.06**
 
 License information is provided by the following set of APIs.
 
 ## Statistics [/api/v1/licenses/statistics]
 
-### Get License Statistics for Users [GET]
+### Get license statistics for users [GET]
 
 Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.
 The following conditions are checked for all users in order to qualify them to be included in the calculation:
@@ -5487,7 +5487,7 @@ Details of the statistics attributes in the table below:
 
 # Group Role API
 
-**Available since Core Platform version 2021.05**
+**Available Acrolinx version 2021.05**
 
 In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role. 
 You can use roles to group sets of privileges and assign them to different users.
@@ -5499,7 +5499,7 @@ To read more about role-based access control in Acrolinx, see [User Roles](https
 
 ## Roles [/api/v1/roles/]
 
-### Get All Roles [GET]
+### Get all roles [GET]
 
 Returns a list of all roles including the associated privileges.
 
@@ -5656,7 +5656,7 @@ Returns a list of all roles including the associated privileges.
 
 Privileges determine if a user can perform an action via the API or Acrolinx Dashboard.
 
-### Get All Privileges [GET]
+### Get all privileges [GET]
 
 This returns a list of all supported privileges.
 
@@ -5761,7 +5761,7 @@ To find out which privileges come with your installation, submit this request an
 
 ## Role [/api/v1/roles]
 
-### Create Roles [POST]
+### Create roles [POST]
 
 This lets you add new roles.
 
@@ -6080,7 +6080,7 @@ This lets you add new roles.
             }
         }
 
-### Get a Role [GET /api/v1/roles/{id}]
+### Get a role [GET /api/v1/roles/{id}]
 
 This returns a role that was identified by its *id* in the database.
 
@@ -6141,7 +6141,7 @@ This returns a role that was identified by its *id* in the database.
             }
         }
 
-### Update a Role [PUT /api/v1/roles/{id}]
+### Update a role [PUT /api/v1/roles/{id}]
 
 This lets you update a role that was identified by its *id* in the database.
 
@@ -6673,7 +6673,7 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-### Delete a Role [DELETE /api/v1/roles/{id}]
+### Delete a role [DELETE /api/v1/roles/{id}]
 
 This lets you delete a specified role based on its *id*.
 
@@ -6775,7 +6775,7 @@ Typical program flow:
 4. The integration sets the new custom fields either using the update document function or while submitting a check request.
 
 ## Document [/api/v1/document/{id}]
-### Get Document [GET]
+### Get document [GET]
 
 This method provides Document which was found in the database.
 
@@ -6801,7 +6801,7 @@ This method provides Document which was found in the database.
             }
         }
 
-### Update Document Custom Fields [PUT]
+### Update custom document fields [PUT]
 
 + Request (application/json)
 
@@ -6841,7 +6841,7 @@ This method provides Document which was found in the database.
             }
         }
 
-## Document API Capabilities [GET /api/v1/document/capabilities]
+## Document API capabilities [GET /api/v1/document/capabilities]
 
 Use this method to discover the configuration and capabilities of the document API.
 Available information includes the configured document custom fields.
@@ -6856,7 +6856,7 @@ Available information includes the configured document custom fields.
 This API handles the spelling dictionary.
 Items listed in the spelling dictionary are ignored (not flagged) by the spelling checker.
 
-## Dictionary Entry
+## Dictionary entry
 From an API perspective, an "item" or *dictionary entry* has the following properties:
 
 * `surface`: The string that isn't a spelling issue.
@@ -6882,7 +6882,7 @@ The `documentId` is a persistent identifier of the document from the Acrolinx An
 Keep `languageId` and `guidanceProfileId` consistent in that respect if sending both.
 Otherwise the winner depends on the `scope`.)
 
-## Get Dictionary Capabilities [GET /api/v1/dictionary/capabilities]
+## Get dictionary capabilities [GET /api/v1/dictionary/capabilities]
 
 This method enables the integration to discover the available dictionary scopes.
 (The availability of scopes depends on the server configuration and the user's privileges.)
@@ -6903,7 +6903,7 @@ data.dictionaryScopes: [ "language", "guidanceProfile", "document" ]
 
 
 
-## Add to Dictionary [POST /api/v1/dictionary/submit]
+## Add to dictionary [POST /api/v1/dictionary/submit]
 
 Create a dictionary entry for the specified scope.
 
@@ -6944,7 +6944,7 @@ issues[n].canAddToDictionary: true
 
 You can use platform notifications to inform users that checking might be affected by server maintenance or planned server outages.
 
-## Create a Platform Notification [POST /api/v1/broadcasts/platform-notifications]
+## Create a platform notification [POST /api/v1/broadcasts/platform-notifications]
 
 Publishes a new notification on the platform.
 
@@ -6967,7 +6967,7 @@ Publishes a new notification on the platform.
           }
         }
 
-## Retrieve Platform Notifications [GET /api/v1/broadcasts/platform-notifications/{lastRequestTimeInMilliseconds}]
+## Retrieve platform notifications [GET /api/v1/broadcasts/platform-notifications/{lastRequestTimeInMilliseconds}]
 
 Retrieves active notifications from the platform.
 
@@ -6997,7 +6997,7 @@ Retrieves active notifications from the platform.
 
 # Group Monitoring API
 
-**Since Core Platform 2019.10**
+**Available since Acrolinx version 2019.10**
 
 The resources in this group provide information about the health and performance of the Acrolinx Platform.
 Accessing this information requires the permission "Access to monitoring API." This privilege isn't granted
@@ -7007,7 +7007,7 @@ For a quick check of your permissions see if the [metrics index](#monitoring-api
 contains links. More information about permission management can be found in the
 [Acrolinx documentation](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management).
 
-## Get Available Metrics [GET /api/v1/monitoring]
+## Get available metrics [GET /api/v1/monitoring]
 
 Lists available metrics according to the permissions of the API user. If access is granted a link to
 the metrics resource will be added to the links hash. The following relations are currently available:
@@ -7026,7 +7026,7 @@ the metrics resource will be added to the links hash. The following relations ar
           }
         }
 
-## Get Check Metrics [GET /api/v1/monitoring/checks]
+## Get check metrics [GET /api/v1/monitoring/checks]
 
 Provides a summary of the check activity on the Acrolinx Platform.
 
@@ -7052,7 +7052,7 @@ Provides a summary of the check activity on the Acrolinx Platform.
             + totalQueueTime: 1563 (number) - Total time checks spent waiting
 
 
-## Get Health Metrics [GET /api/v1/monitoring/health]
+## Get health metrics [GET /api/v1/monitoring/health]
 
 A general summary of the health of the Acrolinx Platform.
 
@@ -7072,13 +7072,13 @@ A general summary of the health of the Acrolinx Platform.
             }
         }
 
-## Get Health Status [GET /api/v1/monitoring/health/status]
+## Get health status [GET /api/v1/monitoring/health/status]
 
 This returns a successful response when at least one language server is available for checking.
 This API response will only contain `200` response code. You don't need
 access to the permission "Access to monitoring API" to use this API.
 
-**Available since Core Platform version 2022.03**
+**Available since Acrolinx version 2022.03**
 
 + Response 200
 
@@ -7095,7 +7095,7 @@ access to the permission "Access to monitoring API" to use this API.
             }
         }
 
-## Get Health Liveliness [GET /api/v1/monitoring/health/live]
+## Get health liveliness [GET /api/v1/monitoring/health/live]
 
 This returns a successful response when the server can accept and process web requests.
 This does not tell you if the server is ready to process check requests. To get that information,
@@ -7105,7 +7105,7 @@ This API response will contain the plain-text message "OK" and a `200` response 
 access to the permission "Access to monitoring API" to use this API. If a response is unsuccessful,
 you'll see a response that isn't `200`.
 
-**Available since Core Platform version 2022.09**
+**Available since Acrolinx version 2022.09**
 
 + Response 200 (text/plain)
 
