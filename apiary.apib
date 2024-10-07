@@ -1,15 +1,15 @@
 FORMAT: 1A
 HOST: https://tenant.acrolinx.cloud
 
-# Acrolinx Platform API
+# Acrolinx API
 
-The Acrolinx Platform API is the new REST like API for accessing the Core Platform.
+The Acrolinx API is the new REST like API for accessing the Core Platform.
 
-**NOTE:** All listed (future) features, which aren't yet or only partially implemented, are marked with the keyword DRAFT. Please consider this while using the Acrolinx Platform API!
+**NOTE:** All listed (future) features, which aren't yet or only partially implemented, are marked with the keyword DRAFT. Please consider this while using the Acrolinx API!
 
 # Authentication and Authorization
 
-When using the Acrolinx Platform API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
+When using the Acrolinx API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
 
 An **Access Token** is an encoded and cryptographically signed string. It has the following characteristics:
 
@@ -25,7 +25,7 @@ You can get an Access Token by using the Acrolinx sign-in workflow.
 
 How to use an Access Token?
 
-Every request you make with the Acrolinx Platform API must contain a [header](#header-access-token) that provides the Access Token:
+Every request you make with the Acrolinx API must contain a [header](#header-access-token) that provides the Access Token:
 
 ```
     X-Acrolinx-Auth: WERTZUIOP
@@ -72,7 +72,7 @@ Example:
 ## Client Locale
 
 All methods accept a header `X-Acrolinx-Client-Locale` that the client can use to identify its own locale (for example, UI language).
-The value of the header field needs to be a single language tag that complies with [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). The Acrolinx Platform will try to return message strings
+The value of the header field needs to be a single language tag that complies with [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). Acrolinx will try to return message strings
 and other locale-specific parts of the response in the requested language.
 
 Example:
