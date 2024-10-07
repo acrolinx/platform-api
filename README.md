@@ -2,31 +2,31 @@
 
 ![Build](https://github.com/acrolinx/platform-api/actions/workflows/actions.yml/badge.svg)
 
-Hello and welcome to the Acrolinx API.
+Welcome to the Acrolinx API!
 This documentation helps you:
 
-* use the API directly,
-* implement your own integration,
-* or understand how Acrolinx interacts with integrations.
+* use the API directly
+* build your own integration
+* understand how Acrolinx interacts with integrations.
 
 The [reference](#reference) describes all services and methods.
 
 ## Prerequisites
 
-Contact [Acrolinx support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/sdk-support.md)
+Contact [Acrolinx support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/support.md)
 for consulting and getting your integration certified.
-This sample works with a test license on an internal Acrolinx URL.
+This sample works with a test license on a Acrolinx test instance.
 This license is only meant for demonstration and development.
 Once you finish your development, contact Acrolinx to get a license for your integration.
   
-Acrolinx provides different SDKs and samples for developing integrations.
+Acrolinx provides different SDKs and samples for building integrations.
 
-Before you start developing your own integration, you might want to read the following:
+Before you start building your own integration, you might want to read the following:
 
-* [Getting started with custom integrations](https://docs.acrolinx.com/customintegrations),
-* the [Guidance for developing Acrolinx integrations](https://github.com/acrolinx/acrolinx-coding-guidance),
-* the [Acrolinx SDKs](https://github.com/acrolinx?q=sdk), and
-* the [Acrolinx demo projects](https://github.com/acrolinx?q=demo).
+* [Getting started with custom integrations](https://docs.acrolinx.com/customintegrations)
+* [How to integrate with Acrolinx](https://github.com/acrolinx/acrolinx-coding-guidance)
+* [Acrolinx SDKs](https://github.com/acrolinx?q=sdk)
+* [Acrolinx demo projects](https://github.com/acrolinx?q=demo).
 
 ## Get started
 
@@ -38,10 +38,12 @@ You'll need the following:
 * A way to make http calls
 * A way to read and write JSON strings
 
-Familiarize yourself with the concepts of [authentication](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/configuration.md),
-[signature](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/packaging.md#packaging),
-and [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-extraction.md).
-If you can't wait, you can jump to the [Quick start tutorial](quickstart.md) and start tinkering around.
+Familiarize yourself with the following concepts: 
+* [authentication](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/configuration.md)
+* [signatures](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/packaging.md#packaging)
+* [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-extraction.md).
+
+If you can't wait, jump to the [Quick start tutorial](quickstart.md) and start tinkering around.
 
 ## Important headers and content type
 
@@ -58,7 +60,7 @@ All requests to the Acrolinx API should contain these headers.
 
 ## Authentication
 
-To use the authentication API, you'll need to have an access token.
+To use the authentication API, you'll need an access token.
 Send the access token with the header parameter `X-Acrolinx-Auth` for every API request.
 
 ```HTTP
@@ -70,7 +72,7 @@ Access tokens are associated with a user and come in two forms:
 * default access tokens that you get by signing in to Acrolinx
 * API tokens.
 
-Access tokens normally have a lifetime of 30 days. After that, they have to be renewed.
+Access tokens normally have a lifetime of 30 days. After that, you have to renew them.
 
 API tokens have a lifespan of 4 years.
 
