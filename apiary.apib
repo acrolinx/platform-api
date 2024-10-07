@@ -44,9 +44,9 @@ How to get API Token:
 
 Other than that, the **API Token** functions as an **Access Token**.
 
-# General Headers
+# General headers
 
-## Access Token
+## Access token
 
 All methods except "index" and "poll access token" require a valid access token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
 If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response isn't explicitly mentioned below.
@@ -1323,9 +1323,9 @@ Security:
 
 **Note:** Before you get started with the User API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
-## User Resource [/api/v1/user]
+## User resource [/api/v1/user]
 
-### Get All Users [GET /api/v1/user{?sort,page,per_page,username,fullName,roles}]
+### Get all users [GET /api/v1/user{?sort,page,per_page,username,fullName,roles}]
 
 **Added in Core Platform version 2021.05**
 
@@ -5397,7 +5397,7 @@ This shows a list of your user custom fields.
             }
         }
 
-# Group Licenses API
+# Group licenses API
 
 **Available since Acrolinx version 2021.06**
 
@@ -5485,7 +5485,7 @@ Details of the statistics attributes in the table below:
             }
         }
 
-# Group Role API
+# Group role API
 
 **Available Acrolinx version 2021.05**
 
@@ -6762,7 +6762,7 @@ This lets you delete a specified role based on its *id*.
             }
         }
 
-# Group Document API
+# Group document API
 
 Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
 
@@ -6851,7 +6851,7 @@ Available information includes the configured document custom fields.
         + data (object)
         + links (object)
 
-# Group Dictionary API
+# Group dictionary API
 
 This API handles the spelling dictionary.
 Items listed in the spelling dictionary are ignored (not flagged) by the spelling checker.
@@ -6940,7 +6940,7 @@ issues[n].canAddToDictionary: true
         }
 
 
-# Group Broadcast API - DRAFT
+# Group broadcast API - DRAFT
 
 You can use platform notifications to inform users that checking might be affected by server maintenance or planned server outages.
 
@@ -6995,7 +6995,7 @@ Retrieves active notifications from the platform.
 
 
 
-# Group Monitoring API
+# Group monitoring API
 
 **Available since Acrolinx version 2019.10**
 
@@ -7111,7 +7111,7 @@ you'll see a response that isn't `200`.
 
         OK
 
-# Data Structures
+# Data structures
 
 ## Role (object) 
 + id (string) - UUID 
