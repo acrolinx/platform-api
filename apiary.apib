@@ -203,10 +203,10 @@ Values are not guaranteed to always be present or in a uniform format.
 
 ## Progress responses
 
-A progress response always contains a field `retryAfter`, which tells the client how many seconds to wait until the next poll request.
-Optionally the response can have the fields `message`, that contains a human user readable text about the current status, and `percent`, that
-is a number and shows the progress in percent.
-A progress response has always the `Retry-After` header set with the same value as the `retryAfter` field and an HTTP status 202.
+A progress response always contains a `retryAfter` field, which tells the client how many seconds to wait until the next poll request.
+The response can optionally include the `message` field with a human-readable text about the current status and a `percent`, which is
+a number and shows the progress as a percent.
+A progress response always has the `Retry-After` header set with the same value as the `retryAfter` field and an HTTP status 202.
 
 Examples:
 
@@ -258,9 +258,9 @@ Content-Type: application/json
 
 # HTML fields
 
-Responses may have fields with HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with "Html", for example, "guidanceHtml". There may be related fields with the same content in plain text. If such a field exists, it ends with "Text" like in the example, "guidanceText".
+Responses may contain fields with HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with "Html", for example, "guidanceHtml". Related fields with the same content may appear in plain text. If such a field exists, it ends with "Text" like in the example, "guidanceText".
 
-All HTML fields only contain formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
+All HTML fields only contain formatting tags that do not pose a security risk. A server-side allow list filters all tags.
 
 # Group index
 
@@ -329,7 +329,7 @@ Note: This is the only web service method that provides a 200 response if no acc
 
 ## Platform capabilities [GET /api/v1/capabilities]
 
-An aggregation of the capabilities of the APIs sub-resources. This resource serves a single entry point for clients that need
+Here's a collection of capabilities of the API subresources. This resource serves as a single point of entry for clients that need
 to use more than one feature of the API.
 
 + Response 200 (application/json)
@@ -342,7 +342,7 @@ to use more than one feature of the API.
 
 # Group authentication API
 
-Authentication is handled either with a configured access token, with single sign-on (SSO) or in an interactive process by signing in with the Acrolinx sign-in web page.
+Authentication works either with a configured access token, with single sign-on (SSO), or in an interactive process with the Acrolinx sign-in web page.
 Embedded integrations use either the configured access token or SSO.
 Interactive clients with a human user use SSO or the interactive process.
 
@@ -351,7 +351,7 @@ Interactive clients with a human user use SSO or the interactive process.
 The sign-in collection allows Acrolinx API clients to request user authentication and to check
 the validity and privileges of existing access tokens.
 
-If the Acrolinx Platform is configured for single sign-on, this endpoint will accept the configured credentials
+If Acrolinx is configured for single sign-on, then this endpoint will accept the configured credentials
 to authenticate the request.
 
 + Request (application/json)
@@ -367,7 +367,7 @@ to authenticate the request.
 
     The server may decide that the request is already sufficiently authorized. In this case,
     no sign-in process is started. The response will contain the same information as after
-    successful sign-in procedure. The following conditions may lead to this response:
+    a successful sign-in process. The following conditions may lead to this response:
 
     - The `X-Acrolinx-Auth` header contained a valid token.
     - Single sign-on is configured and valid credentials are supplied.
@@ -390,8 +390,8 @@ to authenticate the request.
 
     Note that the sign-in process will time out. The `interactiveLinkTimeout` field
     contains the duration in seconds, that the `interactive` link will stay valid. If the
-    Sign-in page was loaded before this time, the server will extend
-    the timeout. To detect timeouts after opening the Sign-in page use the `poll` link.
+    sign-in page was loaded before this time, the server will extend
+    the timeout. To detect timeouts after opening the sign-in page, use the `poll` link.
 
     + Body
 
@@ -415,7 +415,7 @@ to authenticate the request.
             + `poll`: `https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui` (string, required)
 
 + Response 401 (application/json)
-    If invalid SSO credentials are supplied the request is rejected. This occurs when an SSO username
+    If invalid SSO credentials are supplied, the request is rejected. This occurs when an SSO username
     is present but the SSO password is wrong or missing or the user couldn't be created.
 
     + Header
@@ -471,10 +471,10 @@ When polling returned a final result, the polling endpoint will disappear and re
            + `retryAfter`: 2 (number, required)
 
 + Response 404 (application/json)
-    The server has no knowledge of the polling token. If a valid poll URI was used, the cause for this is
+    The server has no knowledge of the polling token. If you used a valid poll URI, the cause of this response is
     a timeout or another poll request may have consumed the credentials.
 
-    The returned type is `interactive_sign_in_timed_out`, which distinguishes this response from a normal 404 caused by a just wrong URL.
+    The returned type is `interactive_sign_in_timed_out`, which distinguishes this response from a normal 404 caused by just a wrong URL.
 
     + Attributes
        + error
@@ -493,8 +493,8 @@ The API for checking documents.
 The new checking API replaces writing guides and Content Profiles with a flat list of guidance profiles. Each guidance profile corresponds to a
 writing guide or a Checking Profile. If Sublanguages are activated, they're folded into the list of guidance profiles.
 
-For each guidance profile, the server provides information about the language, activated goals, and term sets. The client may use this
-for filtering purposes, but they can only select one (complete) guidance profile for checking (for example, not deselect goals).
+For each guidance profile, the server provides information about the language, activated goals, and term sets. The client may use this information
+for filtering, but users can only select one (complete) guidance profile for checking (for example, not deselect goals).
 
 If the server runs in Targets Mode, the goals contain an additional string field called `scoring`. It can have the values
 `required` (meaning this goal will be included in the calculation of the overall score so it is required to take this goal into account
