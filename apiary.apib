@@ -5,51 +5,51 @@ HOST: https://tenant.acrolinx.cloud
 
 The Acrolinx API is a REST-like API for accessing the platform.
 
-**NOTE:** All listed (future) features, which aren't yet or only partially implemented, are marked with the keyword DRAFT. Please consider this while using the Acrolinx API!
+**NOTE:** All features, which aren't yet or only partially implemented, are marked with a DRAFT label. Consider this while using the Acrolinx API!
 
 # Authentication and Authorization
 
-When using the Acrolinx API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
+When you use the Acrolinx API, you'll need to be authorized and authenticated. This requires an **access token**.
 
-An **Access Token** is an encoded and cryptographically signed string. It has the following characteristics:
+An **access token** is an encoded and cryptographically signed string. It has the following characteristics:
 
 * It's bound to a user
-* There can be an infinite number of Access Tokens per user
-* It has a certain lifetime (default 30 days, can be changed)
-* It will expire after the lifetime or when the password of the associated user is changed
+* A user can have an infinite number of access tokens
+* It has a certain lifetime (you can change the default of 30 days)
+* It expires after the lifetime or when the password of the associated user is changed
 * It provides authorization and authentication
 
-How to get an **Access Token**?
-You can get an Access Token by using the Acrolinx sign-in workflow.
+Get an **access token**
+To get an access token, use the Acrolinx sign-in workflow.
 (further description here)
 
-How to use an Access Token?
+Use an access token
 
-Every request you make with the Acrolinx API must contain a [header](#header-access-token) that provides the Access Token:
+Every request you make with the Acrolinx API must contain a [header](#header-access-token) that provides the access token:
 
 ```
     X-Acrolinx-Auth: WERTZUIOP
 ```
 
 ## API token
-An API Token is an Access Token but with special characteristics:
+An API token is an access token with special characteristics:
 
 * It has a lifetime of 4 years
 * It will **not expire when the password of the associated user is changed**
-* Only one API Token can be bound to a user at the time
+* Only one API token can be associated with a user at a time
 
-How to get API Token:
-* Accessing the user settings page on the Dashboard and generating one.
-* Programmatically using the **User API**. (See more under the **User Generated API Tokens** section)
+Get API token:
+* Go to your Settings and generate one.
+* Use the **user API** programmatically. (See more under the section **User generated API tokens**)
 
-Other than that, the **API Token** functions as an **Access Token**.
+Besides that, the **API token** works like an **access token**.
 
 # General headers
 
 ## Access token
 
-All methods except "index" and "poll access token" require a valid access token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
-If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response isn't explicitly mentioned below.
+Even if not explicitly mentioned below, all methods except "index" and "poll access token" require a valid access token in the `X-Acrolinx-Auth` header.
+If the token is invalid, Acrolinxs returns a `401` response even if this response isn't explicitly mentioned below (see `401` response of "index").
 
 Example:
 
@@ -59,8 +59,8 @@ Example:
 
 ## Base URL
 
-To support reverse proxies, a client may provide the `X-Acrolinx-Base-Url` header with each request. If the response body to the request
-contains links into the Acrolinx API, the server will prefix them with the given value. The provided value must be an absolute URL including scheme and host.
+To support reverse proxies, a client may provide the `X-Acrolinx-Base-Url` header with each request. If the response body contains links to the API, 
+Acrolinx will prefix them with the specified value. The value must be an absolute URL including scheme and host.
 Malformed values will result in a `400` status code.
 
 Example:
@@ -72,7 +72,7 @@ Example:
 ## Client locale
 
 All methods accept a header `X-Acrolinx-Client-Locale` that the client can use to identify its own locale (for example, UI language).
-The value of the header field needs to be a single language tag that complies with [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). Acrolinx will try to return message strings
+For the value of the header field, use a single language tag that complies with [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). Acrolinx will try to return message strings
 and other locale-specific parts of the response in the requested language.
 
 Example:
@@ -81,8 +81,8 @@ Example:
     X-Acrolinx-Client-Locale: de-CH
 ```
 
-The server tries to match the sent locale to the closest locale that it's able to support, for example, `de`.
-The "index" request returns the list of supported locales. The server falls back to the default `en` locale in the following cases:
+Acrolinx tries to match the locale closest to the locale that it supports, for example, `de`.
+The "index" request returns a list of supported locales. Acrolinx falls back to the default `en` locale in the following conditions:
 
 * no X-Acrolinx-Client-Locale header is sent
 * there's no matching supported locale
@@ -90,8 +90,8 @@ The "index" request returns the list of supported locales. The server falls back
 
 ## Signature
 
-If not otherwise documented, all methods require you to set a header `X-Acrolinx-Client`. The header needs to be a valid signature. The request
-returns an error if the header is omitted or if the signature provided is invalid.
+If not otherwise documented, all methods require you to set a header `X-Acrolinx-Client`. The header needs to be a valid signature. 
+If the header is omitted or if the signature is invalid, the request returns an error.
 
 The format of the signature is `Signature;Version`, where `Signature` is the signature as configured in the Acrolinx license and
 `Version` is the version number of the client.
@@ -104,19 +104,19 @@ Example:
 
 # Response format
 
-The API provides a consistent format for all responses. Each response has a field `links` and one of the three fields `error`, `progress`, `data`.
+The API provides a consistent format for all responses. Each response has a `links` field and one of the three fields: `error`, `progress`, or `data`.
 
-The `links` field contains further URLs that can be used as a next step in the workflow.
-`error` is set if the request didn't succeed. This is accompanied by an HTTP status code above or equal 4xx.
-`progress` means that the processing isn't finished yet and the client has to poll for the final result.
-`data` contains the actual result data, the processing is successfully finished.
+The `links` field contains further URLs that you can use as a next step in the workflow.
+* `error` is set if the request didn't succeed. This is includes an HTTP status code greater or equal to 4xx.
+* `progress` means that the processing isn't finished yet and the client has to poll for the final result.
+* `data` contains the actual result data. The processing finished successfully.
 
 ## Error responses
 
 ### General format
 
 The API provides a consistent format for errors, which is based on [RFC7807](https://datatracker.ietf.org/doc/rfc7807/?include_text=1).
-The format is JSON and the API guarantees to send the fields `type`, `title`, `detail`, `status` with each error response.
+The format is JSON and the API guarantees to send the fields `type`, `title`, `detail`, and `status` with each error response.
 
 Example:
 
@@ -135,14 +135,14 @@ Content-Type: application/problem+json
 ```
 
 * `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
-* `title` is a short description of the error. You can display this to users as the title of the error message.
-* `detail` is a longer description of the error. You can also display this for users.
+* `title` is a short description of the error. You can use this as the title of the error message that users see.
+* `detail` is a longer description of the error. You can also include this in the error message.
 * `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
 * You might also see an optional `reference` field with an ID. If present, you can find this ID in the Acrolinx log files to help with troubleshooting.
 
-Depending on `type`, additional fields may be part of the response providing more detailed information.
+Depending on `type`, the response may include additional fields to provide more detailed information.
 
-Additional fields may be added in future. A client must not break because of unexpected fields.
+We may add additional fields in the future. A client must not break because of unexpected fields.
 
 
 
@@ -151,9 +151,9 @@ Additional fields may be added in future. A client must not break because of une
 Type | Description| What to do
 -----|------------|------------
 `client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
-`server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
-`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://www.acrolinx.com/contact/) to learn how to get a valid license.
-`clientSignatureRejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://www.acrolinx.com/contact/) to learn how to get a valid license.
+`server` | Unspecific Acrolinx error during processing of a request. | Check logs and configuration.
+`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to learn how to get a valid license.
+`clientSignatureRejected` | The signature included in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to get a valid license.
 `sso` | Returned for any single sign-on errors. | This is likely a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
 `insufficientPrivileges` | Insufficient privileges. | Assign the required privileges to the user.
@@ -161,14 +161,14 @@ Type | Description| What to do
 `checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
 `checkFailed` | The check failed. | Check logs and configuration.
 `invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
-`customFieldsIncorrect` | Custom field values are incorrect. |Please provide valid values for all required custom fields before or when checking a document.
+`customFieldsIncorrect` | Custom field values are incorrect. | Provide valid values for all required custom fields before or when checking a document.
 `validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
 `guidanceProfileDoesntExist` | Guidance profile doesn't exist. | The guidance profile doesn't exist or isn't available for the user ID and language provided.
 `noGuidanceProfileConfigured` | No guidance profile configured. | No guidance profile is configured for the user ID and language provided.
 `contentTooLarge` | File too large. | Try checking less content.
 `queueLimitExceeded` | Queue limit exceeded. | Wait at least as long as suggested in the retry-after header and try another check.
 `conflict` | Concurrent write access. | Conflict with a concurrent write access. Try again with fresh data.
-`licenseLimitExceeded` | License limit exceeded. | You exceeded a limit set by the terms of your license. The error description contains more details. Please check [the documentation](https://support.acrolinx.com/hc/en-us/articles/10306079192082-License-Types) for more information.
+`licenseLimitExceeded` | License limit exceeded. | You exceeded a limit set by the terms of your license. The error description contains more details. Check [the documentation](https://support.acrolinx.com/hc/en-us/articles/10306079192082-License-Types) for more information.
 `entityToAssociateNotFound` | One or more associates to an entity could not be found. | Make sure that the given associates actually exist.
 
 
@@ -195,9 +195,9 @@ Errors with type `validation` come with a list of constraint violation descripti
 * `possibleValues`: An optional list of valid values for the property.
 
 
-The `validationDetails` are intended as information for developers to troubleshoot bad requests.
+The `validationDetails` provide developers with information to troubleshoot bad requests.
 They are not intended for automated consumption.
-Values are not guaranteed to be always present or in a uniform format.
+Values are not guaranteed to always be present or in a uniform format.
 
 
 
