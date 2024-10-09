@@ -500,7 +500,7 @@ If the server runs in Targets Mode, the goals contain an additional string field
 `required` (meaning this goal will be included in the calculation of the overall score so it is required to take this goal into account
 when creating content) or `recommended` (meaning this goal is a recommendation only and does not count towards the overall document score).
 
-**Note:** Before you get started with the Checking API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+**Note:** Before you get started with the Checking API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
 + Request
 
@@ -593,15 +593,15 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
 
 ##  Submit a check [POST /api/v1/checking/checks]
 
-Submits a file for checking. After the file is uploaded, it will be scheduled for checking. Once Acrolinx is done checking the document,
-all results will be collected and made available. This leads to the following steps when using the check API:
+Submit a file for checking. After you upload a document, Acrolinx schedules it for checking. Once checking is done,
+Acrolinx collects all results and makes them available. The following steps summarize how to use the check API:
 
 * submit a check
 * poll for progress
 * download check results
 
-For an overview on what documents and file types are supported by Acrolinx please consult the list of
-[Supported Input Types](https://support.acrolinx.com/hc/en-us/articles/10211264846482-Supported-Input-Types).
+For an overview on what documents and file types Acrolinx supports, consult the list of
+[supported input types](https://support.acrolinx.com/hc/en-us/articles/10211264846482-Supported-Input-Types).
 The same information is available in the checking capabilities.
 
 + Request (application/json)
@@ -706,22 +706,22 @@ The same information is available in the checking capabilities.
 ### Check result guide
 
 #### Ignore all issue occurrences
-Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue. All these issues can be ignored together.
+Every issue in the check result has the attribute `positionalInformation.hashes.issue`. Use this attribute to find all occurrences of an issue. Users can ignore all of these issues together.
 
-The integration can also remember the `positionalInformation.hashes.issue` attribute after an ignore-all operation. This lets you filter out all previously ignored occurrences of an issue after a recheck.
+The integration also remembers the `positionalInformation.hashes.issue` attribute after an ignore-all operation. This lets you filter out all previously ignored occurrences of an issue after a recheck.
 
 #### Replace all issue occurrences with a suggestion
-Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue.
+Every issue in the check result has the attribute `positionalInformation.hashes.issue`. Use this attribute to find all occurrences of an issue.
 
 To apply a suggestion to all occurrences of an issue, use the `groupId` attribute to find the corresponding suggestion.
-If an occurrence of an issue doesn't have a suggestion with the same `groupId` or if the `groupId` is empty, then it can't be replaced with a replace-all operation.
+If an occurrence of an issue doesn't have a suggestion with the same `groupId` or if the `groupId` is empty, then you can't replace it with a replace-all operation.
 
-Note that not all occurrences of an issue always have the same suggestions. In this case, the replace-all operation only applies to issues with the same suggestion.
+Note that not all occurrences of an issue always have the same suggestions. When this happens, the replace-all operation only applies to issues with the same suggestion.
 
 
 ### Poll check result [GET]
 
-Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
+Polls the check result. Acrolinx either returns a progress response or the completed result. The URL for the request is in the submitted check's "result" link.
 
 + Parameters
     + id: `AB-153` (required, string) - the check id
@@ -751,9 +751,9 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 + Response 200 (application/json)
 
-        Attention: which attributes are contained in the response depends on
-        configuration, request and the document. The 'scoring' field in the
-        goals are only present if the server runs in Targets Mode.
+        Attention: which attributes the response contains depends on
+        the configuration, request, and document. The 'scoring' field in the
+        goals is only present if the server runs in Targets Mode.
 
         {
           "data":{
@@ -1245,7 +1245,7 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 ### Cancel check [DELETE]
 
-        Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
+        Cancels a check. Users can only cancel checks that they submitted. The URL for the request is found in the submitted check's "cancel" link.
 
 + Parameters
     + id: `AB-153` (required, string) - the check id
