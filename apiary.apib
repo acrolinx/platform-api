@@ -4112,7 +4112,7 @@ Returns a list of users who are missing one or more required user custom fields.
 
 ## User-generated API tokens [/api/v1/user/{id}/tokens]
 
-You can generate long-lasting API tokens for programmatic access to the Platform APIs.
+You can generate long-lived API tokens for programmatic access to Acrolinx APIs.
 
 Acrolinx protects its APIs with self-contained access tokens. These access tokens let you authorize yourself as a user. API tokens have different characteristics than the access tokens that are issued when you use the sign-in endpoint.
 
@@ -4123,7 +4123,7 @@ Note that you can only be bound to one API token at a time.
 
 **Warning:** Follow these security guidelines when you work with API tokens:
 + Store your API token securely and never share it with others.
-+ Don't hadcode your API token into any custom code that interacts with the Acrolinx APIs.
++ Don't hardcode your API token in any custom code that interacts with the Acrolinx APIs.
 
 **Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://support.acrolinx.com/hc/en-us/articles/10306041244818-Create-an-API-Token) in the Acrolinx documentation.
 
@@ -4133,7 +4133,7 @@ Note that you can only be bound to one API token at a time.
 
 Use this method to create an API token for the current user.
 
-**Note:** You don't need extra privileges or roles to create a your own new API token bound to the user authorized in the request.
+**Note:** You don't need extra privileges or roles to create a new API token bound to the user authorized in the request.
 
 **Note:** This endpoint lets users use the Basic authentication scheme to avoid reusing an existing API token.
 
@@ -4221,19 +4221,19 @@ Use this method to create an API token for the current user.
 
 **Added in Acrolinx version 2021.05**
 
-This method lets you create an API token for users based on their *id*.
+Use this method to create an API token for users based on their *id*.
 
 Typical use cases for this API:
 1. Create an API token for personal use
-    - 1.1. Get your own unique identifier *id* via the *Current user* request.
+    - 1.1. Use the *Current user* request to get your own unique identifier *id*.
     - 1.2. Enter your *id* as a parameter.
     - 1.3. Start using the issued API token.
 2. Create an API token for someone else
-    - 2.1. Get the unique identifier *id* for the other user via the *Get users* requests.
+    - 2.1. Use the *Get users* request to get the unique identifier *id* for another user.
     - 2.2. Enter the other user's *id* as a parameter.
-    - 2.3. Give the issued API token to the user securely.
+    - 2.3. Give the API token to the user securely.
 
-**Note:** You can only create an API token if you have the appropriate permissions: 
+**Note:** You can only create an API token if you have the appropriate privileges: 
 * To create an API token for yourself, you need to be authorized with a valid access token.
 * To create an API token for someone else, you need the privilege `UserAndRoles.setApiTokensForOthers` and you need to be authorized with a valid access token.
 
@@ -4422,7 +4422,7 @@ A password needs to meet the following requirements:
 
 The APIs in this group follow the API design command style.   
 
-These administrative commands can help govern users in your Acrolinx instance. The commands can do more than simply (re)send the new state of a single resource. 
+Use these administrative commands govern users in your Acrolinx instance. The commands can do more than simply (re)send the new state of a single resource. 
 
 **Note:** You can apply these requests multiple times without changing the result (idempotent). 
 
@@ -7003,13 +7003,13 @@ The resources in this group provide information about the health and performance
 Accessing this information requires the permission "Access to monitoring API." This privilege isn't granted
 to all users. Make sure the user associated with your API token has the requisite roles.
 
-For a quick check of your permissions see if the [metrics index](#monitoring-api-get-available-metrics)
+For a quick check of your privileges see if the [metrics index](#monitoring-api-get-available-metrics)
 contains links. More information about permission management can be found in the
 [Acrolinx documentation](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management).
 
 ## Get available metrics [GET /api/v1/monitoring]
 
-Lists available metrics according to the permissions of the API user. If access is granted a link to
+Lists available metrics according to the privileges of the API user. If access is granted a link to
 the metrics resource will be added to the links hash. The following relations are currently available:
 
 |Key             | Target
