@@ -32,7 +32,7 @@ Every request you make with the Acrolinx API must contain a [header](#header-acc
 ```
 
 ## API token
-An API token is an access token with special characteristics:
+An API token is an access token with istics:
 
 * It has a lifetime of 4 years
 * It will **not expire when the password of the associated user is changed**
@@ -1314,24 +1314,24 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
 
 You're _required_ to provide user information for the following:
-* Interactive integrations: When you sign in to the Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
-* Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter customer user information. This lets you generate an API token for the user that’s signed in.
+* Interactive integrations: When you sign in to the Acrolinx Sidebar, you enter your user information. This creates an access token for the signed-in user.
+* Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter custom user information. This lets you generate an API token for the user that’s signed in.
 
 Security:
 * A user can read and update their own data.
 * Only privileged users (admin, for example) can read or update other users' data.
 
-**Note:** Before you get started with the User API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+**Note:** Before you get started with the User API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
 ## User resource [/api/v1/user]
 
 ### Get all users [GET /api/v1/user{?sort,page,per_page,username,fullName,roles}]
 
-**Added in Core Platform version 2021.05**
+**Added in Acrolinx version 2021.05**
 
-**Note:** The table below shows the specific API request parameters by Core Platform version.
+**Note:** The table below shows the specific API request parameters by Acrolinx version.
 
-| API Request                                                 | Core Platform Version |
+| API request                                                 | Acrolinx version |
 |:------------------------------------------------------------|-----------------------|
 | `[GET /api/v1/user{?sort}]`                                 | `2021.06`             |
 | `[GET /api/v1/user{?page,per_page}]`                        | `2021.08`             |
@@ -1343,27 +1343,27 @@ Security:
 
 This request retrieves a list of all users in the order that they were added.
 
-**Searching/Filtering**
+**Searching or Filtering**
 
-- You can use the `username` and `fullName` parameters to search or filter users.
+- Use the `username` and `fullName` parameters to search or filter users.
 - The `username` and `fullName` query parameters are limited to 255 characters, are optional, and can't be `null`.
 - If the `username` and `fullName` parameters are set, the API will list users that match both parameters.
-- You can use the `roles` parameter to filter users by multiple role ids.
+- Use the `roles` parameter to filter users by multiple role ids.
 - Invalid role ids will return an empty list.
 
 **Sorting**
 
 If you use the `sort` query parameter, you can only sort the list of users by 1 field.
-To display the list in ascending or descending order respectively, you can add a `+` or `-`.
+To display the list in ascending or descending order, add a `+` or `-`, respectively.
 
 **Sorting notes:**
 
 - You can only sort by 1 field.
 - A query parameter can be any length and can include the order direction prefixes "+" and "-".
-- A query parameter can't be empty or include blank spaces.
+- A query parameter cannot be empty or include blank spaces.
 - A query parameter can accept a mix of characters.
 - By default, the list appears in ascending order.
-- The list is also sorted by `username` unless this is already the primary sort column.
+- The list is also sorted by `username`, unless `username` is already the primary sort column.
 - Other sort columns include: `fullName`, `createdOn`, `lastIntegrationAccess`, `checkingFrequency`, `licenseType`, `licenseStatus`, and `customFields.{key}`.
 - The query parameter `licenseType` sorts by two fields: `licenseType` and `licenseStatus`.
 - To sort by a custom field, the sort value needs to include `customFields`, `.`, and the `{key}`. The key is the name of the custom field.
@@ -1371,16 +1371,16 @@ To display the list in ascending or descending order respectively, you can add a
 When you sort by `customFields` in ascending order, empty `customFields` values will appear at the beginning of the list. If you sort
 in descending order, empty values will appear at the end of the list.
 
-To make sure that the sorting behavior for custom fields is consistent, the following special characters can be sorted: `` !@$^*()_+-=,./;'[]<>?:|~` ``
+To make sure that the sorting behavior for custom fields is consistent, the following special characters are sortable: `` !@$^*()_+-=,./;'[]<>?:|~` ``
 If you use any additional special characters, the sorting behavior may be inconsistent.
 
-So that the `+` character encoded to `%2B` stays valid, the query parameters need to be encoded in accordance
-with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
+So that the `+` character encoded to `%2B` stays valid, you have to encode the query parameters according
+to [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
 You can always leave out the `+` character, because the user list appears in ascending order by default. 
 
 **Pagination**
 
-For a better overview, you might like to view the list of users in pages instead of in one long list.
+For a better overview, you might want to view the list of users in pages instead of in one long list.
 To request a paginated response, add the query parameters `page` and `per_page`. 
 You'll need to set the `page` parameter. The page count always starts at `1`.
 By default, `per_page` is set to `10`. You can display as many as 500 users per page. This is an optional parameter. 
@@ -1395,7 +1395,7 @@ If you request a paginated response, Acrolinx will add the following header valu
 | `X-Acrolinx-Total-Pages`   | The total number of pages.                      |
 | `X-Acrolinx-Total`         | The total number of items.                      |
 
-In addition to the header values, the response object contains a few URLs
+In addition to the header values, the response object also contains a few URLs
 within the `links` object:
 
 | Relation | Description                       |
@@ -1417,10 +1417,10 @@ The example response includes the pagination URLs and query parameters in the `l
 
 **Dynamically include or exclude nested data**
 
-If you manage a large number of users, you can use the query params `includeCustomField` and `excludeProperties` to filter nested data.
+If you manage a large number of users, you can use the query paramaters `includeCustomField` and `excludeProperties` to filter nested data.
 
 By default, all custom fields are nested in the user model.
-You can use the parameter `includeCustomField` to limit the returned fields to those that match the key passed in the param value.
+You can use the parameter `includeCustomField` to limit the returned fields to those that match the key passed in the paramater value.
 This is helpful if you want to fetch a specific set of custom fields to reduce data transfer.
 To include more than one custom field, add `&includeCustomField={Key}` to the request N times.
 
@@ -1961,11 +1961,11 @@ You'll also see properties, roles, and custom fields.
         }
 
 
-### Get a user (Self) [GET /api/v1/user/self]
+### Get a user (self) [GET /api/v1/user/self]
 
-**Added in Platform version 2018.12**
+**Added in Acrolinx version 2018.12**
 
-This is an alternative way of getting information about the current (in request authorized) user. 
+This is an alternative way to get information about the current (in request authorized) user. 
 
 + Request Get current user (application/json)
 
@@ -2052,7 +2052,7 @@ This is an alternative way of getting information about the current (in request 
 
 ### Create a user [POST /api/v1/user]
 
-**Added in Platform version 2021.05**
+**Added in Acrolinx version 2021.05**
 
 **Note:**
 
@@ -2063,18 +2063,18 @@ This is an alternative way of getting information about the current (in request 
 
 **Password requirements**
 
-If you want to create a user, the password field is required as of Core Platform version 2022.02.
+If you want to create a user, the password field is required as of Acrolinx version 2022.02.
 Your password needs to meet the following requirements:
 
 - Composed of ASCII printable characters
-- Needs to include at least 1 lower case letter
-- Needs to include at least 1 upper case letter
+- Needs to include at least 1 lowercase letter
+- Needs to include at least 1 uppercase letter
 - Needs to include at least 1 digit
-- Needs to include at least 1 special character symbol
+- Needs to include at least 1 special character
 - At least 10 characters long
 - No more than 64 characters long
 
-For Core Platform versions 2021.05 to 2022.02, the following apply:
+For Acrolinx versions 2021.05 to 2022.02, the following apply:
 
 - Password is optional
 - At least 1 character long
@@ -2084,8 +2084,8 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 - There are no configured default roles. That means that no roles will be automatically assigned to new users.
 - Federated authentication is enabled:
   - Users are created automatically with federated authentication.
-  - Only users created by the identity provider can sign in to the Acrolinx Dashboard.
-  - Users created through the API can only be used for automation purposes. For example, interactions with the Platform API.
+  - Only users created by the identity provider can sign in to Acrolinx.
+  - Users created through the API can only be used for automation. For example, interactions with the Acrolinx API.
 
 
 + Request Create a user (application/json)
@@ -3138,7 +3138,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 ### Update a user [PUT /api/v1/user/{id}]
 
-**Added in Platform version 2021.05**
+**Added in Acrolinx version 2021.05**
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
@@ -3664,7 +3664,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
     In this example, only the `password` attribute will change for the user `fred`. This was identified in the database by its *id*.
 
     **Note:**
-    - You can update the `password` field as of Core Platform version 2022.02
+    - You can update the `password` field as of Acrolinx version 2022.02
 
     + Headers
 
@@ -3815,11 +3815,11 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 ### Delete a user [DELETE /api/v1/user/{id}]
 
-**Added in Platform version 2021.05**
+**Added in Acrolinx version 2021.05**
 
 This method deletes a specified user based on its *id*.
 
-**Note:** You can only delete a user successfully if all of the following conditions are met:
+**Note:** You can only successfully delete a user if all of the following conditions are met:
 - The user isn't a preconfigured, built-in user such as "admin", "termcontribution", or "analyticsReadOnlyUser".
 
 To read more about managing users and built-in users, see [User Management](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management) in the Acrolinx documentation.
@@ -3906,9 +3906,9 @@ To read more about managing users and built-in users, see [User Management](http
 
 ## Missing required custom user fields [/api/v1/user/custom-fields-missing]
 
-**Added in Platform version 2022.04**
+**Added in Acrolinx version 2022.04**
 
-You can query users who don't have required custom fields.
+Query users who don't have required custom fields.
 
 **What's a missing required custom field?** The User API returns your user-related custom fields in the `customFields[]` array. If a custom field is required (marked with `"inputType": "required"`) and is missing a value (`"value": ""`), the field is considered to be missing.
 
@@ -3917,13 +3917,13 @@ You can query users who don't have required custom fields.
 
 ### Count users [HEAD /api/v1/user/custom-fields-missing]
 
-Returns the total number of users who are missing one or more required user custom field.
+Returns the total number of users who are missing one or more required user custom fields.
 
 **Note:**
 - The response has no content.
 - The user count will be shown in the header `X-Acrolinx-Total`.
 - The header value is a numeral.
-- It returns a 0 (zero) when no required custom fields are missing.
+- It returns a 0 (zero) when all required custom fields are present.
 
 + Request
 
@@ -4116,33 +4116,33 @@ You can generate long-lasting API tokens for programmatic access to the Platform
 
 Acrolinx protects its APIs with self-contained access tokens. These access tokens let you authorize yourself as a user. API tokens have different characteristics than the access tokens that are issued when you use the sign-in endpoint.
 
-Don't forget to check out the *Introduction > Authentication and Authorization* section in this API Blueprint.
+Don't forget to check out the *Introduction > Authentication and Authorization* section in this API documentation.
 
-Be aware that you can only be bound to one API token at a time.
+Note that you can only be bound to one API token at a time.
 * When you create a new API token, your previous API token becomes invalid.
 
 **Warning:** Follow these security guidelines when you work with API tokens:
 + Store your API token securely and never share it with others.
-+ Don't bake your API token into any custom code that interacts with the Acrolinx Platform APIs.
++ Don't hadcode your API token into any custom code that interacts with the Acrolinx APIs.
 
 **Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://support.acrolinx.com/hc/en-us/articles/10306041244818-Create-an-API-Token) in the Acrolinx documentation.
 
 ### Create an API token (Self)  [POST /api/v1/user/self/tokens]
 
-**Added in Core Platform version 2021.06**
+**Added in Acrolinx version 2021.06**
 
 Use this method to create an API token for the current user.
 
-**Note:** You don't need extra privileges or roles to create a new personal API token bound to the user authorized in the request.
+**Note:** You don't need extra privileges or roles to create a your own new API token bound to the user authorized in the request.
 
 **Note:** This endpoint lets users use the Basic authentication scheme to avoid reusing an existing API token.
 
-+ Request Create an API token using Basic auth
++ Request Create an API token using Basic authentication
     
-    To authenticate using Basic auth, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`. 
+    To authenticate using Basic authentication, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`. 
 
     * **Important:** 
-        * This needs to have the prefix `Basic`.
+        * This request needs to have the prefix `Basic`.
         * Your credentials (`username:password`) must be base64 encoded.
 
     + Headers
@@ -4219,7 +4219,7 @@ Use this method to create an API token for the current user.
 
 ### Create an API token for users [POST /api/v1/user/{id}/tokens]
 
-**Added in Platform version 2021.05**
+**Added in Acrolinx version 2021.05**
 
 This method lets you create an API token for users based on their *id*.
 
@@ -4331,7 +4331,7 @@ This API is convenient when you want to create new users.
 
 ### Get a randomly generated compliant password [GET /api/v1/user/random-passwords]
 
-**Added in Core Platform version 2022.03**
+**Added in Acrolinx version 2022.03**
 
 **Password Requirements**
 
@@ -4428,7 +4428,7 @@ These administrative commands can help govern users in your Acrolinx instance. T
 
 ### Release an active named user license [PUT /api/v1/user/{id}/_release]
 
-**Added in Core Platform version 2021.05**
+**Added in Acrolinx version 2021.05**
 
 This method uses the *id* to release an active license consumed by a user.
 
@@ -4493,7 +4493,7 @@ This method uses the *id* to release an active license consumed by a user.
 
 ### Request user information update  [PUT /api/v1/user/{id}/_request_cf_update]
 
-**Added in Platform version 2021.12**
+**Added in Acrolinx version 2021.12**
 
 The user specified by the *id* in this request will be asked to update their user information.
 
@@ -4556,7 +4556,7 @@ The user specified by the *id* in this request will be asked to update their use
 
 ### Export a list of users [GET /api/v1/user/_export]
 
-**Added in Core Platform version 2021.06**
+**Added in Acrolinx version 2021.06**
 
 This API provides an easy way to export a concise user list in various file formats.
 
@@ -4682,7 +4682,7 @@ and a list of `errors` for the objects that couldn't be processed.
 
 ### Create users in bulk [POST /api/v1/user/bulk]
 
-**Added in Core Platform version 2021.06**
+**Added in Acrolinx version 2021.06**
 
 This API lets you create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
@@ -4921,7 +4921,7 @@ noted in the Create User API section.
 
 ### Request user information update in bulk  [PUT /api/v1/user/bulk/_request_cf_update]
 
-**Added in Platform version 2021.12**
+**Added in Acrolinx version 2021.12**
 
 This API is the bulk operation for "Request User Information Update" from the "User Commands" group.
 It lets you ask multiple users to update their user information.
@@ -5073,7 +5073,7 @@ It lets you ask multiple users to update their user information.
 
 ### Delete users in bulk [DELETE /api/v1/user/bulk]
 
-**Added in Platform version 2021.12**
+**Added in Acrolinx version 2021.12**
 
 This API lets you delete a list of users. All user ids follow the requirements and constraints
 noted in the "Delete User API" section.
@@ -5422,7 +5422,7 @@ are included in the license statistics along with all other users, but they are 
 
 Details of the statistics attributes in the table below:
 
-| License Type | Sum Attribute | Description                   |
+| License type | Sum attribute | Description                   |
 |:-------------|---------------|-------------------------------|
 | `named`      | licensed      | Total number of licenses      |
 | `named`      | active        | Total active licenses         |
