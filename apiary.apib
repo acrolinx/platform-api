@@ -4687,13 +4687,13 @@ and a list of `errors` for the objects that couldn't be processed.
 Use this API to create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
 
-**Note:** You can create up to 100 users with each bulk request. The minimum is 1.
+**Note:** With each bulk request, you can create up to 100 users. The minimum is 1.
 
 + Request Create Users in Bulk (application/json)
 
     This request lets you create 5 new users by specifying some basic fields (`username`, `fullName`, `password`) in the request model.
 
-    **Note:** Acrolinx will assign a license type and role automatically. These are typically the license type `named` and the role `Author`.
+    **Note:** Acrolinx will automatically assign a license type and role. These typically have the license type `named` and the role `Author`.
 
     + Headers
 
@@ -4923,7 +4923,7 @@ noted in the Create User API section.
 
 **Added in Acrolinx version 2021.12**
 
-This API is the bulk operation for "Request User Information Update" from the "User Commands" group.
+This API is the bulk operation of "Request User Information Update" from the "User Commands" group.
 It lets you ask multiple users to update their user information.
 
 **Note:** There are currently no limitations on the number of users a client can ask for an information update.
@@ -5078,7 +5078,7 @@ It lets you ask multiple users to update their user information.
 This API lets you delete a list of users. All user ids follow the requirements and constraints
 noted in the "Delete User API" section.
 
-**Note:** You can delete up to 100 users per bulk request, the minimum is 1.
+**Note:** With each bulk request, you can delete up to 100 users. The minimum is 1.
 
 + Request Delete users in bulk (application/json)
 
@@ -5345,7 +5345,7 @@ This API lets you set and view user custom fields.
 
 ### Get custom fields [GET]
 
-This shows a list of your user custom fields.
+Shows a list of your user custom fields.
 
 + Request Get Custom Fields (application/json)
 
