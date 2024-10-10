@@ -4434,8 +4434,8 @@ This method uses the *id* to release an active license consumed by a user.
 
 **Note:**
 - You can only release users with the `named` license type.
-- If you release the license of a user who doesn't consume a license, you won't see an error.
-- To do this, you need the `UserAndRoles.deleteSessions` privilege.
+- If you release the license of a user who isn't consuming a license, you won't see an error.
+- To release licenses, you need the `UserAndRoles.deleteSessions` privilege.
 
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
 
@@ -4498,9 +4498,9 @@ This method uses the *id* to release an active license consumed by a user.
 The user specified by the *id* in this request will be asked to update their user information.
 
 **Note:**
-- The next time the user signs in, they'll need to re-enter their user information via a form.
+- The next time the user signs in, they'll need to re-enter their user information in a form.
 - If you repeat the request for the same user UUID, you won't be notified that a request was already submitted.
-- To do this, you need the `UserAndRoles.editUser` privilege.
+- To request a user information update, you need the `UserAndRoles.editUser` privilege.
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
@@ -4560,46 +4560,46 @@ The user specified by the *id* in this request will be asked to update their use
 
 This API provides an easy way to export a concise user list in various file formats.
 
-The endpoint uses content negotiation to determine the format of the export. You can include the `Accept` header in your request to specify the format you prefer. See the `Supported formats` section for more information about the formats that Acrolinx currently supports.
+The endpoint uses content negotiation to determine the format of the export. To specify the format you prefer, include the `Accept` header in your request. See the `Supported formats` section for more information about the formats that Acrolinx currently supports.
 
 **Supported formats:**
 + `text/csv` (default, file extension is `.csv`)
 
 **Note:** If you don't specify the format in the `Accept` header, the default will be used.
 
-**Content-Disposition:**
+**Content Disposition:**
 
 The API also returns the `Content-Disposition` response header to give information about the returned content. 
-Based on this, browsers can recognize downloadable attachments that can be saved locally.
+With this information, browsers can recognize downloadable attachments that can be saved locally.
 
-The header parameters are set as follows:
+Set the header parameters as follows:
 + `attachment` - Indicates that the content should be downloaded.
 + `filename="acrolinx_users_export_yyyyMMdd_HHmmss.{fileExt}"` - Most browsers present a "Save as" dialog for attachments. This will be prefilled with the value of the filename parameter.
 
 + Request Export a list of users in CSV format
 
-    This lets you export a list of users and their data into a CSV file that looks like a spreadsheet but has a `.csv` extension.
-    Each line of the file is a user data record. Each record consists of one or more user fields and the actual value, separated by column delimiter.
-    You can use the CSV file with most spreadsheet programs, such as Microsoft Excel or Google Sheets.
+    This lets you export a list of users and their data as a CSV file that looks like a spreadsheet but has a `.csv` extension.
+    Each line of the file is a user data record. Each record consists of one or more user fields and the actual value, separated by column delimiters.
+    The CSV file works with most spreadsheet programs, such as Microsoft Excel or Google Sheets.
 
-    You'll see the following user fields in the file (in the following order):
+    The file contains the following user fields (in the specified order):
     + **user_id**: The user's unique identifier (string, UUID).
     + **Username**: The user's username, which can be used for sign in and user identification.
-    + **Full Name**: The full name of the user.
+    + **Full name**: The full name of the user.
     + **Roles**: A list of assigned roles.
-    + **Created On**: Indicates when the user was created.
-    + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn't accessed an integration, the default value is `Never`.
-    + **Checking Frequency**: Displays a rough idea of the user's usage pattern based on checking frequency across the user's lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
-    + **License Type**: Indicates the type of license. Its value can be ["named", "concurrent", "builtin"].
+    + **Created on**: Indicates when the user was created.
+    + **Last integration access**: Indicates when the user last accessed an integration. If the user hasn't accessed an integration, the default value is `Never`.
+    + **Checking frequency**: Displays a rough idea of the user's usage pattern based on checking frequency across the user's lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
+    + **License type**: Indicates the type of license. Its value can be ["named", "concurrent", "builtin"].
     + **{Custom Field name}**: Users can have multiple (0...N) custom fields that are also attached to the schema. 
-        + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be added to the end of the sheet dynamically. 
+        + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be dynamically added to the end of the sheet. 
 
-    **Notes, about the CSV file and data formatting:** 
-    + Column headers are also written into the first row of the file.
+    **Notes about the CSV file and data formatting:** 
+    + Column headers are also written in the first row of the file.
     + Fields are separated by a semicolon `;` (as column delimiter). 
     + Date and time values are exported in `UTC`, for example `2021-05-12T15:40:00.876Z`.
         + When there's no stored value for a given Date time type field, the cell should contain `Never` or an empty value.
-    + Values of a list type field are separated with a colon `:` (as the "in-cell" delimiter).
+    + Values of a list type field are separated by a colon `:` (as the "in-cell" delimiter).
     + Values that contain space characters are in double quotes in the file, for example, `user_id;Username;"Full Name";...`.
 
     + Headers
@@ -4673,7 +4673,7 @@ The header parameters are set as follows:
 
 ## User bulk operations [/api/v1/user/bulk]
 
-These APIs let you perform bulk operations. Bulk operations follow the multi-status request and response model.
+Use these APIs to perform bulk operations. Bulk operations follow the multi-status request and response model.
 In this model, the incoming bulk request includes a list of objects that need to be processed (as opposed to using the same API many times). 
 The response to the request is `207 Multi-Status`. The response includes a list of `results` for the objects that were processed successfully 
 and a list of `errors` for the objects that couldn't be processed.
@@ -4684,10 +4684,10 @@ and a list of `errors` for the objects that couldn't be processed.
 
 **Added in Acrolinx version 2021.06**
 
-This API lets you create a list of new users. All user objects follow the requirements and constraints
+Use this API to create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
 
-**Note:** You can create up to 100 users per bulk request, the minimum is 1.
+**Note:** You can create up to 100 users with each bulk request. The minimum is 1.
 
 + Request Create Users in Bulk (application/json)
 
