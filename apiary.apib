@@ -5408,19 +5408,19 @@ License information is provided by the following set of APIs.
 ### Get license statistics for users [GET]
 
 Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.
-The following conditions are checked for all users in order to qualify them to be included in the calculation:
+Acrolinx checks the following conditions for all users to qualify them to be included in the calculation:
 
 - Must be one of the following License Types `named` or `concurrent`
 - For `named` license they must be active it must satisfy the following
     - Be activated for `Checking` session type
     - Must not be free of charge
-- All other `named` licensed users will be considered `inactive`
-- All `concurrent` licensed users will be `existing` if a license exists
+- All other `named` licensed users are considered `inactive`
+- All `concurrent` licensed users are `existing` if a license exists
 
 **Note:** Built-in users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess`, and `AnalyticsReadOnlyUser`
 are included in the license statistics along with all other users, but they are subject to the conditions above.
 
-Details of the statistics attributes in the table below:
+The following table shows details of the statistics attributes:
 
 | License type | Sum attribute | Description                   |
 |:-------------|---------------|-------------------------------|
@@ -5489,13 +5489,13 @@ Details of the statistics attributes in the table below:
 
 **Available Acrolinx version 2021.05**
 
-In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role. 
+In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information about whether this role is a default role. 
 You can use roles to group sets of privileges and assign them to different users.
 Mark roles as default if you want to automatically assign at least one default role to all new users.
 
 To read more about role-based access control in Acrolinx, see [User Roles](https://support.acrolinx.com/hc/en-us/articles/10210994316562-User-Roles).
 
-**Note:** Before you get started with the Role API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+**Note:** Before you get started with the Role API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
 ## Roles [/api/v1/roles/]
 
@@ -5654,11 +5654,11 @@ Returns a list of all roles including the associated privileges.
 
 ## Privileges [/api/v1/roles/privileges]
 
-Privileges determine if a user can perform an action via the API or Acrolinx Dashboard.
+Privileges determine if a user can perform an action with the API or Acrolinx UI.
 
 ### Get all privileges [GET]
 
-This returns a list of all supported privileges.
+Returns a list of all supported privileges.
 
 **Note:** Depending on your Acrolinx version, the example response may look different than the response that you get for your supported privileges. 
 In newer platform releases, there are rare instances where privileges might be introduced or removed. 
@@ -5763,7 +5763,7 @@ To find out which privileges come with your installation, submit this request an
 
 ### Create roles [POST]
 
-This lets you add new roles.
+Adds new roles.
 
 **Note:**
 - The name needs to be unique and must be between 1 and 254 characters.
@@ -6082,7 +6082,7 @@ This lets you add new roles.
 
 ### Get a role [GET /api/v1/roles/{id}]
 
-This returns a role that was identified by its *id* in the database.
+Returns a role that was identified by its *id* in the database.
 
 + Parameters
     + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
@@ -6143,12 +6143,12 @@ This returns a role that was identified by its *id* in the database.
 
 ### Update a role [PUT /api/v1/roles/{id}]
 
-This lets you update a role that was identified by its *id* in the database.
+Updates a role that was identified by its *id* in the database.
 
 **Note:** 
 - To update roles, you need the privilege `UserAndRoles.editUser`.
-- You can't edit the preconfigured roles!
-    - Acrolinx comes with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
+- You can't edit preconfigured roles!
+    - Acrolinx comes with a number of preconfigured roles that many customers use.
 - You can use one request to update role attributes individually or completely. The request will ignore missing attributes or attributes with `null` values.
 
 + Parameters
@@ -6764,14 +6764,14 @@ This lets you delete a specified role based on its *id*.
 
 # Group document API
 
-Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
+A document is an entity that associates names and characteristics that identify a document with an ID. It also contains the custom document information.
 
 Typical program flow:
 
-1. A document is opened in the host editor.
-2. The integration uses create or retrieve document information, to check if the custom fields have to be filled out.
+1. A user opens a document in an editor.
+2. The integration uses create or retrieve document information to check if the user has to fill out the custom fields.
     If the user has to fill out custom fields, the API returns all fields to fill out and the set values.
-3. The integration requests the user to fill out the custom field.
+3. The integration requests the user to fill out the custom fields.
 4. The integration sets the new custom fields either using the update document function or while submitting a check request.
 
 ## Document [/api/v1/document/{id}]
@@ -6942,11 +6942,11 @@ issues[n].canAddToDictionary: true
 
 # Group broadcast API - DRAFT
 
-You can use platform notifications to inform users that checking might be affected by server maintenance or planned server outages.
+Use platform notifications to inform users that checking might be affected by maintenance or planned outages.
 
 ## Create a platform notification [POST /api/v1/broadcasts/platform-notifications]
 
-Publishes a new notification on the platform.
+Creates a new notification on the platform.
 
 
 + Request (application/json)
@@ -6999,12 +6999,12 @@ Retrieves active notifications from the platform.
 
 **Available since Acrolinx version 2019.10**
 
-The resources in this group provide information about the health and performance of the Acrolinx Platform.
-Accessing this information requires the permission "Access to monitoring API." This privilege isn't granted
-to all users. Make sure the user associated with your API token has the requisite roles.
+The resources in this group provide information about the health and performance of Acrolinx.
+Accessing this information requires the privilege "Access to monitoring API." Not all users have this privilege. 
+Make sure the user associated with your API token has the relevant roles.
 
-For a quick check of your privileges see if the [metrics index](#monitoring-api-get-available-metrics)
-contains links. More information about permission management can be found in the
+To quickly check your privileges, see if the [metrics index](#monitoring-api-get-available-metrics)
+contains links. Read more about privilege management in the
 [Acrolinx documentation](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management).
 
 ## Get available metrics [GET /api/v1/monitoring]
@@ -7028,7 +7028,7 @@ the metrics resource will be added to the links hash. The following relations ar
 
 ## Get check metrics [GET /api/v1/monitoring/checks]
 
-Provides a summary of the check activity on the Acrolinx Platform.
+Provides a summary of the checking activity of Acrolinx.
 
 |Field                    |Contents
 |-------------------------|-------------------
@@ -7054,7 +7054,7 @@ Provides a summary of the check activity on the Acrolinx Platform.
 
 ## Get health metrics [GET /api/v1/monitoring/health]
 
-A general summary of the health of the Acrolinx Platform.
+A general summary of the health of Acrolinx.
 
 |Field                    |Contents
 |-------------------------|-------------------
@@ -7076,7 +7076,7 @@ A general summary of the health of the Acrolinx Platform.
 
 This returns a successful response when at least one language server is available for checking.
 This API response will only contain `200` response code. You don't need
-access to the permission "Access to monitoring API" to use this API.
+the privilege "Access to monitoring API" to use this API.
 
 **Available since Acrolinx version 2022.03**
 
@@ -7102,8 +7102,8 @@ This does not tell you if the server is ready to process check requests. To get 
 you can make an API call to `api/v1/monitoring/health/status`.
 
 This API response will contain the plain-text message "OK" and a `200` response code. You don't need
-access to the permission "Access to monitoring API" to use this API. If a response is unsuccessful,
-you'll see a response that isn't `200`.
+the privilege "Access to monitoring API" to use this API. If a response is unsuccessful,
+you'll see a response other than `200`.
 
 **Available since Acrolinx version 2022.09**
 
