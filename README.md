@@ -15,9 +15,9 @@ The [reference](#reference) describes all services and methods.
 
 Contact [Acrolinx support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/support.md)
 for consulting and getting your integration certified.
-This sample works with a test license on a Acrolinx test instance.
-This license is only meant for demonstration and development.
-Once you finish your development, contact Acrolinx to get a license for your integration.
+This sample works with a test license on an Acrolinx test instance.
+The license is only meant for demonstration and development.
+Once you finish coding, contact Acrolinx to get a license for your integration.
   
 Acrolinx provides different SDKs and samples for building integrations.
 
@@ -43,7 +43,7 @@ Familiarize yourself with the following concepts:
 * [signatures](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/packaging.md#packaging)
 * [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-extraction.md).
 
-If you can't wait, jump to the [Quick start tutorial](quickstart.md) and start tinkering around.
+If you can't wait, jump to the [Quick start tutorial](quickstart.md) and start playing around.
 
 ## Important headers and content type
 
@@ -60,7 +60,7 @@ All requests to the Acrolinx API should contain these headers.
 
 ## Authentication
 
-To use the authentication API, you'll need an access token.
+To use the Authentication API, you'll need an access token.
 Send the access token with the header parameter `X-Acrolinx-Auth` for every API request.
 
 ```HTTP
@@ -132,7 +132,7 @@ This is how it works:
 Creating an API Token is easy:
 
 * Sign in to Acrolinx
-* Go to your ‘Settings'
+* Go to ‘Settings'
 * Click CREATE API TOKEN.
 * Copy the API token.
 
