@@ -139,8 +139,6 @@ Creating an API Token is easy:
 **Note**
 As soon as you generate an API token, save it somewhere secure (like a password manager) so that you can access it again. Once you leave the Settings page, the API token will disappear from the display.
 
-![API token](doc/creating_api_token.gif)
-
 ## Signature
 
 A signature is a string that identifies an integration.
