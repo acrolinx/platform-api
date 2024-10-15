@@ -282,7 +282,7 @@ Note: This is the only web service method that provides a 200 response if no acc
           "data": {
             "server": {
                 "version": "5.1.0.123",
-                "name": "Acrolinx Core Platform"
+                "name": "Acrolinx"
             },
             "locales": [ "en" ]
           },
@@ -305,7 +305,7 @@ Note: This is the only web service method that provides a 200 response if no acc
           "data": {
             "server": {
                 "version": "5.1.0.123",
-                "name": "Acrolinx Core Platform"
+                "name": "Acrolinx"
             },
             "locales": [ "en" ]
           },
@@ -381,10 +381,10 @@ to authenticate the request.
     One allows the user to complete the sign-in process.
     The other helps the client to acquire the session data:
 
-    - `interactive` a link to a website that allows the user to authenticate and
+    - `interactive` a link to a web page that allows the user to authenticate and
           permit the client to access the server. If you provide a language in the
           `X-Acrolinx-Client-Locale` header, the link will point to a localized
-          version of that website if available and technically possible.
+          version of that web page if available and technically possible.
 
     - `poll` a link to a resource that will return an *access token* and information
           about the user after sign-in. (see [GET `api/v1/auth/sign-ins/{id}`](#authentication-api-poll-for-a-new-api-token-get))
@@ -1246,7 +1246,7 @@ Polls the check result. Acrolinx either returns a progress response or the compl
 
 ### Cancel check [DELETE]
 
-        Cancels a check. Users can only cancel checks that they submitted. The URL for the request is found in the "cancel" link of the submitted check.
+        Cancels a check. Users can only cancel checks that they submitted. The URL for the request is in the "cancel" link of the submitted check.
 
 + Parameters
     + id: `AB-153` (required, string) - the check id
@@ -1320,7 +1320,7 @@ In the User API, Acrolinx defines a user as an entity that has the following:
 
 You're _required_ to provide user information for the following:
 * Interactive integrations: When you sign in to the Sidebar, you enter your user information. This creates an access token for the signed-in user.
-* Embedded integrations (API key-based): When you sign in to Acrolinx, you need to enter custom user information. This API lets you generate an API token for the user that’s signed in.
+* Embedded integrations (API key-based): When you sign in to Acrolinx, you need to enter your custom user information. This API lets you generate an API token for the user that’s signed in.
 
 Security:
 * A user can read and update their own data.
@@ -2085,7 +2085,7 @@ For Acrolinx versions 2021.05 to 2022.02, the following apply:
 - At least 1 character long
 - No more than 128 characters
 
-**Be extra careful in the following cases:** 
+**Be very careful in the following cases:** 
 - There are no configured default roles. That means that no roles will be automatically assigned to new users.
 - Federated authentication is enabled:
   - Users are created automatically with federated authentication.
@@ -6958,7 +6958,7 @@ Creates a new notification on the platform.
 
         {
             "title": "Important Announcement",                               // required; The title of the notification
-            "body":  "Acrolinx Platform 5.6 will be deployed tomorrow.",     // required; Notification text.
+            "body":  "Acrolinx 5.6 will be deployed tomorrow.",     // required; Notification text.
             "importance": "high",                                            // optional; "high"|"normal"; default: "normal"
             "start": 1528127782,                                             // required; Notification start time (epoch millisecond timestamp)
             "end": 1530719782                                                // required; Notification end time (epoch millisecond timestamp)
@@ -6989,7 +6989,7 @@ Retrieves active notifications from Acrolinx.
                     {
                         "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101",
                         "title": "Important Announcement",
-                        "body": "Acrolinx Platform 5.6 will be deployed tomorrow.",
+                        "body": "Acrolinx 5.6 will be deployed tomorrow.",
                         "importance": "high",
                         "start": 1528127782,
                         "end": 1530719782
