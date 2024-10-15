@@ -266,7 +266,12 @@ All HTML fields only contain formatting tags that can be used without security r
 
 ## Index [GET /api/v1]
 
-Note: This is the only web service method that provides a 200 response if no access token was sent.
+This endpoint returns general information about the current Acrolinx
+version. Starting with version 2024.09, it also contains
+information about the installed linguistic configuration (referred to as a "guidance package").
+
+
+**Note**: This is the only web service method that provides a 200 response if no access token was sent.
 
 + Request
 
@@ -283,11 +288,17 @@ Note: This is the only web service method that provides a 200 response if no acc
                 "version": "5.1.0.123",
                 "name": "Acrolinx Core Platform"
             },
+            "guidancePackage": {
+                "name": "Guidance Package for ACME",
+                "version": "2024.09",
+                "build": "7732",
+                "date": "2024-09-13"
+            },
             "locales": [ "en" ]
           },
           "links": {
             "signIn": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins"
-            }
+          }
         }
 
 
