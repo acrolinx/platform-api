@@ -22,7 +22,6 @@ An **access token** is an encoded and cryptographically signed string. It has th
 
 Get an **access token**
 To get an access token, sign in to Acrolinx.
-(further description here)
 
 Use an access token
 
@@ -49,7 +48,7 @@ Besides that, the **API token** works like an **access token**.
 
 ## Access token
 
-Even if not explicitly mentioned below, all methods except "index" and "poll access token" require a valid access token in the `X-Acrolinx-Auth` header.
+All methods except "index" and "poll access token" require a valid access token in the `X-Acrolinx-Auth` header.
 If the token is invalid, Acrolinx returns a `401` response. (see `401` response of "index").
 
 Example:
@@ -139,7 +138,7 @@ Content-Type: application/problem+json
 * `title` is a short description of the error. You can use this as the title of the error message that users see.
 * `detail` is a longer description of the error. You can also include this in the error message.
 * `status` is redundant to the HTTP status code. It may be helpful if a proxy changes the HTTP status code of the original API response.
-* You might also see an optional `reference` field with an ID. If present, you can find this ID in the Acrolinx log files to help with troubleshooting.
+* You might also see an optional `reference` field with an ID.
 
 Depending on `type`, the response may include additional fields to provide more detailed information.
 
@@ -153,8 +152,8 @@ Type | Description| What to do
 -----|------------|------------
 `client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
 `server` | Unspecific Acrolinx error during processing of a request. | Check logs and configuration.
-`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to learn how to get a valid license.
-`clientSignatureRejected` | The signature included in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to get a valid license.
+`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to learn how to get a valid signature.
+`clientSignatureRejected` | The signature included in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to get a valid signature.
 `sso` | Returned for any single sign-on errors. | This is likely a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
 `insufficientPrivileges` | Insufficient privileges. | Assign the required privileges to the user.
@@ -328,7 +327,7 @@ Note: This is the only web service method that provides a 200 response if no acc
           "links": {}
         }
 
-## Platform capabilities [GET /api/v1/capabilities]
+## Capabilities [GET /api/v1/capabilities]
 
 Learn about capabilities of the individual APIs. This overview helps if you want to 
 use more than one feature of the API.
@@ -436,10 +435,9 @@ to authenticate the request.
 
 ## Poll for a new API token [GET /api/v1/auth/sign-ins/{id}]
 
-This resource lets a client wait for a user to authenticate and authorize itself to use the
-privileged parts of the Acrolinx API. Once the user has completed the sign-in process,
-it will return a new access token. You can send the API token with each API call to prove the
-privileges and identity owned by the user that signed in.
+Polling lets an integration wait for a user to authenticate and authorize it to use the
+Acrolinx API. Once the user has completed the sign-in process,
+the response will return a new access token.
 
 When polling returns a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
 
@@ -1269,7 +1267,7 @@ Polls the check result. Acrolinx either returns a progress response or the compl
 
 ## Get link to Content Analysis Dashboard [GET /api/v1/checking/{batchId}/contentanalysis]
 
-Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with an API token contains a new privilege token with the Reporting.read privilege.
+Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the reporting read-only privilege. The link with an API token contains a new token with the reporting read-only privilege.
 
 + Parameters
     + batchId: `XYZ-10-22-33` (required, string) - the batch check id
@@ -1331,20 +1329,6 @@ Security:
 ## User resource [/api/v1/user]
 
 ### Get all users [GET /api/v1/user{?sort,page,per_page,username,fullName,roles}]
-
-**Added in Acrolinx version 2021.05**
-
-**Note:** The following table shows the API request parameters by Acrolinx version.
-
-| API request                                                 | Acrolinx version |
-|:------------------------------------------------------------|-----------------------|
-| `[GET /api/v1/user{?sort}]`                                 | `2021.06`             |
-| `[GET /api/v1/user{?page,per_page}]`                        | `2021.08`             |
-| `[GET /api/v1/user{?sort=customFields.{customFieldName}}]`  | `2021.12`             |
-| `[GET /api/v1/user{?username,fullName}]`                    | `2022.02`             |
-| `[GET /api/v1/user{?roles}]`                                | `2022.02`             |
-| `[GET /api/v1/user{?excludeProperties={true|false}}]`       | `2023.10`             |
-| `[GET /api/v1/user{?includeCustomField={key}}]`             | `2023.10`             |
 
 This request retrieves a list of all users in the order of creation.
 
@@ -2078,12 +2062,6 @@ Your password needs to meet the following requirements:
 - Include at least 1 special character
 - At least 10 characters long
 - No more than 64 characters long
-
-For Acrolinx versions 2021.05 to 2022.02, the following apply:
-
-- Password is optional
-- At least 1 character long
-- No more than 128 characters
 
 **Be very careful in the following cases:** 
 - There are no configured default roles. That means that no roles will be automatically assigned to new users.
@@ -3952,7 +3930,7 @@ Returns the total number of users who are missing one or more required user cust
 
 Returns a list of users who are missing one or more required user custom fields.
 
-**Note:** Similar to the User Resource > Get All Users request, it supports pagination. See more details there.
+**Note:** Similar to the User Resource > Get All Users request, it supports pagination. [See more details there](### Get all users). 
 
 + Request
 
@@ -4140,7 +4118,7 @@ Use this method to create an API token for the current user.
 
 **Note:** You don't need extra privileges or roles to create a new API token associated with the user authorized in the request.
 
-**Note:** This endpoint lets users use the Basic authentication scheme to avoid reusing an existing API token.
+**Note:** This endpoint lets users use the Basic authentication to avoid reusing an existing API token.
 
 + Request Create an API token using Basic authentication
     
@@ -4561,9 +4539,7 @@ The user specified by the *id* in this request will be asked to update their use
 
 ### Export a list of users [GET /api/v1/user/_export]
 
-**Added in Acrolinx version 2021.06**
-
-This API provides an easy way to export a concise user list in various file formats.
+This API provides an easy way to export a concise user list in a text file.
 
 The endpoint uses content negotiation to determine the format of the export. To specify the format you prefer, include the `Accept` header in your request. See the `Supported formats` section for more information about the formats that Acrolinx currently supports.
 
@@ -5412,7 +5388,7 @@ The following set of APIs provides license information.
 
 ### Get license statistics for users [GET]
 
-Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.
+Returns license statistics for the Acrolinx instance and shows the sum of license types `named` and `concurrent`.
 Acrolinx checks the following conditions for all users to qualify them for inclusion in the calculation:
 
 - Must be one of the following License Types `named` or `concurrent`
@@ -6947,11 +6923,11 @@ issues[n].canAddToDictionary: true
 
 # Group broadcast API - DRAFT
 
-Use platform notifications to inform users that checking might be affected by maintenance or planned outages.
+Use company notifications to inform users that checking might be affected by maintenance or planned outages.
 
-## Create a platform notification [POST /api/v1/broadcasts/platform-notifications]
+## Create a company notification [POST /api/v1/broadcasts/platform-notifications]
 
-Creates a new notification on the platform.
+Creates a new notification in Acrolinx.
 
 
 + Request (application/json)
@@ -7170,7 +7146,7 @@ you'll see a response other than `200`.
 + type: "api" (string)
 + issuedAt (string) - The ISO8601 timestamp indicating when the token was issued
 + expiresAt (string) - The ISO8601 timestamp indicating when the token will expire
-+ token (string) - The generated API token (JWT)
++ token (string) - The generated API token
 
 ### BulkCreateUser (object)
 + users (array[CreateUser]) - List of users to be created
