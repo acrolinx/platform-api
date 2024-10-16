@@ -81,7 +81,7 @@ Example:
     X-Acrolinx-Client-Locale: de-CH
 ```
 
-Acrolinx tries to match the language tag closest to the locale that it supports, for example, `de`.
+Acrolinx tries to match to the nearest configured locale that it support, for example, `de`.
 The "index" request returns a list of supported locales. Acrolinx falls back to the default `en` locale under the following conditions:
 
 * No X-Acrolinx-Client-Locale header is sent
@@ -134,7 +134,7 @@ Content-Type: application/problem+json
 }
 ```
 
-* `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
+* `type` is a unique identifier for the type of error. An integration may choose a workflow for error handling depending on the type.
 * `title` is a short description of the error. You can use this as the title of the error message that users see.
 * `detail` is a longer description of the error. You can also include this in the error message.
 * `status` is redundant to the HTTP status code. It may be helpful if a proxy changes the HTTP status code of the original API response.
@@ -150,7 +150,7 @@ We may add additional fields in the future. An integration must not break becaus
 
 Type | Description| What to do
 -----|------------|------------
-`client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
+`client` | Unspecific error caused by the integration's request. | Check logs and configuration or the integration code.
 `server` | Unspecific Acrolinx error during processing of a request. | Check logs and configuration.
 `clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to learn how to get a valid signature.
 `clientSignatureRejected` | The signature included in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to get a valid signature.
@@ -158,9 +158,9 @@ Type | Description| What to do
 `auth` | Invalid authentication. | Use another access token.
 `insufficientPrivileges` | Insufficient privileges. | Assign the required privileges to the user.
 `interactiveSignInTimedOut` | The interactive sign-in process timed out. | Sign in again.
-`checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
+`checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the integration.
 `checkFailed` | The check failed. | Check logs and configuration.
-`invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check the configuration of client or proxies, which set the header.
+`invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check the configuration of integration or proxies, which set the header.
 `customFieldsIncorrect` | Custom field values are incorrect. | Provide valid values for all required custom fields before or when checking a document.
 `validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
 `guidanceProfileDoesntExist` | Guidance profile doesn't exist. | The guidance profile doesn't exist or isn't available for the user ID and language provided.
@@ -203,7 +203,7 @@ There's no guarantee that values are always present or in a uniform format.
 
 ## Progress responses
 
-A progress response always contains a `retryAfter` field, which tells the client how many seconds to wait until the next poll request.
+A progress response always contains a `retryAfter` field, which tells the integration how many seconds to wait until the next poll request.
 The response can optionally include both the `message` field with a human-readable text about the current status and a `percent`, which is
 a number that shows the progress as a percent.
 A progress response always has the `Retry-After` header set with the same value as the `retryAfter` field and an HTTP status 202.
@@ -365,9 +365,9 @@ to authenticate the request.
 + Response 200 (application/json)
     No sign-in needed, the response body will contain valid access tokens.
 
-    The server may decide that the request is already sufficiently authorized. In this case,
+    Acrolinx may decide that the request is already sufficiently authorized. In this case,
     no sign-in process is started. The response will contain the same information as after
-    a successful sign-in process. The following conditions may lead to this response:
+    a successful sign-in. The following conditions may lead to this response:
 
     - The `X-Acrolinx-Auth` header contained a valid token.
     - Single sign-on is configured and valid credentials are provided.
@@ -378,10 +378,10 @@ to authenticate the request.
     If the `X-Acrolinx-Auth` header is absent a
     new sign-in process is started. The response body contains two links.
     One allows the user to complete the sign-in process.
-    The other helps the client to acquire the session data:
+    The other helps the integration to acquire the session data:
 
     - `interactive` a link to a web page that allows the user to authenticate and
-          permit the client to access the server. If you provide a language in the
+          permit the integrations to access Acrolinx. If you provide a language in the
           `X-Acrolinx-Client-Locale` header, the link will point to a localized
           version of that web page if available and technically possible.
 
@@ -390,7 +390,7 @@ to authenticate the request.
 
     Note that the sign-in process will time out. The `interactiveLinkTimeout` field
     contains the length of time in seconds that the `interactive` link will stay valid. If the
-    sign-in page was loaded before this time, the server will extend
+    sign-in page was loaded before this time, Acrolinx will extend
     the timeout. To detect timeouts after opening the sign-in page, use the `poll` link.
 
     + Body
@@ -425,7 +425,7 @@ to authenticate the request.
     + Attributes (object)
 
 + Response 503
-    The server is unable to start a sign-in process at this time.
+    Acrolinx is unable to start a sign-in process at this time.
 
     + Header
 
@@ -435,9 +435,8 @@ to authenticate the request.
 
 ## Poll for a new API token [GET /api/v1/auth/sign-ins/{id}]
 
-Polling lets an integration wait for a user to authenticate and authorize it to use the
-Acrolinx API. Once the user has completed the sign-in process,
-the response will return a new access token.
+Use polling so your integration waits for a user to authenticate and authorize before the integration can use the
+Acrolinx API. Once the user has completed the sign-in process, the response will return a new access token.
 
 When polling returns a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
 
@@ -451,7 +450,7 @@ When polling returns a final result, the polling endpoint will disappear and ret
             X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45
 
 + Response 200 (application/json)
-   A user has completed the sign-in process and the server has created a new access token.
+   A user completed the sign-in process and Acrolinx created a new access token.
 
    Note that this resource will disappear after this response.
 
@@ -459,7 +458,7 @@ When polling returns a final result, the polling endpoint will disappear and ret
 
 + Response 202 (application/json)
    The user hasn't authorized the sign-in yet. Request the same URI again to continue polling.
-   Note that clients should pace themselves by respecting the `Retry-After` header.
+   Note that integrations should pace themselves by respecting the `Retry-After` header.
 
     + Header
 
@@ -470,7 +469,7 @@ When polling returns a final result, the polling endpoint will disappear and ret
            + `retryAfter`: 2 (number, required)
 
 + Response 404 (application/json)
-    The server has no knowledge of the polling token. If you used a valid poll URI, the cause of this response is
+    Acrolinx has no knowledge of the polling token. If you used a valid poll URI, the cause of this response is
     a timeout, or another poll request may have consumed the credentials.
 
     The returned type is `interactive_sign_in_timed_out`, which distinguishes this response from a normal 404 caused by a wrong URL.
@@ -492,7 +491,7 @@ The API for checking documents.
 The checking API replaces writing guides and Content Profiles with a flat list of guidance profiles. Each guidance profile corresponds to a
 writing guide or a Checking Profile. If Sublanguages are activated, they're folded into the list of guidance profiles.
 
-For each guidance profile, the server provides information about the language, activated goals, and term sets. The integration may use this information
+For each guidance profile, Acrolinx provides information about the language, activated goals, and term sets. The integration may use this information
 for filtering, but users can only select one (complete) guidance profile for checking (for example, not deselect goals).
 
 For each Target, the goals contain an additional string field called `scoring`, which can have one of the following values:
@@ -631,7 +630,7 @@ The same information is available in the checking capabilities.
             }
 
 
-            // If a standard format is configured on the server, the minimal request is even shorter:
+            // If a standard format is configured in Acrolinx, the minimal request is even shorter:
 
             {
                 "content": "text to check",                  // required
@@ -656,7 +655,7 @@ The same information is available in the checking capabilities.
                     "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
                 },
                 "document": {                               // optional, default: empty "document" object
-                    "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
+                    "reference": "C:\\abc.md",              // optional integration known id hint e.g. a file name
                     "customFields": [                       // optional
                         {
                             "key": "field1",
@@ -751,8 +750,7 @@ Polls the check result. Acrolinx either returns a progress response or the compl
 + Response 200 (application/json)
 
         Attention: which attributes the response contains depends on
-        the configuration, request, and document. The 'scoring' field in the
-        goals is only present if the server runs in Targets Mode.
+        the configuration, request, and document.
 
         {
           "data":{
@@ -1307,8 +1305,6 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
         }
 
 # Group user API
-
-**Available since Acrolinx version 2018.10**
 
 In the User API, Acrolinx defines a user as an entity that has the following:
 * An id
@@ -1952,8 +1948,6 @@ You'll also see properties, roles, and custom fields.
 
 ### Get a user (self) [GET /api/v1/user/self]
 
-**Added in Acrolinx version 2018.12**
-
 This is an alternative way to get information about the current user (authorized in the request). 
 
 + Request Get current user (application/json)
@@ -2041,8 +2035,6 @@ This is an alternative way to get information about the current user (authorized
 
 ### Create a user [POST /api/v1/user]
 
-**Added in Acrolinx version 2021.05**
-
 **Note:**
 
 - The username needs to be unique and is limited to 255 characters.
@@ -2052,7 +2044,7 @@ This is an alternative way to get information about the current user (authorized
 
 **Password requirements**
 
-If you want to create a user, the password field is required as of Acrolinx version 2022.02.
+If you want to create a user, the password field is required.
 Your password needs to meet the following requirements:
 
 - Composed of ASCII printable characters
@@ -2064,7 +2056,6 @@ Your password needs to meet the following requirements:
 - No more than 64 characters long
 
 **Be very careful in the following cases:** 
-- There are no configured default roles. That means that no roles will be automatically assigned to new users.
 - Federated authentication is enabled:
   - Users are created automatically with federated authentication.
   - Only users created by the identity provider can sign in to Acrolinx.
@@ -3121,8 +3112,6 @@ Your password needs to meet the following requirements:
 
 ### Update a user [PUT /api/v1/user/{id}]
 
-**Added in Acrolinx version 2021.05**
-
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
 
@@ -3646,9 +3635,6 @@ Your password needs to meet the following requirements:
 
     In this example, only the `password` attribute will change for the user `fred`. This was identified in the database by its *id*.
 
-    **Note:**
-    - You can update the `password` field as of Acrolinx version 2022.02
-
     + Headers
 
             X-Acrolinx-Auth: your_access_token
@@ -3798,8 +3784,6 @@ Your password needs to meet the following requirements:
 
 ### Delete a user [DELETE /api/v1/user/{id}]
 
-**Added in Acrolinx version 2021.05**
-
 This method deletes a specified user based on its *id*.
 
 **Note:** You can only successfully delete a user under the following conditions:
@@ -3888,8 +3872,6 @@ To read more about managing users and built-in users, see [User Management](http
 
 
 ## Missing required user custom fields [/api/v1/user/custom-fields-missing]
-
-**Added in Acrolinx version 2022.04**
 
 Query users who don't have required custom fields.
 
@@ -4112,8 +4094,6 @@ Note that you can only have one API token at a time.
 
 ### Create an API token (Self)  [POST /api/v1/user/self/tokens]
 
-**Added in Acrolinx version 2021.06**
-
 Use this method to create an API token for the current user.
 
 **Note:** You don't need extra privileges or roles to create a new API token associated with the user authorized in the request.
@@ -4201,8 +4181,6 @@ Use this method to create an API token for the current user.
         }
 
 ### Create an API token for users [POST /api/v1/user/{id}/tokens]
-
-**Added in Acrolinx version 2021.05**
 
 Use this method to create an API token for users based on their *id*.
 
@@ -4314,8 +4292,6 @@ This API is convenient when you want to create new users.
 
 ### Get a randomly generated compliant password [GET /api/v1/user/random-passwords]
 
-**Added in Acrolinx version 2022.03**
-
 **Password Requirements**
 
 A password needs to meet the following requirements:
@@ -4411,8 +4387,6 @@ Use these administrative commands to manage users in your Acrolinx instance. The
 
 ### Release an active named user license [PUT /api/v1/user/{id}/_release]
 
-**Added in Acrolinx version 2021.05**
-
 This method uses the *id* to release an active license consumed by a user.
 
 **Note:**
@@ -4475,8 +4449,6 @@ This method uses the *id* to release an active license consumed by a user.
         }
 
 ### Request user information update  [PUT /api/v1/user/{id}/_request_cf_update]
-
-**Added in Acrolinx version 2021.12**
 
 The user specified by the *id* in this request will be asked to update their user information.
 
@@ -4662,8 +4634,6 @@ and a list of `errors` for the objects that couldn't be processed.
 **Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
 
 ### Create users in bulk [POST /api/v1/user/bulk]
-
-**Added in Acrolinx version 2021.06**
 
 Use this API to create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
@@ -4902,12 +4872,10 @@ noted in the Create User API section.
 
 ### Request user information update in bulk  [PUT /api/v1/user/bulk/_request_cf_update]
 
-**Added in Acrolinx version 2021.12**
-
 This API is the bulk operation of "Request User Information Update" from the "User Commands" group.
 It lets you ask multiple users to update their user information.
 
-**Note:** There are currently no limitations on the number of users for which integrations can request an information update.
+**Note:** Currently, there's no limit on the number of users that you can request to update their information.
 
 + Request Ask multiple users to update their user information (application/json)
 
@@ -5053,8 +5021,6 @@ It lets you ask multiple users to update their user information.
         }
 
 ### Delete users in bulk [DELETE /api/v1/user/bulk]
-
-**Added in Acrolinx version 2021.12**
 
 This API lets you delete a list of users. All user ids follow the requirements and constraints
 noted in the "Delete User API" section.
@@ -5316,8 +5282,6 @@ noted in the "Delete User API" section.
 
 # Group custom fields API
 
-**Available since Acrolinx version 2022.03**
-
 Use the API to set and view user custom fields.
 
 **Note:** You only need a valid access token for this request (no special privileges needed).
@@ -5379,8 +5343,6 @@ Shows a list of your user custom fields.
         }
 
 # Group licenses API
-
-**Available since Acrolinx version 2021.06**
 
 The following set of APIs provides license information.
 
@@ -5467,8 +5429,6 @@ The following table describes the statistics attributes:
         }
 
 # Group role API
-
-**Available Acrolinx version 2021.05**
 
 In the Role API, a role is an entity that has an id, a name and list of privileges, and information about whether this role is a default role. 
 You can use roles to group sets of privileges and assign them to different users.
@@ -5641,8 +5601,7 @@ Privileges determine if a user can perform an action with the API or Acrolinx UI
 
 Returns a list of all supported privileges.
 
-**Note:** Depending on your Acrolinx version, the example response may look different than the response that you get for your supported privileges. 
-In newer Acrolinx versions, we may have introduced or removed some privileges. 
+**Note:** In newer Acrolinx versions, we may introduce or remove privileges. 
 To find out which privileges come with your instance, submit this request and compare it to the example response.  
 
 + Request
@@ -6589,9 +6548,6 @@ Updates a role that Acrolinx identified by its *id* in the database.
 
     In this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.
 
-    **Note:**
-    - You aren't required to have default roles.
-
     + Headers
 
             X-Acrolinx-Auth: your_access_token
@@ -6978,8 +6934,6 @@ Retrieves active notifications from Acrolinx.
 
 # Group monitoring API
 
-**Available since Acrolinx version 2019.10**
-
 The resources in this group provide information about the health and performance of Acrolinx.
 Accessing this information requires the privilege "Access to monitoring API." Not all users have this privilege. 
 Make sure the user associated with your API token has the relevant privileges.
@@ -7059,8 +7013,6 @@ This method returns a successful response when at least one language server is a
 This API response will only contain `200` response code. You don't need
 the privilege "Access to monitoring API" to use this API.
 
-**Available since Acrolinx version 2022.03**
-
 + Response 200
 
 + Response 503
@@ -7085,8 +7037,6 @@ you can make an API call to `api/v1/monitoring/health/status`.
 This API response will contain the plain-text message "OK" and a `200` response code. You don't need
 the "Access to monitoring API" privilege to use this API. If a response is unsuccessful,
 you'll see a response other than `200`.
-
-**Available since Acrolinx version 2022.09**
 
 + Response 200 (text/plain)
 
