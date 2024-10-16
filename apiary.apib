@@ -488,13 +488,12 @@ The API for checking documents.
 
 ## List checking capabilities [GET /api/v1/checking/capabilities]
 
-The checking API replaces writing guides and Content Profiles with a flat list of guidance profiles. Each guidance profile corresponds to a
-writing guide or a Checking Profile. If Sublanguages are activated, they're folded into the list of guidance profiles.
+Use the checking capabilities to fetch a list of available style guides. If sublanguages are activated, they're included in the list of style guides.
 
-For each guidance profile, Acrolinx provides information about the language, activated goals, and term sets. The integration may use this information
-for filtering, but users can only select one (complete) guidance profile for checking (for example, not deselect goals).
+For each style guide, Acrolinx provides information about the language, activated goals, and term sets. The integration may use this information
+for filtering, but users can only select one style guide for checking. You cannot deselect individual goals within a style guide.
 
-For each Target, the goals contain an additional string field called `scoring`, which can have one of the following values:
+For each style guide, the goals contain an additional string field called `scoring`, which can have one of the following values:
 * `required` (this goal counts towards the score and writers should prioritize issues found in this goal when creating content). 
 * `recommended` (this goal is a recommendation only and does not count towards the overall document score).
 
@@ -642,7 +641,7 @@ The same information is available in the checking capabilities.
                 "content": "text to check",                  // required
                 "contentEncoding": "base64",                 // optional, default: none = HTTP request encoding
                 "checkOptions": {
-                    "guidanceProfileId": "aud-1",                // optional, default: first guidance profile. In Targets Mode: optional target name/target id, default: detected by Automatic Target Assignment
+                    "guidanceProfileId": "aud-1",                // optional, default: first guidance profile. optional target name/target id, default: detected by Automatic Target Assignment
                     "reportTypes": ["scorecard"],                // optional, default: scorecard
                     "contentFormat": "markdown",                 // optional, default: auto
                     "checkType": "batch",                        // optional, default: interactive
