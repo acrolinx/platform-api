@@ -262,6 +262,34 @@ Responses may have fields with HTML snippets to provide nice formatting in inter
 
 All HTML fields only contain formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
 
+# JSON - Escape special characters
+
+Some characters are special in JSON and requires escaping. To escape the character, prefix the character with backslash `\`.
+
+Below are some common characters that need to be escape in JSON:
+
+|Character|Escape character|
+|----------------|------------|
+|double quote|`\"`|
+|backslash|`\\`|
+|forwardslash|`\/`|
+|Backspace|`\b`|
+|Form feed|`\f`|
+|Newline|`\n`|
+|Tab|`\t`|
+|Unicode escape sequence for special characters|`\uXXXX`|
+
+Example:
+Value of password is `backslash\quote"` in below JSON the special characters are escaped using backslash.
+
+```
+    {
+        "username": "username",
+        "fullName": "full Name",
+        "password": "backslash\\quote\""
+    }
+```
+
 # Group Index
 
 ## Index [GET /api/v1]
