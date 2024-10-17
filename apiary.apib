@@ -134,7 +134,7 @@ Content-Type: application/problem+json
 }
 ```
 
-* `type` is a unique identifier for the type of error. An integration may choose a workflow for error handling depending on the type.
+* `type` is a unique identifier for the type of error. Choose a workflow for error handling that works best for the type of integration (interactive or automated).
 * `title` is a short description of the error. You can use this as the title of the error message that users see.
 * `detail` is a longer description of the error. You can also include this in the error message.
 * `status` is redundant to the HTTP status code. It may be helpful if a proxy changes the HTTP status code of the original API response.
@@ -170,7 +170,6 @@ Type | Description| What to do
 `conflict` | Concurrent write access. | Conflict with a concurrent write access. Try again with fresh data.
 `licenseLimitExceeded` | License limit exceeded. | You exceeded a limit set by the terms of your license. The error description contains more details. For more information, check [the documentation](https://support.acrolinx.com/hc/en-us/articles/10306079192082-License-Types).
 `entityToAssociateNotFound` | One or more associates to an entity could not be found. | Make sure that the given associates actually exist.
-
 
 ### Additional information on validation errors
 
@@ -238,7 +237,8 @@ Content-Type: application/json
 
 ## Successful responses
 
-The fields of a successful response with data depend on the request.
+The number of fields in successful response data depends on the request. For example, the response might contain additional fields if the 
+original check request also asked for a Term Harvesting report.
 
 Example:
 
@@ -1313,7 +1313,7 @@ In the User API, Acrolinx defines a user as an entity that has the following:
 
 You're _required_ to provide user information for the following:
 * Interactive integrations: When you sign in to the Sidebar, you enter your user information. This creates an access token for the signed-in user.
-* Embedded integrations (API key-based): When you sign in to Acrolinx, you need to enter your custom user information. This API lets you generate an API token for the user that’s signed in.
+* Embedded (CMS) integrations (that use an API token): When you sign in to Acrolinx, you need to enter your custom user information. Use this API to generate an API token for the user that’s signed in.
 
 Security:
 * A user can read and update their own data.
@@ -4097,7 +4097,7 @@ Use this method to create an API token for the current user.
 
 **Note:** You don't need extra privileges or roles to create a new API token associated with the user authorized in the request.
 
-**Note:** This endpoint lets users use the Basic authentication to avoid reusing an existing API token.
+**Note:** This endpoint lets users use Basic authentication to avoid reusing an existing API token.
 
 + Request Create an API token using Basic authentication
     
@@ -5355,7 +5355,7 @@ Acrolinx checks the following conditions for all users to qualify them for inclu
 - Must be one of the following License Types `named` or `concurrent`
 - For `named` license they must be active and satisfy the following:
     - Be activated for `Checking` session type
-    - Must not be free of charge
+    - Must not be free of charge (built-in users)
 - All other `named` licensed users are considered `inactive`
 - All `concurrent` licensed users are `existing` if a license exists
 
