@@ -129,15 +129,15 @@ This is how it works:
 
 ## Create an API token
 
-Creating an API Token is easy:
+Creating an API token is easy:
 
-* Sign in to Acrolinx
-* Go to ‘Settings'
-* Click CREATE API TOKEN.
-* Copy the API token.
+1. Sign in to Acrolinx.
+2. Go to your ‘Settings'.
+3. Click CREATE API TOKEN.
+4. Copy the API token.
 
 **Note**
-As soon as you generate an API token, save it somewhere secure (like a password manager) so that you can access it again. Once you leave the Settings page, the API token will disappear from the display.
+After you generate an API token, save it somewhere secure (like a password manager) so that you can access it again. Once you leave the Settings page, the API token will no longer appear on screen.
 
 ## Signature
 
