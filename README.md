@@ -169,14 +169,13 @@ Maintaining your integration in production is much easier with a version and bui
 * How do I authenticate and use SSO?
     + Authentication requires either an API token or Acrolinx sign-in.
       Acrolinx sign-in supports different SSO methods that use PingFederate.
-* How do the API and automation SDKs (Java, JavaScript, etc.) in the integration release schedule work together?
+* How do the API and automation SDKs (Java, JavaScript, etc.) work together?
     + We build SDKs on top of the API and use the API to provide a basic framework in languages like Java or JavaScript.
 * Can I include hierarchies in the document reference, for example: `<book>`, `<chapter>`, `<section>`
-  so Acrolinx reporting will group all check results for the book, chapter, etc.?
-    + If you want to group content, you should use document custom fields.
-      You can also use the API to manage custom fields.
+  so Acrolinx reporting groups all check results for the book, chapter, etc.?
+    + If you want to group content, you should use document custom fields. You can also use the API to manage custom fields.
       Acroilnx uses the document reference to identify a piece of content but Acrolinx doesn't use the document reference to group content.
-* Can I add a link for each document in a batch check so the Content Analysis Dashboard provides a link back to the content in the overview?
+* Can I add a link for each document in a batch check so the Content Analysis Dashboard provides a link back to the documents in the overview?
     + In most cases, a document reference is the link to your content.
       If you need to provide a separate or different link, you can use custom fields.
 
