@@ -43,7 +43,7 @@ Familiarize yourself with the following concepts:
 * [signatures](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/packaging.md#packaging)
 * [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-extraction.md).
 
-If you can't wait, jump to the [Quick start tutorial](quickstart.md) and start playing around.
+If you can't wait, jump to the [quick start tutorial](quickstart.md) and start playing around.
 
 ## Important headers and content type
 
