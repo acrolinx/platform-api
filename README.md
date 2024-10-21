@@ -9,7 +9,7 @@ This documentation helps you:
 * build your own integration
 * understand how Acrolinx interacts with integrations.
 
-The [reference](#reference) describes all services and methods.
+The [API reference](#reference) describes all services and methods.
 
 ## Prerequisites
 
