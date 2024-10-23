@@ -11,13 +11,10 @@ This documentation helps you:
 
 The [API reference](#reference) describes all services and methods.
 
-## Prerequisites
+## Get started
 
 Contact [Acrolinx support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/support.md)
 for consulting and getting your integration certified.
-This sample works with a test license on an Acrolinx test instance.
-The license is only meant for demonstration and development.
-Once you finish coding, contact Acrolinx to get a license for your integration.
   
 Acrolinx provides different SDKs and samples for building integrations.
 
@@ -28,35 +25,18 @@ Before you start building your own integration, you might want to read the follo
 * [Acrolinx SDKs](https://github.com/acrolinx?q=sdk)
 * [Acrolinx demo projects](https://github.com/acrolinx?q=demo).
 
-## Get started
+## Prerequisites
 
 You'll need the following:
 
-* An Acrolinx instance URL
+* An Acrolinx URL
 * A user on that Acrolinx instance
-* A signature (more on that later)
-* A way to make http calls
-* A way to read and write JSON strings
+* A signature
 
-Familiarize yourself with the following concepts: 
-* [authentication](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/configuration.md)
-* [signatures](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/packaging.md#packaging)
-* [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-extraction.md).
-
-If you can't wait, jump to the [quick start tutorial](quickstart.md) and start playing around.
-
-## Important headers and content type
-
-Always include the following headers:
-
-```HTTP
-X-Acrolinx-Auth: YOUR_ACCESS_TOKEN
-X-Acrolinx-Client: YOUR_SIGNATURE;YOUR_VERSION
-Content-Type:application/json
-```
-
-Individual topics explain the contents of these headers.
-All requests to the Acrolinx API should contain these headers.
+Understand the following concepts: 
+* [authentication](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/authentication.md)
+* [signatures](#signature)
+* [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/text-extraction.md#whats-a-document).
 
 ## Authentication
 
@@ -76,7 +56,7 @@ Access tokens normally have a lifetime of 30 days. After that, you have to renew
 
 API tokens have a lifespan of 4 years.
 
-## Get an access token with Acrolinx sign-in
+## Acrolinx sign-in process
 
 The Acrolinx sign-in process is for individual users to sign in.
 An Acrolinx web application handles the authentication.
@@ -142,13 +122,6 @@ After you generate an API token, save it somewhere secure (like a password manag
 ## Signature
 
 A signature is a string that identifies an integration.
-During development, you should use the following signature:
-
-```TEXT
-SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5
-```
-
-Once Acrolinx certifies your integration, you'll get your own signature.
 
 Inclue the signature as a header in every request you send to the Acrolinx API:
 
@@ -158,26 +131,10 @@ X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
 
 The `VERSION_NUMBER` should follow the following pattern `X.X.X.X` like `1.0.0.1`.
 
-You don't have to send a
-[version and build number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
-But to get [certified](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/checklist.md),
-your integration must send this information.
+To get [certified](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/checklist.md), your integration
+must send the [version and build number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
+
 Maintaining your integration in production is much easier with a version and build number.
-
-## FAQ (frequently asked questions)
-
-* How do I authenticate and use SSO?
-    + Authentication requires either an API token or Acrolinx sign-in.
-      Acrolinx sign-in supports different SSO methods that use PingFederate.
-* How do the API and automation SDKs (Java, JavaScript, etc.) work together?
-    + We build SDKs on top of the API and use the API to provide a basic framework in languages like Java or JavaScript.
-* Can I include hierarchies in the document reference, for example: `<book>`, `<chapter>`, `<section>`
-  so Acrolinx reporting groups all check results for the book, chapter, etc.?
-    + If you want to group content, you should use document custom fields. You can also use the API to manage custom fields.
-      Acroilnx uses the document reference to identify a piece of content but Acrolinx doesn't use the document reference to group content.
-* Can I add a link for each document in a batch check so the Content Analysis Dashboard provides a link back to the documents in the overview?
-    + In most cases, a document reference is the link to your content.
-      If you need to provide a separate or different link, you can use custom fields.
 
 ## Reference
 
