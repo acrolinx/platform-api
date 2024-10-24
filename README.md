@@ -49,12 +49,10 @@ X-Acrolinx-Auth:SOME_ACCESS_TOKEN_STRING
 
 Access tokens are associated with a user and come in two forms:
 
-* default access tokens that you get by signing in to Acrolinx
-* API tokens.
-
-Access tokens normally have a lifetime of 30 days. After that, you have to renew them.
-
-API tokens have a lifespan of 4 years.
+1. Access tokens that you get by signing in to Acrolinx
+   Access tokens normally have a lifetime of 30 days. After that, you have to renew them.
+2. API tokens
+   API tokens have a lifespan of 4 years.
 
 ## Acrolinx sign-in process
 
@@ -136,7 +134,7 @@ must send the [version and build number](https://github.com/acrolinx/acrolinx-co
 
 Maintaining your integration in production is much easier with a version and build number.
 
-## Reference
+## API Reference
 
 ### [Rendered version on apiary.io](https://acrolinxapi.docs.apiary.io/#)
 
