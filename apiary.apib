@@ -7187,37 +7187,37 @@ The reporting API provides direct access to raw check data and raw issue data.
 You can download the data as a CSV file and add it to your preferred analysis tool.
 
 ### Restrictions
-#### Available Data
+#### Available data
 Default: 12 months
 
 You can download data from the past 12 months by default. Contact Acrolinx Support for more information.
 
-#### Time Limit
+#### Time limit
 
 You can only download 31 days of data per request.
 
-#### Concurrent Requests
+#### Concurrent requests
 Default: 3 requests per tenant
 
 This limits the number of concurrent downloads. The default is 3 concurrent downloads.
 If you exceed the quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, and RateLimit-Remaining.
 
-#### Download Volume
-Default: 1000 days of raw check data and 1000 days of raw issue data. The data will replenish at 5 days of data per day.
+#### Download volume
+Default: 1000 days of raw check data and 1000 days of raw issue data. The data will replenish at a rate of 5 days of data per day.
 
 If you download any amount of data for a specific day, that day counts toward the default. This includes empty days. The 1000-day default is designed to give you access to all available historic data.
 
 The quota is set for each type of data. For example, when you download check data it won't affect the amount of issue data you can download.
 
-If you exceed the download quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset headers.
+If you exceed the download quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset.
 
-**Note:** To access the Reporting API, you'll need to be authorized and authenticated via an access token. Before you get started with the Reporting API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements.
+**Note:** To access the Reporting API, you'll need to be authorized and authenticated with an access token. Before you get started with the Reporting API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements.
 
 ## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
 
 Download check data as a CSV file. You can access the data with cURL. 
 
-**Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
+**Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data is only available if checks were run in the requested time range.
 
 ```
 curl \
@@ -7234,7 +7234,7 @@ curl \
 |Language|string|Checking language|255|
 |Scorecard URI|string|Uniform Resource Identifier (URI) of the Scorecard|255|
 |File ID|string|Unique file ID|36|
-|Content reference|string|Acrolinx assigns the file a content reference the first time you run a check. Files with the same content reference are treated as the same file.|36|
+|Content reference|string|The first time you run a check, Acrolinx assigns the file a content reference. Acrolinx treats files with the same content reference as the same file.|36|
 |File path|string|The file's location when it’s first checked|255|
 |File name|string|Name of the file|255|
 |Content ID|string|Unique check ID for batch checks|255|
@@ -7270,7 +7270,7 @@ curl \
 |Scannability goal issues|number|Number of Issues found for the goal Scannability||
 |Terminology goal issues|number|Number of Issues found for the goal Terminology||
 |Tone goal issues|number|Number of issues found for the goal Tone||
-|{NAME} metric score|number|Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffix by name of the metric||
+|{NAME} metric score|number|Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffixes by name of the metric||
 
 + Request
 
