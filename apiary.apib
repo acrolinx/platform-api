@@ -262,11 +262,44 @@ Responses may have fields with HTML snippets to provide nice formatting in inter
 
 All HTML fields only contain formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
 
+# JSON - Escape special characters
+
+Some JSON characters are special and require escaping. To escape a character, prefix the character with a backslash `\`.
+
+Below are some common characters that need to be escaped in JSON:
+
+|Character|Escape character|
+|----------------|------------|
+|Double quote|`\"`|
+|Backslash|`\\`|
+|Forward slash|`\/`|
+|Backspace|`\b`|
+|Form feed|`\f`|
+|Newline|`\n`|
+|Tab|`\t`|
+|Unicode escape sequence for special characters|`\uXXXX`|
+
+Example:
+The value of the password is `backslash\quote"` in the JSON below. The special characters are escaped using a backslash.
+
+```json
+    {
+        "username": "username",
+        "fullName": "full Name",
+        "password": "backslash\\quote\""
+    }
+```
+
 # Group Index
 
 ## Index [GET /api/v1]
 
-Note: This is the only web service method that provides a 200 response if no access token was sent.
+This endpoint returns general information about the current Acrolinx
+version. Starting with version 2024.09, it also contains
+information about the installed linguistic configuration (referred to as a "guidance package").
+
+
+**Note**: This is the only web service method that provides a 200 response if no access token was sent.
 
 + Request
 
@@ -279,15 +312,25 @@ Note: This is the only web service method that provides a 200 response if no acc
 
         {
           "data": {
+            "platform": {
+                "name": "Acrolinx Platform",
+                "version": "2024.09.10156"
+            },
             "server": {
-                "version": "5.1.0.123",
-                "name": "Acrolinx Core Platform"
+                "name": "Core Server",
+                "version": "2024.09.10846"
+            },
+            "guidancePackage": {
+                "name": "Guidance Package for ACME",
+                "version": "2024.09",
+                "build": "7732",
+                "date": "2024-09-13"
             },
             "locales": [ "en" ]
           },
           "links": {
             "signIn": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins"
-            }
+          }
         }
 
 
@@ -302,9 +345,19 @@ Note: This is the only web service method that provides a 200 response if no acc
 
         {
           "data": {
+            "platform": {
+                "name": "Acrolinx Platform",
+                "version": "2024.09.10156"
+            },
             "server": {
-                "version": "5.1.0.123",
-                "name": "Acrolinx Core Platform"
+                "name": "Core Server",
+                "version": "2024.09.10846"
+            },
+            "guidancePackage": {
+                "name": "Guidance Package for ACME",
+                "version": "2024.09",
+                "build": "7732",
+                "date": "2024-09-13"
             },
             "locales": [ "en" ]
           },
@@ -1340,6 +1393,7 @@ Security:
 | `[GET /api/v1/user{?roles}]`                                | `2022.02`             |
 | `[GET /api/v1/user{?excludeProperties={true|false}}]`       | `2023.10`             |
 | `[GET /api/v1/user{?includeCustomField={key}}]`             | `2023.10`             |
+| `[GET /api/v1/user{?excludeCustomFields={true|false}}]`     | `2024.02`             |
 
 This request retrieves a list of all users in the order that they were added.
 
@@ -1423,6 +1477,8 @@ By default, all custom fields are nested in the user model.
 You can use the parameter `includeCustomField` to limit the returned fields to those that match the key passed in the param value.
 This is helpful if you want to fetch a specific set of custom fields to reduce data transfer.
 To include more than one custom field, add `&includeCustomField={Key}` to the request N times.
+To exclude all custom fields, you can use the parameter `&excludeCustomFields=true`. This takes priority over any
+`includeCustomField` parameters that are present, and will always result in no custom fields being returned.
 
 + Parameters
 
@@ -4296,6 +4352,8 @@ Typical use cases for this API:
             }
         }
 
++ Response 403 (application/json)
+
         // when the creator or receiver of the token is the built-in `admin`
         {
             "links": {},
@@ -4308,7 +4366,9 @@ Typical use cases for this API:
             }
         }
 
-        // when the user tries to create a token for another user with more elevated roles
++ Response 403 (application/json)
+
+        // when the user tries to create a token for a Super Administrator user, when they are not a Super Administrator themselves
         {
             "links": {},
             "error": {
@@ -6851,95 +6911,6 @@ Available information includes the configured document custom fields.
         + data (object)
         + links (object)
 
-# Group Dictionary API
-
-This API handles the spelling dictionary.
-Items listed in the spelling dictionary are ignored (not flagged) by the spelling checker.
-
-## Dictionary Entry
-From an API perspective, an "item" or *dictionary entry* has the following properties:
-
-* `surface`: The string that isn't a spelling issue.
-* `scope`: The range of influence of the spelling exception.
-    * `language`
-    * `guidanceProfile`
-    * `document`
-* `languageId`: The language in which the surface shouldn't be a spelling issue.
-* `guidanceProfileId`: The guidanceProfile for which the surface shouldn't be a spelling issue.
-* `documentId`: The document in which the surface shouldn't be a spelling issue.
-
-Depending on the `scope`, the -`Id`-values are optional or mandatory:
-
-* `scope=language` requires a `languageId` (or alternatively an `guidanceProfileId`).
-* `scope=guidanceProfile` requires an `guidanceProfileId`.
-* `scope=document` requires a `documentId` and alternatively a `languageId` or an `guidanceProfileId`.
-
-The `documentId` is a persistent identifier of the document from the Acrolinx Analytics reporting database.
-
-(Tip: With an `guidanceProfileId` and a `documentId` you're always on the safe side.)
-
-(Tip: guidance profiles have languages.
-Keep `languageId` and `guidanceProfileId` consistent in that respect if sending both.
-Otherwise the winner depends on the `scope`.)
-
-## Get Dictionary Capabilities [GET /api/v1/dictionary/capabilities]
-
-This method enables the integration to discover the available dictionary scopes.
-(The availability of scopes depends on the server configuration and the user's privileges.)
-
-Alternatively, you can retrieve the available scopes from a check result:
-
-```
-data.dictionaryScopes: [ "language", "guidanceProfile", "document" ]
-```
-
-+ Response 200 (application/json)
-
-        {
-          "data": {
-            "scopes": [ "language", "guidanceProfile", "document" ]
-          }
-        }
-
-
-
-## Add to Dictionary [POST /api/v1/dictionary/submit]
-
-Create a dictionary entry for the specified scope.
-
-Beware:
-Spell checking is a multifaceted functionality.
-Whether or not a particular issue will disappear after adding it to the dictionary, depends on the issue's true nature.
-The spelling checker tells you if you can reasonably suppress an issue by adding a surface to the dictionary.
-In the check result:
-
-```
-issues[n].canAddToDictionary: true
-```
-
-+ Request (application/json)
-
-        {
-            "surface": "wiruwaruwolz",                  // required
-            "scope": "document",                        // required, one of the scopes above
-            "languageId": "en_GB",                      // required if scope!=guidanceProfile
-            "guidanceProfileId": "aud-1",               // required if scope=guidanceProfile
-            "documentId": "283ab1e075f21a"              // required if scope=document
-        }
-
-+ Response 201 (application/json)
-
-        {
-          "data": {
-            "surface": "wiruwaruwolz",
-            "scope": "document",
-            "languageId": "en_GB",
-            "guidanceProfileId": null,
-            "documentId": "283ab1e075f21a"
-          }
-        }
-
-
 # Group Broadcast API - DRAFT
 
 You can use platform notifications to inform users that checking might be affected by server maintenance or planned server outages.
@@ -7209,3 +7180,361 @@ you'll see a response that isn't `200`.
 
 ## RandomPassword
 + value (string) - a random, policy-compliant password
+
+# Group Reporting API
+
+The reporting API provides direct access to raw check data and raw issue data.
+You can download the data as a CSV file and add it to your preferred analysis tool.
+
+### Restrictions
+#### Available data
+Default: 12 months
+
+You can download data from the past 12 months by default. Contact Acrolinx Support for more information.
+
+#### Time limit
+
+You can only download 31 days of data per request.
+
+#### Concurrent requests
+Default: 3 requests per tenant
+
+This limits the number of concurrent downloads. The default is 3 concurrent downloads.
+If you exceed the quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, and RateLimit-Remaining.
+
+#### Download volume
+Default: 1000 days of raw check data and 1000 days of raw issue data. The data will replenish at a rate of 5 days of data per day.
+
+If you download any amount of data for a specific day, that day counts toward the default. This includes empty days. The 1000-day default is designed to give you access to all available historic data.
+
+The quota is set for each type of data. For example, when you download check data it won't affect the amount of issue data you can download.
+
+If you exceed the download quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset.
+
+**Note:** To access the Reporting API, you'll need to be authorized and authenticated with an access token. Before you get started with the Reporting API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements.
+
+## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
+
+Download check data as a CSV file. You can access the data with cURL. 
+
+**Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data is only available if checks were run in the requested time range.
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/checks?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -o <replace_file_name>.csv
+```
+
+### Checks CSV data structure
+|Column name|Data type|Description|Length|
+|----------------|------------|------------|------------|
+|Check ID|string|Unique check ID|36|
+|Check start time|string|Start time of the check in the format `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z`||
+|Language|string|Checking language|255|
+|Scorecard URI|string|Uniform Resource Identifier (URI) of the Scorecard|255|
+|File ID|string|Unique file ID|36|
+|Content reference|string|The first time you run a check, Acrolinx assigns the file a content reference. Acrolinx treats files with the same content reference as the same file.|36|
+|File path|string|The file's location when it’s first checked|255|
+|File name|string|Name of the file|255|
+|Content ID|string|Unique check ID for batch checks|255|
+|Acrolinx Score|string|Overall Acrolinx Score|255|
+|Acrolinx Score color|string|Color coding of the Acrolinx Score|255|
+|All issues|number|Count of all issues found||
+|Words|number|Number of words in the file||
+|Sentences|number|Number of sentences in the file||
+|Target|string|Name of the Target used|255|
+|Target ID|string|Unique Target ID|36|
+|Content group ID|string|Unique content group ID|36|
+|Content group|string|Name of the content group|1024|
+|User ID|string|Unique user ID|36|
+|Full name|string|Full name of user|255|
+|Integration|string|Integration used to run the check|255|
+|Integration version|string|Integration version|255|
+|Content profile|string|Content profile used|255|
+|Check scope|string|Indicates whether a complete file or a specific selection of content is checked ['check'] or ['check selection'].|16|
+|Custom field {NAME}|string|Custom fields. The number of columns in the CSV file will correspond to the number of custom fields. For example, if there are 10 custom fields, the CSV file will have 10 columns for custom fields.|255|
+|{NAME} goal score|number|Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
+|Clarity goal score|number|Score for the goal Clarity||
+|Consistency goal score|number|Score for the goal Consistency||
+|Correctness goal score|number|Score for the goal Correctness||
+|Inclusive Language goal score|number|Score for the goal Inclusive Language||
+|Scannability goal score|number|Score for the goal Scannability||
+|Terminology goal score|number|Score for the goal Terminology||
+|Tone goal score|number|Score for the goal Tone||
+|{NAME} goal issues|number|Number of Issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
+|Clarity goal issues|number|Number of Issues found for the goal Clarity||
+|Consistency goal issues|number|Number of Issues found for the goal Consistency||
+|Correctness goal issues|number|Number of Issues found for the goal Correctness||
+|Inclusive Language goal issues|number|Number of Issues found for the goal Inclusive Language||
+|Scannability goal issues|number|Number of Issues found for the goal Scannability||
+|Terminology goal issues|number|Number of Issues found for the goal Terminology||
+|Tone goal issues|number|Number of issues found for the goal Tone||
+|{NAME} metric score|number|Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffixes by name of the metric||
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth:your_access_token
+
++ Parameters
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
+
++ Response 200 (text/csv)
+
+        "Check ID","Check start time",Language,"Scorecard URI","File ID","Content reference","File path","File name","Content ID","Acrolinx Score","Acrolinx Score color","All issues",Words,Sentences,Target,"Target ID","Content group ID","Content group","User ID","Full name",Integration,"Integration version","Content profile","Check scope","Custom field department","Custom field role","Custom field status","Clarity goal score","Consistency goal score","Correctness goal score","Inclusive language goal score","Scannability goal score","Terminology goal score","Tone goal score","Clarity goal issues","Consistency goal issues","Correctness goal issues","Inclusive language goal issues","Scannability goal issues","Terminology goal issues","Tone goal issues"
+        "4265b702-9a69-38ca-bb45-bcad9ee7d910",2024-01-14T23:06:58Z,en,"api/v1/checking/scorecards/4265b702-9a69-38ca-bb45-bcad9ee7d910","9d38800b-89ae-396c-ae11-1de419f13a8f",Yak-1,,Yak-1,,35,red,20,1119,47,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2",,,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",check,developers,junior,draft,57,6,76,40,19,45,42,3,2,8,2,5,5,3
+        "0521406f-ccf1-3acf-904a-7452766df8d7",2024-01-15T05:34:06Z,en,"api/v1/checking/scorecards/0521406f-ccf1-3acf-904a-7452766df8d7","77ad4993-80f1-31ec-9aef-1a33d2021a86",Su-22,,Su-22,,52,yellow,20,504,41,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2","710eed98-732b-3668-8a67-f4294d9a7ff4",Wade,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",check,developers,senior,draft,15,64,84,42,43,30,85,4,2,6,6,3,0,9
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Provide a start date."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Provide an end date."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "2024-06-31 is an invalid start date. Make sure the date entered is in the format 'yyyy-MM-dd' and corresponds with the actual number of days in the month."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "2024-Sept-09 is an invalid end date. Make sure the date entered is in the format 'yyyy-MM-dd' and corresponds with the actual number of days in the month."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. The 'start' date must be before the 'end' date."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Invalid 'end' date 2024-08-28. The 'end' date must be before 2024-08-28. The most recent data available for download is from yesterday."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "You can only download data from the past 12 months. Provide a different start date."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "You can only download 31 days of data at a time. Adjust the date range."
+        } 
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "message": "Unauthorized access to reporting API. Contact your Acrolinx administrator for more information."
+        } 
+
++ Response 403 (application/json)
+
+        {
+            "code": 403,
+            "message": "The Reporting API feature is inactive."
+        } 
+        
++ Response 409 (application/json)
+
+        {
+            "code": 409,
+            "message": "Data before 2024-08-01 is available to download. To download data up to 2024-08-01, adjust the dates."
+        } 
+
++ Response 409 (application/json)
+
+        {
+            "code": 409,
+            "message": "No data is available for download. Try again later."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Too many requests. Try again later. If you still have trouble, contact Acrolinx Support."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Download volume reached. The data will replenish at a rate of 5 days of data per day."
+        } 
+        
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "message": "Something went wrong. Try again or contact Acrolinx Support."
+        } 
+
+## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
+
+Download issue data as a CSV file. You can access the data with cURL. 
+
+**Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -o <replace_file_name>.csv
+```
+
+### Issues CSV data structure
+|Column name|Data type|Description|Length|
+|----------------|------------|------------|------------|
+|Check ID|string|Unique check ID|36|
+|Date|string|Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20`||
+|Context|string|Sentence or paragraph where the issue occurred|1024|
+|Issue|string|Content that Acrolinx highlighted|255|
+|Structural context|string|Structural location where the issue occurred in the file|1024|
+|Guideline ID|string|Unique ID of the guideline|255|
+|Guideline name|string|Name of the guideline|255|
+|Language|string|Checking language|255|
+|Issue type|string|Type of issue|20|
+
++ Request
+
+    + Headers
+    
+            X-Acrolinx-Auth:your_access_token
+
++ Parameters
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
+
++ Response 200 (text/csv)
+
+        "Check ID",Date,Context,Issue,"Structural context","Guideline ID","Guideline name",Language,"Issue type"
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-29,"hello woorld",woorld,sentence,"en_CONSISTENCY_Guideline_id-9","CONSISTENCY guideline id 9 display name",en,syntax
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-29,"hello woorld",woorld,sentence,"en_CONSISTENCY_Guideline_id-2","CONSISTENCY guideline id 2 display name",en,syntax
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Provide a start date."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Provide an end date."
+        }
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "2024-06-31 is an invalid start date. Make sure the date entered is in the format 'yyyy-MM-dd' and corresponds with the actual number of days in the month."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "2024-Sept-09 is an invalid end date. Make sure the date entered is in the format 'yyyy-MM-dd' and corresponds with the actual number of days in the month."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Invalid 'start' date 2024-08-29 and 'end' date 2024-08-28. The 'start' date must be before the 'end' date."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "Invalid 'end' date 2024-08-28. The 'end' date must be before 2024-08-28. The most recent data available for download is from yesterday."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "You can only download data from the past 12 months. Provide a different start date."
+        } 
+
++ Response 400 (application/json)
+
+        {
+            "code": 400,
+            "message": "You can only download 31 days of data at a time. Adjust the date range."
+        } 
+
++ Response 401 (application/json)
+
+        {
+            "code": 401,
+            "message": "Unauthorized access to reporting API. Contact your Acrolinx administrator for more information."
+        } 
+
++ Response 403 (application/json)
+
+        {
+            "code": 403,
+            "message": "The Reporting API feature is inactive."
+        } 
++ Response 409 (application/json)
+
+        {
+            "code": 409,
+            "message": "Data before 2024-08-01 is available to download. To download data up to 2024-08-01, adjust the dates."
+        }   
+
++ Response 409 (application/json)
+
+        {
+            "code": 409,
+            "message": "No data is available for download. Try again later."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Too many requests. Try again later. If you still have trouble, contact Acrolinx Support."
+        } 
+
++ Response 429 (application/json)
+
+        {
+            "code": 429,
+            "message": "Download volume reached. The data will replenish at a rate of 5 days of data per day."
+        } 
+
++ Response 500 (application/json)
+
+        {
+            "code": 500,
+            "message": "Something went wrong. Try again or contact Acrolinx Support."
+        } 
