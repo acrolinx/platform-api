@@ -6849,60 +6849,6 @@ Available information includes the configured document custom fields.
     + Attributes
         + data (object)
         + links (object)
-# Group broadcast API - DRAFT
-
-Use company notifications to inform users that checking might be affected by maintenance or planned outages.
-
-## Create a company notification [POST /api/v1/broadcasts/platform-notifications]
-
-Creates a new notification in Acrolinx.
-
-
-+ Request (application/json)
-
-        {
-            "title": "Important Announcement",                               // required; The title of the notification
-            "body":  "Acrolinx 5.6 will be deployed tomorrow.",     // required; Notification text.
-            "importance": "high",                                            // optional; "high"|"normal"; default: "normal"
-            "start": 1528127782,                                             // required; Notification start time (epoch millisecond timestamp)
-            "end": 1530719782                                                // required; Notification end time (epoch millisecond timestamp)
-        }
-
-+ Response 201 (application/json)
-
-        {
-          "data": {
-            "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101"
-          }
-        }
-
-## Retrieve platform notifications [GET /api/v1/broadcasts/platform-notifications/{lastRequestTimeInMilliseconds}]
-
-Retrieves active notifications from Acrolinx.
-
-+ Parameters
-    + lastRequestTimeInMilliseconds: `1525449382` (long, required) - epoch millisecond timestamp used to filter active notifications
-
-
-+ Response 200 (application/json)
-
-        {
-            "data": {
-                "requestTimeInMilliseconds": "1525449382",
-                "platformNotifications": [
-                    {
-                        "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101",
-                        "title": "Important Announcement",
-                        "body": "Acrolinx 5.6 will be deployed tomorrow.",
-                        "importance": "high",
-                        "start": 1528127782,
-                        "end": 1530719782
-                    }
-                ]
-            }
-        }
-
-
 
 # Group monitoring API
 
