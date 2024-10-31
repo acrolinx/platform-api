@@ -1,83 +1,63 @@
-# Acrolinx Platform API
+# Acrolinx API
 
 ![Build](https://github.com/acrolinx/platform-api/actions/workflows/actions.yml/badge.svg)
 
-Hello and welcome to the Acrolinx Platform API.
-This documentation is for you if you plan to use:
+Welcome to the Acrolinx API!
+This documentation helps you:
 
-* the API directly,
-* implement your own integration,
-* or just want to know how the interaction between the Acrolinx Platform and its integrations works.
+* use the API directly
+* build your own integration
+* understand how Acrolinx interacts with integrations.
 
-In the [reference](#reference), you can find the documentation for all services and methods.
+The [API reference](#reference) describes all services and methods.
+
+## Get started
+
+Contact [Acrolinx support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/support.md)
+for consulting and getting your integration certified.
+  
+Acrolinx provides different SDKs and samples for building integrations.
+
+Before you start building your own integration, you might want to read the following:
+
+* [Getting started with custom integrations](https://docs.acrolinx.com/customintegrations)
+* [How to integrate with Acrolinx](https://github.com/acrolinx/acrolinx-coding-guidance)
+* [Acrolinx SDKs](https://github.com/acrolinx?q=sdk)
+* [Acrolinx demo projects](https://github.com/acrolinx?q=demo).
 
 ## Prerequisites
 
-Please contact [Acrolinx SDK support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/sdk-support.md)
-for consulting and getting your integration certified.
-This sample works with a test license on an internal Acrolinx URL.
-This license is only meant for demonstration and developing purposes.
-Once you finished your integration, you'll have to get a license for your integration from Acrolinx.
-  
-Acrolinx offers different other SDKs, and examples for developing integrations.
-
-Before you start developing your own integration, you might benefit from looking into:
-
-* [Getting Started with Custom Integrations](https://docs.acrolinx.com/customintegrations),
-* the [Guidance for the Development of Acrolinx Integrations](https://github.com/acrolinx/acrolinx-coding-guidance),
-* the [Acrolinx SDKs](https://github.com/acrolinx?q=sdk), and
-* the [Acrolinx Demo Projects](https://github.com/acrolinx?q=demo).
-
-## Getting Started
-
 You'll need the following:
 
-* A URL of an Acrolinx Platform instance
-* A user on that Acrolinx Platform instance
-* A signature (more on that later)
-* Any means to make http calls
-* Any means of reading and writing JSON strings
+* An Acrolinx URL
+* A user on that Acrolinx instance
+* A signature
 
-Make yourself familiar with the concepts of [authentication](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/configuration.md),
-[signature](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/packaging.md#packaging),
-and [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/text-extraction.md).
-If you can't wait, you can also jump to the [Quick Start Tutorial](quickstart.md) and start tinkering around.
-
-## Important Headers and Content Type
-
-Make sure that you always include the following headers:
-
-```HTTP
-X-Acrolinx-Auth: YOUR_ACCESS_TOKEN
-X-Acrolinx-Client: YOUR_SIGNATURE;YOUR_VERSION
-Content-Type:application/json
-```
-
-More on the contents of these headers in the individual topics.
-In general make sure that all requests to the Acrolinx Platform API are containing these headers.
+Understand the following concepts: 
+* [authentication](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/authentication.md)
+* [signatures](#signature)
+* [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/text-extraction.md#whats-a-document).
 
 ## Authentication
 
-To make use of the API, you'll need to have an access token.
-The access token needs to be sent for every Platform API request using the header parameter `X-Acrolinx-Auth`.
+To use the Authentication API, you'll need an access token.
+Send the access token with the header parameter `X-Acrolinx-Auth` for every API request.
 
 ```HTTP
 X-Acrolinx-Auth:SOME_ACCESS_TOKEN_STRING
 ```
 
-Access tokens are bound to a user and there are two different variants:
+Access tokens are associated with a user and come in two forms:
 
-* default access tokens that you're getting by signing in to Acrolinx, or
-* API Tokens.
+1. Access tokens that you get by signing in to Acrolinx
+   Access tokens normally have a lifetime of 30 days. After that, you have to renew them.
+2. API tokens
+   API tokens have a lifespan of 4 years.
 
-Access Tokens normally only have a total lifetime of 30 days. After that they have to be renewed.
+## Acrolinx sign-in process
 
-API Tokens live much longer: 4 years.
-
-## Getting an Access Token with Acrolinx Sign-In
-
-The Acrolinx sign-in process is targeted at situations where you want individual users to sign in.
-Authentication is handled by a web application of the Acrolinx Platform.
+The Acrolinx sign-in process is for individual users to sign in.
+An Acrolinx web application handles the authentication.
 
 This is how it works:
 
@@ -89,7 +69,7 @@ This is how it works:
     POST: https://tenant.acrolinx.cloud/api/v1/auth/sign-ins
     ```
 
-2. The Platform will return two URLs: an `interactive`, and a `poll` URL in a result like this:
+2. Acrolinx returns two URLs: an `interactive` and a `poll` URL in a result like this:
 
     ```HTTP
     {
@@ -104,8 +84,8 @@ This is how it works:
     }
     ```
 
-3. Prompt the `interactive` URL to the user to authenticate.
-    Poll with the `poll` URL until you're getting an http response (code 200).
+3. Prompt the `interactive` URL for the user to authenticate.
+    Poll with the `poll` URL until you get an http response (code 200).
 
     ```HTTP
     {
@@ -125,30 +105,23 @@ This is how it works:
     }
     ```
 
-## Getting an API Token
+## Create an API token
 
-Getting an API Token is easy:
+Creating an API token is easy:
 
-* Sign in to the Acrolinx Dashboard
-* Click on ‘Settings' on the top
-* Scroll down
-* Click on ‘CREATE API TOKEN'
-* Copy the API token. You can revisit this site later to get your token again.
+1. Sign in to Acrolinx.
+2. Go to your ‘Settings'.
+3. Click CREATE API TOKEN.
+4. Copy the API token.
 
-![API Token](doc/creating_api_token.gif)
+**Note**
+After you generate an API token, save it somewhere secure (like a password manager) so that you can access it again. Once you leave the Settings page, the API token will no longer appear on screen.
 
 ## Signature
 
-The signature is a string that identifies your integration.
-For developing purposes you should use the following:
+A signature is a string that identifies an integration.
 
-```TEXT
-SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5
-```
-
-Once you've certified your integration, you'll get your own signature.
-
-It should be included in every request you're doing to the Acrolinx Platform API as a header:
+Inclue the signature as a header in every request you send to the Acrolinx API:
 
 ```HTTP
 X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
@@ -156,39 +129,16 @@ X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
 
 The `VERSION_NUMBER` should follow the following pattern `X.X.X.X` like `1.0.0.1`.
 
-The API won't complain if you don't send a
-[version and build number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
-For getting [certified](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/checklist.md),
-you must send this information.
-Maintenance in production is getting much easier with a version and build number.
+To get [certified](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/checklist.md), your integration
+must send the [version and build number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
 
-## FAQ / Questions and Answers
+Maintaining your integration in production is much easier with a version and build number.
 
-* What about Authentication? SSO?
-    + Authentication is done either via an API Token or via the Acrolinx sign-in.
-      Acrolinx sign-in supports different SSO methods using PingFederate.
-* Can you get the dashboard or the content report as JSON as well?
-    + The analytics results aren’t available as JSON.
-* How does the API relate to the products named Java Automation SDK, JavaScript Automation SDK etc.
-   that are in the Integration Release Schedule?
-    + SDKs build on the API and would give you a basic framework using the API in a language like Java or JavaScript.
-      However with the new API, we think that there’s no need for an SDK in most use cases.
-      Once we’ve released the Acrolinx Platform API, we'll decide based on feedback if and which SDKs we’re providing.
-* Can we put hierarchies in the document reference, for example: `<book>`, `<chapter>`, `<section>`
-  so the analytics would group all check results for the book, chapter, and so on?
-    + If you want to group content, you should use document custom fields.
-      These will also be available via the API.
-      The document reference is important for identifying a piece of content but it isn’t used to group content.
-* Can we add a link to each checked item in the batch, so the Content Analysis Dashboard can provide a link back
-  to the content in the overview?
-    + In most cases your document reference, actually is the link to your content.
-      If you need to provide a separate or different link, you may use custom fields for this.
+## API Reference
 
-## Reference
+### [Rendered version on apiary.io](https://acrolinxapi.docs.apiary.io/#)
 
-### [Rendered Version on apiary.io](https://acrolinxapi.docs.apiary.io/#)
-
-### [Plain Version](apiary.apib)
+### [Plain version](apiary.apib)
 
 ## License
 
