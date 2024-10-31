@@ -1,55 +1,62 @@
 FORMAT: 1A
 HOST: https://tenant.acrolinx.cloud
 
-# Acrolinx Platform API
+# Acrolinx API
 
-The Acrolinx Platform API is the new REST like API for accessing the Core Platform.
+The REST-like Acrolinx API helps you: 
+* Configure settings on your Acrolinx instance
+* Retrieve information from your Acrolinx instance
+* Build Acrolinx checking features into your content creation workflows.
 
-**NOTE:** All listed (future) features, which aren't yet or only partially implemented, are marked with the keyword DRAFT. Please consider this while using the Acrolinx Platform API!
+## Acrolinx SDKs
+Consider using [Acrolinx SDKs](https://github.com/acrolinx?q=sdk).
 
 # Authentication and Authorization
 
-When using the Acrolinx Platform API, you'll need to be authorized and authenticated. This is done by providing an **Access Token**.
+To interact with Acrolinx, you must use authorized and authenticated. This requires an **access token**.
 
-An **Access Token** is an encoded and cryptographically signed string. It has the following characteristics:
+An **access token** is an encoded and cryptographically signed string. It has the following characteristics:
 
-* It's bound to a user
-* There can be an infinite number of Access Tokens per user
-* It has a certain lifetime (default 30 days, can be changed)
-* It will expire after the lifetime or when the password of the associated user is changed
+* It's associated with a user
+* A user can have an infinite number of access tokens
+* It has a certain lifetime (30 days default) that you can change
+* It expires after the lifetime or when the password of the associated user is changed
 * It provides authorization and authentication
 
-How to get an **Access Token**?
-You can get an Access Token by using the Acrolinx sign-in workflow.
-(further description here)
+Get an **access token**
+To get an access token, sign in to Acrolinx.
 
-How to use an Access Token?
+**Note:** To learn more about creating API tokens, read [Create an API Token](https://support.acrolinx.com/hc/en-us/articles/10306041244818-Create-an-API-Token) in the Acrolinx documentation.
 
-Every request you make with the Acrolinx Platform API must contain a [header](#header-access-token) that provides the Access Token:
+See also [Create an API token](#Create an API token (Self)).
+
+Use an access token:
+
+Every request you send to the Acrolinx API must contain a [header](#header-access-token) that includes an access token:
 
 ```
     X-Acrolinx-Auth: WERTZUIOP
 ```
 
-## API Token
-An API Token is an Access Token but with special characteristics:
+## API token
+An API token is an access token with special characteristics:
 
 * It has a lifetime of 4 years
-* It will **not expire when the password of the associated user is changed**
-* Only one API Token can be bound to a user at the time
+* It does **not expire when the password of the associated user is changed**
+* A user can have only one API token associated with it at a time
 
-How to get API Token:
-* Accessing the user settings page on the Dashboard and generating one.
-* Programmatically using the **User API**. (See more under the **User Generated API Tokens** section)
+To get an API token:
+* Go to your Settings and create one.
+* Use the **user API** programmatically. (See more under the section **User-generated API tokens**)
 
-Other than that, the **API Token** functions as an **Access Token**.
+Besides that, the **API token** works like an **access token**.
 
-# General Headers
+# General headers
 
-## Access Token
+## Access token
 
-All methods except "index" and "poll access token" require a valid access token in the `X-Acrolinx-Auth` header even if not explicitly mentioned below.
-If the token is invalid, a `401` response is returned (see `401` response of "index") even if this response isn't explicitly mentioned below.
+All methods except "index" and "poll access token" require a valid access token in the `X-Acrolinx-Auth` header.
+If the token is invalid, Acrolinx returns a `401` response. (see `401` response of "index").
 
 Example:
 
@@ -59,8 +66,8 @@ Example:
 
 ## Base URL
 
-To support reverse proxies, a client may provide the `X-Acrolinx-Base-Url` header with each request. If the response body to the request
-contains links into the Acrolinx API, the server will prefix them with the given value. The provided value must be an absolute URL including scheme and host.
+To support reverse proxies, an integration may provide the `X-Acrolinx-Base-Url` header with each request. If the response body contains links to the API, 
+Acrolinx will prefix them with the specified value. The value must be an absolute URL including scheme and host.
 Malformed values will result in a `400` status code.
 
 Example:
@@ -69,10 +76,10 @@ Example:
     X-Acrolinx-Base-Url: https://example.com/path/
 ```
 
-## Client Locale
+## Integration locale
 
-All methods accept a header `X-Acrolinx-Client-Locale` that the client can use to identify its own locale (for example, UI language).
-The value of the header field needs to be a single language tag that complies with [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). The Acrolinx Platform will try to return message strings
+All methods accept a header `X-Acrolinx-Client-Locale` that the integration can use to identify its own locale (for example, UI language).
+For the value of the header field, use a single language tag that complies with [BCP 47](https://www.ietf.org/rfc/bcp/bcp47.txt). Acrolinx will try to return message strings
 and other locale-specific parts of the response in the requested language.
 
 Example:
@@ -81,20 +88,20 @@ Example:
     X-Acrolinx-Client-Locale: de-CH
 ```
 
-The server tries to match the sent locale to the closest locale that it's able to support, for example, `de`.
-The "index" request returns the list of supported locales. The server falls back to the default `en` locale in the following cases:
+Acrolinx tries to match to the nearest configured locale that it support, for example, `de`.
+The "index" request returns a list of supported locales. Acrolinx falls back to the default `en` locale under the following conditions:
 
-* no X-Acrolinx-Client-Locale header is sent
-* there's no matching supported locale
-* for the given response, there's no appropriate localization available
+* No X-Acrolinx-Client-Locale header is sent
+* There's no matching supported locale
+* For the given response, there's no appropriate localization available
 
 ## Signature
 
-If not otherwise documented, all methods require you to set a header `X-Acrolinx-Client`. The header needs to be a valid signature. The request
-returns an error if the header is omitted or if the signature provided is invalid.
+If not otherwise documented, all methods require you to set a header `X-Acrolinx-Client`. The header needs to include a valid signature. 
+If the header is missing or if the signature is invalid, the request returns an error.
 
 The format of the signature is `Signature;Version`, where `Signature` is the signature as configured in the Acrolinx license and
-`Version` is the version number of the client.
+`Version` is the version number of the integration.
 
 Example:
 
@@ -102,21 +109,21 @@ Example:
     X-Acrolinx-Client: SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5; 1.0.1.45
 ```
 
-# Response Format
+# Response format
 
-The API provides a consistent format for all responses. Each response has a field `links` and one of the three fields `error`, `progress`, `data`.
+The API provides a consistent format for all responses. Each response has a `links` field and one of the three fields: `error`, `progress`, or `data`.
 
-The `links` field contains further URLs that can be used as a next step in the workflow.
-`error` is set if the request didn't succeed. This is accompanied by an HTTP status code above or equal 4xx.
-`progress` means that the processing isn't finished yet and the client has to poll for the final result.
-`data` contains the actual result data, the processing is successfully finished.
+The `links` field contains further URLs that you can use as a next step in the workflow.
+* `error` is set if the request didn't succeed. This includes an HTTP status code greater or equal to 4xx.
+* `progress` means that the processing isn't done yet and the integration has to poll for the final result.
+* `data` contains the actual result data. The processing finished successfully.
 
-## Error Responses
+## Error responses
 
-### General Format
+### General format
 
 The API provides a consistent format for errors, which is based on [RFC7807](https://datatracker.ietf.org/doc/rfc7807/?include_text=1).
-The format is JSON and the API guarantees to send the fields `type`, `title`, `detail`, `status` with each error response.
+The format is JSON and the API guarantees to send the fields `type`, `title`, `detail`, and `status` with each error response.
 
 Example:
 
@@ -134,45 +141,44 @@ Content-Type: application/problem+json
 }
 ```
 
-* `type` is a unique identifier for the type of error. A client may choose a workflow for the error handling depending on the type.
-* `title` is a short description of the error. You can display this to users as the title of the error message.
-* `detail` is a longer description of the error. You can also display this for users.
-* `status` is redundant to the HTTP status code. It may be helpful in case a proxy changed the HTTP status code of the original API response.
-* You might also see an optional `reference` field with an ID. If present, you can find this ID in the Acrolinx log files to help with troubleshooting.
+* `type` is a unique identifier for the type of error. Choose a workflow for error handling that works best for the type of integration (interactive or automated).
+* `title` is a short description of the error. You can use this as the title of the error message that users see.
+* `detail` is a longer description of the error. You can also include this in the error message.
+* `status` is redundant to the HTTP status code. It may be helpful if a proxy changes the HTTP status code of the original API response.
+* You might also see an optional `reference` field with an ID.
 
-Depending on `type`, additional fields may be part of the response providing more detailed information.
+Depending on `type`, the response may include additional fields to provide more detailed information.
 
-Additional fields may be added in future. A client must not break because of unexpected fields.
+We may add additional fields in the future. An integration must not break because of unexpected fields.
 
 
 
-### Error Types
+### Error types
 
 Type | Description| What to do
 -----|------------|------------
-`client` | Unspecific error caused by the client's request. | Check logs and configuration or the client code.
-`server` | Unspecific error during processing of a request in Acrolinx. | Check logs and configuration.
-`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://www.acrolinx.com/contact/) to learn how to get a valid license.
-`clientSignatureRejected` | The given signature in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://www.acrolinx.com/contact/) to learn how to get a valid license.
+`client` | Unspecific error caused by the integration's request. | Check logs and configuration or the integration code.
+`server` | Unspecific Acrolinx error during processing of a request. | Check logs and configuration.
+`clientSignatureMissing` | The `X-Acrolinx-Client` header was missing.  | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to learn how to get a valid signature.
+`clientSignatureRejected` | The signature included in the `X-Acrolinx-Client` header was invalid. | [Contact Acrolinx](https://support.acrolinx.com/hc/en-us/requests/new) to get a valid signature.
 `sso` | Returned for any single sign-on errors. | This is likely a configuration issue.
 `auth` | Invalid authentication. | Use another access token.
 `insufficientPrivileges` | Insufficient privileges. | Assign the required privileges to the user.
 `interactiveSignInTimedOut` | The interactive sign-in process timed out. | Sign in again.
-`checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the client.
+`checkCancelled` | The check was canceled. No result is available. | Probably points to an error in the integration.
 `checkFailed` | The check failed. | Check logs and configuration.
-`invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check configuration of client or proxies, which set the header.
-`customFieldsIncorrect` | Custom field values are incorrect. |Please provide valid values for all required custom fields before or when checking a document.
+`invalidBaseUrl` | The request contained an invalid base URL in the `X-Acrolinx-Base-URL` header. | Check the configuration of integration or proxies, which set the header.
+`customFieldsIncorrect` | Custom field values are incorrect. | Provide valid values for all required custom fields before or when checking a document.
 `validation` | Invalid request attributes. | Check the request for invalid values or missing parameters.
-`guidanceProfileDoesntExist` | Guidance profile doesn't exist. | The guidance profile doesn't exist or isn't available for the user ID and language provided.
-`noGuidanceProfileConfigured` | No guidance profile configured. | No guidance profile is configured for the user ID and language provided.
+`guidanceProfileDoesntExist` | Style guide doesn't exist. | The style guide doesn't exist or isn't available for the user ID and language provided.
+`noGuidanceProfileConfigured` | No style guide configured. | No style guide is configured for the user ID and language provided.
 `contentTooLarge` | File too large. | Try checking less content.
 `queueLimitExceeded` | Queue limit exceeded. | Wait at least as long as suggested in the retry-after header and try another check.
 `conflict` | Concurrent write access. | Conflict with a concurrent write access. Try again with fresh data.
-`licenseLimitExceeded` | License limit exceeded. | You exceeded a limit set by the terms of your license. The error description contains more details. Please check [the documentation](https://support.acrolinx.com/hc/en-us/articles/10306079192082-License-Types) for more information.
+`licenseLimitExceeded` | License limit exceeded. | You exceeded a limit set by the terms of your license. The error description contains more details. For more information, check [the documentation](https://support.acrolinx.com/hc/en-us/articles/10306079192082-License-Types).
 `entityToAssociateNotFound` | One or more associates to an entity could not be found. | Make sure that the given associates actually exist.
 
-
-### Additional Information On Validation Errors
+### Additional information on validation errors
 
 Errors with type `validation` come with a list of constraint violation descriptions in an additional property `validationDetails`:
 
@@ -189,24 +195,24 @@ Errors with type `validation` come with a list of constraint violation descripti
 ```
 * `title`: "Validation error"
 * `constraint`: A minimal description of the constraint that was violated.
-* `attributePath`: A hint towards the property or parameter that had an invalid value.
+* `attributePath`: A hint about the property or parameter that had an invalid value.
 * `detail`: A more detailed description of the constraint violation.
 * `invalidValue`: The value that was invalid. Can be a data structure.
 * `possibleValues`: An optional list of valid values for the property.
 
 
-The `validationDetails` are intended as information for developers to troubleshoot bad requests.
+The `validationDetails` provide developers with information to troubleshoot bad requests.
 They are not intended for automated consumption.
-Values are not guaranteed to be always present or in a uniform format.
+There's no guarantee that values are always present or in a uniform format.
 
 
 
-## Progress Responses
+## Progress responses
 
-A progress response always contains a field `retryAfter`, which tells the client how many seconds to wait until the next poll request.
-Optionally the response can have the fields `message`, that contains a human user readable text about the current status, and `percent`, that
-is a number and shows the progress in percent.
-A progress response has always the `Retry-After` header set with the same value as the `retryAfter` field and an HTTP status 202.
+A progress response always contains a `retryAfter` field, which tells the integration how many seconds to wait until the next poll request.
+The response can optionally include both the `message` field with a human-readable text about the current status and a `percent`, which is
+a number that shows the progress as a percent.
+A progress response always has the `Retry-After` header set with the same value as the `retryAfter` field and an HTTP status 202.
 
 Examples:
 
@@ -236,9 +242,10 @@ Content-Type: application/json
 }
 ```
 
-## Successful Responses
+## Successful responses
 
-The fields of a successful response with data depend on the request.
+The number of fields in successful response data depends on the request. For example, the response might contain additional fields if the 
+original check request also asked for a Term Harvesting report.
 
 Example:
 
@@ -256,11 +263,39 @@ Content-Type: application/json
 }
 ```
 
-# HTML Fields
+# HTML fields
 
-Responses may have fields with HTML snippets to provide nice formatting in interactive clients. Those fields are clearly marked by a name that ends with "Html", for example, "guidanceHtml". There may be related fields with the same content in plain text. If such a field exists, it ends with "Text" like in the example, "guidanceText".
+Responses may contain fields with HTML snippets that provide nice formatting in interactive integrations. These fields have a name that ends with "Html", for example, "guidanceHtml". Related fields with the same content may appear in plain text. If such a field exists, it will end with "Text" like in the example, "guidanceText".
 
-All HTML fields only contain formatting tags that can be used without security risks. All tags are filtered by a server-side allow list.
+All HTML fields only contain formatting tags that do not pose a security risk. A server-side allow list filters all tags.
+
+# JSON - Escape special characters
+
+Some JSON characters are special and require escaping. To escape a character, prefix the character with a backslash `\`.
+
+Below are some common characters that need to be escaped in JSON:
+
+|Character|Escape character|
+|----------------|------------|
+|Double quote|`\"`|
+|Backslash|`\\`|
+|Forward slash|`\/`|
+|Backspace|`\b`|
+|Form feed|`\f`|
+|Newline|`\n`|
+|Tab|`\t`|
+|Unicode escape sequence for special characters|`\uXXXX`|
+
+Example:
+The value of the password is `backslash\quote"` in the JSON below. The special characters are escaped using a backslash.
+
+```json
+    {
+        "username": "username",
+        "fullName": "full Name",
+        "password": "backslash\\quote\""
+    }
+```
 
 # JSON - Escape special characters
 
@@ -380,10 +415,10 @@ information about the installed linguistic configuration (referred to as a "guid
           "links": {}
         }
 
-## Platform Capabilities [GET /api/v1/capabilities]
+## Capabilities [GET /api/v1/capabilities]
 
-An aggregation of the capabilities of the APIs sub-resources. This resource serves a single entry point for clients that need
-to use more than one feature of the API.
+Learn about capabilities of the individual APIs. This overview helps if you want to 
+use more than one feature of the API.
 
 + Response 200 (application/json)
     + Attributes
@@ -395,16 +430,16 @@ to use more than one feature of the API.
 
 # Group Authentication API
 
-Authentication is handled either with a configured access token, with single sign-on (SSO) or in an interactive process by signing in with the Acrolinx sign-in web page.
+Authentication works with either a configured access token, with single sign-on (SSO), or interactively with the Acrolinx sign-in web page.
 Embedded integrations use either the configured access token or SSO.
-Interactive clients with a human user use SSO or the interactive process.
+Interactive integrations with a human user use SSO or the interactive process.
 
-## Request/Validate an API Token [POST /api/v1/auth/sign-ins]
+## Request or validate an API token [POST /api/v1/auth/sign-ins]
 
-The sign-in collection allows Acrolinx API clients to request user authentication and to check
+The sign-in collection allows Acrolinx API integrations to request user authentication and to check
 the validity and privileges of existing access tokens.
 
-If the Acrolinx Platform is configured for single sign-on, this endpoint will accept the configured credentials
+If Acrolinx is configured for single sign-on, then this endpoint will accept the configured credentials
 to authenticate the request.
 
 + Request (application/json)
@@ -418,12 +453,12 @@ to authenticate the request.
 + Response 200 (application/json)
     No sign-in needed, the response body will contain valid access tokens.
 
-    The server may decide that the request is already sufficiently authorized. In this case,
+    Acrolinx may decide that the request is already sufficiently authorized. In this case,
     no sign-in process is started. The response will contain the same information as after
-    successful sign-in procedure. The following conditions may lead to this response:
+    a successful sign-in. The following conditions may lead to this response:
 
     - The `X-Acrolinx-Auth` header contained a valid token.
-    - Single sign-on is configured and valid credentials are supplied.
+    - Single sign-on is configured and valid credentials are provided.
 
     + Attributes (object)
 
@@ -431,20 +466,20 @@ to authenticate the request.
     If the `X-Acrolinx-Auth` header is absent a
     new sign-in process is started. The response body contains two links.
     One allows the user to complete the sign-in process.
-    The other helps the client to acquire the session data:
+    The other helps the integration to acquire the session data:
 
-    - `interactive` a link to a website that allows the user to authenticate and
-          permit the client to access the server. If a language was provided in the
+    - `interactive` a link to a web page that allows the user to authenticate and
+          permit the integrations to access Acrolinx. If you provide a language in the
           `X-Acrolinx-Client-Locale` header, the link will point to a localized
-          version of that website if available and technically possible.
+          version of that web page if available and technically possible.
 
     - `poll` a link to a resource that will return an *access token* and information
           about the user after sign-in. (see [GET `api/v1/auth/sign-ins/{id}`](#authentication-api-poll-for-a-new-api-token-get))
 
     Note that the sign-in process will time out. The `interactiveLinkTimeout` field
-    contains the duration in seconds, that the `interactive` link will stay valid. If the
-    Sign-in page was loaded before this time, the server will extend
-    the timeout. To detect timeouts after opening the Sign-in page use the `poll` link.
+    contains the length of time in seconds that the `interactive` link will stay valid. If the
+    sign-in page was loaded before this time, Acrolinx will extend
+    the timeout. To detect timeouts after opening the sign-in page, use the `poll` link.
 
     + Body
 
@@ -468,8 +503,8 @@ to authenticate the request.
             + `poll`: `https://tenant.acrolinx.cloud/api/v1/auth/sign-ins/185-0ijfgklejt2390tui` (string, required)
 
 + Response 401 (application/json)
-    If invalid SSO credentials are supplied the request is rejected. This occurs when an SSO username
-    is present but the SSO password is wrong or missing or the user couldn't be created.
+    If invalid SSO credentials are supplied, the request is rejected. This occurs when an SSO username
+    is present but the SSO password is wrong, missing, or the user couldn't be created.
 
     + Header
 
@@ -478,7 +513,7 @@ to authenticate the request.
     + Attributes (object)
 
 + Response 503
-    The server is unable to start a sign-in process at this time.
+    Acrolinx is unable to start a sign-in process at this time.
 
     + Header
 
@@ -486,14 +521,12 @@ to authenticate the request.
 
     + Attributes (object)
 
-## Poll for a New API Token [GET /api/v1/auth/sign-ins/{id}]
+## Poll for a new API token [GET /api/v1/auth/sign-ins/{id}]
 
-This resource lets a client wait for a user to authenticate and authorize it to use the
-privileged parts of the Acrolinx API. Once the user has completed the sign-in process,
-it will return a new access token. It can be sent with each API call to prove the
-privileges and identity owned by the user that signed in.
+Use polling so your integration waits for a user to authenticate and authorize before the integration can use the
+Acrolinx API. Once the user has completed the sign-in process, the response will return a new access token.
 
-When polling returned a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
+When polling returns a final result, the polling endpoint will disappear and return a `NOT FOUND` status.
 
 + Parameters
     + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - poll-id for the authorization request
@@ -505,7 +538,7 @@ When polling returned a final result, the polling endpoint will disappear and re
             X-Acrolinx-Client: QWxlU2hNyb2bHVnLWlunhQyR29Rm9xpbvZ2lZXRz; 1.0.1.45
 
 + Response 200 (application/json)
-   A user has completed the sign-in process and the server has created a new access token.
+   A user completed the sign-in process and Acrolinx created a new access token.
 
    Note that this resource will disappear after this response.
 
@@ -513,7 +546,7 @@ When polling returned a final result, the polling endpoint will disappear and re
 
 + Response 202 (application/json)
    The user hasn't authorized the sign-in yet. Request the same URI again to continue polling.
-   Note that clients should pace themselves by respecting the `Retry-After` header.
+   Note that integrations should pace themselves by respecting the `Retry-After` header.
 
     + Header
 
@@ -524,10 +557,10 @@ When polling returned a final result, the polling endpoint will disappear and re
            + `retryAfter`: 2 (number, required)
 
 + Response 404 (application/json)
-    The server has no knowledge of the polling token. If a valid poll URI was used, the cause for this is
-    a timeout or another poll request may have consumed the credentials.
+    Acrolinx has no knowledge of the polling token. If you used a valid poll URI, the cause of this response is
+    a timeout, or another poll request may have consumed the credentials.
 
-    The returned type is `interactive_sign_in_timed_out`, which distinguishes this response from a normal 404 caused by a just wrong URL.
+    The returned type is `interactive_sign_in_timed_out`, which distinguishes this response from a normal 404 caused by a wrong URL.
 
     + Attributes
        + error
@@ -541,19 +574,18 @@ When polling returned a final result, the polling endpoint will disappear and re
 
 The API for checking documents.
 
-## List Checking Capabilities [GET /api/v1/checking/capabilities]
+## List checking capabilities [GET /api/v1/checking/capabilities]
 
-The new checking API replaces writing guides and Content Profiles with a flat list of guidance profiles. Each guidance profile corresponds to a
-writing guide or a Checking Profile. If Sublanguages are activated, they're folded into the list of guidance profiles.
+Use the checking capabilities to fetch a list of available style guides. If sublanguages are activated, they're included in the list of style guides.
 
-For each guidance profile, the server provides information about the language, activated goals, and term sets. The client may use this
-for filtering purposes, but they can only select one (complete) guidance profile for checking (for example, not deselect goals).
+For each style guide, Acrolinx provides information about the language, activated goals, and term sets. The integration may use this information
+for filtering, but users can only select one style guide for checking. You cannot deselect individual goals within a style guide.
 
-If the server runs in Targets Mode, the goals contain an additional string field called `scoring`. It can have the values
-`required` (meaning this goal will be included in the calculation of the overall score so it is required to take this goal into account
-when creating content) or `recommended` (meaning this goal is a recommendation only and does not count towards the overall document score).
+For each style guide, the goals contain an additional string field called `scoring`, which can have one of the following values:
+* `required` (this goal counts towards the score and writers should prioritize issues found in this goal when creating content). 
+* `recommended` (this goal is a recommendation only and does not count towards the overall document score).
 
-**Note:** Before you get started with the Checking API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+**Note:** Before you get started with the Checking API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
 + Request
 
@@ -644,17 +676,17 @@ when creating content) or `recommended` (meaning this goal is a recommendation o
           }
         }
 
-##  Submit a Check [POST /api/v1/checking/checks]
+##  Submit a check [POST /api/v1/checking/checks]
 
-Submits a file for checking. After the file is uploaded, it will be scheduled for checking. Once Acrolinx is done checking the document,
-all results will be collected and made available. This leads to the following steps when using the check API:
+Submits a document for checking. After you upload a document, Acrolinx schedules the check. Once checking completes,
+Acrolinx makes the results available. The following steps summarize how to use the checking API:
 
-* submit a check
-* poll for progress
-* download check results
+* Submit a check
+* Poll for progress
+* Download check results
 
-For an overview on what documents and file types are supported by Acrolinx please consult the list of
-[Supported Input Types](https://support.acrolinx.com/hc/en-us/articles/10211264846482-Supported-Input-Types).
+To learn what file types Acrolinx supports, see the list of
+[supported input types](https://support.acrolinx.com/hc/en-us/articles/10211264846482-Supported-Input-Types).
 The same information is available in the checking capabilities.
 
 + Request (application/json)
@@ -685,7 +717,7 @@ The same information is available in the checking capabilities.
             }
 
 
-            // If a standard format is configured on the server, the minimal request is even shorter:
+            // If a standard format is configured in Acrolinx, the minimal request is even shorter:
 
             {
                 "content": "text to check",                  // required
@@ -697,7 +729,7 @@ The same information is available in the checking capabilities.
                 "content": "text to check",                  // required
                 "contentEncoding": "base64",                 // optional, default: none = HTTP request encoding
                 "checkOptions": {
-                    "guidanceProfileId": "aud-1",                // optional, default: first guidance profile. In Targets Mode: optional target name/target id, default: detected by Automatic Target Assignment
+                    "guidanceProfileId": "aud-1",                // optional, default: first guidance profile. optional target name/target id, default: detected by Automatic Target Assignment
                     "reportTypes": ["scorecard"],                // optional, default: scorecard
                     "contentFormat": "markdown",                 // optional, default: auto
                     "checkType": "batch",                        // optional, default: interactive
@@ -710,7 +742,7 @@ The same information is available in the checking capabilities.
                     "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
                 },
                 "document": {                               // optional, default: empty "document" object
-                    "reference": "C:\\abc.md",              // optional client known id hint e.g. a file name
+                    "reference": "C:\\abc.md",              // optional integration known id hint e.g. a file name
                     "customFields": [                       // optional
                         {
                             "key": "field1",
@@ -754,27 +786,27 @@ The same information is available in the checking capabilities.
         }
 
 
-## Check Result [/api/v1/checking/checks/{id}]
+## Check result [/api/v1/checking/checks/{id}]
 
-### Check Result How-To
+### Check result guide
 
-#### Ignore All Issue Occurrences
-Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue. All these issues can be ignored together.
+#### Ignore all issue occurrences
+Every issue in the check result has the attribute `positionalInformation.hashes.issue`. Use this attribute to find all occurrences of an issue. Users can ignore all of these issues together.
 
-The integration can also remember the `positionalInformation.hashes.issue` attribute after an ignore-all operation. This lets you filter out all previously ignored occurrences of an issue after a recheck.
+The integration also remembers the `positionalInformation.hashes.issue` attribute after an ignore-all operation. This information lets you filter out all previously ignored occurrences of an issue after a recheck.
 
-#### Replace All Issue Occurrences with a Suggestion
-Every issue in the check result has the attribute `positionalInformation.hashes.issue`. You can use this attribute to find all occurrences of an issue.
+#### Replace all issue occurrences with a suggestion
+Every issue in the check result has the attribute `positionalInformation.hashes.issue`. Use this attribute to find all occurrences of an issue.
 
 To apply a suggestion to all occurrences of an issue, use the `groupId` attribute to find the corresponding suggestion.
-If an occurrence of an issue doesn't have a suggestion with the same `groupId` or if the `groupId` is empty, then it can't be replaced with a replace-all operation.
+If an occurrence of an issue doesn't have a suggestion with the same `groupId` or if the `groupId` is empty, then you can't replace it with a replace-all operation.
 
-Note that not all occurrences of an issue always have the same suggestions. In this case, the replace-all operation only applies to issues with the same suggestion.
+Note that not all occurrences of an issue always have the same suggestions. When this happens, the replace-all operation only applies to issues with the same suggestion.
 
 
-### Poll Check Result [GET]
+### Poll check result [GET]
 
-Polls the check result. Either a progress or the completed result is returned. The URL for the request is found in the submitted check's "result" link.
+Polls the check result. Acrolinx either returns a progress response or the completed result. The URL for the request is in the "result" link of the submitted check.
 
 + Parameters
     + id: `AB-153` (required, string) - the check id
@@ -804,9 +836,8 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 + Response 200 (application/json)
 
-        Attention: which attributes are contained in the response depends on
-        configuration, request and the document. The 'scoring' field in the
-        goals are only present if the server runs in Targets Mode.
+        Attention: which attributes the response contains depends on
+        the configuration, request, and document.
 
         {
           "data":{
@@ -889,7 +920,7 @@ Polls the check result. Either a progress or the completed result is returned. T
             },
             "counts": {
                 "issues": 4,
-                "scoredIssues": 2, // **Since Core Platform 2020.11**
+                "scoredIssues": 2, // **Since Acrolinx 2020.11**
                 "sentences": 10,
                 "words": 121
             },
@@ -1296,9 +1327,9 @@ Polls the check result. Either a progress or the completed result is returned. T
 
 
 
-### Cancel Check [DELETE]
+### Cancel check [DELETE]
 
-        Cancels a check. Users can only cancel checks they submitted. The URL for the request is found in the submitted check's "cancel" link.
+        Cancels a check. Users can only cancel checks that they submitted. The URL for the request is in the "cancel" link of the submitted check.
 
 + Parameters
     + id: `AB-153` (required, string) - the check id
@@ -1319,9 +1350,9 @@ Polls the check result. Either a progress or the completed result is returned. T
         }
 
 
-## Get Link to Content Analysis Dashboard [GET /api/v1/checking/{batchId}/contentanalysis]
+## Get link to Content Analysis Dashboard [GET /api/v1/checking/{batchId}/contentanalysis]
 
-Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the Reporting.read privilege. The link with API token contains a new privilege token with the right Reporting.read.
+Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the reporting read-only privilege. The link with an API token contains a new token with the reporting read-only privilege.
 
 + Parameters
     + batchId: `XYZ-10-22-33` (required, string) - the batch check id
@@ -1362,62 +1393,49 @@ Returns the links to the human readable Content Analytics Dashboard, which aggre
 
 # Group User API
 
-**Available since Core Platform version 2018.10**
-
-In the User API, Acrolinx defines a user as an entity that has an id, a username, a fullName, and custom properties (set by the client).
+In the User API, Acrolinx defines a user as an entity that has the following:
+* An id
+* A username
+* A fullName
+* Custom properties (set by the integration).
 
 You're _required_ to provide user information for the following:
-* Interactive integrations: When you sign in to the Acrolinx Sidebar, you need to enter your user information. This creates an access token for the signed-in user.
-* Embedded integrations (API key-based): When you sign in to the Acrolinx Dashboard, you need to enter customer user information. This lets you generate an API token for the user that’s signed in.
+* Interactive integrations: When you sign in to the Sidebar, you enter your user information. This creates an access token for the signed-in user.
+* Embedded (CMS) integrations (that use an API token): When you sign in to Acrolinx, you need to enter your custom user information. Use this API to generate an API token for the user that’s signed in.
 
 Security:
-* A user can read and update its own data.
-* Only privileged users (admin, for example) can read or update other users' data.
+* A user can read and update their own data.
+* Only users with sufficient privileges (admin, for example) can read or update other users' data.
 
-**Note:** Before you get started with the User API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+**Note:** Before you get started with the User API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
-## User Resource [/api/v1/user]
+## User resource [/api/v1/user]
 
-### Get All Users [GET /api/v1/user{?sort,page,per_page,username,fullName,roles}]
+### Get all users [GET /api/v1/user{?sort,page,per_page,username,fullName,roles}]
 
-**Added in Core Platform version 2021.05**
+This request retrieves a list of all users in the order of creation.
 
-**Note:** The table below shows the specific API request parameters by Core Platform version.
+**Searching or filtering**
 
-| API Request                                                 | Core Platform Version |
-|:------------------------------------------------------------|-----------------------|
-| `[GET /api/v1/user{?sort}]`                                 | `2021.06`             |
-| `[GET /api/v1/user{?page,per_page}]`                        | `2021.08`             |
-| `[GET /api/v1/user{?sort=customFields.{customFieldName}}]`  | `2021.12`             |
-| `[GET /api/v1/user{?username,fullName}]`                    | `2022.02`             |
-| `[GET /api/v1/user{?roles}]`                                | `2022.02`             |
-| `[GET /api/v1/user{?excludeProperties={true|false}}]`       | `2023.10`             |
-| `[GET /api/v1/user{?includeCustomField={key}}]`             | `2023.10`             |
-| `[GET /api/v1/user{?excludeCustomFields={true|false}}]`     | `2024.02`             |
-
-This request retrieves a list of all users in the order that they were added.
-
-**Searching/Filtering**
-
-- You can use the `username` and `fullName` parameters to search or filter users.
+- Use the `username` and `fullName` parameters to search or filter users.
 - The `username` and `fullName` query parameters are limited to 255 characters, are optional, and can't be `null`.
 - If the `username` and `fullName` parameters are set, the API will list users that match both parameters.
-- You can use the `roles` parameter to filter users by multiple role ids.
+- Use the `roles` parameter to filter users by multiple role ids.
 - Invalid role ids will return an empty list.
 
 **Sorting**
 
 If you use the `sort` query parameter, you can only sort the list of users by 1 field.
-To display the list in ascending or descending order respectively, you can add a `+` or `-`.
+To show the list in ascending or descending order, add a `+` or `-`, respectively.
 
-**Sorting Notes:**
+**Sorting notes:**
 
 - You can only sort by 1 field.
-- A query parameter can be any length and can include the order direction prefixes "+" and "-".
-- A query parameter can't be empty or include blank spaces.
+- A query parameter can be any length and can include the order direction prefixes "+" or "-".
+- A query parameter cannot be empty or include spaces.
 - A query parameter can accept a mix of characters.
 - By default, the list appears in ascending order.
-- The list is also sorted by `username` unless this is already the primary sort column.
+- The list is also sorted by `username`, unless `username` is already the primary sort column.
 - Other sort columns include: `fullName`, `createdOn`, `lastIntegrationAccess`, `checkingFrequency`, `licenseType`, `licenseStatus`, and `customFields.{key}`.
 - The query parameter `licenseType` sorts by two fields: `licenseType` and `licenseStatus`.
 - To sort by a custom field, the sort value needs to include `customFields`, `.`, and the `{key}`. The key is the name of the custom field.
@@ -1425,16 +1443,16 @@ To display the list in ascending or descending order respectively, you can add a
 When you sort by `customFields` in ascending order, empty `customFields` values will appear at the beginning of the list. If you sort
 in descending order, empty values will appear at the end of the list.
 
-To make sure that the sorting behavior for custom fields is consistent, the following special characters can be sorted: `` !@$^*()_+-=,./;'[]<>?:|~` ``
+To make sure that the sorting behavior for custom fields is consistent, the following special characters are sortable: `` !@$^*()_+-=,./;'[]<>?:|~` ``
 If you use any additional special characters, the sorting behavior may be inconsistent.
 
-So that the `+` character encoded to `%2B` stays valid, the query parameters need to be encoded in accordance
-with [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
+So that the `+` character encoded to `%2B` stays valid, you have to encode the query parameters according
+to [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). 
 You can always leave out the `+` character, because the user list appears in ascending order by default. 
 
 **Pagination**
 
-For a better overview, you might like to view the list of users in pages instead of in one long list.
+For a better overview, you might want to view the list of users in pages instead of as one long list.
 To request a paginated response, add the query parameters `page` and `per_page`. 
 You'll need to set the `page` parameter. The page count always starts at `1`.
 By default, `per_page` is set to `10`. You can display as many as 500 users per page. This is an optional parameter. 
@@ -1449,7 +1467,7 @@ If you request a paginated response, Acrolinx will add the following header valu
 | `X-Acrolinx-Total-Pages`   | The total number of pages.                      |
 | `X-Acrolinx-Total`         | The total number of items.                      |
 
-In addition to the header values, the response object contains a few URLs
+In addition to the header values, the response object also contains a few URLs
 within the `links` object:
 
 | Relation | Description                       |
@@ -1464,20 +1482,20 @@ For example, when you view page 1, you won't see a `prev` link because there's n
 This is also the case for the values in the headers.
 
 **Note:** When you switch to the next or previous page, you'll see the current paginated view at the time of the API call. 
-This will also reflect any changes to the underlying data source. Say you're on page 2 of 10 with 10 records per page. 
-You then decide to delete 10 users before you call the API to fetch page 3. Now when you switch to page 3, the response will show page 3 of 9.
+This view will also reflect any changes to the underlying data source. Say you're on page 2 of 10 with 10 records per page but  
+then you decide to delete 10 users before you call the API to fetch page 3. Now when you switch to page 3, the response will show page 3 of 9.
 
 The example response includes the pagination URLs and query parameters in the `links` object so you know what to expect. 
 
-**Dynamically include/exclude nested data**
+**Dynamically include or exclude nested data**
 
-If you manage a large number of users, you can use the query params `includeCustomField` and `excludeProperties` to filter nested data.
+If you manage a large number of users, you can use the query parameters `includeCustomField` and `excludeProperties` to filter nested data.
 
 By default, all custom fields are nested in the user model.
-You can use the parameter `includeCustomField` to limit the returned fields to those that match the key passed in the param value.
-This is helpful if you want to fetch a specific set of custom fields to reduce data transfer.
+Use the `includeCustomField` parameter to limit the returned fields to those that match the key passed in the parameter value.
+This parameter is helpful if you want to fetch a specific set of custom fields to reduce data transfer.
 To include more than one custom field, add `&includeCustomField={Key}` to the request N times.
-To exclude all custom fields, you can use the parameter `&excludeCustomFields=true`. This takes priority over any
+To exclude all custom fields, use the parameter `&excludeCustomFields=true`. This takes priority over any
 `includeCustomField` parameters that are present, and will always result in no custom fields being returned.
 
 + Parameters
@@ -1491,7 +1509,7 @@ To exclude all custom fields, you can use the parameter `&excludeCustomFields=tr
             + **"-"** for descending order. 
         + **Note:** 
             + Omitting a prefix will sort in ascending order.
-            + Use `customFields.{key}` to sort by custom fields, `{key}` is the name of the custom field
+            + Use `customFields.{key}` to sort by custom fields. `{key}` is the name of the custom field.
 
         + Default: username
         + Members
@@ -1910,10 +1928,10 @@ To exclude all custom fields, you can use the parameter `&excludeCustomFields=tr
             }
         }
 
-### Get a User [GET /api/v1/user/{id}]
+### Get a user [GET /api/v1/user/{id}]
 
-This request returns information about an user. 
-The information includes the user id, username, the user's full name, the date the user was created, the last time the user accessed the integration, checking frequency, tenant ID, token ID, license type, and license status.
+This request returns information about a user. 
+The information includes the user id, username, the user's full name, the date the user was created, the last time the user accessed an integration, checking frequency, tenant ID, token ID, license type, and license status.
 You'll also see properties, roles, and custom fields.
 
 + Parameters
@@ -2017,11 +2035,9 @@ You'll also see properties, roles, and custom fields.
         }
 
 
-### Get a User (Self) [GET /api/v1/user/self]
+### Get a user (self) [GET /api/v1/user/self]
 
-**Added in Core Platform version 2018.12**
-
-This is an alternative way of getting information about the current (in request authorized) user. 
+This is an alternative way to get information about the current user (authorized in the request). 
 
 + Request Get current user (application/json)
 
@@ -2106,9 +2122,7 @@ This is an alternative way of getting information about the current (in request 
             }
         }
 
-### Create a User [POST /api/v1/user]
-
-**Added in Core Platform version 2021.05**
+### Create a user [POST /api/v1/user]
 
 **Note:**
 
@@ -2117,31 +2131,24 @@ This is an alternative way of getting information about the current (in request 
 - The license type can either be "named" or "concurrent" (optional).
 - You need `UserAndRoles.editUser` privileges to perform this request.
 
-**Password Requirements**
+**Password requirements**
 
-If you want to create a user, the password field is required as of Core Platform version 2022.02.
+If you want to create a user, the password field is required.
 Your password needs to meet the following requirements:
 
 - Composed of ASCII printable characters
-- Needs to include at least 1 lower case letter
-- Needs to include at least 1 upper case letter
-- Needs to include at least 1 digit
-- Needs to include at least 1 special character symbol
+- Include at least 1 lowercase letter
+- Include at least 1 uppercase letter
+- Include at least 1 digit
+- Include at least 1 special character
 - At least 10 characters long
 - No more than 64 characters long
 
-For Core Platform versions 2021.05 to 2022.02, the following apply:
-
-- Password is optional
-- At least 1 character long
-- No more than 128 characters
-
-**Be extra careful in the following cases:** 
-- There are no configured default roles. That means that no roles will be automatically assigned to new users.
+**Be very careful in the following cases:** 
 - Federated authentication is enabled:
   - Users are created automatically with federated authentication.
-  - Only users created by the identity provider can sign in to the Acrolinx Dashboard.
-  - Users created through the API can only be used for automation purposes. For example, interactions with the Platform API.
+  - Only users created by the identity provider can sign in to Acrolinx.
+  - Users that you create with the API can only be used for automation. For example, interactions with the Acrolinx API.
 
 
 + Request Create a user (application/json)
@@ -3192,9 +3199,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
 
 
-### Update a User [PUT /api/v1/user/{id}]
-
-**Added in Core Platform version 2021.05**
+### Update a user [PUT /api/v1/user/{id}]
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
@@ -3315,7 +3320,7 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
     You can update a user's role.
 
-    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only assign Super Administrator role if you have Super Administrator role. If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
+    In this example, only the `roles` attribute will change for the user `fred`. This was identified in the database by its *id*. Each user needs at least one assigned role. This doesn't apply to built-in users. You can only assign the Super Administrator role if you have the Super Administrator role. If you add a role that doesn't exist, the call will fail and the error message will show the unknown roles that were referenced.
 
     + Headers
 
@@ -3719,9 +3724,6 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
 
     In this example, only the `password` attribute will change for the user `fred`. This was identified in the database by its *id*.
 
-    **Note:**
-    - You can update the `password` field as of Core Platform version 2022.02
-
     + Headers
 
             X-Acrolinx-Auth: your_access_token
@@ -3869,13 +3871,11 @@ For Core Platform versions 2021.05 to 2022.02, the following apply:
             }
         }
 
-### Delete a User [DELETE /api/v1/user/{id}]
-
-**Added in Core Platform version 2021.05**
+### Delete a user [DELETE /api/v1/user/{id}]
 
 This method deletes a specified user based on its *id*.
 
-**Note:** You can only delete a user successfully if all of the following conditions are met:
+**Note:** You can only successfully delete a user under the following conditions:
 - The user isn't a preconfigured, built-in user such as "admin", "termcontribution", or "analyticsReadOnlyUser".
 
 To read more about managing users and built-in users, see [User Management](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management) in the Acrolinx documentation.
@@ -3960,26 +3960,24 @@ To read more about managing users and built-in users, see [User Management](http
         }
 
 
-## Missing Required User Custom Fields [/api/v1/user/custom-fields-missing]
+## Missing required user custom fields [/api/v1/user/custom-fields-missing]
 
-**Added in Core Platform version 2022.04**
-
-You can query users who don't have required custom fields.
+Query users who don't have required custom fields.
 
 **What's a missing required custom field?** The User API returns your user-related custom fields in the `customFields[]` array. If a custom field is required (marked with `"inputType": "required"`) and is missing a value (`"value": ""`), the field is considered to be missing.
 
 **Note:**
 - You need the `UserAndRoles.editUser` privilege.
 
-### Count Users [HEAD /api/v1/user/custom-fields-missing]
+### Count users [HEAD /api/v1/user/custom-fields-missing]
 
-Returns the total number of users who are missing one or more required user custom field.
+Returns the total number of users who are missing one or more required user custom fields.
 
 **Note:**
 - The response has no content.
-- The user count will be shown in the header `X-Acrolinx-Total`.
+- The user count appears in the header `X-Acrolinx-Total`.
 - The header value is a numeral.
-- It returns a 0 (zero) when no required custom fields are missing.
+- It returns a 0 (zero) when all required custom fields are present.
 
 + Request
 
@@ -3999,11 +3997,11 @@ Returns the total number of users who are missing one or more required user cust
 
 + Response 403 (application/json)
 
-### Get Users [GET /api/v1/user/custom-fields-missing{?page,per_page}]
+### Get users [GET /api/v1/user/custom-fields-missing{?page,per_page}]
 
 Returns a list of users who are missing one or more required user custom fields.
 
-**Note:** Similar to the User Resource > Get All Users request, it supports pagination. See more details there.
+**Note:** Similar to the User Resource > Get All Users request, it supports pagination. [See more details there](### Get all users). 
 
 + Request
 
@@ -4166,39 +4164,37 @@ Returns a list of users who are missing one or more required user custom fields.
             }
         }
 
-## User-Generated API Tokens [/api/v1/user/{id}/tokens]
+## User-generated API tokens [/api/v1/user/{id}/tokens]
 
-You can generate long-lasting API tokens for programmatic access to the Platform APIs.
+You can generate long-lived API tokens for programmatic access to Acrolinx APIs.
 
-Acrolinx protects its APIs with self-contained access tokens. These access tokens let you authorize yourself as a user. API tokens have different characteristics than the access tokens that are issued when you use the sign-in endpoint.
+Acrolinx protects its APIs with self-contained access tokens. These access tokens let you authorize yourself as a user. API tokens have different characteristics than the access tokens that Acrolinx issues when you use the sign-in endpoint.
 
-Don't forget to check out the *Introduction > Authentication and Authorization* section in this API Blueprint.
+Don't forget to check out the *Introduction > Authentication and Authorization* section in this API documentation.
 
-Be aware that you can only be bound to one API token at a time.
+Note that you can only have one API token at a time.
 * When you create a new API token, your previous API token becomes invalid.
 
 **Warning:** Follow these security guidelines when you work with API tokens:
 + Store your API token securely and never share it with others.
-+ Don't bake your API token into any custom code that interacts with the Acrolinx Platform APIs.
++ Don't hardcode your API token in any custom code that interacts with the Acrolinx APIs.
 
-**Note:** To learn more about creating API tokens in Acrolinx, read [Create an API Token](https://support.acrolinx.com/hc/en-us/articles/10306041244818-Create-an-API-Token) in the Acrolinx documentation.
+**Note:** To learn more about creating API tokens, read [Create an API Token](https://support.acrolinx.com/hc/en-us/articles/10306041244818-Create-an-API-Token) in the Acrolinx documentation.
 
-### Create an API Token (Self)  [POST /api/v1/user/self/tokens]
-
-**Added in Core Platform version 2021.06**
+### Create an API token (Self)  [POST /api/v1/user/self/tokens]
 
 Use this method to create an API token for the current user.
 
-**Note:** You don't need extra privileges or roles to create a new personal API token bound to the user authorized in the request.
+**Note:** You don't need extra privileges or roles to create a new API token associated with the user authorized in the request.
 
-**Note:** This endpoint lets users use the Basic authentication scheme to avoid reusing an existing API token.
+**Note:** This endpoint lets users use Basic authentication to avoid reusing an existing API token.
 
-+ Request Create an API token using Basic auth
++ Request Create an API token using Basic authentication
     
-    To authenticate using Basic auth, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`. 
+    To authenticate using Basic authentication, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`. 
 
     * **Important:** 
-        * This needs to have the prefix `Basic`.
+        * This request needs to have the prefix `Basic`.
         * Your credentials (`username:password`) must be base64 encoded.
 
     + Headers
@@ -4273,23 +4269,21 @@ Use this method to create an API token for the current user.
             }
         }
 
-### Create an API Token for User(s) [POST /api/v1/user/{id}/tokens]
+### Create an API token for users [POST /api/v1/user/{id}/tokens]
 
-**Added in Core Platform version 2021.05**
-
-This method lets you create an API token for users based on their *id*.
+Use this method to create an API token for users based on their *id*.
 
 Typical use cases for this API:
 1. Create an API token for personal use
-    - 1.1. Get your own unique identifier *id* via the *Current user* request.
+    - 1.1. Use the *Current user* request to get your own unique identifier *id*.
     - 1.2. Enter your *id* as a parameter.
     - 1.3. Start using the issued API token.
 2. Create an API token for someone else
-    - 2.1. Get the unique identifier *id* for the other user via the *Get users* requests.
+    - 2.1. Use the *Get users* request to get the unique identifier *id* for another user.
     - 2.2. Enter the other user's *id* as a parameter.
-    - 2.3. Give the issued API token to the user securely.
+    - 2.3. Give the API token to the user securely.
 
-**Note:** You can only create an API token if you have the appropriate permissions: 
+**Note:** You can only create an API token if you have the appropriate privileges: 
 * To create an API token for yourself, you need to be authorized with a valid access token.
 * To create an API token for someone else, you need the privilege `UserAndRoles.setApiTokensForOthers` and you need to be authorized with a valid access token.
 
@@ -4368,7 +4362,7 @@ Typical use cases for this API:
 
 + Response 403 (application/json)
 
-        // when the user tries to create a token for a Super Administrator user, when they are not a Super Administrator themselves
+        // when the user tries to create a token for another user with more elevated roles
         {
             "links": {},
             "error": {
@@ -4384,14 +4378,12 @@ Typical use cases for this API:
 
         // when the user wasn't found in the database based on its *id*
 
-## Random Passwords [/api/v1/user/random-passwords]
+## Random passwords [/api/v1/user/random-passwords]
 
 You can generate random passwords that meet the Acrolinx password policy.
 This API is convenient when you want to create new users.
 
-### Get a Randomly Generated Compliant Password [GET /api/v1/user/random-passwords]
-
-**Added in Core Platform version 2022.03**
+### Get a randomly generated compliant password [GET /api/v1/user/random-passwords]
 
 **Password Requirements**
 
@@ -4478,24 +4470,22 @@ A password needs to meet the following requirements:
             }
         }
 
-## User Commands [/api/v1/user/{id}/_{command}]
+## User commands [/api/v1/user/{id}/_{command}]
 
 The APIs in this group follow the API design command style.   
 
-These administrative commands can help govern users in your Acrolinx instance. The commands can do more than simply (re)send the new state of a single resource. 
+Use these administrative commands to manage users in your Acrolinx instance. The commands can do more than simply (re)send the new state of a single resource. 
 
 **Note:** You can apply these requests multiple times without changing the result (idempotent). 
 
-### Release an Active Named User License [PUT /api/v1/user/{id}/_release]
-
-**Added in Core Platform version 2021.05**
+### Release an active named user license [PUT /api/v1/user/{id}/_release]
 
 This method uses the *id* to release an active license consumed by a user.
 
 **Note:**
 - You can only release users with the `named` license type.
-- If you release the license of a user who doesn't consume a license, you won't see an error.
-- To do this, you need the `UserAndRoles.deleteSessions` privilege.
+- If you release the license of a user who isn't consuming a license, you won't see an error.
+- To release licenses, you need the `UserAndRoles.deleteSessions` privilege.
 
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
 
@@ -4551,16 +4541,14 @@ This method uses the *id* to release an active license consumed by a user.
             }
         }
 
-### Request User Information Update  [PUT /api/v1/user/{id}/_request_cf_update]
-
-**Added in Core Platform version 2021.12**
+### Request user information update  [PUT /api/v1/user/{id}/_request_cf_update]
 
 The user specified by the *id* in this request will be asked to update their user information.
 
 **Note:**
-- The next time the user signs in, they'll need to re-enter their user information via a form.
-- If you repeat the request for the same user UUID, you won't be notified that a request was already submitted.
-- To do this, you need the `UserAndRoles.editUser` privilege.
+- The next time the user signs in, they'll need to re-enter their user information in a form.
+- If you repeat the request for the same user UUID, you won't be notified that you already submitted a request.
+- To request a user information update, you need the `UserAndRoles.editUser` privilege.
 
 + Parameters
     + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
@@ -4614,52 +4602,50 @@ The user specified by the *id* in this request will be asked to update their use
             }
         }
 
-### Export a List of Users [GET /api/v1/user/_export]
+### Export a list of users [GET /api/v1/user/_export]
 
-**Added in Core Platform version 2021.06**
+This API provides an easy way to export a concise user list in a text file.
 
-This API provides an easy way to export a concise user list in various file formats.
-
-The endpoint uses content negotiation to determine the format of the export. You can include the `Accept` header in your request to specify the format you prefer. See the `Supported formats` section for more information about the formats that Acrolinx currently supports.
+The endpoint uses content negotiation to determine the format of the export. To specify the format you prefer, include the `Accept` header in your request. See the `Supported formats` section for more information about the formats that Acrolinx currently supports.
 
 **Supported formats:**
 + `text/csv` (default, file extension is `.csv`)
 
 **Note:** If you don't specify the format in the `Accept` header, the default will be used.
 
-**Content-Disposition:**
+**Content Disposition:**
 
 The API also returns the `Content-Disposition` response header to give information about the returned content. 
-Based on this, browsers can recognize downloadable attachments that can be saved locally.
+With this information, browsers can recognize downloadable attachments that users can save locally.
 
-The header parameters are set as follows:
+Set the header parameters as follows:
 + `attachment` - Indicates that the content should be downloaded.
 + `filename="acrolinx_users_export_yyyyMMdd_HHmmss.{fileExt}"` - Most browsers present a "Save as" dialog for attachments. This will be prefilled with the value of the filename parameter.
 
 + Request Export a list of users in CSV format
 
-    This lets you export a list of users and their data into a CSV file that looks like a spreadsheet but has a `.csv` extension.
-    Each line of the file is a user data record. Each record consists of one or more user fields and the actual value, separated by column delimiter.
-    You can use the CSV file with most spreadsheet programs, such as Microsoft Excel or Google Sheets.
+    This lets you export a list of users and their data as a CSV file that looks like a spreadsheet but has a `.csv` extension.
+    Each line of the file is a user data record. Each record consists of one or more user fields and the actual value, separated by column delimiters.
+    The CSV file works with most spreadsheet programs, such as Microsoft Excel or Google Sheets.
 
-    You'll see the following user fields in the file (in the following order):
+    The file contains the following user fields (in the specified order):
     + **user_id**: The user's unique identifier (string, UUID).
     + **Username**: The user's username, which can be used for sign in and user identification.
-    + **Full Name**: The full name of the user.
+    + **Full name**: The full name of the user.
     + **Roles**: A list of assigned roles.
-    + **Created On**: Indicates when the user was created.
-    + **Last Integration Access**: Indicates when the user last accessed an integration. If the user hasn't accessed an integration, the default value is `Never`.
-    + **Checking Frequency**: Displays a rough idea of the user's usage pattern based on checking frequency across the user's lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
-    + **License Type**: Indicates the type of license. Its value can be ["named", "concurrent", "builtin"].
+    + **Created on**: Indicates when the user was created.
+    + **Last integration access**: Indicates when the user last accessed an integration. If the user hasn't accessed an integration, the default value is `Never`.
+    + **Checking frequency**: Gives a rough idea of the pattern of checking frequency across a user's lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
+    + **License type**: Indicates the type of license. Its value can be ["named", "concurrent", "builtin"].
     + **{Custom Field name}**: Users can have multiple (0...N) custom fields that are also attached to the schema. 
-        + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be added to the end of the sheet dynamically. 
+        + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be dynamically added to the end of the sheet. 
 
-    **Notes, about the CSV file and data formatting:** 
-    + Column headers are also written into the first row of the file.
+    **Notes about the CSV file and data formatting:** 
+    + Column headers are also written in the first row of the file.
     + Fields are separated by a semicolon `;` (as column delimiter). 
     + Date and time values are exported in `UTC`, for example `2021-05-12T15:40:00.876Z`.
         + When there's no stored value for a given Date time type field, the cell should contain `Never` or an empty value.
-    + Values of a list type field are separated with a colon `:` (as the "in-cell" delimiter).
+    + Values of a list type field are separated by a colon `:` (as the "in-cell" delimiter).
     + Values that contain space characters are in double quotes in the file, for example, `user_id;Username;"Full Name";...`.
 
     + Headers
@@ -4731,29 +4717,27 @@ The header parameters are set as follows:
             }
         }
 
-## User Bulk Operations [/api/v1/user/bulk]
+## User bulk operations [/api/v1/user/bulk]
 
-These APIs let you perform bulk operations. Bulk operations follow the multi-status request and response model.
+Use these APIs to perform bulk operations. Bulk operations follow the multi-status request and response model.
 In this model, the incoming bulk request includes a list of objects that need to be processed (as opposed to using the same API many times). 
 The response to the request is `207 Multi-Status`. The response includes a list of `results` for the objects that were processed successfully 
 and a list of `errors` for the objects that couldn't be processed.
 
 **Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
 
-### Create Users in Bulk [POST /api/v1/user/bulk]
+### Create users in bulk [POST /api/v1/user/bulk]
 
-**Added in Core Platform version 2021.06**
-
-This API lets you create a list of new users. All user objects follow the requirements and constraints
+Use this API to create a list of new users. All user objects follow the requirements and constraints
 noted in the Create User API section.
 
-**Note:** You can create up to 100 users per bulk request, the minimum is 1.
+**Note:** With each bulk request, you can create up to 100 users. The minimum is 1.
 
 + Request Create Users in Bulk (application/json)
 
     This request lets you create 5 new users by specifying some basic fields (`username`, `fullName`, `password`) in the request model.
 
-    **Note:** Acrolinx will assign a license type and role automatically. These are typically the license type `named` and the role `Author`.
+    **Note:** Acrolinx will automatically assign a license type and role. These typically have the license type `named` and the role `Author`.
 
     + Headers
 
@@ -4979,14 +4963,12 @@ noted in the Create User API section.
         }
 
 
-### Request User Information Update in Bulk  [PUT /api/v1/user/bulk/_request_cf_update]
+### Request user information update in bulk  [PUT /api/v1/user/bulk/_request_cf_update]
 
-**Added in Core Platform version 2021.12**
-
-This API is the bulk operation for "Request User Information Update" from the "User Commands" group.
+This API is the bulk operation of "Request User Information Update" from the "User Commands" group.
 It lets you ask multiple users to update their user information.
 
-**Note:** There are currently no limitations on the number of users a client can ask for an information update.
+**Note:** Currently, there's no limit on the number of users that you can request to update their information.
 
 + Request Ask multiple users to update their user information (application/json)
 
@@ -5131,14 +5113,12 @@ It lets you ask multiple users to update their user information.
             }
         }
 
-### Delete Users in Bulk [DELETE /api/v1/user/bulk]
-
-**Added in Core Platform version 2021.12**
+### Delete users in bulk [DELETE /api/v1/user/bulk]
 
 This API lets you delete a list of users. All user ids follow the requirements and constraints
 noted in the "Delete User API" section.
 
-**Note:** You can delete up to 100 users per bulk request, the minimum is 1.
+**Note:** With each bulk request, you can delete up to 100 users. The minimum is 1.
 
 + Request Delete users in bulk (application/json)
 
@@ -5393,19 +5373,17 @@ noted in the "Delete User API" section.
             }
         }
 
-# Group Custom Fields API
+# Group Custom fields API
 
-**Available since Core Platform version 2022.03**
-
-This API lets you set and view user custom fields.
+Use the API to set and view user custom fields.
 
 **Note:** You only need a valid access token for this request (no special privileges needed).
 
-## Custom Fields [/api/v1/custom-fields/user]
+## Custom fields [/api/v1/custom-fields/user]
 
-### Get Custom Fields [GET]
+### Get custom fields [GET]
 
-This shows a list of your user custom fields.
+Shows a list of your user custom fields.
 
 + Request Get Custom Fields (application/json)
 
@@ -5459,30 +5437,28 @@ This shows a list of your user custom fields.
 
 # Group Licenses API
 
-**Available since Core Platform version 2021.06**
-
-License information is provided by the following set of APIs.
+The following set of APIs provides license information.
 
 ## Statistics [/api/v1/licenses/statistics]
 
-### Get License Statistics for Users [GET]
+### Get license statistics for users [GET]
 
-Returns license statistics for the running instance showing the sum of license types `named` and `concurrent`.
-The following conditions are checked for all users in order to qualify them to be included in the calculation:
+Returns license statistics for the Acrolinx instance and shows the sum of license types `named` and `concurrent`.
+Acrolinx checks the following conditions for all users to qualify them for inclusion in the calculation:
 
 - Must be one of the following License Types `named` or `concurrent`
-- For `named` license they must be active it must satisfy the following
+- For `named` license they must be active and satisfy the following:
     - Be activated for `Checking` session type
-    - Must not be free of charge
-- All other `named` licensed users will be considered `inactive`
-- All `concurrent` licensed users will be `existing` if a license exists
+    - Must not be free of charge (built-in users)
+- All other `named` licensed users are considered `inactive`
+- All `concurrent` licensed users are `existing` if a license exists
 
 **Note:** Built-in users such as `Admin`, `TermBrowser`, `TermTargetAccess`, `TermContribution`, `TermApiAccess`, and `AnalyticsReadOnlyUser`
-are included in the license statistics along with all other users, but they are subject to the conditions above.
+are included in the license statistics along with all other users, but they’re subject to the conditions above.
 
-Details of the statistics attributes in the table below:
+The following table describes the statistics attributes:
 
-| License Type | Sum Attribute | Description                   |
+| License type | Sum attribute | Description                   |
 |:-------------|---------------|-------------------------------|
 | `named`      | licensed      | Total number of licenses      |
 | `named`      | active        | Total active licenses         |
@@ -5547,19 +5523,17 @@ Details of the statistics attributes in the table below:
 
 # Group Role API
 
-**Available since Core Platform version 2021.05**
-
-In the Role API, Acrolinx defines a role as an entity that has an id, a name and list of privileges, and information on whether this role is a default role. 
+In the Role API, a role is an entity that has an id, a name and list of privileges, and information about whether this role is a default role. 
 You can use roles to group sets of privileges and assign them to different users.
 Mark roles as default if you want to automatically assign at least one default role to all new users.
 
 To read more about role-based access control in Acrolinx, see [User Roles](https://support.acrolinx.com/hc/en-us/articles/10210994316562-User-Roles).
 
-**Note:** Before you get started with the Role API, be sure to review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+**Note:** Before you start using the Role API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
 
 ## Roles [/api/v1/roles/]
 
-### Get All Roles [GET]
+### Get all roles [GET]
 
 Returns a list of all roles including the associated privileges.
 
@@ -5714,15 +5688,14 @@ Returns a list of all roles including the associated privileges.
 
 ## Privileges [/api/v1/roles/privileges]
 
-Privileges determine if a user can perform an action via the API or Acrolinx Dashboard.
+Privileges determine if a user can perform an action with the API or Acrolinx UI.
 
-### Get All Privileges [GET]
+### Get all privileges [GET]
 
-This returns a list of all supported privileges.
+Returns a list of all supported privileges.
 
-**Note:** Depending on your Acrolinx version, the example response may look different than the response that you get for your supported privileges. 
-In newer platform releases, there are rare instances where privileges might be introduced or removed. 
-To find out which privileges come with your installation, submit this request and compare it to the example response.  
+**Note:** In newer Acrolinx versions, we may introduce or remove privileges. 
+To find out which privileges come with your instance, submit this request and compare it to the example response.  
 
 + Request
 
@@ -5821,14 +5794,14 @@ To find out which privileges come with your installation, submit this request an
 
 ## Role [/api/v1/roles]
 
-### Create Roles [POST]
+### Create roles [POST]
 
-This lets you add new roles.
+Adds new roles.
 
 **Note:**
 - The name needs to be unique and must be between 1 and 254 characters.
 - A role needs to have at least one privilege assigned.
-- Existing privileges must be referenced.
+- You must reference existing privileges.
 
 
 + Request Create a role (application/json)
@@ -6140,9 +6113,9 @@ This lets you add new roles.
             }
         }
 
-### Get a Role [GET /api/v1/roles/{id}]
+### Get a role [GET /api/v1/roles/{id}]
 
-This returns a role that was identified by its *id* in the database.
+Returns a role that Acrolinx identified by its *id* in the database.
 
 + Parameters
     + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
@@ -6201,14 +6174,14 @@ This returns a role that was identified by its *id* in the database.
             }
         }
 
-### Update a Role [PUT /api/v1/roles/{id}]
+### Update a role [PUT /api/v1/roles/{id}]
 
-This lets you update a role that was identified by its *id* in the database.
+Updates a role that Acrolinx identified by its *id* in the database.
 
 **Note:** 
 - To update roles, you need the privilege `UserAndRoles.editUser`.
-- You can't edit the preconfigured roles!
-    - Acrolinx comes with a number of preconfigured roles that are common in many organizations that use Acrolinx. 
+- You can't edit preconfigured roles!
+    - Acrolinx comes with a number of preconfigured roles that many customers use.
 - You can use one request to update role attributes individually or completely. The request will ignore missing attributes or attributes with `null` values.
 
 + Parameters
@@ -6433,9 +6406,9 @@ This lets you update a role that was identified by its *id* in the database.
 
     **Note:**
     - A role needs to have at least one privilege assigned.
-    - You can add/remove privilege(s). The server completely replaces every privilege.
+    - You can add or remove privileges. Acrolinx completely replaces every privilege.
     - There might be interdependencies with other privileges.
-    - Any changes to a role are automatically inherited by all users with that particular role.
+    - All users with that particular role will automatically inherit any changes to that role.
     - You need to reference existing privileges. See [Get All Privileges](###Get_all_privileges).
 
     **Warning:** This action **permanently** updates the privileges that belong to a role. 
@@ -6668,9 +6641,6 @@ This lets you update a role that was identified by its *id* in the database.
 
     In this example, the `default` attribute will be updated for the role `ExampleRole`. The role was identified by its *id* in the database.
 
-    **Note:**
-    - You aren't required to have default roles.
-
     + Headers
 
             X-Acrolinx-Auth: your_access_token
@@ -6733,13 +6703,13 @@ This lets you update a role that was identified by its *id* in the database.
 
 + Response 404 (application/json)
 
-### Delete a Role [DELETE /api/v1/roles/{id}]
+### Delete a role [DELETE /api/v1/roles/{id}]
 
-This lets you delete a specified role based on its *id*.
+This method lets you delete a specified role based on its *id*.
 
 **Note:** You can only successfully delete a role if all of the following conditions are met:
 - The role isn't a preconfigured built-in role such as "Author", "Super Administrator", or "Term Browser".
-- The role isn't selected as a default role.
+- The role isn't a default role.
 - The role isn't currently assigned to one or more users.
 
 + Parameters
@@ -6824,18 +6794,18 @@ This lets you delete a specified role based on its *id*.
 
 # Group Document API
 
-Here, a document is an entity that associates names/characteristics that identify a document with an ID. It also contains the custom document information.
+A document is an entity that associates names and characteristics that identify a document with an ID. It also contains the custom document information.
 
 Typical program flow:
 
-1. A document is opened in the host editor.
-2. The integration uses create or retrieve document information, to check if the custom fields have to be filled out.
+1. A user opens a document in an editor.
+2. The integration uses create or retrieve document information to check if the user has to fill out the custom fields.
     If the user has to fill out custom fields, the API returns all fields to fill out and the set values.
-3. The integration requests the user to fill out the custom field.
+3. The integration requests the user to fill out the custom fields.
 4. The integration sets the new custom fields either using the update document function or while submitting a check request.
 
 ## Document [/api/v1/document/{id}]
-### Get Document [GET]
+### Get document [GET]
 
 This method provides Document which was found in the database.
 
@@ -6861,7 +6831,7 @@ This method provides Document which was found in the database.
             }
         }
 
-### Update Document Custom Fields [PUT]
+### Update custom document fields [PUT]
 
 + Request (application/json)
 
@@ -6901,7 +6871,7 @@ This method provides Document which was found in the database.
             }
         }
 
-## Document API Capabilities [GET /api/v1/document/capabilities]
+## Document API capabilities [GET /api/v1/document/capabilities]
 
 Use this method to discover the configuration and capabilities of the document API.
 Available information includes the configured document custom fields.
@@ -6911,76 +6881,19 @@ Available information includes the configured document custom fields.
         + data (object)
         + links (object)
 
-# Group Broadcast API - DRAFT
-
-You can use platform notifications to inform users that checking might be affected by server maintenance or planned server outages.
-
-## Create a Platform Notification [POST /api/v1/broadcasts/platform-notifications]
-
-Publishes a new notification on the platform.
-
-
-+ Request (application/json)
-
-        {
-            "title": "Important Announcement",                               // required; The title of the notification
-            "body":  "Acrolinx Platform 5.6 will be deployed tomorrow.",     // required; Notification text.
-            "importance": "high",                                            // optional; "high"|"normal"; default: "normal"
-            "start": 1528127782,                                             // required; Notification start time (epoch millisecond timestamp)
-            "end": 1530719782                                                // required; Notification end time (epoch millisecond timestamp)
-        }
-
-+ Response 201 (application/json)
-
-        {
-          "data": {
-            "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101"
-          }
-        }
-
-## Retrieve Platform Notifications [GET /api/v1/broadcasts/platform-notifications/{lastRequestTimeInMilliseconds}]
-
-Retrieves active notifications from the platform.
-
-+ Parameters
-    + lastRequestTimeInMilliseconds: `1525449382` (long, required) - epoch millisecond timestamp used to filter active notifications
-
-
-+ Response 200 (application/json)
-
-        {
-            "data": {
-                "requestTimeInMilliseconds": "1525449382",
-                "platformNotifications": [
-                    {
-                        "id": "e06491e9-c67f-4da7-85da-eb30b9ca9101",
-                        "title": "Important Announcement",
-                        "body": "Acrolinx Platform 5.6 will be deployed tomorrow.",
-                        "importance": "high",
-                        "start": 1528127782,
-                        "end": 1530719782
-                    }
-                ]
-            }
-        }
-
-
-
 # Group Monitoring API
 
-**Since Core Platform 2019.10**
+The resources in this group provide information about the health and performance of Acrolinx.
+Accessing this information requires the privilege "Access to monitoring API." Not all users have this privilege. 
+Make sure the user associated with your API token has the relevant privileges.
 
-The resources in this group provide information about the health and performance of the Acrolinx Platform.
-Accessing this information requires the permission "Access to monitoring API." This privilege isn't granted
-to all users. Make sure the user associated with your API token has the requisite roles.
-
-For a quick check of your permissions see if the [metrics index](#monitoring-api-get-available-metrics)
-contains links. More information about permission management can be found in the
+To quickly check your privileges, see if the [metrics index](#monitoring-api-get-available-metrics)
+contains links. Read more about privilege management in the
 [Acrolinx documentation](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management).
 
-## Get Available Metrics [GET /api/v1/monitoring]
+## Get available metrics [GET /api/v1/monitoring]
 
-Lists available metrics according to the permissions of the API user. If access is granted a link to
+Lists available metrics according to the privileges of the API user. If access is granted a link to
 the metrics resource will be added to the links hash. The following relations are currently available:
 
 |Key             | Target
@@ -6997,9 +6910,9 @@ the metrics resource will be added to the links hash. The following relations ar
           }
         }
 
-## Get Check Metrics [GET /api/v1/monitoring/checks]
+## Get check metrics [GET /api/v1/monitoring/checks]
 
-Provides a summary of the check activity on the Acrolinx Platform.
+Provides a summary of the checking activity of Acrolinx.
 
 |Field                    |Contents
 |-------------------------|-------------------
@@ -7023,13 +6936,13 @@ Provides a summary of the check activity on the Acrolinx Platform.
             + totalQueueTime: 1563 (number) - Total time checks spent waiting
 
 
-## Get Health Metrics [GET /api/v1/monitoring/health]
+## Get health metrics [GET /api/v1/monitoring/health]
 
-A general summary of the health of the Acrolinx Platform.
+A general summary of the health of Acrolinx.
 
 |Field                    |Contents
 |-------------------------|-------------------
-|`languagesReady`         |A hash containing all configured languages as keys. If Acrolinx is ready to check in a language its value will be true.
+|`languagesReady`         |A hash containing all configured languages as keys. If Acrolinx is ready to check in a language, its value will be true.
 
 + Response 200 (application/json)
 
@@ -7043,13 +6956,11 @@ A general summary of the health of the Acrolinx Platform.
             }
         }
 
-## Get Health Status [GET /api/v1/monitoring/health/status]
+## Get health status [GET /api/v1/monitoring/health/status]
 
-This returns a successful response when at least one language server is available for checking.
+This method returns a successful response when at least one language server is available for checking.
 This API response will only contain `200` response code. You don't need
-access to the permission "Access to monitoring API" to use this API.
-
-**Available since Core Platform version 2022.03**
+the privilege "Access to monitoring API" to use this API.
 
 + Response 200
 
@@ -7066,34 +6977,32 @@ access to the permission "Access to monitoring API" to use this API.
             }
         }
 
-## Get Health Liveliness [GET /api/v1/monitoring/health/live]
+## Get health liveliness [GET /api/v1/monitoring/health/live]
 
-This returns a successful response when the server can accept and process web requests.
-This does not tell you if the server is ready to process check requests. To get that information,
+This returns a successful response when Acrolinx can accept and process web requests.
+This method doesn't tell you if Acrolinx is ready to process check requests. To get that information,
 you can make an API call to `api/v1/monitoring/health/status`.
 
 This API response will contain the plain-text message "OK" and a `200` response code. You don't need
-access to the permission "Access to monitoring API" to use this API. If a response is unsuccessful,
-you'll see a response that isn't `200`.
-
-**Available since Core Platform version 2022.09**
+the "Access to monitoring API" privilege to use this API. If a response is unsuccessful,
+you'll see a response other than `200`.
 
 + Response 200 (text/plain)
 
         OK
 
-# Data Structures
+# Data structures
 
 ## Role (object) 
 + id (string) - UUID 
 + name (string) - Name of the role
 + privileges (array[string]) - Belonging privileges of the role
-+ default (boolean) - Indicates the role is assigned to new users by default [ true | false ]
++ default (boolean) - Indicates that the role is assigned to new users by default [ true | false ]
 
 ## CreateOrUpdateRole (object) 
 + name (string, required) - Name of the role
 + privileges (array[string], required) - Belonging privileges of the role
-+ default (boolean, optional) - Indicates the role is assigned to new users by default [ true | false ]
++ default (boolean, optional) - Indicates that the role is assigned to new users by default [ true | false ]
 
 ## User (object)
 + id (string) - UUID
@@ -7103,8 +7012,8 @@ you'll see a response that isn't `200`.
 + lastIntegrationAccess (string) - The ISO8601 timestamp indicating when the last integration access occurred
 + licenseType (string) - Indicates the type of license as one of ['named' | 'concurrent' | 'builtin']
 + licenseStatus (string) - The license status
-+ activeTokenId (string) - Displays the currently active API token's id or an empty string if there is no active token
-+ checkingFrequency (UserStatus) - Displays a rough idea of the usage pattern of the user by checking their frequency across the lifetime of the user in days
++ activeTokenId (string) - Displays the currently active API token's id or an empty string if there’s no active token
++ checkingFrequency (UserStatus) - Gives a rough idea of the pattern of checking frequency across a user's lifetime in days
 + properties (object) - Key/Value pair of properties
 + roles (array[Role]) - List of assigned roles
 + idpUser (boolean) - Indicates whether the user has any linked identity providers
@@ -7118,8 +7027,8 @@ you'll see a response that isn't `200`.
 + `regular` - Performs 1 check in 24 hours (plus/minus 25%) on average.
 
 ## CreateUser (object)
-+ username (string) - The unique username, max length 255 characters
-+ fullName (string) - The full name of the user, max length 255 characters (optional)
++ username (string) - The unique username, maximum length 255 characters
++ fullName (string) - The full name of the user, maximum length 255 characters (optional)
 + password (string) - The user password, length between 1 and 128 characters (optional)
 + licenseType (string) - Indicates the type of license as one of ['named' | 'concurrent'] (optional)
 + roles (array[Role]) - List of assignable roles (optional)
@@ -7134,8 +7043,8 @@ you'll see a response that isn't `200`.
 
 ### UserApiTokenCreateResponse
 + type: "api" (string)
-+ issuedAt (string) - The ISO8601 timestamp indicating when the token was issued at
-+ expiresAt (string) - The ISO8601 timestamp indicating when the token will expire at
++ issuedAt (string) - The ISO8601 timestamp indicating when the token was issued
++ expiresAt (string) - The ISO8601 timestamp indicating when the token will expire
 + token (string) - The generated API token (JWT)
 
 ### BulkCreateUser (object)
