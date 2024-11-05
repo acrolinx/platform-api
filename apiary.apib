@@ -733,6 +733,11 @@ The same information is available in the checking capabilities.
                     "reportTypes": ["scorecard"],                // optional, default: scorecard
                     "contentFormat": "markdown",                 // optional, default: auto
                     "checkType": "batch",                        // optional, default: interactive
+                                                                 // the use case of the check, can be:
+                                                                 //   interactive =  human user checks own document
+                                                                 //   batch       =  human user checks many own documents
+                                                                 //   baseline    =  a repository of documents is checked, the user doesn't own the documents
+                                                                 //   automated   =  check of a single document for automated scenarios as for example a git hook
                                                                  // To learn more about the available check types, [visit the Acrolinx coding guidance](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/check-types.md).
                     "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
                     "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
@@ -7158,6 +7163,7 @@ curl \
 |Integration version|string|Integration version|255|
 |Content profile|string|Content profile used|255|
 |Check scope|string|Indicates whether a complete file or a specific selection of content is checked ['check'] or ['check selection'].|16|
+|Check type|string|Indicates specific checking feature i.e how the document is checked [ "batch", "interactive", "baseline", "automated" ].|16|
 |Custom field {NAME}|string|Custom fields. The number of columns in the CSV file will correspond to the number of custom fields. For example, if there are 10 custom fields, the CSV file will have 10 columns for custom fields.|255|
 |{NAME} goal score|number|Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
 |Clarity goal score|number|Score for the goal Clarity||
