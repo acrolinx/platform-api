@@ -733,11 +733,7 @@ The same information is available in the checking capabilities.
                     "reportTypes": ["scorecard"],                // optional, default: scorecard
                     "contentFormat": "markdown",                 // optional, default: auto
                     "checkType": "batch",                        // optional, default: interactive
-                                                                 // the use case of the check, can be:
-                                                                 //   interactive =  human user checks own document
-                                                                 //   batch       =  human user checks many own documents
-                                                                 //   baseline    =  a repository of documents is checked, the user doesn't own the documents
-                                                                 //   automated   =  check of a single document for automated scenarios as for example a git hook
+                                                                 // To learn more about the available check types, [visit the Acrolinx coding guidance](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/check-types.md).
                     "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
                     "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
                 },
