@@ -7153,8 +7153,8 @@ curl \
 |All issues|number|Count of all issues found||
 |Words|number|Number of words in the file||
 |Sentences|number|Number of sentences in the file||
-|Target|string|Name of the Target used|255|
-|Target ID|string|Unique Target ID|36|
+|Style guide|string|Name of the style guide used for checking|255|
+|Style guide ID|string|Unique style guide ID|36|
 |Content group ID|string|Unique content group ID|36|
 |Content group|string|Name of the content group|1024|
 |User ID|string|Unique user ID|36|
@@ -7168,18 +7168,18 @@ curl \
 |{NAME} goal score|number|Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
 |Clarity goal score|number|Score for the goal Clarity||
 |Consistency goal score|number|Score for the goal Consistency||
-|Correctness goal score|number|Score for the goal Correctness||
-|Inclusive Language goal score|number|Score for the goal Inclusive Language||
+|Spelling and grammar goal score|number|Score for the goal Spelling and grammar||
+|Inclusive language goal score|number|Score for the goal Inclusive language||
 |Scannability goal score|number|Score for the goal Scannability||
 |Terminology goal score|number|Score for the goal Terminology||
 |Tone goal score|number|Score for the goal Tone||
-|{NAME} goal issues|number|Number of Issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
-|Clarity goal issues|number|Number of Issues found for the goal Clarity||
-|Consistency goal issues|number|Number of Issues found for the goal Consistency||
-|Correctness goal issues|number|Number of Issues found for the goal Correctness||
-|Inclusive Language goal issues|number|Number of Issues found for the goal Inclusive Language||
-|Scannability goal issues|number|Number of Issues found for the goal Scannability||
-|Terminology goal issues|number|Number of Issues found for the goal Terminology||
+|{NAME} goal issues|number|Number of issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
+|Clarity goal issues|number|Number of issues found for the goal Clarity||
+|Consistency goal issues|number|Number of issues found for the goal Consistency||
+|Spelling and grammar goal issues|number|Number of issues found for the goal Spelling and grammar||
+|Inclusive language goal issues|number|Number of issues found for the goal Inclusive language||
+|Scannability goal issues|number|Number of issues found for the goal Scannability||
+|Terminology goal issues|number|Number of issues found for the goal Terminology||
 |Tone goal issues|number|Number of issues found for the goal Tone||
 |{NAME} metric score|number|Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffixes by name of the metric||
 
@@ -7195,7 +7195,7 @@ curl \
 
 + Response 200 (text/csv)
 
-        "Check ID","Check start time",Language,"Scorecard URI","File ID","Content reference","File path","File name","Content ID","Acrolinx Score","Acrolinx Score color","All issues",Words,Sentences,Target,"Target ID","Content group ID","Content group","User ID","Full name",Integration,"Integration version","Content profile","Check scope","Custom field department","Custom field role","Custom field status","Clarity goal score","Consistency goal score","Correctness goal score","Inclusive language goal score","Scannability goal score","Terminology goal score","Tone goal score","Clarity goal issues","Consistency goal issues","Correctness goal issues","Inclusive language goal issues","Scannability goal issues","Terminology goal issues","Tone goal issues"
+        "Check ID","Check start time",Language,"Scorecard URI","File ID","Content reference","File path","File name","Content ID","Acrolinx Score","Acrolinx Score color","All issues",Words,Sentences,"Style guide","Style guide ID","Content group ID","Content group","User ID","Full name",Integration,"Integration version","Content profile","Check scope","Custom field department","Custom field role","Custom field status","Clarity goal score","Consistency goal score","Spelling and grammar goal score","Inclusive language goal score","Scannability goal score","Terminology goal score","Tone goal score","Clarity goal issues","Consistency goal issues","Spelling and grammar goal issues","Inclusive language goal issues","Scannability goal issues","Terminology goal issues","Tone goal issues"
         "4265b702-9a69-38ca-bb45-bcad9ee7d910",2024-01-14T23:06:58Z,en,"api/v1/checking/scorecards/4265b702-9a69-38ca-bb45-bcad9ee7d910","9d38800b-89ae-396c-ae11-1de419f13a8f",Yak-1,,Yak-1,,35,red,20,1119,47,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2",,,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",check,developers,junior,draft,57,6,76,40,19,45,42,3,2,8,2,5,5,3
         "0521406f-ccf1-3acf-904a-7452766df8d7",2024-01-15T05:34:06Z,en,"api/v1/checking/scorecards/0521406f-ccf1-3acf-904a-7452766df8d7","77ad4993-80f1-31ec-9aef-1a33d2021a86",Su-22,,Su-22,,52,yellow,20,504,41,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2","710eed98-732b-3668-8a67-f4294d9a7ff4",Wade,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",check,developers,senior,draft,15,64,84,42,43,30,85,4,2,6,6,3,0,9
 
