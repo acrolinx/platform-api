@@ -7094,7 +7094,7 @@ you'll see a response other than `200`.
 # Group Reporting API
 
 The reporting API provides direct access to raw check data and raw issue data.
-You can download the data as a CSV file and add it to your preferred analysis tool.
+You can download the data as a CSV or JSON format, add it to your preferred analysis tool.
 
 ### Restrictions
 #### Available data
@@ -7125,7 +7125,7 @@ If you exceed the download quota, you'll get a 429 status code. The response wil
 
 ## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
 
-Download check data as a CSV file. You can access the data with cURL. 
+##### Download check data as a CSV of JSON format. You can access the data with cURL. By default data is provided in CSV format, Add "Accept:application/json" header in a http request to download the data in JSON format.
 
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data is only available if checks were run in the requested time range.
 
@@ -7134,6 +7134,15 @@ curl \
     'https://<replace_your_host_address>/api/v1/reporting/data/checks?start=<replace_start_date>&end=<replace_end_date>' \
     -H "X-Acrolinx-Auth: <replace_your_access_token>" \
     -o <replace_file_name>.csv
+```
+
+#####  Download check data as a JSON file. You can access the data with cURL. 
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/checks?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -H "Accept: application/json"
+    -o <replace_file_name>.json
 ```
 
 ### Checks CSV data structure
@@ -7188,6 +7197,7 @@ curl \
     + Headers
 
             X-Acrolinx-Auth:your_access_token
+            Accept:text/csv
 
 + Parameters
     + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
@@ -7198,6 +7208,57 @@ curl \
         "Check ID","Check start time",Language,"Scorecard URI","File ID","Content reference","File path","File name","Content ID","Acrolinx Score","Acrolinx Score color","All issues",Words,Sentences,"Style guide","Style guide ID","Content group ID","Content group","User ID","Full name",Integration,"Integration version","Content profile","Check scope","Custom field department","Custom field role","Custom field status","Clarity goal score","Consistency goal score","Spelling and grammar goal score","Inclusive language goal score","Scannability goal score","Terminology goal score","Tone goal score","Clarity goal issues","Consistency goal issues","Spelling and grammar goal issues","Inclusive language goal issues","Scannability goal issues","Terminology goal issues","Tone goal issues"
         "4265b702-9a69-38ca-bb45-bcad9ee7d910",2024-01-14T23:06:58Z,en,"api/v1/checking/scorecards/4265b702-9a69-38ca-bb45-bcad9ee7d910","9d38800b-89ae-396c-ae11-1de419f13a8f",Yak-1,,Yak-1,,35,red,20,1119,47,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2",,,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",check,developers,junior,draft,57,6,76,40,19,45,42,3,2,8,2,5,5,3
         "0521406f-ccf1-3acf-904a-7452766df8d7",2024-01-15T05:34:06Z,en,"api/v1/checking/scorecards/0521406f-ccf1-3acf-904a-7452766df8d7","77ad4993-80f1-31ec-9aef-1a33d2021a86",Su-22,,Su-22,,52,yellow,20,504,41,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2","710eed98-732b-3668-8a67-f4294d9a7ff4",Wade,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",check,developers,senior,draft,15,64,84,42,43,30,85,4,2,6,6,3,0,9
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth:your_access_token
+            Accept:application/json
+
++ Parameters
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
+
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array)
+            + (object)
+                + checkId (string) - Unique check ID
+                + checkStartTime (string) - Start time of the check in the format `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z`
+                + language (string) - Checking language
+                + scorecardUri (string) - Uniform Resource Identifier (URI) of the Scorecard
+                + fileId (string) - Unique file ID
+                + contentReference (string) - The first time you run a check, Acrolinx assigns the file a content reference. Acrolinx treats files with the same content reference as the same file.
+                + guidelineName (string) - Name of the guideline
+                + filePath (string) - The file's location when it’s first checked
+                + fileName (string) - Name of the file
+                + contentId (string) - Unique check ID for batch checks
+                + acrolinxScore (number) - Overall Acrolinx Score
+                + acrolinxScoreColor (string) - Color coding of the Acrolinx Score
+                + allIssues (number) - Count of all issues found
+                + words (number) - Number of words in the file
+                + sentences (number) - Number of sentences in the file
+                + target (string) - Name of the Target used
+                + targetId (string) - Unique Target ID
+                + contentGroupId (string) - Unique content group ID
+                + contentGroup (string) - Name of the content group
+                + userId (string) - Unique user ID
+                + fullName (string) - Full name of user
+                + integration (string) - Integration used to run the check
+                + integrationVersion (string) - Integration version
+                + contentProfile (string) -Content profile used
+                + checkScope (string) - Indicates whether a complete file or a specific selection of content is checked ['check'] or ['check selection'].
+                + checkType (string) - Indicates the specific check method used to review the file [ "batch", "interactive", "baseline", "automated" ].
+                + customFields (object) - key value pair of custom fields
+                + goals (array) - List of goals
+                    + (object)
+                        + id (string) - ID of the gonual
+                        + score (number) - score for a goal
+                        + issues (number) - Count of all issues found for a goal
+                + metricScores (object) - metric score
+
 
 + Response 400 (application/json)
 
@@ -7306,7 +7367,7 @@ curl \
 
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
-Download issue data as a CSV file. You can access the data with cURL. 
+##### Download issue data as a CSV file. You can access the data with cURL. 
 
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
 
@@ -7315,6 +7376,15 @@ curl \
     'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
     -H "X-Acrolinx-Auth: <replace_your_access_token>" \
     -o <replace_file_name>.csv
+```
+
+#####  Download issue data as a JSON file. You can access the data with cURL. 
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -H "Accept: application/json"
+    -o <replace_file_name>.json
 ```
 
 ### Issues CSV data structure
@@ -7337,8 +7407,9 @@ curl \
 + Request
 
     + Headers
-    
+
             X-Acrolinx-Auth:your_access_token
+            Accept:text/csv
 
 + Parameters
     + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
@@ -7351,6 +7422,37 @@ curl \
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,INCLUSIVE,"en_INCLUSIVE_Guideline_id-6","INCLUSIVE guideline id 6 display name",en,syntax,,,
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
+        
+       
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth:your_access_token
+            Accept:application/json
+
++ Parameters
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
+
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array)
+            + (object)
+                + checkId (string) - Unique check ID
+                + context (string) - Sentence or paragraph where the issue occurred
+                + issue (string) - Content that Acrolinx highlighted
+                + structuralContext (string) - Structural location where the issue occurred in the file
+                + date (string) - Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20`
+                + goalId (string) - ID of the goal
+                + guidelineName (string) - Name of the guideline
+                + language (string) - Checking language
+                + issueType (string) - Type of issue
+                + term (string) - Actual word or phrase highlighted during the Acrolinx check
+                + domainOrTermFilter (array) - List of internal category for the highlighted term
+                    + (string)
+                + termStatus (string) - Acrolinx checked for the highlighted term ["admitted", "deprecated", "preferred"]. Read more about term statuses in the article [Term Settings](https://support.acrolinx.com/hc/en-us/articles/10228296536082-Term-Settings).
 
 + Response 400 (application/json)
 
