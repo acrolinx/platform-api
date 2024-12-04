@@ -7066,7 +7066,7 @@ you'll see a response other than `200`.
 # Group Reporting API
 
 The reporting API provides direct access to raw check data and raw issue data.
-You can download the data as a CSV or JSON format, add it to your preferred analysis tool.
+You can download the data in CSV or JSON format, add it to your preferred analysis tool.
 
 ### Restrictions
 #### Available data
@@ -7107,7 +7107,7 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-#####  Download check data as a JSON file. You can access the data with cURL. Add "Accept:application/json" header in a http request to download the data in JSON format.
+#####  Download check data as a JSON file. You can access the data with cURL. Add "Accept:application/json" header in a request to download the data in JSON format.
 
 ```
 curl \
@@ -7202,12 +7202,12 @@ curl \
                         "allIssues": 20,
                         "words": 1851,
                         "sentences": 100,
-                        "target": "日本語",
-                        "targetId": "3dd6bde9-a08b-4681-9e91-55b9ff4fc802",
+                        "styleGuide": "Technical English",
+                        "styleGuideId": "3dd6bde9-a08b-4681-9e91-55b9ff4fc802",
                         "contentGroupId": "66e82845-c22c-3997-93f5-d3cc1d9c2e5d",
                         "contentGroup": "Connington of Griffin's Roost",
                         "userId": "4564a62d-a947-3a61-88d4-5fdb89e281e1",
-                        "fullName": "Champa Nappa",
+                        "fullName": "abc fullname",
                         "integration": "MS word",
                         "integrationVersion": "v1",
                         "contentProfile": "f5b8573c-e603-46d7-8af0-512d199d478b",
@@ -7277,8 +7277,8 @@ curl \
                 + allIssues (number) - Count of all issues found
                 + words (number) - Number of words in the file
                 + sentences (number) - Number of sentences in the file
-                + target (string) - Name of the Target used
-                + targetId (string) - Unique Target ID
+                + styleGuide (string) - Name of the Target used
+                + styleGuideId (string) - Unique Target ID
                 + contentGroupId (string) - Unique content group ID
                 + contentGroup (string) - Name of the content group
                 + userId (string) - Unique user ID
@@ -7415,7 +7415,7 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-#####  Download issue data as a JSON file. You can access the data with cURL. 
+#####  Download issue data as a JSON file. You can access the data with cURL. Add "Accept:application/json" header in a request to download the data in JSON format.
 ```
 curl \
     'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
