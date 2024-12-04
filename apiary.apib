@@ -7521,7 +7521,7 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-#####  Download issue data as a JSON file. You can access the data with cURL. 
+#####  Download issue data as a JSON file. You can access the data with cURL. Add "Accept:application/json" header in a request to download the data in JSON format.
 ```
 curl \
     'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
