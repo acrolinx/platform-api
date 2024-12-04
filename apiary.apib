@@ -7510,7 +7510,7 @@ curl \
 
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
-Download issue data as a CSV file. You can access the data with cURL. 
+##### Download issue data as a CSV file. You can access the data with cURL. 
 
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
 
@@ -7519,6 +7519,15 @@ curl \
     'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
     -H "X-Acrolinx-Auth: <replace_your_access_token>" \
     -o <replace_file_name>.csv
+```
+
+#####  Download issue data as a JSON file. You can access the data with cURL. 
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -H "Accept: application/json"
+    -o <replace_file_name>.json
 ```
 
 ### Issues CSV data structure
@@ -7556,6 +7565,37 @@ curl \
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,INCLUSIVE,"en_INCLUSIVE_Guideline_id-6","INCLUSIVE guideline id 6 display name",en,syntax,,,
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
+        
+       
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth:your_access_token
+            Accept:application/json
+
++ Parameters
+    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
+    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
+
+
++ Response 200 (application/json)
+    + Attributes
+        + data (array)
+            + (object)
+                + checkId (string) - Unique check ID
+                + context (string) - Sentence or paragraph where the issue occurred
+                + issue (string) - Content that Acrolinx highlighted
+                + structuralContext (string) - Structural location where the issue occurred in the file
+                + date (string) - Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20`
+                + goalId (string) - ID of the goal
+                + guidelineName (string) - Name of the guideline
+                + language (string) - Checking language
+                + issueType (string) - Type of issue
+                + term (string) - Actual word or phrase highlighted during the Acrolinx check
+                + domainOrTermFilter (array) - List of internal category for the highlighted term
+                    + (string)
+                + termStatus (string) - Acrolinx checked for the highlighted term ["admitted", "deprecated", "preferred"]. Read more about term statuses in the article [Term Settings](https://support.acrolinx.com/hc/en-us/articles/10228296536082-Term-Settings).
 
 + Response 400 (application/json)
 
