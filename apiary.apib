@@ -297,34 +297,6 @@ The value of the password is `backslash\quote"` in the JSON below. The special c
     }
 ```
 
-# JSON - Escape special characters
-
-Some JSON characters are special and require escaping. To escape a character, prefix the character with a backslash `\`.
-
-Below are some common characters that need to be escaped in JSON:
-
-|Character|Escape character|
-|----------------|------------|
-|Double quote|`\"`|
-|Backslash|`\\`|
-|Forward slash|`\/`|
-|Backspace|`\b`|
-|Form feed|`\f`|
-|Newline|`\n`|
-|Tab|`\t`|
-|Unicode escape sequence for special characters|`\uXXXX`|
-
-Example:
-The value of the password is `backslash\quote"` in the JSON below. The special characters are escaped using a backslash.
-
-```json
-    {
-        "username": "username",
-        "fullName": "full Name",
-        "password": "backslash\\quote\""
-    }
-```
-
 # Group Index
 
 ## Index [GET /api/v1]
