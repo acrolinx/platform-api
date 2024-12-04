@@ -7565,21 +7565,47 @@ curl \
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,INCLUSIVE,"en_INCLUSIVE_Guideline_id-6","INCLUSIVE guideline id 6 display name",en,syntax,,,
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
         "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
-        
-       
-+ Request
-
-    + Headers
-
-            X-Acrolinx-Auth:your_access_token
-            Accept:application/json
-
-+ Parameters
-    + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
-    + end: `2024-08-28` (string, required) - Date format `yyyy-MM-dd`. Download data up to this date.
-
 
 + Response 200 (application/json)
+
+    + Body
+    
+            [
+                {
+                    "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
+                    "context": "hello woorld",
+                    "issue": "woorld",
+                    "structuralContext": "sentence",
+                    "date": "2023-11-08",
+                    "goalId": "CORRECTNESS",
+                    "guidelineId": "en_CORRECTNESS_Guideline_id-3",
+                    "guidelineName": "CORRECTNESS guideline id 3 display name",
+                    "language": "en",
+                    "issueType": "syntax",
+                    "term": null,
+                    "domainOrTermFilter": [],
+                    "termStatus": null
+                },
+                {
+                    "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
+                    "context": "The Core Platform supports",
+                    "issue": "Core Platform",
+                    "structuralContext": "word",
+                    "date": "2023-11-08",
+                    "goalId": "TERMINOLOGY",
+                    "guidelineId": "",
+                    "guidelineName": null,
+                    "language": null,
+                    "issueType": "terminology",
+                    "term": "Core Platform",
+                    "domainOrTermFilter": [
+                        "PLAIN_ENGLISH",
+                        "undefined domain"
+                    ],
+                    "termStatus": "deprecated"
+                }                       
+            ]
+
     + Attributes
         + data (array)
             + (object)
