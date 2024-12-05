@@ -7408,6 +7408,7 @@ curl \
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
 ##### Download issue data as a CSV file. 
+
 You can access the data with cURL. 
 
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
@@ -7420,7 +7421,9 @@ curl \
 ```
 
 #####  Download issue data as a JSON file. 
+
 You can access the data with cURL. Add "Accept:application/json" header in a request to download the data in JSON format.
+
 ```
 curl \
     'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
