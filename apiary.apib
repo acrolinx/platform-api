@@ -7510,7 +7510,9 @@ curl \
 
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
-##### Download issue data as a CSV file. You can access the data with cURL. 
+##### Download issue data as a CSV file
+
+You can access the data with cURL. 
 
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
 
@@ -7521,7 +7523,10 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-#####  Download issue data as a JSON file. You can access the data with cURL. Add "Accept:application/json" header in a request to download the data in JSON format.
+#####  Download issue data as a JSON file
+
+You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
+
 ```
 curl \
     'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
@@ -7530,7 +7535,7 @@ curl \
     -o <replace_file_name>.json
 ```
 
-### Issues CSV data structure
+### CSV data structure for issues
 |Column name|Data type|Description|Length|
 |----------------|------------|------------|------------|
 |Check ID|string|Unique check ID|36|
@@ -7590,8 +7595,8 @@ curl \
                         },
                         {
                             "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
-                            "context": "The Core Platform supports",
-                            "issue": "Core Platform",
+                            "context": "Acrolinx supports",
+                            "issue": "Acrolinx",
                             "structuralContext": "word",
                             "date": "2023-11-08",
                             "goalId": "TERMINOLOGY",
@@ -7599,7 +7604,7 @@ curl \
                             "guidelineName": null,
                             "language": null,
                             "issueType": "terminology",
-                            "term": "Core Platform",
+                            "term": "Acrolinx",
                             "domainOrTermFilter": [
                                 "PLAIN_ENGLISH",
                                 "undefined domain"
