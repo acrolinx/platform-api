@@ -7569,45 +7569,48 @@ curl \
 + Response 200 (application/json)
 
     + Body
-    
-            [
-                {
-                    "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
-                    "context": "hello woorld",
-                    "issue": "woorld",
-                    "structuralContext": "sentence",
-                    "date": "2023-11-08",
-                    "goalId": "CORRECTNESS",
-                    "guidelineId": "en_CORRECTNESS_Guideline_id-3",
-                    "guidelineName": "CORRECTNESS guideline id 3 display name",
-                    "language": "en",
-                    "issueType": "syntax",
-                    "term": null,
-                    "domainOrTermFilter": [],
-                    "termStatus": null
-                },
-                {
-                    "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
-                    "context": "The Core Platform supports",
-                    "issue": "Core Platform",
-                    "structuralContext": "word",
-                    "date": "2023-11-08",
-                    "goalId": "TERMINOLOGY",
-                    "guidelineId": "",
-                    "guidelineName": null,
-                    "language": null,
-                    "issueType": "terminology",
-                    "term": "Core Platform",
-                    "domainOrTermFilter": [
-                        "PLAIN_ENGLISH",
-                        "undefined domain"
-                    ],
-                    "termStatus": "deprecated"
-                }                       
-            ]
+
+            {
+                "issues":
+                    [
+                        {
+                            "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
+                            "context": "hello woorld",
+                            "issue": "woorld",
+                            "structuralContext": "sentence",
+                            "date": "2023-11-08",
+                            "goalId": "CORRECTNESS",
+                            "guidelineId": "en_CORRECTNESS_Guideline_id-3",
+                            "guidelineName": "CORRECTNESS guideline id 3 display name",
+                            "language": "en",
+                            "issueType": "syntax",
+                            "term": null,
+                            "domainOrTermFilter": [],
+                            "termStatus": null
+                        },
+                        {
+                            "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
+                            "context": "The Core Platform supports",
+                            "issue": "Core Platform",
+                            "structuralContext": "word",
+                            "date": "2023-11-08",
+                            "goalId": "TERMINOLOGY",
+                            "guidelineId": "",
+                            "guidelineName": null,
+                            "language": null,
+                            "issueType": "terminology",
+                            "term": "Core Platform",
+                            "domainOrTermFilter": [
+                                "PLAIN_ENGLISH",
+                                "undefined domain"
+                            ],
+                            "termStatus": "deprecated"
+                        }                       
+                    ]
+            }
 
     + Attributes
-        + data (array)
+        + issues (array)
             + (object)
                 + checkId (string) - Unique check ID
                 + context (string) - Sentence or paragraph where the issue occurred
