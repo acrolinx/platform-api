@@ -7186,81 +7186,84 @@ curl \
 
     + Body
     
-            [
-                {
-                        "checkId": "895ceca3-7a1c-390d-b8d6-02a53a54e0d5",
-                        "checkStartTime": "2023-11-14T21:32:22Z",
-                        "language": "ja",
-                        "scorecardUri": "api/v1/checking/scorecards/895ceca3-7a1c-390d-b8d6-02a53a54e0d5",
-                        "fileId": "8d1bb0a8-612e-30bc-8b6d-ea9fedba138c",
-                        "contentReference": "Ju-88",
-                        "filePath": "",
-                        "fileName": "Ju-88",
-                        "contentId": null,
-                        "acrolinxScore": 53,
-                        "acrolinxScoreColor": "yellow",
-                        "allIssues": 20,
-                        "words": 1851,
-                        "sentences": 100,
-                        "styleGuide": "Technical English",
-                        "styleGuideId": "3dd6bde9-a08b-4681-9e91-55b9ff4fc802",
-                        "contentGroupId": "66e82845-c22c-3997-93f5-d3cc1d9c2e5d",
-                        "contentGroup": "Connington of Griffin's Roost",
-                        "userId": "4564a62d-a947-3a61-88d4-5fdb89e281e1",
-                        "fullName": "abc fullname",
-                        "integration": "MS word",
-                        "integrationVersion": "v1",
-                        "contentProfile": "f5b8573c-e603-46d7-8af0-512d199d478b",
-                        "checkScope": "check",
-                        "checkType": "interactive",
-                        "customFields": {
-                            "role": "senior",
-                            "depArtment": "developers",
-                            "status": "draft"
-                        },
-                        "goals": [
-                            {
-                                "id": "CLARITY",
-                                "score": 34,
-                                "issues": 2
+            {
+                "checks":
+                [
+                    {
+                            "checkId": "895ceca3-7a1c-390d-b8d6-02a53a54e0d5",
+                            "checkStartTime": "2023-11-14T21:32:22Z",
+                            "language": "ja",
+                            "scorecardUri": "api/v1/checking/scorecards/895ceca3-7a1c-390d-b8d6-02a53a54e0d5",
+                            "fileId": "8d1bb0a8-612e-30bc-8b6d-ea9fedba138c",
+                            "contentReference": "Ju-88",
+                            "filePath": "",
+                            "fileName": "Ju-88",
+                            "contentId": null,
+                            "acrolinxScore": 53,
+                            "acrolinxScoreColor": "yellow",
+                            "allIssues": 20,
+                            "words": 1851,
+                            "sentences": 100,
+                            "styleGuide": "Technical English",
+                            "styleGuideId": "3dd6bde9-a08b-4681-9e91-55b9ff4fc802",
+                            "contentGroupId": "66e82845-c22c-3997-93f5-d3cc1d9c2e5d",
+                            "contentGroup": "Connington of Griffin's Roost",
+                            "userId": "4564a62d-a947-3a61-88d4-5fdb89e281e1",
+                            "fullName": "abc fullname",
+                            "integration": "MS word",
+                            "integrationVersion": "v1",
+                            "contentProfile": "f5b8573c-e603-46d7-8af0-512d199d478b",
+                            "checkScope": "check",
+                            "checkType": "interactive",
+                            "customFields": {
+                                "role": "senior",
+                                "depArtment": "developers",
+                                "status": "draft"
                             },
-                            {
-                                "id": "CORRECTNESS",
-                                "score": 75,
-                                "issues": 9
-                            },
-                            {
-                                "id": "CONSISTENCY",
-                                "score": 83,
-                                "issues": 6
-                            },
-                            {
-                                "id": "INCLUSIVE",
-                                "score": 64,
-                                "issues": 0
-                            },
-                            {
-                                "id": "TONE",
-                                "score": 20,
-                                "issues": 9
-                            },
-                            {
-                                "id": "SCANNABILITY",
-                                "score": 23,
-                                "issues": 2
-                            },
-                            {
-                                "id": "TERMINOLOGY",
-                                "score": 72,
-                                "issues": 9
-                            }
-                        ],
-                        "metricScores": {}
-                }                       
-            ]
+                            "goals": [
+                                {
+                                    "id": "CLARITY",
+                                    "score": 34,
+                                    "issues": 2
+                                },
+                                {
+                                    "id": "CORRECTNESS",
+                                    "score": 75,
+                                    "issues": 9
+                                },
+                                {
+                                    "id": "CONSISTENCY",
+                                    "score": 83,
+                                    "issues": 6
+                                },
+                                {
+                                    "id": "INCLUSIVE",
+                                    "score": 64,
+                                    "issues": 0
+                                },
+                                {
+                                    "id": "TONE",
+                                    "score": 20,
+                                    "issues": 9
+                                },
+                                {
+                                    "id": "SCANNABILITY",
+                                    "score": 23,
+                                    "issues": 2
+                                },
+                                {
+                                    "id": "TERMINOLOGY",
+                                    "score": 72,
+                                    "issues": 9
+                                }
+                            ],
+                            "metricScores": {}
+                    }                       
+                ]
+            }
             
     + Attributes
-        + data (array)
+        + checks (array)
             + (object)
                 + checkId (string) - Unique check ID
                 + checkStartTime (string) - Start time of the check in the format `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z`
@@ -7463,45 +7466,48 @@ curl \
 + Response 200 (application/json)
 
     + Body
-    
-            [
-                {
-                    "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
-                    "context": "hello woorld",
-                    "issue": "woorld",
-                    "structuralContext": "sentence",
-                    "date": "2023-11-08",
-                    "goalId": "CORRECTNESS",
-                    "guidelineId": "en_CORRECTNESS_Guideline_id-3",
-                    "guidelineName": "CORRECTNESS guideline id 3 display name",
-                    "language": "en",
-                    "issueType": "syntax",
-                    "term": null,
-                    "domainOrTermFilter": [],
-                    "termStatus": null
-                },
-                {
-                    "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
-                    "context": "The Core Platform supports",
-                    "issue": "Core Platform",
-                    "structuralContext": "word",
-                    "date": "2023-11-08",
-                    "goalId": "TERMINOLOGY",
-                    "guidelineId": "",
-                    "guidelineName": null,
-                    "language": null,
-                    "issueType": "terminology",
-                    "term": "Core Platform",
-                    "domainOrTermFilter": [
-                        "PLAIN_ENGLISH",
-                        "undefined domain"
-                    ],
-                    "termStatus": "deprecated"
-                }                       
-            ]
+
+            {
+                "issues":
+                    [
+                        {
+                            "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
+                            "context": "hello woorld",
+                            "issue": "woorld",
+                            "structuralContext": "sentence",
+                            "date": "2023-11-08",
+                            "goalId": "CORRECTNESS",
+                            "guidelineId": "en_CORRECTNESS_Guideline_id-3",
+                            "guidelineName": "CORRECTNESS guideline id 3 display name",
+                            "language": "en",
+                            "issueType": "syntax",
+                            "term": null,
+                            "domainOrTermFilter": [],
+                            "termStatus": null
+                        },
+                        {
+                            "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
+                            "context": "The Core Platform supports",
+                            "issue": "Core Platform",
+                            "structuralContext": "word",
+                            "date": "2023-11-08",
+                            "goalId": "TERMINOLOGY",
+                            "guidelineId": "",
+                            "guidelineName": null,
+                            "language": null,
+                            "issueType": "terminology",
+                            "term": "Core Platform",
+                            "domainOrTermFilter": [
+                                "PLAIN_ENGLISH",
+                                "undefined domain"
+                            ],
+                            "termStatus": "deprecated"
+                        }                       
+                    ]
+            }
 
     + Attributes
-        + data (array)
+        + issues (array)
             + (object)
                 + checkId (string) - Unique check ID
                 + context (string) - Sentence or paragraph where the issue occurred
