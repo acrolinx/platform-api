@@ -7291,7 +7291,7 @@ curl \
                 + contentProfile (string) - Content profile used
                 + checkScope (string) - Indicates whether a complete file or a specific selection of content is checked ['check'] or ['check selection']
                 + checkType (string) - Indicates the specific check method used to review the file [ "batch", "interactive", "baseline", "automated" ]
-                + customFields (object) - key value pair of custom fields
+                + customFields (object) - Key-value pair of custom fields
                 + goals (array) - List of goals
                     + (object)
                         + id (string) - ID of the goal
@@ -7420,9 +7420,9 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-#####  Download issue data as a JSON file. 
+#####  Download issue data as a JSON file
 
-You can access the data with cURL. Add "Accept:application/json" header in a request to download the data in JSON format.
+You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
 
 ```
 curl \
@@ -7432,7 +7432,7 @@ curl \
     -o <replace_file_name>.json
 ```
 
-### Issues CSV data structure
+### CSV data structure for issues
 |Column name|Data type|Description|Length|
 |----------------|------------|------------|------------|
 |Check ID|string|Unique check ID|36|
@@ -7492,8 +7492,8 @@ curl \
                         },
                         {
                             "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
-                            "context": "The Core Platform supports",
-                            "issue": "Core Platform",
+                            "context": "Acrolinx supports",
+                            "issue": "Acrolinx",
                             "structuralContext": "word",
                             "date": "2023-11-08",
                             "goalId": "TERMINOLOGY",
@@ -7501,7 +7501,7 @@ curl \
                             "guidelineName": null,
                             "language": null,
                             "issueType": "terminology",
-                            "term": "Core Platform",
+                            "term": "Acrolinx",
                             "domainOrTermFilter": [
                                 "PLAIN_ENGLISH",
                                 "undefined domain"
