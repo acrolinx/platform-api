@@ -7097,7 +7097,9 @@ If you exceed the download quota, you'll get a 429 status code. The response wil
 
 ## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
 
-##### Download check data as a CSV file. You can access the data with cURL.
+##### Download check data as a CSV file. 
+
+You can access the data with cURL.
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data is only available if checks were run in the requested time range.
 
 ```
@@ -7107,7 +7109,9 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-#####  Download check data as a JSON file. You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
+#####  Download check data as a JSON file. 
+
+You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
 
 ```
 curl \
