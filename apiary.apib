@@ -7066,7 +7066,7 @@ you'll see a response other than `200`.
 # Group Reporting API
 
 The reporting API provides direct access to raw check data and raw issue data.
-You can download the data in CSV or JSON format, add it to your preferred analysis tool.
+You can download the data in CSV or JSON format and add it to your preferred analysis tool.
 
 ### Restrictions
 #### Available data
@@ -7097,7 +7097,10 @@ If you exceed the download quota, you'll get a 429 status code. The response wil
 
 ## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
 
-##### Download check data as a CSV file. You can access the data with cURL.
+##### Download check data as a CSV file
+
+You can access the data with cURL.
+
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data is only available if checks were run in the requested time range.
 
 ```
@@ -7107,7 +7110,9 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-#####  Download check data as a JSON file. You can access the data with cURL. Add "Accept:application/json" header in a request to download the data in JSON format.
+#####  Download check data as a JSON file
+
+You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
 
 ```
 curl \
@@ -7117,7 +7122,7 @@ curl \
     -o <replace_file_name>.json
 ```
 
-### Checks CSV data structure
+### CSV data structure for checks
 |Column name|Data type|Description|Length|
 |----------------|------------|------------|------------|
 |Check ID|string|Unique check ID|36|
@@ -7169,7 +7174,7 @@ curl \
     + Headers
 
             X-Acrolinx-Auth:your_access_token
-            Accept:text/csv
+            Accept:text/csv or application/json
 
 + Parameters
     + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
@@ -7280,24 +7285,24 @@ curl \
                 + allIssues (number) - Count of all issues found
                 + words (number) - Number of words in the file
                 + sentences (number) - Number of sentences in the file
-                + styleGuide (string) - Name of the Target used
-                + styleGuideId (string) - Unique Target ID
+                + styleGuide (string) - Name of the style guide used
+                + styleGuideId (string) - Unique style guide ID
                 + contentGroupId (string) - Unique content group ID
                 + contentGroup (string) - Name of the content group
                 + userId (string) - Unique user ID
                 + fullName (string) - Full name of user
                 + integration (string) - Integration used to run the check
                 + integrationVersion (string) - Integration version
-                + contentProfile (string) -Content profile used
-                + checkScope (string) - Indicates whether a complete file or a specific selection of content is checked ['check'] or ['check selection'].
-                + checkType (string) - Indicates the specific check method used to review the file [ "batch", "interactive", "baseline", "automated" ].
-                + customFields (object) - key value pair of custom fields
+                + contentProfile (string) - Content profile used
+                + checkScope (string) - Indicates whether a complete file or a specific selection of content is checked ['check'] or ['check selection']
+                + checkType (string) - Indicates the specific check method used to review the file [ "batch", "interactive", "baseline", "automated" ]
+                + customFields (object) - Key-value pair of custom fields
                 + goals (array) - List of goals
                     + (object)
-                        + id (string) - ID of the gonual
-                        + score (number) - score for a goal
+                        + id (string) - ID of the goal
+                        + score (number) - Score for a goal
                         + issues (number) - Count of all issues found for a goal
-                + metricScores (object) - metric score
+                + metricScores (object) - Metric score
 
 
 + Response 400 (application/json)
@@ -7407,7 +7412,9 @@ curl \
 
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
-##### Download issue data as a CSV file. You can access the data with cURL. 
+##### Download issue data as a CSV file
+
+You can access the data with cURL. 
 
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
 
@@ -7418,7 +7425,10 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-#####  Download issue data as a JSON file. You can access the data with cURL. Add "Accept:application/json" header in a request to download the data in JSON format.
+#####  Download issue data as a JSON file
+
+You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
+
 ```
 curl \
     'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
@@ -7427,7 +7437,7 @@ curl \
     -o <replace_file_name>.json
 ```
 
-### Issues CSV data structure
+### CSV data structure for issues
 |Column name|Data type|Description|Length|
 |----------------|------------|------------|------------|
 |Check ID|string|Unique check ID|36|
@@ -7487,8 +7497,8 @@ curl \
                         },
                         {
                             "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
-                            "context": "The Core Platform supports",
-                            "issue": "Core Platform",
+                            "context": "Acrolinx supports",
+                            "issue": "Acrolinx",
                             "structuralContext": "word",
                             "date": "2023-11-08",
                             "goalId": "TERMINOLOGY",
@@ -7496,7 +7506,7 @@ curl \
                             "guidelineName": null,
                             "language": null,
                             "issueType": "terminology",
-                            "term": "Core Platform",
+                            "term": "Acrolinx",
                             "domainOrTermFilter": [
                                 "PLAIN_ENGLISH",
                                 "undefined domain"
