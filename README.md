@@ -7,7 +7,7 @@ This documentation helps you:
 
 * use the API directly
 * build your own integration
-* understand how Acrolinx interacts with integrations.
+* understand how Acrolinx interacts with integrations
 
 The [API reference](#reference) describes all services and methods.
 
@@ -121,8 +121,8 @@ After you generate an API token, save it somewhere secure (like a password manag
 
 A signature is a string that identifies an integration.
 
-Inclue the signature as a header in every request you send to the Acrolinx API:
-
+Include the signature as a header in every request you send to the Acrolinx API:
+    
 ```HTTP
 X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
 ```
@@ -130,11 +130,11 @@ X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
 The `VERSION_NUMBER` should follow the following pattern `X.X.X.X` like `1.0.0.1`.
 
 To get [certified](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/checklist.md), your integration
-must send the [version and build number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
+needs to send the [version and build number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
 
 Maintaining your integration in production is much easier with a version and build number.
 
-## API Reference
+## API reference
 
 ### [Rendered version on apiary.io](https://acrolinxapi.docs.apiary.io/#)
 
