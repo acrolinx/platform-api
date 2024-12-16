@@ -297,34 +297,6 @@ The value of the password is `backslash\quote"` in the JSON below. The special c
     }
 ```
 
-# JSON - Escape special characters
-
-Some JSON characters are special and require escaping. To escape a character, prefix the character with a backslash `\`.
-
-Below are some common characters that need to be escaped in JSON:
-
-|Character|Escape character|
-|----------------|------------|
-|Double quote|`\"`|
-|Backslash|`\\`|
-|Forward slash|`\/`|
-|Backspace|`\b`|
-|Form feed|`\f`|
-|Newline|`\n`|
-|Tab|`\t`|
-|Unicode escape sequence for special characters|`\uXXXX`|
-
-Example:
-The value of the password is `backslash\quote"` in the JSON below. The special characters are escaped using a backslash.
-
-```json
-    {
-        "username": "username",
-        "fullName": "full Name",
-        "password": "backslash\\quote\""
-    }
-```
-
 # Group Index
 
 ## Index [GET /api/v1]
@@ -733,11 +705,12 @@ The same information is available in the checking capabilities.
                     "reportTypes": ["scorecard"],                // optional, default: scorecard
                     "contentFormat": "markdown",                 // optional, default: auto
                     "checkType": "batch",                        // optional, default: interactive
-                                                                 // the use case of the check, can be:
-                                                                 //   interactive =  human user checks own document
-                                                                 //   batch       =  human user checks many own documents
-                                                                 //   baseline    =  a repository of documents is checked, the user doesn't own the documents
-                                                                 //   automated   =  check of a single document for automated scenarios as for example a git hook
+                                                                 // The available check types include:
+                                                                 //   interactive =  an individual user checked a single file from an integration
+                                                                 //   batch       =  an individual user checked multiple files from an integration
+                                                                 //   baseline    =  an individual user initiated a check for a shared repository of files from a repository integration
+                                                                 //   automated   =  a check of a single file initiated automatically (for example, by using a git hook)
+                                                                 // To learn more about the available check types, [visit the Acrolinx coding guidance](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/check-types.md).
                     "partialCheckRanges": [{ "begin": 10, "end": 20 }, { "begin": 40, "end": 70 }],   // makes the check a partial check
                     "batchId": "gen.clc.159203590"                      // only for batch checks; optional;
                 },
@@ -7093,7 +7066,7 @@ you'll see a response other than `200`.
 # Group Reporting API
 
 The reporting API provides direct access to raw check data and raw issue data.
-You can download the data as a CSV file and add it to your preferred analysis tool.
+You can download the data in CSV or JSON format and add it to your preferred analysis tool.
 
 ### Restrictions
 #### Available data
@@ -7124,7 +7097,9 @@ If you exceed the download quota, you'll get a 429 status code. The response wil
 
 ## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
 
-Download check data as a CSV file. You can access the data with cURL. 
+##### Download check data as a CSV file
+
+You can access the data with cURL.
 
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data is only available if checks were run in the requested time range.
 
@@ -7135,7 +7110,19 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-### Checks CSV data structure
+#####  Download check data as a JSON file
+
+You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/checks?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -H "Accept: application/json"
+    -o <replace_file_name>.json
+```
+
+### CSV data structure for checks
 |Column name|Data type|Description|Length|
 |----------------|------------|------------|------------|
 |Check ID|string|Unique check ID|36|
@@ -7152,8 +7139,8 @@ curl \
 |All issues|number|Count of all issues found||
 |Words|number|Number of words in the file||
 |Sentences|number|Number of sentences in the file||
-|Target|string|Name of the Target used|255|
-|Target ID|string|Unique Target ID|36|
+|Style guide|string|Name of the style guide used for checking|255|
+|Style guide ID|string|Unique style guide ID|36|
 |Content group ID|string|Unique content group ID|36|
 |Content group|string|Name of the content group|1024|
 |User ID|string|Unique user ID|36|
@@ -7162,22 +7149,23 @@ curl \
 |Integration version|string|Integration version|255|
 |Content profile|string|Content profile used|255|
 |Check scope|string|Indicates whether a complete file or a specific selection of content is checked ['check'] or ['check selection'].|16|
+|Check type|string|Indicates the specific check method used to review the file [ "batch", "interactive", "baseline", "automated" ].|16|
 |Custom field {NAME}|string|Custom fields. The number of columns in the CSV file will correspond to the number of custom fields. For example, if there are 10 custom fields, the CSV file will have 10 columns for custom fields.|255|
 |{NAME} goal score|number|Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
 |Clarity goal score|number|Score for the goal Clarity||
 |Consistency goal score|number|Score for the goal Consistency||
-|Correctness goal score|number|Score for the goal Correctness||
-|Inclusive Language goal score|number|Score for the goal Inclusive Language||
+|Spelling and grammar goal score|number|Score for the goal Spelling and grammar||
+|Inclusive language goal score|number|Score for the goal Inclusive language||
 |Scannability goal score|number|Score for the goal Scannability||
 |Terminology goal score|number|Score for the goal Terminology||
 |Tone goal score|number|Score for the goal Tone||
-|{NAME} goal issues|number|Number of Issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
-|Clarity goal issues|number|Number of Issues found for the goal Clarity||
-|Consistency goal issues|number|Number of Issues found for the goal Consistency||
-|Correctness goal issues|number|Number of Issues found for the goal Correctness||
-|Inclusive Language goal issues|number|Number of Issues found for the goal Inclusive Language||
-|Scannability goal issues|number|Number of Issues found for the goal Scannability||
-|Terminology goal issues|number|Number of Issues found for the goal Terminology||
+|{NAME} goal issues|number|Number of issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
+|Clarity goal issues|number|Number of issues found for the goal Clarity||
+|Consistency goal issues|number|Number of issues found for the goal Consistency||
+|Spelling and grammar goal issues|number|Number of issues found for the goal Spelling and grammar||
+|Inclusive language goal issues|number|Number of issues found for the goal Inclusive language||
+|Scannability goal issues|number|Number of issues found for the goal Scannability||
+|Terminology goal issues|number|Number of issues found for the goal Terminology||
 |Tone goal issues|number|Number of issues found for the goal Tone||
 |{NAME} metric score|number|Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffixes by name of the metric||
 
@@ -7186,6 +7174,7 @@ curl \
     + Headers
 
             X-Acrolinx-Auth:your_access_token
+            Accept:text/csv or application/json
 
 + Parameters
     + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
@@ -7193,9 +7182,128 @@ curl \
 
 + Response 200 (text/csv)
 
-        "Check ID","Check start time",Language,"Scorecard URI","File ID","Content reference","File path","File name","Content ID","Acrolinx Score","Acrolinx Score color","All issues",Words,Sentences,Target,"Target ID","Content group ID","Content group","User ID","Full name",Integration,"Integration version","Content profile","Check scope","Custom field department","Custom field role","Custom field status","Clarity goal score","Consistency goal score","Correctness goal score","Inclusive language goal score","Scannability goal score","Terminology goal score","Tone goal score","Clarity goal issues","Consistency goal issues","Correctness goal issues","Inclusive language goal issues","Scannability goal issues","Terminology goal issues","Tone goal issues"
+        "Check ID","Check start time",Language,"Scorecard URI","File ID","Content reference","File path","File name","Content ID","Acrolinx Score","Acrolinx Score color","All issues",Words,Sentences,"Style guide","Style guide ID","Content group ID","Content group","User ID","Full name",Integration,"Integration version","Content profile","Check scope","Custom field department","Custom field role","Custom field status","Clarity goal score","Consistency goal score","Spelling and grammar goal score","Inclusive language goal score","Scannability goal score","Terminology goal score","Tone goal score","Clarity goal issues","Consistency goal issues","Spelling and grammar goal issues","Inclusive language goal issues","Scannability goal issues","Terminology goal issues","Tone goal issues"
         "4265b702-9a69-38ca-bb45-bcad9ee7d910",2024-01-14T23:06:58Z,en,"api/v1/checking/scorecards/4265b702-9a69-38ca-bb45-bcad9ee7d910","9d38800b-89ae-396c-ae11-1de419f13a8f",Yak-1,,Yak-1,,35,red,20,1119,47,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2",,,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",check,developers,junior,draft,57,6,76,40,19,45,42,3,2,8,2,5,5,3
         "0521406f-ccf1-3acf-904a-7452766df8d7",2024-01-15T05:34:06Z,en,"api/v1/checking/scorecards/0521406f-ccf1-3acf-904a-7452766df8d7","77ad4993-80f1-31ec-9aef-1a33d2021a86",Su-22,,Su-22,,52,yellow,20,504,41,"Essentials English 2","2bd7dbcb-5510-4cdf-b054-0f275d3047c2","710eed98-732b-3668-8a67-f4294d9a7ff4",Wade,"96e79a50-97f9-3721-a755-0e9616c26a0b","AbcFull XyzName",webchecker,v1,"f5b8573c-e603-46d7-8af0-512d199d478b",check,developers,senior,draft,15,64,84,42,43,30,85,4,2,6,6,3,0,9
+
++ Response 200 (application/json)
+
+
+    + Body
+    
+            {
+                "checks":
+                [
+                    {
+                            "checkId": "895ceca3-7a1c-390d-b8d6-02a53a54e0d5",
+                            "checkStartTime": "2023-11-14T21:32:22Z",
+                            "language": "ja",
+                            "scorecardUri": "api/v1/checking/scorecards/895ceca3-7a1c-390d-b8d6-02a53a54e0d5",
+                            "fileId": "8d1bb0a8-612e-30bc-8b6d-ea9fedba138c",
+                            "contentReference": "Ju-88",
+                            "filePath": "",
+                            "fileName": "Ju-88",
+                            "contentId": null,
+                            "acrolinxScore": 53,
+                            "acrolinxScoreColor": "yellow",
+                            "allIssues": 20,
+                            "words": 1851,
+                            "sentences": 100,
+                            "styleGuide": "Technical English",
+                            "styleGuideId": "3dd6bde9-a08b-4681-9e91-55b9ff4fc802",
+                            "contentGroupId": "66e82845-c22c-3997-93f5-d3cc1d9c2e5d",
+                            "contentGroup": "Connington of Griffin's Roost",
+                            "userId": "4564a62d-a947-3a61-88d4-5fdb89e281e1",
+                            "fullName": "abc fullname",
+                            "integration": "MS word",
+                            "integrationVersion": "v1",
+                            "contentProfile": "f5b8573c-e603-46d7-8af0-512d199d478b",
+                            "checkScope": "check",
+                            "checkType": "interactive",
+                            "customFields": {
+                                "role": "senior",
+                                "depArtment": "developers",
+                                "status": "draft"
+                            },
+                            "goals": [
+                                {
+                                    "id": "CLARITY",
+                                    "score": 34,
+                                    "issues": 2
+                                },
+                                {
+                                    "id": "CORRECTNESS",
+                                    "score": 75,
+                                    "issues": 9
+                                },
+                                {
+                                    "id": "CONSISTENCY",
+                                    "score": 83,
+                                    "issues": 6
+                                },
+                                {
+                                    "id": "INCLUSIVE",
+                                    "score": 64,
+                                    "issues": 0
+                                },
+                                {
+                                    "id": "TONE",
+                                    "score": 20,
+                                    "issues": 9
+                                },
+                                {
+                                    "id": "SCANNABILITY",
+                                    "score": 23,
+                                    "issues": 2
+                                },
+                                {
+                                    "id": "TERMINOLOGY",
+                                    "score": 72,
+                                    "issues": 9
+                                }
+                            ],
+                            "metricScores": {}
+                    }                       
+                ]
+            }
+            
+    + Attributes
+        + checks (array)
+            + (object)
+                + checkId (string) - Unique check ID
+                + checkStartTime (string) - Start time of the check in the format `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z`
+                + language (string) - Checking language
+                + scorecardUri (string) - Uniform Resource Identifier (URI) of the Scorecard
+                + fileId (string) - Unique file ID
+                + contentReference (string) - The first time you run a check, Acrolinx assigns the file a content reference. Acrolinx treats files with the same content reference as the same file.
+                + guidelineName (string) - Name of the guideline
+                + filePath (string) - The file's location when it’s first checked
+                + fileName (string) - Name of the file
+                + contentId (string) - Unique check ID for batch checks
+                + acrolinxScore (number) - Overall Acrolinx Score
+                + acrolinxScoreColor (string) - Color coding of the Acrolinx Score
+                + allIssues (number) - Count of all issues found
+                + words (number) - Number of words in the file
+                + sentences (number) - Number of sentences in the file
+                + styleGuide (string) - Name of the style guide used
+                + styleGuideId (string) - Unique style guide ID
+                + contentGroupId (string) - Unique content group ID
+                + contentGroup (string) - Name of the content group
+                + userId (string) - Unique user ID
+                + fullName (string) - Full name of user
+                + integration (string) - Integration used to run the check
+                + integrationVersion (string) - Integration version
+                + contentProfile (string) - Content profile used
+                + checkScope (string) - Indicates whether a complete file or a specific selection of content is checked ['check'] or ['check selection']
+                + checkType (string) - Indicates the specific check method used to review the file [ "batch", "interactive", "baseline", "automated" ]
+                + customFields (object) - Key-value pair of custom fields
+                + goals (array) - List of goals
+                    + (object)
+                        + id (string) - ID of the goal
+                        + score (number) - Score for a goal
+                        + issues (number) - Count of all issues found for a goal
+                + metricScores (object) - Metric score
+
 
 + Response 400 (application/json)
 
@@ -7304,7 +7412,9 @@ curl \
 
 ## Get issues data [GET /api/v1/reporting/data/issues{?start,end}]
 
-Download issue data as a CSV file. You can access the data with cURL. 
+##### Download issue data as a CSV file
+
+You can access the data with cURL. 
 
 **Note:** If no data is available, the CSV file will contain headers with zero rows of data. For example, data won't be available if no checks were run in the requested time range.
 
@@ -7315,7 +7425,19 @@ curl \
     -o <replace_file_name>.csv
 ```
 
-### Issues CSV data structure
+#####  Download issue data as a JSON file
+
+You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -H "Accept: application/json"
+    -o <replace_file_name>.json
+```
+
+### CSV data structure for issues
 |Column name|Data type|Description|Length|
 |----------------|------------|------------|------------|
 |Check ID|string|Unique check ID|36|
@@ -7323,16 +7445,21 @@ curl \
 |Context|string|Sentence or paragraph where the issue occurred|1024|
 |Issue|string|Content that Acrolinx highlighted|255|
 |Structural context|string|Structural location where the issue occurred in the file|1024|
+|Goal ID|string|ID of the goal|255|
 |Guideline ID|string|Unique ID of the guideline|255|
 |Guideline name|string|Name of the guideline|255|
 |Language|string|Checking language|255|
 |Issue type|string|Type of issue|20|
+|Term|string|Actual word or phrase highlighted during the Acrolinx check|255|
+|Domain or Term filter|string|Internal category for the highlighted term|255|
+|Term status|string|How Acrolinx checked for the highlighted term ["admitted", "deprecated", "preferred"]. Read more about term statuses in the article [Term Settings](https://support.acrolinx.com/hc/en-us/articles/10228296536082-Term-Settings).|15|
 
 + Request
 
     + Headers
-    
+
             X-Acrolinx-Auth:your_access_token
+            Accept:text/csv or application/json
 
 + Parameters
     + start: `2024-08-23` (string, required) - Date format `yyyy-MM-dd`. Download data starting from this date.
@@ -7340,9 +7467,71 @@ curl \
 
 + Response 200 (text/csv)
 
-        "Check ID",Date,Context,Issue,"Structural context","Guideline ID","Guideline name",Language,"Issue type"
-        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-29,"hello woorld",woorld,sentence,"en_CONSISTENCY_Guideline_id-9","CONSISTENCY guideline id 9 display name",en,syntax
-        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-29,"hello woorld",woorld,sentence,"en_CONSISTENCY_Guideline_id-2","CONSISTENCY guideline id 2 display name",en,syntax
+        "Check ID",Date,Context,Issue,"Structural context",Goal,"Guideline ID","Guideline name",Language,"Issue type",Term,"Domain or Term filter","Term status"
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,CONSISTENCY,"en_CONSISTENCY_Guideline_id-9","CONSISTENCY guideline id 9 display name",en,syntax,,,
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,INCLUSIVE,"en_INCLUSIVE_Guideline_id-6","INCLUSIVE guideline id 6 display name",en,syntax,,,
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "issues":
+                    [
+                        {
+                            "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
+                            "context": "hello woorld",
+                            "issue": "woorld",
+                            "structuralContext": "sentence",
+                            "date": "2023-11-08",
+                            "goalId": "CORRECTNESS",
+                            "guidelineId": "en_CORRECTNESS_Guideline_id-3",
+                            "guidelineName": "CORRECTNESS guideline id 3 display name",
+                            "language": "en",
+                            "issueType": "syntax",
+                            "term": null,
+                            "domainOrTermFilter": [],
+                            "termStatus": null
+                        },
+                        {
+                            "checkId": "d800f541-f1b8-3df6-9a22-c565476b81c8",
+                            "context": "Acrolinx supports",
+                            "issue": "Acrolinx",
+                            "structuralContext": "word",
+                            "date": "2023-11-08",
+                            "goalId": "TERMINOLOGY",
+                            "guidelineId": "",
+                            "guidelineName": null,
+                            "language": null,
+                            "issueType": "terminology",
+                            "term": "Acrolinx",
+                            "domainOrTermFilter": [
+                                "PLAIN_ENGLISH",
+                                "undefined domain"
+                            ],
+                            "termStatus": "deprecated"
+                        }                       
+                    ]
+            }
+
+    + Attributes
+        + issues (array)
+            + (object)
+                + checkId (string) - Unique check ID
+                + context (string) - Sentence or paragraph where the issue occurred
+                + issue (string) - Content that Acrolinx highlighted
+                + structuralContext (string) - Structural location where the issue occurred in the file
+                + date (string) - Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20`
+                + goalId (string) - ID of the goal
+                + guidelineName (string) - Name of the guideline
+                + language (string) - Checking language
+                + issueType (string) - Type of issue
+                + term (string) - Actual word or phrase highlighted during the Acrolinx check
+                + domainOrTermFilter (array) - List of internal category for the highlighted term
+                    + (string)
+                + termStatus (string) - Acrolinx checked for the highlighted term ["admitted", "deprecated", "preferred"]. Read more about term statuses in the article [Term Settings](https://support.acrolinx.com/hc/en-us/articles/10228296536082-Term-Settings).
 
 + Response 400 (application/json)
 
