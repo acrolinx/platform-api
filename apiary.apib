@@ -7446,6 +7446,7 @@ curl \
 |Issue|string|Content that Acrolinx highlighted|255|
 |Structural context|string|Structural location where the issue occurred in the file|1024|
 |Goal ID|string|ID of the goal|255|
+|Goal name|string|Name of the goal|255|
 |Guideline ID|string|Unique ID of the guideline|255|
 |Guideline name|string|Name of the guideline|255|
 |Language|string|Checking language|255|
@@ -7467,12 +7468,10 @@ curl \
 
 + Response 200 (text/csv)
 
-        "Check ID",Date,Context,Issue,"Structural context",Goal,"Guideline ID","Guideline name",Language,"Issue type",Term,"Domain or Term filter","Term status"
-        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,CONSISTENCY,"en_CONSISTENCY_Guideline_id-9","CONSISTENCY guideline id 9 display name",en,syntax,,,
-        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,INCLUSIVE,"en_INCLUSIVE_Guideline_id-6","INCLUSIVE guideline id 6 display name",en,syntax,,,
-        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
-        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"The Core Platform supports","Core Platform",word,TERMINOLOGY,,,,terminology,"Core Platform","PLAIN_ENGLISH,undefined domain",deprecated
-
+        "Check ID",Date,Context,Issue,"Structural context",Goal,"Goal name","Guideline ID","Guideline name",Language,"Issue type",Term,"Domain or Term filter","Term status"
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,CONSISTENCY,"Consistency","en_CONSISTENCY_Guideline_id-9","CONSISTENCY guideline id 9 display name",en,syntax,,,
+        "4bbdc491-6821-3b53-8881-001553987b69",2023-10-30,"hello woorld",woorld,sentence,INCLUSIVE,"Inclusive language","en_INCLUSIVE_Guideline_id-6","INCLUSIVE guideline id 6 display name",en,syntax,,,
+        
 + Response 200 (application/json)
 
     + Body
@@ -7487,6 +7486,7 @@ curl \
                             "structuralContext": "sentence",
                             "date": "2023-11-08",
                             "goalId": "CORRECTNESS",
+                            "goalName": "Spelling and grammar",
                             "guidelineId": "en_CORRECTNESS_Guideline_id-3",
                             "guidelineName": "CORRECTNESS guideline id 3 display name",
                             "language": "en",
@@ -7501,7 +7501,8 @@ curl \
                             "issue": "Acrolinx",
                             "structuralContext": "word",
                             "date": "2023-11-08",
-                            "goalId": "TERMINOLOGY",
+                            "goalId": "WORDS_AND_PHRASES",
+                            "goalName": "Terminology",
                             "guidelineId": "",
                             "guidelineName": null,
                             "language": null,
@@ -7525,6 +7526,8 @@ curl \
                 + structuralContext (string) - Structural location where the issue occurred in the file
                 + date (string) - Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20`
                 + goalId (string) - ID of the goal
+                + goalName (string) - English name of the goal
+                + guidelineId (string) - Unique ID of the guideline
                 + guidelineName (string) - Name of the guideline
                 + language (string) - Checking language
                 + issueType (string) - Type of issue
