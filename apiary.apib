@@ -5773,6 +5773,7 @@ Adds new roles.
 
 **Note:**
 - The name needs to be unique and must be between 1 and 254 characters.
+- The name should not contain semicolons.
 - A role needs to have at least one privilege assigned.
 - You must reference existing privileges.
 
@@ -5884,6 +5885,29 @@ Adds new roles.
                             "attributePath": "privileges",
                             "detail": "Unknown privileges: My.privilege",
                             "invalidValue": "[My.privilege]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
++ Response 400 (application/json)
+
+            // when name contains semicolon
+            {
+                "links": {},
+                "error": {
+                    "reference": "569c236c-c981-4669-8ffc-4a000f127e9e",
+                    "detail": "The client request failed because it contains missing parameters or invalid values.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "Role name with semicolon is not allowed.",
+                            "attributePath": "name",
+                            "detail": "Role name with semicolon is not allowed.",
+                            "invalidValue": "With ;"
                         }
                     ],
                     "status": 400
