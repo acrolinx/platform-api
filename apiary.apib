@@ -302,8 +302,11 @@ The value of the password is `backslash\quote"` in the JSON below. The special c
 ## Index [GET /api/v1]
 
 This endpoint returns general information about the current Acrolinx
-version. Starting with version 2024.09, it also contains
-information about the installed linguistic configuration (referred to as a "guidance package").
+version. Starting with version 2024.09, it also contains information
+about the installed linguistic configuration (referred to as a
+"guidance package"). Starting with version 2025.02, the response also
+yields information about the currently installed license (expiry date
+and order number).
 
 
 **Note**: This is the only web service method that provides a 200 response if no access token was sent.
