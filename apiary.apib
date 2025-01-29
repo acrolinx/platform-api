@@ -1303,6 +1303,18 @@ Polls the check result. Acrolinx either returns a progress response or the compl
           }
         }
 
++ Response 422 (application/json)
+
+        // the document can't be processed by the platform
+        {
+          "error": {
+            "detail": "<reason why the document could not be processed>",
+            "type": "check_failed",
+            "title": "Check failed",
+            "status": 422
+          }
+        }
+
 
 
 
