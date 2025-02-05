@@ -1327,29 +1327,26 @@ See the section for [GET](#reference/checking-api/check-result/poll-check-result
     + id: `AB-153` (required, string) - the check id
 
 + Request
-
     + Headers
 
             X-Acrolinx-Auth: your_access_token
             X-Acrolinx-Client: your_client_signature
 
 + Response 202 (application/json)
+    The check is still ongoing.
 
     + Headers
 
             Retry-After: 2
 
 + Response 200 (application/json)
-
-        // the check is done
+    The check is done.
 
 + Response 400 (application/json)
-
-        // the check failed because of an error in the request
+    The check failed because of an error in the request.
 
 + Response 422 (application/json)
-
-        // the document can't be processed by the platform
+    Rhe document can't be processed by the platform.
 
 
 ### Cancel check [DELETE]
