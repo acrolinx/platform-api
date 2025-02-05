@@ -1324,15 +1324,18 @@ If you are not interested in the check results, you can use `HEAD` requests for 
 See the section for [GET](#reference/checking-api/check-result/poll-check-result), for response status codes and headers.
 
 + Parameters
+
     + id: `AB-153` (required, string) - the check id
 
 + Request
+
     + Headers
 
             X-Acrolinx-Auth: your_access_token
             X-Acrolinx-Client: your_client_signature
 
 + Response 202 (application/json)
+
     The check is still ongoing.
 
     + Headers
@@ -1340,13 +1343,22 @@ See the section for [GET](#reference/checking-api/check-result/poll-check-result
             Retry-After: 2
 
 + Response 200 (application/json)
+
     The check is done.
 
+    + Headers
+
 + Response 400 (application/json)
+
     The check failed because of an error in the request.
 
+    + Headers
+
 + Response 422 (application/json)
+
     Rhe document can't be processed by the platform.
+
+    + Headers
 
 
 ### Cancel check [DELETE]
