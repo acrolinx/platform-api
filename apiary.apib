@@ -787,6 +787,9 @@ Note that not all occurrences of an issue always have the same suggestions. When
 
 Polls the check result. Acrolinx either returns a progress response or the completed result. The URL for the request is in the "result" link of the submitted check.
 
+If you are not interested in the check results, you can use `HEAD` requests for polling the check status. While the check is ongoing you will receive a status code of
+202. There also will be a `Retry-After` header with a suggested retry delay.
+
 + Parameters
     + id: `AB-153` (required, string) - the check id
 
@@ -1317,6 +1320,9 @@ Polls the check result. Acrolinx either returns a progress response or the compl
 
 
 
+### Poll check result [HEAD]
+
+See the section for [GET](#reference/checking-api/check-result/poll-check-result), for response status codes and headers.
 
 ### Cancel check [DELETE]
 
