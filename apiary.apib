@@ -787,7 +787,7 @@ Note that not all occurrences of an issue always have the same suggestions. When
 
 Polls the check result. Acrolinx either returns a progress response or the completed result. The URL for the request is in the "result" link of the submitted check.
 
-If you are not interested in the check results, you can use `HEAD` requests for polling the check status. While the check is in progress, you'll receive the status code
+If you don't want to view detailed check results, you can use `HEAD` requests to poll the check status. While the check is in progress, you'll receive the status code
 202. There will also be a `Retry-After` header with a suggested retry delay.
 
 + Parameters
