@@ -7178,6 +7178,9 @@ The quota is set for each type of data. For example, when you download check dat
 
 If you exceed the download quota, you'll get a 429 status code. The response will include the headers Retry-After, RateLimit-Limit, RateLimit-Remaining, and RateLimit-Reset.
 
+#### Date time format
+The date time is in UTC format.
+
 **Note:** To access the Reporting API, you'll need to be authorized and authenticated with an access token. Before you get started with the Reporting API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements.
 
 ## Get check data [GET /api/v1/reporting/data/checks{?start,end}]
@@ -7211,15 +7214,15 @@ curl \
 |Column name|Data type|Description|Length|
 |----------------|------------|------------|------------|
 |Check ID|string|Unique check ID|36|
-|Check start time|string|Start time of the check in the format `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z`||
+|Check start time|string|Start time of the check in UTC format `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, for example, `2022-08-01T23:49:14.627Z`||
 |Language|string|Checking language|255|
 |Scorecard URI|string|Uniform Resource Identifier (URI) of the Scorecard|255|
 |File ID|string|Unique file ID|36|
-|Content reference|string|The first time you run a check, Acrolinx assigns the file a content reference. Acrolinx treats files with the same content reference as the same file.|36|
+|Content reference|text|The first time you run a check, Acrolinx assigns the file a content reference. Acrolinx treats files with the same content reference as the same file.||
 |File path|string|The file's location when it’s first checked|255|
 |File name|string|Name of the file|255|
 |Content ID|string|Unique check ID for batch checks|255|
-|Acrolinx Score|string|Overall Acrolinx Score|255|
+|Acrolinx Score|number|Overall Acrolinx Score|255|
 |Acrolinx Score color|string|Color coding of the Acrolinx Score|255|
 |All issues|number|Count of all issues found||
 |Words|number|Number of words in the file||
@@ -7239,17 +7242,17 @@ curl \
 |{NAME} goal score|number|Score for a goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
 |Clarity goal score|number|Score for the goal Clarity||
 |Consistency goal score|number|Score for the goal Consistency||
-|Spelling and grammar goal score|number|Score for the goal Spelling and grammar||
 |Inclusive language goal score|number|Score for the goal Inclusive language||
 |Scannability goal score|number|Score for the goal Scannability||
+|Spelling and grammar goal score|number|Score for the goal Spelling and grammar||
 |Terminology goal score|number|Score for the goal Terminology||
 |Tone goal score|number|Score for the goal Tone||
 |{NAME} goal issues|number|Number of issues found for the goal. The number of columns in the CSV file will correspond to the number of goal names. For example, if there are 10 goals, the CSV file will have 10 columns for goals.||
 |Clarity goal issues|number|Number of issues found for the goal Clarity||
 |Consistency goal issues|number|Number of issues found for the goal Consistency||
-|Spelling and grammar goal issues|number|Number of issues found for the goal Spelling and grammar||
 |Inclusive language goal issues|number|Number of issues found for the goal Inclusive language||
 |Scannability goal issues|number|Number of issues found for the goal Scannability||
+|Spelling and grammar goal issues|number|Number of issues found for the goal Spelling and grammar||
 |Terminology goal issues|number|Number of issues found for the goal Terminology||
 |Tone goal issues|number|Number of issues found for the goal Tone||
 |{NAME} metric score|number|Metrics suffix by actual name. If there are 10 metrics, the CSV will have 10 columns for metrics suffixes by name of the metric||
@@ -7528,7 +7531,7 @@ curl \
 |Check ID|string|Unique check ID|36|
 |Date|string|Date when the issue was found. Shown in the format `yyyy-MM-dd`, for example, `2022-01-20`||
 |Context|string|Sentence or paragraph where the issue occurred|1024|
-|Issue|string|Content that Acrolinx highlighted|255|
+|Issue|text|Content that Acrolinx highlighted||
 |Structural context|string|Structural location where the issue occurred in the file|1024|
 |Goal ID|string|ID of the goal|255|
 |Goal name|string|Name of the goal|255|
