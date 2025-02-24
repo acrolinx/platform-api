@@ -302,8 +302,10 @@ The value of the password is `backslash\quote"` in the JSON below. The special c
 ## Index [GET /api/v1]
 
 This endpoint returns general information about the current Acrolinx
-version. Starting with version 2024.09, it also contains
-information about the installed linguistic configuration (referred to as a "guidance package").
+version. Starting with version 2024.09, it also contains information
+about the installed linguistic configuration (referred to as a
+"guidance package"). Starting with version 2025.02, the response also
+includes the expiration date and order number for the license that's currently installed.
 
 
 **Note**: This is the only web service method that provides a 200 response if no access token was sent.
@@ -333,7 +335,11 @@ information about the installed linguistic configuration (referred to as a "guid
                 "build": "7732",
                 "date": "2024-09-13"
             },
-            "locales": [ "en" ]
+            "locales": [ "en" ],
+            "license": { // **Since Acrolinx 2025.02**
+                "expiresAt": "2038-01-19T03:14:08Z",
+                "orderId": 1729
+            }
           },
           "links": {
             "signIn": "https://tenant.acrolinx.cloud/api/v1/auth/sign-ins"
@@ -780,6 +786,9 @@ Note that not all occurrences of an issue always have the same suggestions. When
 ### Poll check result [GET]
 
 Polls the check result. Acrolinx either returns a progress response or the completed result. The URL for the request is in the "result" link of the submitted check.
+
+If you don't want to view detailed check results, you can use `HEAD` requests to poll the check status. While the check is in progress, you'll receive the status code
+202. There will also be a `Retry-After` header with a suggested retry delay.
 
 + Parameters
     + id: `AB-153` (required, string) - the check id
@@ -1297,7 +1306,59 @@ Polls the check result. Acrolinx either returns a progress response or the compl
           }
         }
 
++ Response 422 (application/json)
 
+        // the document can't be processed by the platform
+        {
+          "error": {
+            "detail": "<reason why the document could not be processed>",
+            "type": "check_failed",
+            "title": "Check failed",
+            "status": 422
+          }
+        }
+
+
+### Poll check result [HEAD]
+
+For response status codes and headers, visit the section [GET](#reference/checking-api/check-result/poll-check-result).
+
++ Parameters
+
+    + id: `AB-153` (required, string) - the check id
+
++ Request
+
+    + Headers
+
+            X-Acrolinx-Auth: your_access_token
+            X-Acrolinx-Client: your_client_signature
+
++ Response 202 (application/json)
+
+    The check is in progress
+
+    + Headers
+
+            Retry-After: 2
+
++ Response 200 (application/json)
+
+    The check is done.
+
+    + Headers
+
++ Response 400 (application/json)
+
+    The check failed because of an error in the request.
+
+    + Headers
+
++ Response 422 (application/json)
+
+    Acrolinx can't process the file.
+
+    + Headers
 
 
 ### Cancel check [DELETE]
@@ -5773,6 +5834,7 @@ Adds new roles.
 
 **Note:**
 - The name needs to be unique and must be between 1 and 254 characters.
+- The name should not contain semicolons.
 - A role needs to have at least one privilege assigned.
 - You must reference existing privileges.
 
@@ -5884,6 +5946,29 @@ Adds new roles.
                             "attributePath": "privileges",
                             "detail": "Unknown privileges: My.privilege",
                             "invalidValue": "[My.privilege]"
+                        }
+                    ],
+                    "status": 400
+                }
+            }
+
++ Response 400 (application/json)
+
+            // when name contains semicolon
+            {
+                "links": {},
+                "error": {
+                    "reference": "569c236c-c981-4669-8ffc-4a000f127e9e",
+                    "detail": "The client request failed because it contains missing parameters or invalid values.",
+                    "type": "validation",
+                    "title": "Invalid request attributes",
+                    "validationDetails": [
+                        {
+                            "title": "Validation error",
+                            "constraint": "Role name with semicolon is not allowed.",
+                            "attributePath": "name",
+                            "detail": "Role name with semicolon is not allowed.",
+                            "invalidValue": ";"
                         }
                     ],
                     "status": 400
