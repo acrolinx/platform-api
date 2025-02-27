@@ -7198,6 +7198,17 @@ curl \
     -o <replace_file_name>.csv
 ```
 
+##### Download check data as a CSV file with only a subset of fields
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/checks?start=<replace_start_date>&end=<replace_end_date>&fields=Check%20ID%2CCheck%20start%20time%2CWords%2CAcrolinx%20Score' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -o <replace_file_name>.csv
+```
+
+The downloaded data has only `Check ID`, `Check start time`, `Words` and `Acrolinx Score fields`.
+
 #####  Download check data as a JSON file
 
 You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
@@ -7209,6 +7220,19 @@ curl \
     -H "Accept: application/json"
     -o <replace_file_name>.json
 ```
+
+#####  Download check data as a JSON file with only a subset of fields
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/checks?start=<replace_start_date>&end=<replace_end_date>&fields=checkId%2CcheckStartTime%2Cwords%2CacrolinxScore
+' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -H "Accept: application/json"
+    -o <replace_file_name>.json
+```
+
+The downloaded data has only `checkId`, `checkStartTime`, `words` and `acrolinxScore`.
 
 ### CSV data structure for checks
 |Column name|Data type|Description|Length|
@@ -7513,6 +7537,17 @@ curl \
     -o <replace_file_name>.csv
 ```
 
+##### Download issue data as a CSV file with only a subset of fields
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>&fields=Check%20ID%2CDate%2CGuideline%20ID%2CGuideline%20name' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -o <replace_file_name>.csv
+```
+
+This will download data only with the fields `Check ID`, `Date`, `Guideline ID` and`Guideline name`.
+
 #####  Download issue data as a JSON file
 
 You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
@@ -7524,6 +7559,20 @@ curl \
     -H "Accept: application/json"
     -o <replace_file_name>.json
 ```
+
+#####  Download issue data as a JSON file with only a subset of fields
+
+You can access the data with cURL. To download the data in JSON format, add the header "Accept:application/json" in a request.
+
+```
+curl \
+    'https://<replace_your_host_address>/api/v1/reporting/data/issues?start=<replace_start_date>&end=<replace_end_date>&fields=checkId%2Cdate%2CguidelineId%2CguidelineName' \
+    -H "X-Acrolinx-Auth: <replace_your_access_token>" \
+    -H "Accept: application/json"
+    -o <replace_file_name>.json
+```
+
+This will download data only with the fields `checkId`, `date`, `guidelineId` and`guidelineName`.
 
 ### CSV data structure for issues
 |Column name|Data type|Description|Length|
