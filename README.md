@@ -9,7 +9,8 @@ This documentation helps you:
 * build your own integration
 * understand how Acrolinx interacts with integrations
 
-The [API reference](https://acrolinxapi.docs.apiary.io) describes all services and methods.
+The [API reference](https://acrolinxapi.docs.apiary.io) describes all
+services and methods.
 
 ## Get started
 
@@ -18,7 +19,8 @@ for consulting and getting your integration certified.
 
 Acrolinx provides different SDKs and samples for building integrations.
 
-Before you start building your own integration, you might want to read the following:
+Before you start building your own integration, you might want to read
+the following:
 
 * [Getting started with custom integrations](https://docs.acrolinx.com/customintegrations)
 * [How to integrate with Acrolinx](https://github.com/acrolinx/acrolinx-coding-guidance)
@@ -40,8 +42,9 @@ Understand the following concepts:
 
 ## Authentication
 
-To use the Authentication API, you'll need an access token.
-Send the access token with the header parameter `X-Acrolinx-Auth` for every API request.
+To use the Authentication API, you'll need an access token. Send the
+access token with the header parameter `X-Acrolinx-Auth` for every API
+request.
 
 ```HTTP
 X-Acrolinx-Auth:SOME_ACCESS_TOKEN_STRING
@@ -50,8 +53,11 @@ X-Acrolinx-Auth:SOME_ACCESS_TOKEN_STRING
 Access tokens are associated with a user and come in two forms:
 
 1. Access tokens that you get by signing in to Acrolinx
-   Access tokens normally have a lifetime of 30 days. After that, you have to renew them.
+
+   Access tokens normally have a lifetime of 30 days. After that, you
+   have to renew them.
 2. API tokens
+
    API tokens have a lifespan of 4 years.
 
 ## Acrolinx sign-in process
@@ -69,7 +75,8 @@ This is how it works:
     POST: https://tenant.acrolinx.cloud/api/v1/auth/sign-ins
     ```
 
-2. Acrolinx returns two URLs: an `interactive` and a `poll` URL in a result like this:
+2. Acrolinx returns two URLs: an `interactive` and a `poll` URL in a
+   result like this:
 
     ```HTTP
     {
@@ -114,14 +121,17 @@ Creating an API token is easy:
 3. Click CREATE API TOKEN.
 4. Copy the API token.
 
-**Note**
-After you generate an API token, save it somewhere secure (like a password manager) so that you can access it again. Once you leave the Settings page, the API token will no longer appear on screen.
+**Note** After you generate an API token, save it somewhere secure
+(like a password manager) so that you can access it again. Once you
+leave the Settings page, the API token will no longer appear on
+screen.
 
 ## Signature
 
 A signature is a string that identifies an integration.
 
-Include the signature as a header in every request you send to the Acrolinx API:
+Include the signature as a header in every request you send to the
+Acrolinx API:
 
 ```HTTP
 X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
@@ -129,10 +139,13 @@ X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
 
 The `VERSION_NUMBER` should follow the following pattern `X.X.X.X` like `1.0.0.1`.
 
-To get [certified](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/checklist.md), your integration
-needs to send the [version and build number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
+To get
+[certified](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/checklist.md),
+your integration needs to send the [version and build
+number](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/project-setup.md#version-information).
 
-Maintaining your integration in production is much easier with a version and build number.
+Maintaining your integration in production is much easier with a
+version and build number.
 
 ## API reference
 
