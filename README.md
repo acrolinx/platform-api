@@ -36,6 +36,7 @@ You'll need the following:
 * A signature
 
 Understand the following concepts:
+
 * [authentication](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/authentication.md)
 * [signatures](#signature)
 * [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/text-extraction.md#whats-a-document).
