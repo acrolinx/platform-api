@@ -9,7 +9,7 @@ This documentation helps you:
 * build your own integration
 * understand how Acrolinx interacts with integrations
 
-The [API reference](#reference) describes all services and methods.
+The [API reference](https://acrolinxapi.docs.apiary.io) describes all services and methods.
 
 ## Get started
 
