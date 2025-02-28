@@ -15,7 +15,7 @@ The [API reference](https://acrolinxapi.docs.apiary.io) describes all services a
 
 Contact [Acrolinx support](https://github.com/acrolinx/acrolinx-coding-guidance/blob/master/topics/support.md)
 for consulting and getting your integration certified.
-  
+
 Acrolinx provides different SDKs and samples for building integrations.
 
 Before you start building your own integration, you might want to read the following:
@@ -33,7 +33,7 @@ You'll need the following:
 * A user on that Acrolinx instance
 * A signature
 
-Understand the following concepts: 
+Understand the following concepts:
 * [authentication](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/authentication.md)
 * [signatures](#signature)
 * [document](https://github.com/acrolinx/acrolinx-coding-guidance/blob/main/topics/text-extraction.md#whats-a-document).
@@ -122,7 +122,7 @@ After you generate an API token, save it somewhere secure (like a password manag
 A signature is a string that identifies an integration.
 
 Include the signature as a header in every request you send to the Acrolinx API:
-    
+
 ```HTTP
 X-Acrolinx-Client: YOUR_SIGNATURE; VERSION_NUMBER
 ```
