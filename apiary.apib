@@ -7909,549 +7909,174 @@ This functionality is provided by `GET` `/entries`. There are two variants of th
 - asking for a single UUID or ID
 - asking for many UUIDs or IDs
 
-For asking for only one entry simply, append its UUID to the service URI:
+For asking for only one entry simply append its UUID to the service
+URI. This works the same way for requesting multiple entries, just
+pass a comma-separated list of IDs in the URL. The server determines
+by the format of the passed ID string whether it’s a UUID or an ID.
+
+**Note:** The length of the request URL is limited by any HTTP server
+implementation. Based on our tests, we don't recommend exceeding the
+value of 4000 characters.
+
++ Parameters
+
+    + id: (required, string)
+
+        Either a single term entry ID or a comma-separated list of entry IDs.
+
++ Request ACTIF
+    + Headers
+        authToken: your_access_token
+        Authorization: session your_session_id
+        Accept: application/vnd.acrolinx.mtf+xml
+
++ Response 200 (application/vnd.acrolinx.actif+xml)
+
+    + Body
+
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<actif xmlns="http://www.acrolinx.com" version="1.0">
+    <origin date="2025-03-10T13:50:26.160Z">
+        <tool/>
+    </origin>
+    <data>
+        <source-languages>
+            <lang>en</lang>
+        </source-languages>
+        <entry>
+            <value field="color_concept">red</value>
+            <value field="weather">foggy</value>
+            <value field="weather">cold</value>
+            <value field="weather">cloudy</value>
+            <value field="imageURL">077061bc-d9ab-455d-a078-bb1fb648440e_f2f455eb5898c6568524f6ca87236342.jpg</value>
+            <value field="entry/id">1309938647786</value>
+            <value field="entry/uuid">459a8ff0-dfab-49d6-927f-6c456f194168</value>
+            <head>
+                <term>
+                    <name>802.11n technology</name>
+                    <language>en</language>
+                    <value field="term/status">preferred</value>
+                    <value field="term/domain">D-Link</value>
+                    <value field="term/uuid">6183eceb-33e4-4b5e-b721-0ac34eb78fb4</value>
+                    <value field="term/id">1309883915302</value>
+                    <value field="term/frequency">0</value>
+                    <value field="term/creation-date-time">2011-07-06T08:02:35.383Z</value>
+                    <value field="term/creator-user-name">admin</value>
+                    <value field="term/last-modification-date-time">2024-06-26T14:38:51.230Z</value>
+                    <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
+                    <value field="processStatus">unprocessed</value>
+                    <value field="gender">undefined</value>
+                    <value field="partOfSpeech">undefined</value>
+                    <value field="termType">undefined</value>
+                    <complex-value field="term/msr">
+                        <attribute name="analysisMode">string</attribute>
+                    </complex-value>
+                </term>
+            </head>
+            <term>
+                <name>802.11 network switch</name>
+                <language>en</language>
+                <value field="term/status">preferred</value>
+                <value field="term/domain">Belkin</value>
+                <value field="term/uuid">077061bc-d9ab-455d-a078-bb1fb648440e</value>
+                <value field="term/id">1309883964051</value>
+                <value field="term/frequency">0</value>
+                <value field="term/creation-date-time">2011-07-06T08:15:24.073Z</value>
+                <value field="term/creator-user-name">admin</value>
+                <value field="term/last-modification-date-time">2024-06-26T14:38:51.342Z</value>
+                <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
+                <value field="processStatus">unprocessed</value>
+                <value field="color_ts">light red</value>
+                <value field="gender">undefined</value>
+                <value field="partOfSpeech">undefined</value>
+                <value field="termType">undefined</value>
+                <complex-value field="term/msr">
+                    <attribute name="analysisMode">base (analyzed)</attribute>
+                    <attribute name="token">network</attribute>
+                    <attribute name="occurrence">1</attribute>
+                    <attribute name="mcat">noun</attribute>
+                </complex-value>
+                <complex-value field="term/event">
+                    <attribute name="user">admin</attribute>
+                    <attribute name="date">2016-11-21T17:01:51.887Z</attribute>
+                    <attribute name="type">COMMENT</attribute>
+                    <attribute name="text">ttt
+                    </attribute>
+                </complex-value>
+            </term>
+        </entry>
+    </data>
+</actif>
+
++ Request SDL Multiterm format
+
+    + Headers
 
-```bash
-curl -i -H "Accept: application/vnd.acrolinx.mtf+xml" -H "Authorization: session ee7ac269aed25b4e" -X GET http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries/a918fccf-4a94-4398-b260-4d792289952c
-```
+        Authorization: session your_session_id
+        Accept: application/vnd.acrolinx.mtf+xml
 
-```text
-HTTP/1.1 200 OK
-Content-Type: application/vnd.acrolinx.mtf+xml
-Date: Wed, 12 Mar 2014 16:34:51 GMT
-Content-Length: 8521
++ Response 200 (application/vnd.acrolinx.mtf+xml)
 
-<?xml version="1.0" encoding="utf-8"?><mtf><conceptGrp><concept>13</concept><descripGrp><descrip type="ENTRY_UUID">a918fccf-4a94-4398-b260-4d792289952c</descrip></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp><languageGrp><language lang="EN" type="English"/><termGrp><term>return air</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">120bdf01-4818-4a2c-bcea-4f875b6b129a</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695606</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="NL" type="Dutch"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">680e0ea1-90f1-48ab-9ec9-5a362360692d</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695622</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:20+02:00</date></transacGrp><transacGrp><transac type="modification">marco.aeschimann@ch.sauter-bc.com</transac><date>2011-07-05T10:54:28+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="ES" type="Spanish"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">01352af7-73e6-4024-9433-930846681b56</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695630</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:19+02:00</date></transacGrp><transacGrp><transac type="modification">eric.schneider@ch.sauter-bc.com</transac><date>2011-09-13T10:47:25+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="DE" type="German"/><termGrp><term>Abluftmenge</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695646</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:47</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="FR" type="French"/><termGrp><term>débit d'air repris</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">5334a674-848b-44a3-8b42-1756d38717ef</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695614</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:54</date></transacGrp></termGrp><termGrp><term>débit d'évacuation</term><descripGrp><descrip type="Status">deprecated</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695654</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:58</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="IT" type="Italian"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">7958d666-8511-4c0e-aef1-d0f4748d2d46</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695638</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:18+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2011-08-30T11:55:38+02:00</date></transacGrp></termGrp></languageGrp></conceptGrp></mtf>
-```
+    + Body
 
-This works the same way for entry IDs (the server determines by the format of the passed ID string whether it’s a UUID or
-an ID):
+        <?xml version="1.0" encoding="utf-8"?><mtf><conceptGrp><concept>13</concept><descripGrp><descrip type="ENTRY_UUID">a918fccf-4a94-4398-b260-4d792289952c</descrip></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp><languageGrp><language lang="EN" type="English"/><termGrp><term>return air</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">120bdf01-4818-4a2c-bcea-4f875b6b129a</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695606</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="NL" type="Dutch"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">680e0ea1-90f1-48ab-9ec9-5a362360692d</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695622</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:20+02:00</date></transacGrp><transacGrp><transac type="modification">marco.aeschimann@ch.sauter-bc.com</transac><date>2011-07-05T10:54:28+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="ES" type="Spanish"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">01352af7-73e6-4024-9433-930846681b56</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695630</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:19+02:00</date></transacGrp><transacGrp><transac type="modification">eric.schneider@ch.sauter-bc.com</transac><date>2011-09-13T10:47:25+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="DE" type="German"/><termGrp><term>Abluftmenge</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695646</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:47</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="FR" type="French"/><termGrp><term>débit d'air repris</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">5334a674-848b-44a3-8b42-1756d38717ef</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695614</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:54</date></transacGrp></termGrp><termGrp><term>débit d'évacuation</term><descripGrp><descrip type="Status">deprecated</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695654</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:58</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="IT" type="Italian"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">7958d666-8511-4c0e-aef1-d0f4748d2d46</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695638</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:18+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2011-08-30T11:55:38+02:00</date></transacGrp></termGrp></languageGrp></conceptGrp></mtf>
 
-```bash
-curl -i -H "Accept: application/vnd.acrolinx.mtf+xml" -H "Authorization: session ee7ac269aed25b4e" -X GET http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries/13
-```
++ Response 406
 
-```text
-HTTP/1.1 200 OK
-Content-Type: application/vnd.acrolinx.mtf+xml
-Date: Wed, 12 Mar 2014 16:34:51 GMT
-Content-Length: 8521
+    + Body
 
-<?xml version="1.0" encoding="utf-8"?><mtf><conceptGrp><concept>13</concept><descripGrp><descrip type="ENTRY_UUID">a918fccf-4a94-4398-b260-4d792289952c</descrip></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp><languageGrp><language lang="EN" type="English"/><termGrp><term>return air</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">120bdf01-4818-4a2c-bcea-4f875b6b129a</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695606</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="NL" type="Dutch"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">680e0ea1-90f1-48ab-9ec9-5a362360692d</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695622</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:20+02:00</date></transacGrp><transacGrp><transac type="modification">marco.aeschimann@ch.sauter-bc.com</transac><date>2011-07-05T10:54:28+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="ES" type="Spanish"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">01352af7-73e6-4024-9433-930846681b56</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695630</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:19+02:00</date></transacGrp><transacGrp><transac type="modification">eric.schneider@ch.sauter-bc.com</transac><date>2011-09-13T10:47:25+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="DE" type="German"/><termGrp><term>Abluftmenge</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695646</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:47</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="FR" type="French"/><termGrp><term>débit d'air repris</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">5334a674-848b-44a3-8b42-1756d38717ef</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695614</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:54</date></transacGrp></termGrp><termGrp><term>débit d'évacuation</term><descripGrp><descrip type="Status">deprecated</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695654</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:58</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="IT" type="Italian"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">7958d666-8511-4c0e-aef1-d0f4748d2d46</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695638</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:18+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2011-08-30T11:55:38+02:00</date></transacGrp></termGrp></languageGrp></conceptGrp></mtf>
-```
-
-For the more general case, to ask for many entries at the same time specify the UUIDs (or IDs) as a comma-separated list
-after the `/entries/` endpoint URL:
-
-```bash
-curl -i -H "Accept: application/vnd.acrolinx.mtf+xml" -H "Authorization: session ee7ac269aed25b4e" -H "Content-Type: application/json" -X GET http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries/a918fccf-4a94-4398-b260-4d792289952c,ee1c8221-5ac2-465a-bcb8-2f329ba0da8a
-```
-
-```text
-HTTP/1.1 200 OK
-Content-Type: application/vnd.acrolinx.mtf+xml
-Date: Wed, 12 Mar 2014 16:34:51 GMT
-Content-Length: 11081
-
-<?xml version="1.0" encoding="utf-8"?><mtf><conceptGrp><concept>1391421694240</concept><descripGrp><descrip type="ENTRY_UUID">ee1c8221-5ac2-465a-bcb8-2f329ba0da8a</descrip></descripGrp><transacGrp><transac type="origination">admin</transac><date>2014-02-03T11:01:34</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:01:36</date></transacGrp><languageGrp><language lang="DE" type="German"/><termGrp><term>neuer Term</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">79425649-0a70-458a-8cf8-910539b9a1f3</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1391189614395</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2014-02-03T11:01:34</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:01:36</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="EN" type="English"/><termGrp><term>new term</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">06208308-e8ca-4dbd-91fd-add7ca4f5e90</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1391189614561</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2014-02-03T11:01:51</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:01:51</date></transacGrp></termGrp></languageGrp></conceptGrp><conceptGrp><concept>13</concept><descripGrp><descrip type="ENTRY_UUID">a918fccf-4a94-4398-b260-4d792289952c</descrip></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp><languageGrp><language lang="EN" type="English"/><termGrp><term>return air</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">120bdf01-4818-4a2c-bcea-4f875b6b129a</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695606</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="NL" type="Dutch"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">680e0ea1-90f1-48ab-9ec9-5a362360692d</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695622</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:20+02:00</date></transacGrp><transacGrp><transac type="modification">marco.aeschimann@ch.sauter-bc.com</transac><date>2011-07-05T10:54:28+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="ES" type="Spanish"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">01352af7-73e6-4024-9433-930846681b56</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695630</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:19+02:00</date></transacGrp><transacGrp><transac type="modification">eric.schneider@ch.sauter-bc.com</transac><date>2011-09-13T10:47:25+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="DE" type="German"/><termGrp><term>Abluftmenge</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695646</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:47</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="FR" type="French"/><termGrp><term>débit d'air repris</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">5334a674-848b-44a3-8b42-1756d38717ef</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695614</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:54</date></transacGrp></termGrp><termGrp><term>débit d'évacuation</term><descripGrp><descrip type="Status">deprecated</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695654</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:58</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="IT" type="Italian"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">7958d666-8511-4c0e-aef1-d0f4748d2d46</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695638</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:18+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2011-08-30T11:55:38+02:00</date></transacGrp></termGrp></languageGrp></conceptGrp></mtf>
-```
-
-**Note: The length of the request URL is limited by any HTTP server implementation. Based to our tests, we don't
-recommend exceeding the value of 4000 characters.**
-
-### Querying the Term Base Structure
-
-Supported media types:
-
-- `application/vnd.acrolinx.actif+xml`: return schema as ACTIF in XML
-- `application/vnd.acrolinx.mtf+xdt`: return entries as SDL MultiTerm XDT
-
-Required privilege:
-
-- Terminology - View Terms
-
-This functionality is provided by GET `/schema`. The structure of the Acrolinx term base can then be retrieved as
-follows (in the example the SDL MultiTerm XDT representation is requested):
-
-```bash
-curl -i -H "Accept: application/vnd.acrolinx.mtf+xdt" -H "Authorization: session ee7ac269aed25b4e" -X GET http://${serverHostName}:8031/iq/services/v7/rest/terminology/schema
-```
-
-```text
-HTTP/1.1 200 OK
-Content-Type: application/vnd.acrolinx.mtf+xdt
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-Content-Length: 21990
-
-<?xml version="1.0" encoding="utf-8"?><Output xmlns:dt="urn:schemas-microsoft-com:datatypes"><Object><Tree><Node ID="0"><TextChild dt:dt="string">Entry level</TextChild><NodeType dt:dt="i4">0</NodeType><Mandatory dt:dt="boolean">1</Mandatory><Multiply dt:dt="boolean">1</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/><Node ID="0"><TextChild dt:dt="string">ENTRY_UUID</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">1</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">sourceOfDefinition</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">definition</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">Project ID</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">imageURL</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">Index level</TextChild><NodeType dt:dt="i4">2</NodeType><Mandatory dt:dt="boolean">1</Mandatory><Multiply dt:dt="boolean">1</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/><Node ID="0"><TextChild dt:dt="string">Term level</TextChild><NodeType dt:dt="i4">3</NodeType><Mandatory dt:dt="boolean">1</Mandatory><Multiply dt:dt="boolean">1</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/><Node ID="0"><TextChild dt:dt="string">Status</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">1</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">domain</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">1</Mandatory><Multiply dt:dt="boolean">1</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">MORPHOSYNTACTIC_RESTRICTION</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">1</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">TERM_UUID</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">1</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">TERM_ID</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">VARIANTS_CONFIGURATIONS</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">1</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">HISTORY_EVENT</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">1</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">assignedTo</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">project</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">termType</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">externalCrossReference</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">processStatus</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">geographicalUsage</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">crossReference</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">Number</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">sourceOfTerm</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">Usage note</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">customer</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">Unit</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">Part of Speech</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">gender</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">Core</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">Phrase</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">note space</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node><Node ID="0"><TextChild dt:dt="string">context</TextChild><NodeType dt:dt="i4">1</NodeType><Mandatory dt:dt="boolean">0</Mandatory><Multiply dt:dt="boolean">0</Multiply><Readonly dt:dt="boolean">0</Readonly><labels/><description/></Node></Node></Node></Node></Tree><Languages><ItemLocale>AR</ItemLocale><ItemText>Arabic</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>BG</ItemLocale><ItemText>Bulgarian</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>CS</ItemLocale><ItemText>Czech</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>DE</ItemLocale><ItemText>German</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>EN</ItemLocale><ItemText>English</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>EN-GB</ItemLocale><ItemText>English (UK)</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>EN-US</ItemLocale><ItemText>English (USA)</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>ES</ItemLocale><ItemText>Spanish</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>FR</ItemLocale><ItemText>French</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>IT</ItemLocale><ItemText>Italian</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>JA</ItemLocale><ItemText>Japanese</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>KO</ItemLocale><ItemText>Korean</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>NL</ItemLocale><ItemText>Dutch</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>NO</ItemLocale><ItemText>Norwegian</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>PT</ItemLocale><ItemText>Portuguese</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>RU</ItemLocale><ItemText>Russian</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>SV</ItemLocale><ItemText>Swedish</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>ZH</ItemLocale><ItemText>Chinese</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>ZH-CN</ItemLocale><ItemText>Chinese (PRC)</ItemText><IsTargetOnly>false</IsTargetOnly><ItemLocale>ZH-TW</ItemLocale><ItemText>Chinese (Taiwan)</ItemText><IsTargetOnly>false</IsTargetOnly></Languages><TerminologyFields><Node ID="0"><TextChild dt:dt="string">ENTRY_UUID</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">sourceOfDefinition</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">definition</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">Project ID</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">imageURL</TextChild><Structure><Type>Multimedia File</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">Status</TextChild><Structure><Type>Picklist</Type><PicklistValue>proposed</PicklistValue><PicklistValue>proposed_from_search</PicklistValue><PicklistValue>deprecated</PicklistValue><PicklistValue>admitted</PicklistValue><PicklistValue>preferred</PicklistValue><PicklistValue>non-term</PicklistValue><PicklistValue>stopword</PicklistValue><PicklistValue>no-single-term</PicklistValue><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">domain</TextChild><Structure><Type>Picklist</Type><PicklistValue>undefined domain</PicklistValue><PicklistValue>customer</PicklistValue><PicklistValue>Special Symbols</PicklistValue><PicklistValue>Demo</PicklistValue><PicklistValue>Switches</PicklistValue><PicklistValue>Keitaidenwa</PicklistValue><PicklistValue>KanaKanjiUsage</PicklistValue><PicklistValue>ADSL</PicklistValue><PicklistValue>MFP</PicklistValue><PicklistValue>Drucker</PicklistValue><PicklistValue>Acrolinx</PicklistValue><PicklistValue>Standard_Terminology</PicklistValue><PicklistValue>Routers</PicklistValue><PicklistValue>Belkin</PicklistValue><PicklistValue>D-Link</PicklistValue><PicklistValue>Cisco</PicklistValue><PicklistValue>Phone</PicklistValue><PicklistValue>ASD-STE100</PicklistValue><PicklistValue>Technical_Names</PicklistValue><PicklistValue>TN_1_Official_Parts_Information</PicklistValue><PicklistValue>TN_2_Locations_On_Machines_Vehicles_Or_Equipment</PicklistValue><PicklistValue>TN_3_Tools_Or_Equipment</PicklistValue><PicklistValue>TN_4_Materials_Consumables_Or_Unwanted_Matter</PicklistValue><PicklistValue>TN_5_Facilities_And_Infrastructure</PicklistValue><PicklistValue>TN_6_Circuits_Or_Systems</PicklistValue><PicklistValue>TN_7_Mathematical_Scientific_Or_Engineering_Terms</PicklistValue><PicklistValue>TN_8_Navigation</PicklistValue><PicklistValue>TN_9_Numbers_Units_Of_Measurement_Or_Dial_Markings</PicklistValue><PicklistValue>TN_10_Quoted_Text</PicklistValue><PicklistValue>TN_11_Persons_Groups_Or_Bodies</PicklistValue><PicklistValue>TN_12_Body_Parts</PicklistValue><PicklistValue>TN_13_Common_Personal_Effects</PicklistValue><PicklistValue>TN_14_Medical_Terms</PicklistValue><PicklistValue>TN_15_Documents_Or_Manuals</PicklistValue><PicklistValue>TN_16_Names_Headings_And_Topics_In_Specifications</PicklistValue><PicklistValue>TN_17_Technical_Records_Standards_Specifications_Or_Regulations</PicklistValue><PicklistValue>TN_18_Environmental_Conditions</PicklistValue><PicklistValue>TN_19_Colors</PicklistValue><PicklistValue>TN_20_Damage_Terms</PicklistValue><PicklistValue>TN_Unclassified</PicklistValue><PicklistValue>Technical_Verbs</PicklistValue><PicklistValue>TV_1_Manufacturing_Processes</PicklistValue><PicklistValue>TV_2_Computer_Processes_And_Applications</PicklistValue><PicklistValue>TV_3_Descriptions</PicklistValue><PicklistValue>TV_Unclassified</PicklistValue><PicklistValue>S1000D Bike Data Set</PicklistValue><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">MORPHOSYNTACTIC_RESTRICTION</TextChild><Structure><Type>Picklist</Type><PicklistValue>all</PicklistValue><PicklistValue>noun</PicklistValue><PicklistValue>verb</PicklistValue><PicklistValue>adjective</PicklistValue><PicklistValue>adverb</PicklistValue><PicklistValue>adposition</PicklistValue><PicklistValue>preposition</PicklistValue><PicklistValue>determiner</PicklistValue><PicklistValue>conjunction</PicklistValue><PicklistValue>pronoun</PicklistValue><PicklistValue>prefix</PicklistValue><PicklistValue>suffix</PicklistValue><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">TERM_UUID</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">TERM_ID</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">VARIANTS_CONFIGURATIONS</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">HISTORY_EVENT</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">assignedTo</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">project</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">termType</TextChild><Structure><Type>Picklist</Type><PicklistValue>trademark</PicklistValue><PicklistValue>undefined</PicklistValue><PicklistValue>full form</PicklistValue><PicklistValue>acronym</PicklistValue><PicklistValue>abbreviation</PicklistValue><PicklistValue>short form</PicklistValue><PicklistValue>variant</PicklistValue><PicklistValue>phrase</PicklistValue><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">externalCrossReference</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">processStatus</TextChild><Structure><Type>Picklist</Type><PicklistValue>unprocessed</PicklistValue><PicklistValue>provisionally processed</PicklistValue><PicklistValue>finalized</PicklistValue><PicklistValue>review requested</PicklistValue><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">geographicalUsage</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">crossReference</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">Number</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">sourceOfTerm</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">Usage note</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">customer</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">Unit</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">Part of Speech</TextChild><Structure><Type>Picklist</Type><PicklistValue>adjective</PicklistValue><PicklistValue>adverb</PicklistValue><PicklistValue>noun</PicklistValue><PicklistValue>other</PicklistValue><PicklistValue>proper noun</PicklistValue><PicklistValue>undefined</PicklistValue><PicklistValue>verb</PicklistValue><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">gender</TextChild><Structure><Type>Picklist</Type><PicklistValue>undefined</PicklistValue><PicklistValue>masculine</PicklistValue><PicklistValue>feminine</PicklistValue><PicklistValue>neuter</PicklistValue><PicklistValue>other</PicklistValue><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">Core</TextChild><Structure><Type>Picklist</Type><PicklistValue>undefined</PicklistValue><PicklistValue>core</PicklistValue><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">Phrase</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">note space</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node><Node ID="0"><TextChild dt:dt="string">context</TextChild><Structure><Type>Text</Type><History>F</History></Structure></Node></TerminologyFields><Option dt:dt="i4">2</Option><CaseSensitive dt:dt="boolean">1</CaseSensitive><IgnoreNonAlpha dt:dt="boolean">0</IgnoreNonAlpha><TermbaseDescription>Exported from Acrolinx at 2014-03-12 17:34:52</TermbaseDescription><CopyrightText/><SplashImage/><IconFile/><RefInfo/></Object><Schema><Schema name="Termbase Definition"><ElementType name="mtf" content="eltOnly" order="many"><description/><ElementType name="conceptGrp" content="eltOnly" order="many"><description/><Occurences><Level minOccurs="1" maxOccurs="*"/></Occurences><ElementType name="concept" content="textOnly" order="many" type="ui4"><description/><Occurences><Level minOccurs="1" maxOccurs="1"/></Occurences></ElementType><ElementType name="system" content="textOnly" order="many" type="ui4"><description/><Occurences><Level minOccurs="0" maxOccurs="1"/></Occurences></ElementType><ElementType name="transacGrp" content="eltOnly" order="many"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><ElementType name="transac" content="textOnly" order="many" type="string"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><AttributeType name="type" type="enumeration" values="origination|modification"><description/><Occurences><Level minOccurs="1" maxOccurs="1"/></Occurences></AttributeType></ElementType><ElementType name="date" content="textOnly" order="many" type="date"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences></ElementType></ElementType><ElementType name="descripGrp" content="eltOnly" order="many" history="F"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><ElementType name="descrip" content="mixed" order="many" type="string"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><AttributeType name="type" type=""><description/><Occurences><Level minOccurs="1" maxOccurs="1"/></Occurences></AttributeType></ElementType></ElementType><ElementType name="languageGrp" content="eltOnly" order="many"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><ElementType name="language" content="empty" order="many"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><AttributeType name="lang" type=""><description/><Occurences><Level minOccurs="1" maxOccurs="1"/></Occurences></AttributeType><AttributeType name="type" type=""><description/><Occurences><Level minOccurs="1" maxOccurs="1"/></Occurences></AttributeType></ElementType><ElementType name="termGrp" content="eltOnly" order="many"><description/><Occurences><Level minOccurs="1" maxOccurs="*"/></Occurences><ElementType name="term" content="textOnly" order="many" type="string"><description/><Occurences><Level minOccurs="1" maxOccurs="1"/></Occurences></ElementType></ElementType><ElementType name="descripGrp" content="eltOnly" order="many" history="F"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><ElementType name="descrip" content="mixed" order="many" type="string"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><AttributeType name="type" type=""><description/><Occurences><Level minOccurs="1" maxOccurs="1"/></Occurences></AttributeType></ElementType></ElementType><ElementType name="transacGrp" content="eltOnly" order="many"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><ElementType name="transac" content="textOnly" order="many" type="string"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences><AttributeType name="type" type="enumeration" values="origination|modification"><description/><Occurences><Level minOccurs="1" maxOccurs="1"/></Occurences></AttributeType></ElementType><ElementType name="date" content="textOnly" order="many" type="date"><description/><Occurences><Level minOccurs="0" maxOccurs="*"/></Occurences></ElementType></ElementType></ElementType></ElementType></ElementType></Schema></Schema></Output>
-```
-
-### Querying for Available Filters
-
-The only supported media type is `application/json`.
-
-Required privilege:
-
-- Terminology - View Terms
-
-The terminology service API offers an operation to get the ids/names of all filters for term search operations, that are
-available to the user in the current session. The available filters can be retrieved by `GET` to `/filters`:
-
-```bash
-curl -i -H "Accept: application/json" -H "Authorization: session ee7ac269aed25b4e" -X GET http://${serverHostName}:8031/iq/services/v7/rest/terminology/filters
-```
-
-```text
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-Transfer-Encoding: chunked
-
-{
-    "user": "admin",
-    "filters": [
-    {
-        "id": "Preferred Technical Names"
-    },
-    {
-        "id": "SEO"
-    },
-    {
-        "id": "Images"
-    }
-]
-}
-```
-
-The filters can be referenced by their `id` in a search API operation, described in the next section.
-
-### Searching Terms
-
-Terms can be searched by:
-
-- term `name`, supporting '%' as wildcard;
-- `language` id
-- `domains` an array of one or several domain names
-- `filter` id
-- or any combination of the above
-
-The individual fields of the search criteria need to be "escaped" by their unicode positions in case they contain
-characters that would otherwise break the JSON request string. For example, the apostrophe/single quote character `'` is
-escaped as `\u0027`.
-
-The search API supports pagination to retrieve only a certain subset of the result set. The parameters are:
-
-- `offset`, the index of the first term to display (starting from 0, where the terms are always sorted ascending by
-  their name)
-- `limit`, the maximal number of terms to return, starting from `offset`; if < 1, no limit is imposed
-
-The only supported media type for request as well as result is `application/json`.
-
-Required privilege:
-
-- Terminology - View Terms
-
-The search-terms service function requires a request object in the format illustrated by the following example:
-
-```json
-{
-    "criteria": {
-    "name": "d\\u00e9bit%",
-    "language": "fr",
-    "domains": ["Technical Names", "Demo"],
-    "filter": "Preferred Technical Names"
-    },
-    "pagination": {
-    "offset": 0,
-    "limit": -1
-    }
-}
-```
-
-The `criteria` and `pagination` values are mandatory, as well as `offset` and `limit`, but you can leave out (or set to
-`null`) those fields of `criteria` that aren’t required by a specific query (for `domains` you can also pass an empty
-array `[]`).
-
-The criteria that exist in the search request are then combined by AND (if `domains` contains more than one value, they’re
- combined into a domain filter by OR-ing them) in the resulting filter.
-
-You can then search with those settings by submitting a `POST`-request to `/searchTerms`:
-
-```bash
-curl -i -H "Content-Type: application/json; charset=UTF-8" -H "Accept: application/json" -H "Authorization: session ee7ac269aed25b4e" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/searchTerms -d '{"criteria":{"name":"d%","language": "fr","domains":["undefined domain", "Technical Names"], "filter":null},"pagination":{"offset": 0,"limit": -1}}'
-```
-
-```text
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-Transfer-Encoding: chunked
-
-{
-    "terms": [
-    {
-        "name": "débit d\u0027air repris",
-        "status": "preferred",
-        "domains": [
-        "Technical_Names",
-        "undefined domain"
-        ],
-        "uuid": "5334a674-848b-44a3-8b42-1756d38717ef",
-        "entry": {
-        "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
-        "id": "13"
-        }
-    },
-    {
-        "name": "débit d\u0027évacuation",
-        "status": "deprecated",
-        "domains": [
-        "Technical_Names",
-        "undefined domain"
-        ],
-        "uuid": "38e4ce12-4175-465e-a26f-4bb6d8a7ea15",
-        "entry": {
-        "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
-        "id": "13"
-        }
-    }
-    ],
-    "search": {
-    "pagination": {
-        "offset": 0,
-        "limit": -1
-    },
-    "criteria": {
-        "name": "d%",
-        "language": "fr",
-        "filter": null,
-        "domains": [
-        "undefined domain",
-        "Technical Names"
-        ]
-    }
-    },
-    "totalResultCount": 2
-}
-```
-
-(Note: there exists indeed a domain name `undefined domain` in the Core Platform default setup;
-that value doesn't indicate the absence of a value for the domain.)
-
-The response is a JSON object with the following attributes:
-
-- `search` contains your search criteria and pagination settings; you could reuse that object for subsequent calls with
-  the same criteria
-- `totalResultCount` is the total number of hits for the search, before applying the pagination limit
-- `terms`: an array of term objects, each containing the attributes `name`, `status`, `domains`, `uuid` (the UUID of the
-  term: use that UUID to identify the specific term data from the full entry that you retrieve by the entry UUID),
-  `entry`; `entry` again is an object with two attributes `uuid` and `id`, the UUID, and ID of the entry. Using the entry
-  UUID or ID you can then retrieve the entire entry via `GET` `/entries` (see above).
-
-If there are no matching terms (or you request an offset greater than the result count), `terms` will be an empty array.
-If your search request refers to a nonexistent filter, the server will respond with a 400 (Bad Request).
-
-### Getting Terms with Search Criteria
-
-You can also search for terms using an older method called `findTerms`, which supports some search criteria that
-aren’t available in the `searchTerms` method above, and which also returns the result in a specified target format,
-just like `get entries` described above.
-
-The following search criteria are supported:
-
-- term `surface` (name), supporting '%' as wildcard
-- `language` id
-- `domain` - a single domain name
-- `entry ID/UUID` - an array of entry IDs or entry UUIDs
-- custom criteria - an array of `field=value` strings, where `field` is one of the following ACTIF field names:
-    + `term/id`
-    + `term/uuid`
-    + `entry/id`
-    + `enty/uuid`
-    + `term/creation-date-time` (prepend with `<` or `>` to find terms created before or after the given date)
-    + `term/last-modification-date-time` (prepend with `<` or `>` to find terms modified before or after the given date)
-    + `term/creator-user-name`
-    + `term/last-modifier`
-    + any custom field name (as it appears in ACTIF)
-
-The individual fields of the search criteria need to be "escaped" by their unicode positions in case they contain
-characters that would otherwise break the JSON request string. For example, the apostrophe/single quote character `'` is
-escaped as `\u0027`.
-
-All criteria are combined with `AND` when the term filter is constructed. All criteria are optional; if you don’t give
-any criteria, the result includes all terms.
-
-The desired result format needs to be specified in the required `format` attribute of the request object (not in the
-`Accept` HTTP header). The supported media types are the same as for the "get entries" method above:
-
-- `application/vnd.acrolinx.actif+xml`: return terms as ACTIF in XML
-- `application/vnd.acrolinx.mtf+xml`: return terms as SDL MultiTerm XML
-
-Finally, you can optionally have the term base structure (schema) included in the response by setting the `withSchema`
-attribute to `true`.
-
-Required privilege:
-
-- Terminology - View Terms
-
-The find-terms service function requires a request object in the format illustrated by the following example:
-
-```json
-{
-    "surface": "d\\u00e9bit%",
-    "language": "fr",
-    "domain": ["Demo"],
-    "customCriteria": [
-    "term/creation-date-time=<2012-05-10T11:41:00",
-    "customWorkflowStatus=reviewed"
-    ],
-    "withSchema": false,
-    "format": "application/vnd.acrolinx.mtf+xml"
-}
-```
-
-You can then search with those settings by `POST`ing the request to `/findTerms/<session>`. (Note that the terminology
-session is part of the URL here; the `Authorization` header is ignored.)
-
-```bash
-curl -i -H \"Content-Type: application/json; charset=UTF-8\" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/findTerms/ee7ac269aed25b4e -d '{"name":"d%","language": "fr","customCriteria":["term/uuid=a918fccf-4a94-4398-b260-4d792289952c"], "format":"application/vnd.acrolinx.mtf+xml"}'
-```
-
-```text
-HTTP/1.1 200 OK
-Content-Type: application/vnd.acrolinx.mtf+xml
-Date: Wed, 12 Mar 2014 16:34:51 GMT
-Content-Length: 8521
-
-<?xml version="1.0" encoding="utf-8"?><mtf><conceptGrp><concept>13</concept><descripGrp><descrip type="ENTRY_UUID">a918fccf-4a94-4398-b260-4d792289952c</descrip></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp><languageGrp><language lang="EN" type="English"/><termGrp><term>return air</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">120bdf01-4818-4a2c-bcea-4f875b6b129a</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695606</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="NL" type="Dutch"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">680e0ea1-90f1-48ab-9ec9-5a362360692d</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695622</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:20+02:00</date></transacGrp><transacGrp><transac type="modification">marco.aeschimann@ch.sauter-bc.com</transac><date>2011-07-05T10:54:28+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="ES" type="Spanish"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">01352af7-73e6-4024-9433-930846681b56</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695630</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:19+02:00</date></transacGrp><transacGrp><transac type="modification">eric.schneider@ch.sauter-bc.com</transac><date>2011-09-13T10:47:25+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="DE" type="German"/><termGrp><term>Abluftmenge</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695646</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:47</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="FR" type="French"/><termGrp><term>débit d'air repris</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">5334a674-848b-44a3-8b42-1756d38717ef</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695614</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:54</date></transacGrp></termGrp><termGrp><term>débit d'évacuation</term><descripGrp><descrip type="Status">deprecated</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695654</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:58</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="IT" type="Italian"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">7958d666-8511-4c0e-aef1-d0f4748d2d46</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695638</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:18+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2011-08-30T11:55:38+02:00</date></transacGrp></termGrp></languageGrp></conceptGrp></mtf>
-```
-
-### Searching Entry UUIDs and IDs by Domain
-
-You can retrieve all or only the entries (represented by their UUID and ID) of specific domains by using the
-`searchEntries` service endpoint. This service works similar to the "search terms" service, but you can only specify a
-list of domains as search criterion, for example:
-
-```json
-{
-    "criteria": {
-        "domains": ["Technical_Names", "Demo"]
-    }
-}
-```
-
-- Passing a nonempty array will get you all entries that contain at least one term that is assigned to at least one of
-  the specified domains.
-- Passing an empty array for domains will get you all entries.
-
-Example:
-
-```bash
-curl -i -H "Content-Type: application/json; charset=UTF-8" -H "Accept: application/json" -H "Authorization: session ee7ac269aed25b4e" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/searchEntries -d '{"criteria":{"domains":["undefined domain", "Technical_Names"]}}'
-```
-
-```text
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-Transfer-Encoding: chunked
-
-{
-    "entries": [
         {
-            "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
-            "id": "13"
-        },
+            "error": "No terminology export transformation stylesheet available for 'application/vnd.acrolinx.mtf+xml'",
+            "code": "cantServeRequestedMediaType",
+            "data": {}
+        }
+
+## Schema [/iq/services/v9/rest/terminology/schema]
+
+### Get term base structure [GET]
+
+Retrieves the structure of the Acrolinx term base.
+
++ Request
+
+    + Headers
+
+        Authorization: session your_session_id
+        Accept: application/vnd.acrolinx.actif+xml
+
++ Response 200 (application/vnd.acrolinx.actif+xml)
+
+    + Body
+
+    <?xml version="1.0" encoding="UTF-8" standalone="yes"?><actif xmlns="http://www.acrolinx.com" version="1.0"><origin date="2025-03-10T14:06:11.978Z"><tool/></origin><schema><categories><category name="language"><item default="true">en</item><item parent="en">en-JP</item><item parent="en">en-US</item><item parent="en">en-GB</item><item>de</item><item>ja</item><item>zh</item><item parent="zh">zh-CN</item><item parent="zh">zh-TW</item><item>ar</item><item>fr</item><item>it</item><item>ko</item><item>ru</item><item>es</item><item>sv</item><item>mul</item><item>no</item><item>bg</item><item>cs</item><item>nl</item><item>pt</item><item>sprache</item><item parent="sprache">sub1</item><item parent="sprache">sub2</item></category><category name="boolean"><item>true</item><item default="true">false</item></category><category name="lexical analysis mode"><item default="true">string</item><item>base (analyzed)</item></category><category name="part of speech"><item>adjective</item><item>adverb</item><item>noun</item><item>other</item><item>proper noun</item><item default="true">undefined</item><item>verb</item></category><category name="morphosyntactic restriction"><item default="true">all</item><item>noun</item><item>verb</item><item>adjective</item><item>adverb</item><item>adposition</item><item>preposition</item><item>determiner</item><item>conjunction</item><item>pronoun</item><item>prefix</item><item>suffix</item></category><category name="domain"><item>New_Words</item><item>Plain_English</item><item>Smart Tech</item><item default="true">undefined domain</item><item parent="undefined domain">even more undefined</item><item>customer</item><item parent="customer">ex customer</item><item>Special Symbols</item><item>Demo</item><item parent="Demo">Switches</item><item parent="Demo">Keitaidenwa</item><item parent="Demo">KanaKanjiUsage</item><item parent="Demo">ADSL</item><item parent="Demo">MFP</item><item parent="Demo">Drucker</item><item parent="Demo">Acrolinx</item><item parent="Demo">Standard_Terminology</item><item parent="Demo">Routers</item><item parent="Routers">Belkin</item><item parent="Routers">D-Link</item><item parent="Routers">Cisco</item><item parent="Demo">Phone</item><item>ASD-STE100</item><item parent="ASD-STE100">Technical_Names</item><item parent="Technical_Names">TN_1_Official_Parts_Information</item><item parent="Technical_Names">TN_2_Locations_On_Machines_Vehicles_Or_Equipment</item><item parent="Technical_Names">TN_3_Tools_Or_Equipment</item><item parent="Technical_Names">TN_4_Materials_Consumables_Or_Unwanted_Matter</item><item parent="Technical_Names">TN_5_Facilities_And_Infrastructure</item><item parent="Technical_Names">TN_6_Circuits_Or_Systems</item><item parent="Technical_Names">TN_7_Mathematical_Scientific_Or_Engineering_Terms</item><item parent="Technical_Names">TN_8_Navigation</item><item parent="Technical_Names">TN_9_Numbers_Units_Of_Measurement_Or_Dial_Markings</item><item parent="Technical_Names">TN_10_Quoted_Text</item><item parent="Technical_Names">TN_11_Persons_Groups_Or_Bodies</item><item parent="Technical_Names">TN_12_Body_Parts</item><item parent="Technical_Names">TN_13_Common_Personal_Effects</item><item parent="Technical_Names">TN_14_Medical_Terms</item><item parent="Technical_Names">TN_15_Documents_Or_Manuals</item><item parent="Technical_Names">TN_16_Names_Headings_And_Topics_In_Specifications</item><item parent="Technical_Names">TN_17_Technical_Records_Standards_Specifications_Or_Regulations</item><item parent="Technical_Names">TN_18_Environmental_Conditions</item><item parent="Technical_Names">TN_19_Colors</item><item parent="Technical_Names">TN_20_Damage_Terms</item><item parent="Technical_Names">TN_Unclassified</item><item parent="ASD-STE100">Technical_Verbs</item><item parent="Technical_Verbs">TV_1_Manufacturing_Processes</item><item parent="Technical_Verbs">TV_2_Computer_Processes_And_Applications</item><item parent="Technical_Verbs">TV_3_Descriptions</item><item parent="Technical_Verbs">TV_Unclassified</item><item>S1000D Bike Data Set</item><item>Dental Floss Tycoon</item></category><category name="status"><item default="true">proposed</item><item parent="proposed">proposed_from_search</item><item>deprecated</item><item>admitted</item><item>preferred</item><item>non-term</item><item parent="non-term">stopword</item><item parent="non-term">no-single-term</item></category><category name="weather"><item default="true">undefined</item><item>wam</item><item>cold</item><item>sunny</item><item>cloudy</item><item>foggy</item><item>rainy</item><item>hot</item></category><category name="process status"><item default="true">unprocessed</item><item>provisionally processed</item><item>finalized</item><item>review requested</item></category><category name="gender"><item default="true">undefined</item><item>masculine</item><item>feminine</item><item>neuter</item><item>other</item></category><category name="term type"><item default="true">undefined</item><item>full form</item><item>acronym</item><item>abbreviation</item><item>short form</item><item>variant</item><item>phrase</item></category><category name="color"><item default="true">undefined</item><item>red</item><item parent="red">light red</item><item parent="red">dark red</item><item parent="red">carmesin</item><item>green</item><item>blue</item><item>yellow</item></category><category name="emma"><item default="true">undefined</item></category></categories><fields><entry-level><field data-type="text" builtin="true" name="entry/id"/><field data-type="uuid" builtin="true" name="entry/uuid"/><field data-type="image" name="imageURL"/><field data-type="html" name="sourceOfDefinition"/><field data-type="text" name="definition"/><field data-type="list" set-valued="true" category="weather" name="weather"><default-value>hot</default-value></field><field data-type="text" name="subjectField"/><field data-type="list" set-valued="true" category="color" name="color_concept"><default-value>blue</default-value></field></entry-level><term-level><field mandatory="true" data-type="list" category="status" builtin="true" name="term/status"><default-value>proposed</default-value></field><field mandatory="true" data-type="list" set-valued="true" category="domain" builtin="true" name="term/domain"><default-value>undefined domain</default-value></field><field data-type="complex" builtin="true" name="term/msr"/><field data-type="uuid" builtin="true" name="term/uuid"/><field data-type="text" builtin="true" name="term/id"/><field data-type="text" builtin="true" name="term/frequency"/><field data-type="complex" builtin="true" name="term/variants-settings"/><field data-type="dateTime" builtin="true" name="term/creation-date-time"/><field data-type="text" builtin="true" name="term/creator-user-name"/><field data-type="dateTime" builtin="true" name="term/last-modification-date-time"/><field data-type="text" builtin="true" name="term/last-modifier"/><field data-type="complex" set-valued="true" builtin="true" name="term/event"/><field data-type="text" name="customer"/><field data-type="text" name="note"/><field data-type="list" category="process status" name="processStatus"><default-value>unprocessed</default-value></field><field data-type="list" set-valued="true" category="color" name="color_ts"><default-value>dark red</default-value></field><field data-type="list" category="term type" name="termType"><default-value>undefined</default-value></field><field data-type="text" name="sourceOfTerm"/><field data-type="text" name="emma"/><field data-type="text" name="assignedTo"/><field data-type="html" name="context"/><field data-type="list" category="gender" name="gender"><default-value>undefined</default-value></field><field data-type="text" name="project"/><field data-type="text" name="crossReference"/><field data-type="text" name="externalCrossReference"/><field data-type="text" name="geographicalUsage"/><field data-type="list" category="part of speech" name="partOfSpeech"><default-value>undefined</default-value></field></term-level></fields></schema></actif>
+
+## Filters [/iq/services/v9/rest/terminology/filters]
+
+### Get available filters [GET]
+
+Returns the ids/names of all filters for term search operations, that
+are available to the user in the current session. The filters can be
+referenced by their `id` in a search API operation, described in the
+next section.
+
++ Request
+
+    + Headers
+
+        Authorization: session your_session_id
+
++ Response 200 (application/json)
+
+    + Body
+
         {
-            "uuid": "ee1c8221-5ac2-465a-bcb8-2f329ba0da8a",
-            "id": "1391421694240"
+            "user": "admin",
+            "filters": [{
+                "id": "Preferred Technical Names"
+                }, {
+                "id": "SEO"
+                }, {
+                "id": "Images"
+            }]
         }
-    ],
-    "search": {
-        "criteria": {
-            "domains": [
-                "undefined domain",
-                "Technical_Names"
-            ]
-        }
-    },
-    "totalResultCount": 2
-}
-```
 
-The response is a JSON object with the following attributes:
-
-- `search` contains your search criteria
-- `totalResultCount` is the total number of entries matching the criterion
-- `entries`: an array of entries, each containing the attributes `id`, and `uuid`. Using the entry UUID or ID you can then
-  retrieve the entire entry via `GET` `/entries` (see above).
-
-### Creation and Update of Entries and Terms
-
-Entries and their terms can be created and updated by `POST`ing the respective ACTIF or SDL MultiTerm XML representation
-to `/entries`.
-Whether an existing entry is updated or a new entry created crucially depends on the entry UUID specified in the sent
-data.
-If the entry UUID references an existing entry in the database, all terms and fields of the entry will be replaced by
-the sent data.
-Specifically, if the sent entry data contains fewer terms than the existing entry in the database, those terms missing
-from the sent entry data will be deleted.
-
-Otherwise, that is, no entry of the same UUID exists, a new entry will be created.
-
-Supported media types are:
-
-- `application/vnd.acrolinx.actif+xml`: ACTIF in XML
-- `application/vnd.acrolinx.mtf+xml`: SDL MultiTerm XML
-
-Required privileges:
-
-- Terminology - Import terms (implies "Edit terms")
-- Terminology - Change the status of a term
-
-Return codes:
-
-- For both creation and update, the return code is 201 (created) and the "Location" header gets the
-  URL of the inserted/updated entry.
-- If the input data doesn't contain an entry that needs to be created or updated, you'll see a 204 (no content).
-- If the input data contains more than one entry (which is allowed), all entries in the input data will be created or updated respectively. However,
-  the "Location" header will only contain the URL of one of them.
-
-Example (sending [example-entry.actif.xml](doc/example-entry.actif.xml)):
-
-```bash
-curl -i -H "Accept: application/json" -H "Content-Type: application/vnd.acrolinx.actif+xml" -H "Authorization: session ee7ac269aed25b4e" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries -d "`cat doc/example-entry.actif.xml`"
-```
-
-```text
-HTTP/1.1 100 Continue
-
-HTTP/1.1 201 Created
-Content-Length: 0
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-Location: http://localhost:8031/iq/services/v7/rest/terminology/entries/a918fccf-4a94-4398-b260-4d792289952c
-```
-
-For this service call to succeed, the terminology database schemas
-of the sent data and of the current database have to be compatible.
-The terminology database schema is the definition of the field names and types, list items, etc.
-In case of mismatches, the data is either inserted incompletely or might be rejected entirely with a 4xx error code.
-
-### Deployment of Terminology
-
-After terms and entries have been created or updated using the above method, they're not immediately available for
-checking.
-To make the new or updated terms available for checking, the terminology needs to be "deployed". Currently, triggering a
-"deploy" of the terminology just causes all running language servers to reload their language configuration, which
-includes the loading of the terminology.
-Please note that a language becomes unavailable for checking for a certain amount of time up to several
-minutes. Therefore terminology deployments should be scheduled for convenient times and not just done after each term
-or entry update.
-
-You only need to (re)deploy terms/entries in domains and languages the language configuration uses for
-checking. For instance, when you've updated only the Arabic translation of a term, and there's no language
-server running for Arabic, a "deploy" isn’t necessary.
-
-Required privileges:
-
-- Resources - Reload server configuration
-
-To deploy the terminology, call `PUT` on `/deployTerminology`:
-
-```bash
-curl -i -H "Authorization: session ee7ac269aed25b4e" -X PUT http://${serverHostName}:8031/iq/services/v7/rest/terminology/deployTerminology
-```
-
-```text
-HTTP/1.1 204 No Content
-Content-Length: 0
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-```
-
-If the call is authorized, it always returns 204 (No Content).
-
-### Deletion of Entries
-
-Entire entries can be removed by calling `DELETE` on `/entries/{entryUUID}`. If an entry existed and could be deleted
-successfully, the service returns 204 (No Content). Otherwise, if there’s no entry under the specified UUID, the
-service returns 410 (Gone).
-
-Required Privilege
-
-- Terminology - Edit Terms
-
-Example:
-
-```bash
-curl -i -H "Authorization: session ee7ac269aed25b4e" -X DELETE http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries/a70b25cd-89a9-49c6-8548-87f846188b19
-```
-
-```text
-HTTP/1.1 410 Gone
-Content-Length: 0
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-```
-
-### Upload of Multimedia Files
-
-A multimedia object can be uploaded to the Core Platform specifying a unique file name. We recommend using a scheme
-based on newly generated UUIDs plus a readable part and the file extension. If an existing filename is used, the old one
-will be replaced.
-
-To transfer a media file to the Core Platform the term API service, call `POST` on `/media/{finaName}`.
-
-Supported media types are:
-
-- `image/*`: all images types, for example, `image/png`, `image/gif`, etc.
-- `application/pdf`
-
-Required privileges:
-
-- Terminology - Import terms (implies "Edit terms")
-
-Return codes:
-
-- 201 (Created) in the case of success. The Location header contains the URL of the uploaded content.
-- 404 (Not Found) if the filename contains a `/`.
-
-Example:
-
-```bash
-curl -i -H "Authorization: session ee7ac269aed25b4e" -H "Content-Type: image/png" -X POST http://${serverHostName}:8031/iq/services/v7/rest/terminology/media/nav_bullet_red.png --data-binary "@nav_bullet_red.png"
-```
-
-```text
-HTTP/1.1 201 Created
-Content-Length: 0
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-Location: http://@rab.local:8031/uploadedImages/nav_bullet_red.png
-```
-
-### Download of Multimedia Files
-
-A multimedia object that has been uploaded through this API can be downloaded using the unique filename. To achieve
-this, call `GET` on `/media/{filename}`.
-
-Required privileges:
-
-- Terminology - Export terms (implies "Read terms")
-
-Return codes:
-
-- In case of success, 200 (OK) and the response body contains the media file.
-- 404 (Not Found) if the filename doesn't exist.
-
-Example:
-
-```bash
-curl -i -H "Authorization: session ee7ac269aed25b4e" -H "Accept: image/png" -X GET http://${serverHostName}:8031/iq/services/v7/rest/terminology/media/nav_bullet_red.png
-```
-
-```text
-HTTP/1.1 200 OK
-Content-Type: image/png
-Date: Wed, 12 Mar 2014 16:34:52 GMT
-Transfer-Encoding: chunked
-?PNG
-IHDR   ????tEXtSoftwareAdobe ImageReadyq?e&lt;XIDATx?b??????? ħ??   ?9?x?#??(?bidA??v ?G] ?B??ӑ7q?? ?D?_?? ???0-'?,??͹IEND?B`?
-```
