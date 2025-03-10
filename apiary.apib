@@ -7781,140 +7781,119 @@ This will download data only with the fields `checkId`, `date`, `guidelineId` an
 
 ## Deprecation Note
 
-**Warning:** Communication using the SDL *MultiTerm XML* format is deprecated.
-While it still works today, support can be removed at any time.
+**Warning:** Communication using the SDL *MultiTerm XML* format is
+deprecated. While it still works today, support can be removed at any
+time.
 
-## Preliminaries
+## Configuration
 
-All service operations are demonstrated by a `curl` (cf. [curl man page](http://curl.haxx.se/docs/manpage.html)) command
-line that can be executed against a real Acrolinx Core Platform installation, replacing any variable references
-`${variable}` by the appropriate values.
+Before invoking one of the Terminology API services for the SDL
+MultiTerm result format, the Core Platform must be configured
+correctly. This includes that there are XSL transformations from ACTIF
+format to SDL MultiTerm XML and SDL MultiTerm Definition XDT. The
+needed XSL style sheets will be available as part of the Core Platform
+resources.
 
-### Authorization
+The availability of those resources can be checked in the Acrolinx
+dashboard on `Style -> Term import and Export -> Custom File Format`.
 
-Before invoking any Terminology API, the Acrolinx Integration must authorize and acquire a session.
-The authorization itself isn’t part of the Terminology API, but the [Core Platform Core API](README.md#authentication).
-API Requests without a valid session ID in the `Authorization` HTTP header field fail:
+## Media/Content Types
 
-```bash
-curl -i -H "Accept: application/vnd.acrolinx.mtf+xml" -X GET http://${serverHostName}:8031/iq/services/v7/rest/terminology/entries/a918fccf-4a94-4398-b260-4d792289952c
-```
+Except for application-specific XML data (ACTIF resp. SDL MultiTerm
+XML/XDT data), request, and response data is usually either plain text
+or in JSON format. The encoding is usually assumed to be UTF-8.
 
-```text
-HTTP/1.1 403 Forbidden
-Content-Type: application/json
-Date: Wed, 12 Mar 2014 16:34:51 GMT
-exception_message: Invalid session  (no such session)
-exception_type: com.acrolinx.services.faults.InvalidSessionFault
-Transfer-Encoding: chunked
+With some service methods, you can control the format of the return
+values by means of the standard HTTP `Accept` header.
 
-{
-    "message": "Invalid session  (no such session)",
-    "errors": {
-    "exception_type": "com.acrolinx.services.faults.InvalidSessionFault",
-    "exception_message": "Invalid session  (no such session)"
-    }
-}
-```
-
-### Acquiring a Session
-
-Using the authentication token, the integration now needs to open a session, specifying the session-type (always
-`TERMINOLOGY` for usage of the terminology API) and the signature of the integration (see section Signatures below).
-
-Example of a session request body:
-
-```json
-{
-    "sessionType": "TERMINOLOGY",
-    "clientSignature": "SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5",
-    "clientInfo": {
-    "buildNumber": "unknown",
-    "clientHostname": "localhost",
-    "version": "0.1",
-    "name": "Terminology Test Client",
-    "clientHostApplication": "unknown",
-    "clientLoginName": "unknown"
-    }
-}
-```
-
-To request a session, do a `POST` on `/iq/services/v3/rest/core/requestSession`:
-
-```bash
-curl -i -H "Content-Type: application/json; charset=UTF-8" -H "authToken: ${authToken}" -H "connection: keep-alive" -X POST http://${serverHostName}:8031/iq/services/v3/rest/core/requestSession -d "{\"sessionType\":\"TERMINOLOGY\",\"clientSignature\":\"${clientSignature}\",\"clientInfo\":{\"name\":\"terminology-example\",\"version\":\"1\",\"buildNumber\":\"1\",\"clientLoginName\":\"unknown\",\"clientHostname\":\"${clientHostName}\",\"clientHostApplication\":\"unknown\"}}"
-```
-
-```text
-    HTTP/1.1 200 OK
-    Content-Type: text/plain
-    Date: Wed, 12 Mar 2014 16:34:51 GMT
-    Content-Length: 16
-
-    56429c06fbd5da74
-```
-
-The returned session token should be used in subsequent requests to the Terminology API. It’s valid until
-the session is released by the integration or by the Core Platform.
-As the license limits the number of concurrently opened sessions,
-an integration mustn’t forget to release a session before acquiring a new session token.
-
-### Releasing a Session
-
-A session can be released by a `DELETE` on `/iq/services/v3/rest/core/releaseSession`, providing the session as path
-parameter:
-
-```bash
-curl -i -X DELETE http://${serverHostName}:8031/iq/services/v3/rest/core/releaseSession/${session2}
-```
-
-```text
-HTTP/1.1 204 No Content
-Content-Length: 0
-Date: Wed, 12 Mar 2014 16:34:51 GMT
-```
-
-#### Signatures
-
-An integration must identify itself to the Core Platform by means of a unique signature. This signature tells the Core
-Platform which integration is trying to communicate to it. Depending on the signature the communication might be allowed.
-Signatures can be enabled individually in the Core Platform's license. To request a session with the Core Platform, an integration's
-signature is one of the required parameters. If the signature is unknown to the Core Platform,
-no session can be opened and further communication isn’t possible.
-
-Acrolinx issues specific signatures to integrators.
-
-## Terminology Service Methods
-
-The prefix to all v7 terminology API service paths is `http://${serverHostName}:8031/iq/services/v7/rest/terminology`.
-
-Required privileges:
-
-- for all terminology service API methods, the user must have at least the `Access API-based terminology applications`
-  privilege
-
-### Configuration
-
-Before invoking one of the Terminology API services for the result format SDL MultiTerm, the Core Platform must be
-configured correctly. This includes that there are XSL transformations from ACTIF to SDL MultiTerm XML and SDL MultiTerm
-Definition XDT.  The needed XSL style sheets will be available as part of the Core Platform resources.
-
-The availability of those resources can be checked in the Acrolinx Dashboard on
-`Terminology -> Import and Export -> Import/Export -> Custom File Format`.
-
-### Media/Content Types
-
-Except for application-specific XML data (ACTIF resp. SDL MultiTerm XML/XDT data), request, and response data is usually
-either plain text or in JSON format. The encoding is usually assumed to be UTF-8.
-
-With some service methods, you can control the format of the return values by means of the standard HTTP `Accept` header.
-
-Service methods that accept application-specific body data rely on the correct setting of the standard HTTP
-`Content-Type` header.
+Service methods that accept application-specific body data rely on the
+correct setting of the standard HTTP `Content-Type` header.
 
 The supported media types are listed where applicable.
 
-### Getting Existing Entries by UUID or ID
+## Authentication and Authorization
+
+Before invoking any Terminology API, the Acrolinx Integration must
+authorize and acquire a session. The authorization itself isn’t part
+of the Terminology API. API requests without a valid session ID in the
+`Authorization` HTTP header field fail with a `403 Forbbiden`
+response:
+
+```
+{
+    "message": "Invalid session  (no such session)",
+    "errors": {
+        "exception_type": "com.acrolinx.services.faults.InvalidSessionFault",
+        "exception_message": "Invalid session  (no such session)"
+    }
+}
+```
+
+For all terminology service API methods, the user must have at least
+the `Access API-based terminology applications` privilege.
+
+### Acquiring a Session [POST /iq/services/v3/rest/core/requestSession]
+
+Using the authentication token, the integration now needs to open a
+session, specifying the session-type (always `TERMINOLOGY` for usage
+of the Terminology API) and the signature of the integration (see
+Signatures section further up).
+
+The returned session token should be used in subsequent requests to
+the Terminology API. It’s valid until the session is released by the
+integration or by the Core Platform. As the license limits the number
+of concurrently opened sessions, an integration mustn’t forget to
+release a session before acquiring a new session token.
+
++ Request
+
+    + Header
+
+        authToken: your_access_token
+
+    + Body
+
+        {
+            "sessionType": "TERMINOLOGY",
+            "clientSignature": "SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5",
+            "clientInfo": {
+                "buildNumber": "unknown",
+                "clientHostname": "localhost",
+                "version": "0.1",
+                "name": "Terminology Test Client",
+                "clientHostApplication": "unknown",
+                "clientLoginName": "unknown"
+            }
+        }
+
++ Response (200 text/plain)
+
+        56429c06fbd5da74
+
+
+### Releasing a Session [DELETE /iq/services/v3/rest/core/requestSession/{id}]
+
+A session can be released by a `DELETE` on
+`/iq/services/v3/rest/core/releaseSession`, providing the session as
+path parameter.
+
++ Parameters
+
+    + id: `56429c06fbd5da74z` (required, string) - session ID
+
++ Request
+
+    + Headers
+
+        authToken: your_access_token
+
+
++ Response 204
+
+
+## Term entries [/iq/services/v9/rest/terminology]
+
+### Get  by UUID or ID [GET /entries/{id}]
 
 Supported media types:
 
