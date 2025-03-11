@@ -7939,9 +7939,9 @@ path parameter.
 + Response 204
 
 
-## Term entries [/iq/services/v9/rest/terminology]
+## Term entries [/iq/services/v9/rest/terminology/entries/{id}]
 
-### Get  by UUID or ID [GET /entries/{id}]
+### Get by UUID or ID [GET]
 
 Supported media types:
 
@@ -8188,7 +8188,9 @@ next section.
             }]
         }
 
-## Search terms [POST /iq/services/v9/rest/terminology/searchTerms]
+## Search terms [/iq/services/v9/rest/terminology/searchTerms]
+
+### by criteria [POST]
 
 Terms can be searched by:
 
@@ -8311,7 +8313,9 @@ server will respond with a 400 (Bad Request).
         }
 
 
-## Find terms [GET /iq/services/v9/rest/terminology/findTerms/{sessionId}]
+## Find terms [/iq/services/v9/rest/terminology/findTerms/{sessionId}]
+
+### by criteria [POST]
 
 You can also search for terms using an older method called
 `findTerms,` which supports some search criteria that aren't available
