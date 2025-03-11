@@ -7148,6 +7148,39 @@ you'll see a response other than `200`.
 ## RandomPassword
 + value (string) - a random, policy-compliant password
 
+## FindTermsRequest
++ surface (string)
++ language (string)
++ domain (string)
++ entryId (string)
++ customCriteria (array[string])
++ format (required, string)
++ withSchema (boolean)
+
+## SearchRequest (object)
++ criteria (SearchRequestCriteria)
++ pagination (SearchRequestPagination)
+
+### SearchRequestCriteria (object)
++ name (string)
++ language (string)
++ domains (array[string])
++ filter (string)
+
+### SearchRequestPagination (object)
++ offset (number)
++ limit (number)
+
+## SearchResult (object)
++ terms (array[Term])
++ search (SearchRequest)
++ totalResultsCount (number)
+
+### Term (object)
++ name (string)
++ status (string)
++ domains (array[string])
+
 # Group Reporting API
 
 The reporting API provides direct access to raw check data and raw issue data.
@@ -8080,3 +8113,235 @@ next section.
             }]
         }
 
+## Search [/iq/services/v9/rest/terminology/searchTerms]
+
+### by criteria [POST]
+
+Terms can be searched by:
+
+* term `name`, supporting `%` as wildcard;
+* `language` id
+* `domains` an array of one or several domain names
+* `filter` id
+* or any combination of the above
+
+The individual fields of the search criteria need to be "escaped" by
+their unicode positions in case they contain characters that would
+otherwise break the JSON request string. For example, the
+apostrophe/single quote character `'` is escaped as `\u0027`.
+
+The search API supports pagination to retrieve only a certain subset
+of the result set. The parameters are:
+
+* `offset`, the index of the first term to display (starting from 0,
+where the terms are always sorted ascending by their name)
+* `limit`, the maximal number of terms to return, starting from
+offset; if < 1, no limit is imposed.
+
+The only supported media type for request as well as
+result is application/json.
+
+The search-terms service function requires a request object in the
+format illustrated by the following example:
+
+```
+{
+    "criteria": {
+        "name": "d\\u00e9bit%",
+        "language": "fr",
+        "domains": ["Technical Names", "Demo"],
+        "filter": "Preferred Technical Names"
+    },
+    "pagination": {
+        "offset": 0,
+        "limit": -1
+    }
+}
+```
+
+The `criteria` and `pagination` values are mandatory, as well as
+`offset` and `limit`, but you can leave out (or set to `null`) those
+fields of criteria that aren’t required by a specific query (for
+domains you can also pass an empty array `[]`).
+
+The criteria that exist in the search request are then combined by AND
+(if domains contains more than one value, they're combined into a
+domain filter by OR-ing them) in the resulting filter.
+
+The response is a JSON object with the following attributes:
+
+* `search` contains your search criteria and pagination settings; you
+could reuse that object for subsequent calls with the same criteria
+* `totalResultCount` is the total number of hits for the search,
+before applying the pagination limit
+* `terms`: an array of term objects, each containing the attributes
+`name`, `status`, `domains`, `uuid` (the UUID of the term: use that
+UUID to identify the specific term data from the full entry that you
+retrieve by the entry UUID), `entry`; entry again is an object with
+two attributes uuid and id, the UUID, and ID of the entry. Using the
+entry UUID or ID you can then retrieve the entire entry via `GET
+/entries` (see above).
+
+If there are no matching terms (or you request
+an offset greater than the result count), terms will be an empty
+array. If your search request refers to a nonexistent filter, the
+server will respond with a 400 (Bad Request).
+
+
++ Request
+    + Header
+        Authorization: session your_session_id
+
+    + Attributes (SearchRequest)
+
+    + Body
+      {}
+
++ Response 200 (application/json)
+
+    + Attributes (SearchResult)
+
+    + Body
+        {
+            "terms": [{
+                "name": "debit d\u0027air repris",
+                "status": "preferred",
+                "domains": ["Technical_Names", "undefined domain"],
+                "uuid": "5334a674-848b-44a3-8b42-1756d38717ef",
+                "entry": {
+                    "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
+                    "id": "13"
+                }
+            }, {
+                "name": "debit d\u0027évacuation",
+                "status": "deprecated",
+                "domains": ["Technical_Names", "undefined domain"],
+                "uuid": "38e4ce12-4175-465e-a26f-4bb6d8a7ea15",
+                "entry": {
+                    "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
+                    "id": "13"
+                }
+            }],
+            "search": {
+                "pagination": {
+                    "offset": 0,
+                    "limit": -1
+                },
+                "criteria": {
+                    "name": "d%",
+                    "language": "fr",
+                    "filter": null,
+                    "domains": ["undefined domain","Technical Names"]
+                }
+                    },
+            "totalResultCount": 2
+        }
+
+### Find terms [GET /iq/services/v9/rest/terminology/findTerms/{sessionId}]
+
+You can also search for terms using an older method called
+`findTerms,` which supports some search criteria that aren't available
+in the `searchTerms` method above, and which also returns the result
+in a specified target format, just like get entries described above.
+
+The following search criteria are supported:
+
+* term `surface` (name), supporting `%` as wildcard
+* `language` id
+* `domain` - a single domain name
+* `entry` ID/UUID - an array of entry IDs or entry UUIDs
+* custom `criteria` - an array of `field=value` strings, where field is one of the following ACTIF field names:
+  * `term/id`
+  * `term/uuid`
+  * `entry/id`
+  * `entry/uuid`
+  * `term/creation-date-time` (prepend with `<` or `>` to find terms
+    created before or after the given date)
+  * `term/last-modification-date-time` (prepend with `<` or `>` to
+    find terms modified before or after the given date)
+  * `term/creator-user-name`
+  * `term/last-modifier`
+  * any custom field name (as it appears in ACTIF)
+
+The individual fields of the search criteria need to be "escaped" by
+their unicode positions in case they contain characters that would
+otherwise break the JSON request string. For example, the
+apostrophe/single quote character `'` is escaped as `\u0027`.
+
+All criteria are combined with AND when the term filter is
+constructed. All criteria are optional; if you don’t give any
+criteria, the result includes all terms.
+
+The desired result format needs to be specified in the required format
+attribute of the request object (not in the Accept HTTP header). The
+supported media types are the same as for the "get entries" method
+above:
+
+* `application/vnd.acrolinx.actif+xml`: return terms as ACTIF in XML
+* `application/vnd.acrolinx.mtf+xml`: return terms as SDL MultiTerm XML
+
+Finally, you can optionally have the term base structure (schema)
+included in the response by setting the `withSchema` attribute to
+true.
+
++ Parameters
+
+    + sessionId (string,required)
+
+        The current session ID
+
++ Request
+
+    + Attributes (FindTermsRequest)
+
+    + Headers
+
+        Content-Type: application/json
+
++ Response 200 (text/plain)
+
+    + Body
+
+        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<actif xmlns="http://www.acrolinx.com" version="1.0">
+    <origin date="2025-03-11T10:19:38.949Z"><tool/></origin>
+    <data>
+        <source-languages><lang>en</lang></source-languages>
+        <entry>
+            <value field="subjectField">undefined</value>
+            <value field="entry/id">1307356662917</value>
+            <value field="entry/uuid">ff61f9ce-9c23-4874-bb98-cc58456b8734</value>
+            <head>
+                <term>
+                    <name>2-Loch-Buchse</name>
+                    <language>de</language>
+                    <value field="term/status">preferred</value>
+                    <value field="term/domain">ADSL</value>
+                    <value field="term/uuid">6c2b681c-0d2f-4820-9833-8b2d35ab6fe8</value>
+                    <value field="term/id">22946</value>
+                    <value field="term/frequency">0</value>
+                    <value field="term/creation-date-time">2011-06-06T10:37:42.963Z</value>
+                    <value field="term/creator-user-name">admin</value>
+                    <value field="term/last-modification-date-time">2024-06-26T14:38:51.282Z</value>
+                    <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
+                    <value field="processStatus">finalized</value>
+                    <value field="gender">undefined</value>
+                    <value field="partOfSpeech">undefined</value>
+                    <value field="termType">undefined</value>
+                    <complex-value field="term/msr">
+                        <attribute name="analysisMode">base (analyzed)</attribute>
+                        <attribute name="token">2-Loch-Buchse</attribute>
+                        <attribute name="occurrence">1</attribute>
+                        <attribute name="mcat">noun</attribute>
+                    </complex-value>
+                    <complex-value field="term/event">
+                        <attribute name="user">peter.bernds@acrolinx.com</attribute>
+                        <attribute name="date">2024-06-25T13:51:47.671Z</attribute>
+                        <attribute name="type">COMMENT</attribute>
+                        <attribute name="text">Test</attribute>
+                    </complex-value>
+                </term>
+            </head>
+        </entry>
+    </data>
+</actif>
