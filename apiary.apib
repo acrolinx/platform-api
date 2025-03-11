@@ -7157,6 +7157,21 @@ you'll see a response other than `200`.
 + format (required, string)
 + withSchema (boolean)
 
+## SearchEntriesRequest
++ critera (SearchEntriesCriteria)
+
+### SearchEntriesCriteria
++ domains (array[string])
+
+## SearchEntriesResult
++ entries (array[SearchEntryResult])
++ search (SearchEntriesRequest)
++ totalResultCount (number)
+
+### SearchEntryResult
++ uuid (string)
++ id (string)
+
 ## SearchRequest (object)
 + criteria (SearchRequestCriteria)
 + pagination (SearchRequestPagination)
@@ -8113,9 +8128,7 @@ next section.
             }]
         }
 
-## Search [/iq/services/v9/rest/terminology/searchTerms]
-
-### by criteria [POST]
+## Search terms [POST /iq/services/v9/rest/terminology/searchTerms]
 
 Terms can be searched by:
 
@@ -8237,7 +8250,8 @@ server will respond with a 400 (Bad Request).
             "totalResultCount": 2
         }
 
-### Find terms [GET /iq/services/v9/rest/terminology/findTerms/{sessionId}]
+
+## Find terms [GET /iq/services/v9/rest/terminology/findTerms/{sessionId}]
 
 You can also search for terms using an older method called
 `findTerms,` which supports some search criteria that aren't available
@@ -8345,3 +8359,63 @@ true.
         </entry>
     </data>
 </actif>
+
+## Search entries [POST /iq/services/v9/rest/terminology/searchEntries]
+
+You can retrieve all or only the entries (represented by their UUID
+and ID) of specific domains by using the searchEntries service
+endpoint. This service works similar to the "search terms" service,
+but you can only specify a list of domains as search criterion, for
+example:
+
+```
+{
+    "criteria": {
+        "domains": ["Technical_Names", "Demo"]
+    }
+}
+```
+
+Passing a nonempty array will get you all entries that contain at
+least one term that is assigned to at least one of the specified
+domains. Passing an empty array for domains will get you all entries.
+
++ Request
+
+    + Attributes (SearchEntriesRequest)
+
+    + Headers
+
+        Authorization: session <SESSION_ID>
+
+    + Body
+
+        {"criteria":{"domains":["undefined domain", "Technical_Names"]}}
+
++ Response 200 (application/json)
+
+    + Attributes (SearchEntriesResult)
+
+    + Body
+
+        {
+    "entries": [
+        {
+            "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
+            "id": "13"
+        },
+        {
+            "uuid": "ee1c8221-5ac2-465a-bcb8-2f329ba0da8a",
+            "id": "1391421694240"
+        }
+    ],
+    "search": {
+        "criteria": {
+            "domains": [
+                "undefined domain",
+                "Technical_Names"
+            ]
+        }
+    },
+    "totalResultCount": 2
+}
