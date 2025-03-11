@@ -8519,3 +8519,62 @@ server running for Arabic, a "deploy" isn’t necessary.
         Authorization: session <SESSION_ID>
 
 + Response 204
+
+## Media files [/iq/services/v9/rest/terminology/media/{filename}]
+
+### Upload [POST]
+
+A multimedia object can be uploaded to the Core Platform specifying a
+unique file name. We recommend using a scheme based on newly generated
+UUIDs plus a readable part and the file extension. If an existing
+filename is used, the old one will be replaced.
+
+To transfer a media file to the Core Platform the term API service,
+call POST on /media/{finaName}.
+
+Supported media types are:
+
+image/*: all images types, for example, image/png, image/gif, etc.
+application/pdf
+Required privileges:
+
+Terminology - Import terms (implies "Edit terms")
+Return codes:
+
+201 (Created) in the case of success. The Location header contains the URL of the uploaded content.
+404 (Not Found) if the filename contains a /.
+
++ Request
+
+    + Headers
+
+        Authorization: session <SESSION_ID>
+
++ Response 201
+
+    + Headers
+
+        Location: koko
+
+
+### Download [GET]
+
+A multimedia object that has been uploaded through this API can be
+downloaded using the unique filename. To achieve this, call GET on
+/media/{filename}.
+
+Required privileges:
+
+Terminology - Export terms (implies "Read terms")
+Return codes:
+
+In case of success, 200 (OK) and the response body contains the media file.
+404 (Not Found) if the filename doesn't exist.
+
++ Request
+
+    + Headers
+
+            Authorization: session <SESSION_ID>
+
++ Response 200
