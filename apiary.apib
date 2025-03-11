@@ -8079,6 +8079,66 @@ value of 4000 characters.
             "data": {}
         }
 
+### Delete [DELETE]
+
+Entire entries can be removed by calling DELETE on
+/entries/{entryUUID}. If an entry existed and could be deleted
+successfully, the service returns 204 (No Content). Otherwise, if
+there’s no entry under the specified UUID, the service returns 410
+(Gone).
+
+Required Privilege
+
+Terminology - Edit Terms
+
++ Response 410
+
+## Editing term entries [/iq/services/v9/rest/terminology/entries]
+
+### Create and update [PUT]
+
+Entries and their terms can be created and updated by POSTing the
+respective ACTIF or SDL MultiTerm XML representation to /entries.
+Whether an existing entry is updated or a new entry created crucially
+depends on the entry UUID specified in the sent data. If the entry
+UUID references an existing entry in the database, all terms and
+fields of the entry will be replaced by the sent data. Specifically,
+if the sent entry data contains fewer terms than the existing entry in
+the database, those terms missing from the sent entry data will be
+deleted.
+
+Otherwise, that is, no entry of the same UUID exists, a new entry will
+be created.
+
+Supported media types are:
+
+* application/vnd.acrolinx.actif+xml: ACTIF in XML
+* application/vnd.acrolinx.mtf+xml: SDL MultiTerm XML
+
+Required privileges:
+
+* Terminology - Import terms (implies "Edit terms")
+* Terminology - Change the status of a term
+
+For both creation and update, the return code is 201 (created) and the
+"Location" header gets the URL of the inserted/updated entry. If the
+input data doesn't contain an entry that needs to be created or
+updated, you'll see a 204 (no content). If the input data contains
+more than one entry (which is allowed), all entries in the input data
+will be created or updated respectively. However, the "Location"
+header will only contain the URL of one of them.
+
++ Request
+
+    + Headers
+
+        Authorization: session <SESSION_ID>
+
++ Response 200 (application/json)
+
+    + Body
+    {}
+
 ## Schema [/iq/services/v9/rest/terminology/schema]
 
 ### Get term base structure [GET]
