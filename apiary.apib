@@ -8493,3 +8493,29 @@ The response is a JSON object with the following attributes:
     },
     "totalResultCount": 2
 }
+
+## Deployment of Terminology [PUT /iq/services/v9/rest/terminology/deployTerminology]
+
+After terms and entries have been created or updated using the above
+method, they're not immediately available for checking. To make the
+new or updated terms available for checking, the terminology needs to
+be "deployed". Currently, triggering a "deploy" of the terminology
+just causes all running language servers to reload their language
+configuration, which includes the loading of the terminology. Please
+note that a language becomes unavailable for checking for a certain
+amount of time up to several minutes. Therefore terminology
+deployments should be scheduled for convenient times and not just done
+after each term or entry update.
+
+You only need to (re)deploy terms/entries in domains and languages the
+language configuration uses for checking. For instance, when you've
+updated only the Arabic translation of a term, and there's no language
+server running for Arabic, a "deploy" isn’t necessary.
+
++ Request
+
+    + Headers
+
+        Authorization: session <SESSION_ID>
+
++ Response 204
