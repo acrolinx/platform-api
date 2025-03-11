@@ -8328,7 +8328,8 @@ The following search criteria are supported:
 * `language` id
 * `domain` - a single domain name
 * `entry` ID/UUID - an array of entry IDs or entry UUIDs
-* custom `criteria` - an array of `field=value` strings, where field is one of the following ACTIF field names:
+* custom `criteria` - an array of `field=value` strings, where field
+  is one of the following ACTIF field names:
   * `term/id`
   * `term/uuid`
   * `entry/id`
@@ -8443,6 +8444,15 @@ example:
 Passing a nonempty array will get you all entries that contain at
 least one term that is assigned to at least one of the specified
 domains. Passing an empty array for domains will get you all entries.
+
+The response is a JSON object with the following attributes:
+
+* `search` contains your search criteria
+* `totalResultCount` is the total number of entries matching the
+  criterion
+* `entries`: an array of entries, each containing the attributes `id`,
+  and `uuid`. Using the entry UUID or ID you can then retrieve the
+  entire entry via `GET /entries` (see above).
 
 + Request
 
