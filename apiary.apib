@@ -7897,7 +7897,7 @@ release a session before acquiring a new session token.
 
     + Header
 
-        authToken: your_access_token
+            authToken: your_access_token
 
     + Body
 
@@ -7933,7 +7933,7 @@ path parameter.
 
     + Headers
 
-        authToken: your_access_token
+            authToken: your_access_token
 
 
 + Response 204
@@ -7973,10 +7973,12 @@ value of 4000 characters.
         Either a single term entry ID or a comma-separated list of entry IDs.
 
 + Request ACTIF
+
     + Headers
-        authToken: your_access_token
-        Authorization: session your_session_id
-        Accept: application/vnd.acrolinx.mtf+xml
+
+            authToken: your_access_token
+            Authorization: session your_session_id
+            Accept: application/vnd.acrolinx.mtf+xml
 
 + Response 200 (application/vnd.acrolinx.actif+xml)
 
@@ -8060,8 +8062,8 @@ value of 4000 characters.
 
     + Headers
 
-        Authorization: session your_session_id
-        Accept: application/vnd.acrolinx.mtf+xml
+            Authorization: session your_session_id
+            Accept: application/vnd.acrolinx.mtf+xml
 
 + Response 200 (application/vnd.acrolinx.mtf+xml)
 
@@ -8132,7 +8134,7 @@ header will only contain the URL of one of them.
 
     + Headers
 
-        Authorization: session <SESSION_ID>
+            Authorization: session <SESSION_ID>
 
 + Response 200 (application/json)
 
@@ -8149,8 +8151,8 @@ Retrieves the structure of the Acrolinx term base.
 
     + Headers
 
-        Authorization: session your_session_id
-        Accept: application/vnd.acrolinx.actif+xml
+            Authorization: session your_session_id
+            Accept: application/vnd.acrolinx.actif+xml
 
 + Response 200 (application/vnd.acrolinx.actif+xml)
 
@@ -8171,7 +8173,7 @@ next section.
 
     + Headers
 
-        Authorization: session your_session_id
+            Authorization: session your_session_id
 
 + Response 200 (application/json)
 
@@ -8264,8 +8266,10 @@ server will respond with a 400 (Bad Request).
 
 
 + Request
+
     + Header
-        Authorization: session your_session_id
+
+            Authorization: session your_session_id
 
     + Attributes (SearchRequest)
 
@@ -8375,7 +8379,7 @@ true.
 
     + Headers
 
-        Content-Type: application/json
+            Content-Type: application/json
 
 + Response 200 (text/plain)
 
@@ -8460,7 +8464,7 @@ The response is a JSON object with the following attributes:
 
     + Headers
 
-        Authorization: session <SESSION_ID>
+            Authorization: session <SESSION_ID>
 
     + Body
 
@@ -8516,7 +8520,7 @@ server running for Arabic, a "deploy" isn’t necessary.
 
     + Headers
 
-        Authorization: session <SESSION_ID>
+            Authorization: session <SESSION_ID>
 
 + Response 204
 
@@ -8548,13 +8552,13 @@ Return codes:
 
     + Headers
 
-        Authorization: session <SESSION_ID>
+            Authorization: session <SESSION_ID>
 
 + Response 201
 
     + Headers
 
-        Location: koko
+            Location: koko
 
 
 ### Download [GET]
