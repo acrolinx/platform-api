@@ -7901,20 +7901,20 @@ release a session before acquiring a new session token.
 
     + Body
 
-        {
-            "sessionType": "TERMINOLOGY",
-            "clientSignature": "SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5",
-            "clientInfo": {
-                "buildNumber": "unknown",
-                "clientHostname": "localhost",
-                "version": "0.1",
-                "name": "Terminology Test Client",
-                "clientHostApplication": "unknown",
-                "clientLoginName": "unknown"
+            {
+                "sessionType": "TERMINOLOGY",
+                "clientSignature": "SW50ZWdyYXRpb25EZXZlbG9wbWVudERlbW9Pbmx5",
+                "clientInfo": {
+                    "buildNumber": "unknown",
+                    "clientHostname": "localhost",
+                    "version": "0.1",
+                    "name": "Terminology Test Client",
+                    "clientHostApplication": "unknown",
+                    "clientLoginName": "unknown"
+                }
             }
-        }
 
-+ Response (200 text/plain)
++ Response 200 (text/plain)
 
         56429c06fbd5da74
 
@@ -7968,7 +7968,7 @@ value of 4000 characters.
 
 + Parameters
 
-    + id: (required, string)
+    + id: `7bd1ee3f-8e46-4a1f-bd45-a3c18981f731`  (required, string)
 
         Either a single term entry ID or a comma-separated list of entry IDs.
 
@@ -7984,79 +7984,79 @@ value of 4000 characters.
 
     + Body
 
-        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<actif xmlns="http://www.acrolinx.com" version="1.0">
-    <origin date="2025-03-10T13:50:26.160Z">
-        <tool/>
-    </origin>
-    <data>
-        <source-languages>
-            <lang>en</lang>
-        </source-languages>
-        <entry>
-            <value field="color_concept">red</value>
-            <value field="weather">foggy</value>
-            <value field="weather">cold</value>
-            <value field="weather">cloudy</value>
-            <value field="imageURL">077061bc-d9ab-455d-a078-bb1fb648440e_f2f455eb5898c6568524f6ca87236342.jpg</value>
-            <value field="entry/id">1309938647786</value>
-            <value field="entry/uuid">459a8ff0-dfab-49d6-927f-6c456f194168</value>
-            <head>
-                <term>
-                    <name>802.11n technology</name>
-                    <language>en</language>
-                    <value field="term/status">preferred</value>
-                    <value field="term/domain">D-Link</value>
-                    <value field="term/uuid">6183eceb-33e4-4b5e-b721-0ac34eb78fb4</value>
-                    <value field="term/id">1309883915302</value>
-                    <value field="term/frequency">0</value>
-                    <value field="term/creation-date-time">2011-07-06T08:02:35.383Z</value>
-                    <value field="term/creator-user-name">admin</value>
-                    <value field="term/last-modification-date-time">2024-06-26T14:38:51.230Z</value>
-                    <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
-                    <value field="processStatus">unprocessed</value>
-                    <value field="gender">undefined</value>
-                    <value field="partOfSpeech">undefined</value>
-                    <value field="termType">undefined</value>
-                    <complex-value field="term/msr">
-                        <attribute name="analysisMode">string</attribute>
-                    </complex-value>
-                </term>
-            </head>
-            <term>
-                <name>802.11 network switch</name>
-                <language>en</language>
-                <value field="term/status">preferred</value>
-                <value field="term/domain">Belkin</value>
-                <value field="term/uuid">077061bc-d9ab-455d-a078-bb1fb648440e</value>
-                <value field="term/id">1309883964051</value>
-                <value field="term/frequency">0</value>
-                <value field="term/creation-date-time">2011-07-06T08:15:24.073Z</value>
-                <value field="term/creator-user-name">admin</value>
-                <value field="term/last-modification-date-time">2024-06-26T14:38:51.342Z</value>
-                <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
-                <value field="processStatus">unprocessed</value>
-                <value field="color_ts">light red</value>
-                <value field="gender">undefined</value>
-                <value field="partOfSpeech">undefined</value>
-                <value field="termType">undefined</value>
-                <complex-value field="term/msr">
-                    <attribute name="analysisMode">base (analyzed)</attribute>
-                    <attribute name="token">network</attribute>
-                    <attribute name="occurrence">1</attribute>
-                    <attribute name="mcat">noun</attribute>
-                </complex-value>
-                <complex-value field="term/event">
-                    <attribute name="user">admin</attribute>
-                    <attribute name="date">2016-11-21T17:01:51.887Z</attribute>
-                    <attribute name="type">COMMENT</attribute>
-                    <attribute name="text">ttt
-                    </attribute>
-                </complex-value>
-            </term>
-        </entry>
-    </data>
-</actif>
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <actif xmlns="http://www.acrolinx.com" version="1.0">
+                <origin date="2025-03-10T13:50:26.160Z">
+                    <tool/>
+                </origin>
+                <data>
+                    <source-languages>
+                        <lang>en</lang>
+                    </source-languages>
+                    <entry>
+                        <value field="color_concept">red</value>
+                        <value field="weather">foggy</value>
+                        <value field="weather">cold</value>
+                        <value field="weather">cloudy</value>
+                        <value field="imageURL">077061bc-d9ab-455d-a078-bb1fb648440e_f2f455eb5898c6568524f6ca87236342.jpg</value>
+                        <value field="entry/id">1309938647786</value>
+                        <value field="entry/uuid">459a8ff0-dfab-49d6-927f-6c456f194168</value>
+                        <head>
+                            <term>
+                                <name>802.11n technology</name>
+                                <language>en</language>
+                                <value field="term/status">preferred</value>
+                                <value field="term/domain">D-Link</value>
+                                <value field="term/uuid">6183eceb-33e4-4b5e-b721-0ac34eb78fb4</value>
+                                <value field="term/id">1309883915302</value>
+                                <value field="term/frequency">0</value>
+                                <value field="term/creation-date-time">2011-07-06T08:02:35.383Z</value>
+                                <value field="term/creator-user-name">admin</value>
+                                <value field="term/last-modification-date-time">2024-06-26T14:38:51.230Z</value>
+                                <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
+                                <value field="processStatus">unprocessed</value>
+                                <value field="gender">undefined</value>
+                                <value field="partOfSpeech">undefined</value>
+                                <value field="termType">undefined</value>
+                                <complex-value field="term/msr">
+                                    <attribute name="analysisMode">string</attribute>
+                                </complex-value>
+                            </term>
+                        </head>
+                        <term>
+                            <name>802.11 network switch</name>
+                            <language>en</language>
+                            <value field="term/status">preferred</value>
+                            <value field="term/domain">Belkin</value>
+                            <value field="term/uuid">077061bc-d9ab-455d-a078-bb1fb648440e</value>
+                            <value field="term/id">1309883964051</value>
+                            <value field="term/frequency">0</value>
+                            <value field="term/creation-date-time">2011-07-06T08:15:24.073Z</value>
+                            <value field="term/creator-user-name">admin</value>
+                            <value field="term/last-modification-date-time">2024-06-26T14:38:51.342Z</value>
+                            <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
+                            <value field="processStatus">unprocessed</value>
+                            <value field="color_ts">light red</value>
+                            <value field="gender">undefined</value>
+                            <value field="partOfSpeech">undefined</value>
+                            <value field="termType">undefined</value>
+                            <complex-value field="term/msr">
+                                <attribute name="analysisMode">base (analyzed)</attribute>
+                                <attribute name="token">network</attribute>
+                                <attribute name="occurrence">1</attribute>
+                                <attribute name="mcat">noun</attribute>
+                            </complex-value>
+                            <complex-value field="term/event">
+                                <attribute name="user">admin</attribute>
+                                <attribute name="date">2016-11-21T17:01:51.887Z</attribute>
+                                <attribute name="type">COMMENT</attribute>
+                                <attribute name="text">ttt
+                                </attribute>
+                            </complex-value>
+                        </term>
+                    </entry>
+                </data>
+            </actif>
 
 + Request SDL Multiterm format
 
@@ -8069,22 +8069,376 @@ value of 4000 characters.
 
     + Body
 
-        <?xml version="1.0" encoding="utf-8"?><mtf><conceptGrp><concept>13</concept><descripGrp><descrip type="ENTRY_UUID">a918fccf-4a94-4398-b260-4d792289952c</descrip></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp><languageGrp><language lang="EN" type="English"/><termGrp><term>return air</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">120bdf01-4818-4a2c-bcea-4f875b6b129a</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695606</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T11:00:04</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="NL" type="Dutch"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">680e0ea1-90f1-48ab-9ec9-5a362360692d</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695622</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:20+02:00</date></transacGrp><transacGrp><transac type="modification">marco.aeschimann@ch.sauter-bc.com</transac><date>2011-07-05T10:54:28+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="ES" type="Spanish"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">01352af7-73e6-4024-9433-930846681b56</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695630</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:19+02:00</date></transacGrp><transacGrp><transac type="modification">eric.schneider@ch.sauter-bc.com</transac><date>2011-09-13T10:47:25+02:00</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="DE" type="German"/><termGrp><term>Abluftmenge</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695646</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:47</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="FR" type="French"/><termGrp><term>débit d'air repris</term><descripGrp><descrip type="Status">preferred</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">5334a674-848b-44a3-8b42-1756d38717ef</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695614</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:54</date></transacGrp></termGrp><termGrp><term>débit d'évacuation</term><descripGrp><descrip type="Status">deprecated</descrip></descripGrp><descripGrp><descrip type="domain">Technical_Names</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695654</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T11:55:28+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2014-02-03T10:59:58</date></transacGrp></termGrp></languageGrp><languageGrp><language lang="IT" type="Italian"/><termGrp><term>text nicht vorhanden</term><descripGrp><descrip type="Status">proposed</descrip></descripGrp><descripGrp><descrip type="domain">undefined domain</descrip></descripGrp><descripGrp><descrip type="TERM_UUID">7958d666-8511-4c0e-aef1-d0f4748d2d46</descrip></descripGrp><descripGrp><descrip type="TERM_ID">1371197695638</descrip></descripGrp><descripGrp><descrip type="term/frequency">0</descrip></descripGrp><descripGrp><descrip type="Core">undefined</descrip></descripGrp><descripGrp><descrip type="Part of Speech">undefined</descrip></descripGrp><descripGrp><descrip type="gender">undefined</descrip></descripGrp><descripGrp><descrip type="processStatus">unprocessed</descrip></descripGrp><descripGrp><descrip type="termType">undefined</descrip></descripGrp><descripGrp><descrip type="MORPHOSYNTACTIC_RESTRICTION"/></descripGrp><transacGrp><transac type="origination">admin</transac><date>2011-06-28T12:11:18+02:00</date></transacGrp><transacGrp><transac type="modification">admin</transac><date>2011-08-30T11:55:38+02:00</date></transacGrp></termGrp></languageGrp></conceptGrp></mtf>
+            <?xml version="1.0" encoding="utf-8"?>
+            <mtf>
+                <conceptGrp>
+                    <concept>13</concept>
+                    <descripGrp>
+                        <descrip type="ENTRY_UUID">a918fccf-4a94-4398-b260-4d792289952c</descrip>
+                    </descripGrp>
+                    <transacGrp>
+                        <transac type="origination">admin</transac>
+                        <date>2011-06-28T11:55:28+02:00</date>
+                    </transacGrp>
+                    <transacGrp>
+                        <transac type="modification">admin</transac>
+                        <date>2014-02-03T11:00:04</date>
+                    </transacGrp>
+                    <languageGrp>
+                        <language lang="EN" type="English"/>
+                        <termGrp>
+                            <term>return air</term>
+                            <descripGrp>
+                                <descrip type="Status">preferred</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">Technical_Names</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">undefined domain</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_UUID">120bdf01-4818-4a2c-bcea-4f875b6b129a</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_ID">1371197695606</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="term/frequency">0</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Core">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Part of Speech">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="gender">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="processStatus">unprocessed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="termType">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="MORPHOSYNTACTIC_RESTRICTION"/>
+                            </descripGrp>
+                            <transacGrp>
+                                <transac type="origination">admin</transac>
+                                <date>2011-06-28T11:55:28+02:00</date>
+                            </transacGrp>
+                            <transacGrp>
+                                <transac type="modification">admin</transac>
+                                <date>2014-02-03T11:00:04</date>
+                            </transacGrp>
+                        </termGrp>
+                    </languageGrp>
+                    <languageGrp>
+                        <language lang="NL" type="Dutch"/>
+                        <termGrp>
+                            <term>text nicht vorhanden</term>
+                            <descripGrp>
+                                <descrip type="Status">proposed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">undefined domain</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_UUID">680e0ea1-90f1-48ab-9ec9-5a362360692d</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_ID">1371197695622</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="term/frequency">0</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Core">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Part of Speech">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="gender">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="processStatus">unprocessed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="termType">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="MORPHOSYNTACTIC_RESTRICTION"/>
+                            </descripGrp>
+                            <transacGrp>
+                                <transac type="origination">admin</transac>
+                                <date>2011-06-28T12:11:20+02:00</date>
+                            </transacGrp>
+                            <transacGrp>
+                                <transac type="modification">peter.bernds@acrolinx.com</transac>
+                                <date>2011-07-05T10:54:28+02:00</date>
+                            </transacGrp>
+                        </termGrp>
+                    </languageGrp>
+                    <languageGrp>
+                        <language lang="ES" type="Spanish"/>
+                        <termGrp>
+                            <term>text nicht vorhanden</term>
+                            <descripGrp>
+                                <descrip type="Status">proposed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">undefined domain</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_UUID">01352af7-73e6-4024-9433-930846681b56</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_ID">1371197695630</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="term/frequency">0</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Core">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Part of Speech">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="gender">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="processStatus">unprocessed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="termType">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="MORPHOSYNTACTIC_RESTRICTION"/>
+                            </descripGrp>
+                            <transacGrp>
+                                <transac type="origination">admin</transac>
+                                <date>2011-06-28T12:11:19+02:00</date>
+                            </transacGrp>
+                            <transacGrp>
+                                <transac type="modification">peter.bernds@acrolinx.com</transac>
+                                <date>2011-09-13T10:47:25+02:00</date>
+                            </transacGrp>
+                        </termGrp>
+                    </languageGrp>
+                    <languageGrp>
+                        <language lang="DE" type="German"/>
+                        <termGrp>
+                            <term>Abluftmenge</term>
+                            <descripGrp>
+                                <descrip type="Status">proposed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">Technical_Names</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">undefined domain</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_UUID">44641d47-ddf3-4bb4-b1d4-a22a3fb42f64</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_ID">1371197695646</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="term/frequency">0</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Core">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Part of Speech">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="gender">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="processStatus">unprocessed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="termType">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="MORPHOSYNTACTIC_RESTRICTION"/>
+                            </descripGrp>
+                            <transacGrp>
+                                <transac type="origination">admin</transac>
+                                <date>2011-06-28T11:55:28+02:00</date>
+                            </transacGrp>
+                            <transacGrp>
+                                <transac type="modification">admin</transac>
+                                <date>2014-02-03T10:59:47</date>
+                            </transacGrp>
+                        </termGrp>
+                    </languageGrp>
+                    <languageGrp>
+                        <language lang="FR" type="French"/>
+                        <termGrp>
+                            <term>débit d'air repris</term>
+                            <descripGrp>
+                                <descrip type="Status">preferred</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">Technical_Names</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">undefined domain</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_UUID">5334a674-848b-44a3-8b42-1756d38717ef</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_ID">1371197695614</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="term/frequency">0</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Core">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Part of Speech">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="gender">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="processStatus">unprocessed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="termType">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="MORPHOSYNTACTIC_RESTRICTION"/>
+                            </descripGrp>
+                            <transacGrp>
+                                <transac type="origination">admin</transac>
+                                <date>2011-06-28T11:55:28+02:00</date>
+                            </transacGrp>
+                            <transacGrp>
+                                <transac type="modification">admin</transac>
+                                <date>2014-02-03T10:59:54</date>
+                            </transacGrp>
+                        </termGrp>
+                        <termGrp>
+                            <term>débit d'évacuation</term>
+                            <descripGrp>
+                                <descrip type="Status">deprecated</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">Technical_Names</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">undefined domain</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_UUID">38e4ce12-4175-465e-a26f-4bb6d8a7ea15</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_ID">1371197695654</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="term/frequency">0</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Core">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Part of Speech">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="gender">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="processStatus">unprocessed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="termType">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="MORPHOSYNTACTIC_RESTRICTION"/>
+                            </descripGrp>
+                            <transacGrp>
+                                <transac type="origination">admin</transac>
+                                <date>2011-06-28T11:55:28+02:00</date>
+                            </transacGrp>
+                            <transacGrp>
+                                <transac type="modification">admin</transac>
+                                <date>2014-02-03T10:59:58</date>
+                            </transacGrp>
+                        </termGrp>
+                    </languageGrp>
+                    <languageGrp>
+                        <language lang="IT" type="Italian"/>
+                        <termGrp>
+                            <term>text nicht vorhanden</term>
+                            <descripGrp>
+                                <descrip type="Status">proposed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="domain">undefined domain</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_UUID">7958d666-8511-4c0e-aef1-d0f4748d2d46</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="TERM_ID">1371197695638</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="term/frequency">0</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Core">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="Part of Speech">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="gender">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="processStatus">unprocessed</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="termType">undefined</descrip>
+                            </descripGrp>
+                            <descripGrp>
+                                <descrip type="MORPHOSYNTACTIC_RESTRICTION"/>
+                            </descripGrp>
+                            <transacGrp>
+                                <transac type="origination">admin</transac>
+                                <date>2011-06-28T12:11:18+02:00</date>
+                            </transacGrp>
+                            <transacGrp>
+                                <transac type="modification">admin</transac>
+                                <date>2011-08-30T11:55:38+02:00</date>
+                            </transacGrp>
+                        </termGrp>
+                    </languageGrp>
+                </conceptGrp>
+            </mtf>
 
 + Response 406
 
     + Body
 
-        {
-            "error": "No terminology export transformation stylesheet available for 'application/vnd.acrolinx.mtf+xml'",
-            "code": "cantServeRequestedMediaType",
-            "data": {}
-        }
+            {
+                "error": "No terminology export transformation stylesheet available for 'application/vnd.acrolinx.mtf+xml'",
+                "code": "cantServeRequestedMediaType",
+                "data": {}
+            }
 
 ### Delete [DELETE]
 
 Entire entries can be removed by calling DELETE on
-/entries/{entryUUID}. If an entry existed and could be deleted
+`/entries/{entryUUID}`. If an entry existed and could be deleted
 successfully, the service returns 204 (No Content). Otherwise, if
 there’s no entry under the specified UUID, the service returns 410
 (Gone).
@@ -8139,7 +8493,8 @@ header will only contain the URL of one of them.
 + Response 200 (application/json)
 
     + Body
-    {}
+
+            {}
 
 ## Schema [/iq/services/v9/rest/terminology/schema]
 
@@ -8158,7 +8513,242 @@ Retrieves the structure of the Acrolinx term base.
 
     + Body
 
-    <?xml version="1.0" encoding="UTF-8" standalone="yes"?><actif xmlns="http://www.acrolinx.com" version="1.0"><origin date="2025-03-10T14:06:11.978Z"><tool/></origin><schema><categories><category name="language"><item default="true">en</item><item parent="en">en-JP</item><item parent="en">en-US</item><item parent="en">en-GB</item><item>de</item><item>ja</item><item>zh</item><item parent="zh">zh-CN</item><item parent="zh">zh-TW</item><item>ar</item><item>fr</item><item>it</item><item>ko</item><item>ru</item><item>es</item><item>sv</item><item>mul</item><item>no</item><item>bg</item><item>cs</item><item>nl</item><item>pt</item><item>sprache</item><item parent="sprache">sub1</item><item parent="sprache">sub2</item></category><category name="boolean"><item>true</item><item default="true">false</item></category><category name="lexical analysis mode"><item default="true">string</item><item>base (analyzed)</item></category><category name="part of speech"><item>adjective</item><item>adverb</item><item>noun</item><item>other</item><item>proper noun</item><item default="true">undefined</item><item>verb</item></category><category name="morphosyntactic restriction"><item default="true">all</item><item>noun</item><item>verb</item><item>adjective</item><item>adverb</item><item>adposition</item><item>preposition</item><item>determiner</item><item>conjunction</item><item>pronoun</item><item>prefix</item><item>suffix</item></category><category name="domain"><item>New_Words</item><item>Plain_English</item><item>Smart Tech</item><item default="true">undefined domain</item><item parent="undefined domain">even more undefined</item><item>customer</item><item parent="customer">ex customer</item><item>Special Symbols</item><item>Demo</item><item parent="Demo">Switches</item><item parent="Demo">Keitaidenwa</item><item parent="Demo">KanaKanjiUsage</item><item parent="Demo">ADSL</item><item parent="Demo">MFP</item><item parent="Demo">Drucker</item><item parent="Demo">Acrolinx</item><item parent="Demo">Standard_Terminology</item><item parent="Demo">Routers</item><item parent="Routers">Belkin</item><item parent="Routers">D-Link</item><item parent="Routers">Cisco</item><item parent="Demo">Phone</item><item>ASD-STE100</item><item parent="ASD-STE100">Technical_Names</item><item parent="Technical_Names">TN_1_Official_Parts_Information</item><item parent="Technical_Names">TN_2_Locations_On_Machines_Vehicles_Or_Equipment</item><item parent="Technical_Names">TN_3_Tools_Or_Equipment</item><item parent="Technical_Names">TN_4_Materials_Consumables_Or_Unwanted_Matter</item><item parent="Technical_Names">TN_5_Facilities_And_Infrastructure</item><item parent="Technical_Names">TN_6_Circuits_Or_Systems</item><item parent="Technical_Names">TN_7_Mathematical_Scientific_Or_Engineering_Terms</item><item parent="Technical_Names">TN_8_Navigation</item><item parent="Technical_Names">TN_9_Numbers_Units_Of_Measurement_Or_Dial_Markings</item><item parent="Technical_Names">TN_10_Quoted_Text</item><item parent="Technical_Names">TN_11_Persons_Groups_Or_Bodies</item><item parent="Technical_Names">TN_12_Body_Parts</item><item parent="Technical_Names">TN_13_Common_Personal_Effects</item><item parent="Technical_Names">TN_14_Medical_Terms</item><item parent="Technical_Names">TN_15_Documents_Or_Manuals</item><item parent="Technical_Names">TN_16_Names_Headings_And_Topics_In_Specifications</item><item parent="Technical_Names">TN_17_Technical_Records_Standards_Specifications_Or_Regulations</item><item parent="Technical_Names">TN_18_Environmental_Conditions</item><item parent="Technical_Names">TN_19_Colors</item><item parent="Technical_Names">TN_20_Damage_Terms</item><item parent="Technical_Names">TN_Unclassified</item><item parent="ASD-STE100">Technical_Verbs</item><item parent="Technical_Verbs">TV_1_Manufacturing_Processes</item><item parent="Technical_Verbs">TV_2_Computer_Processes_And_Applications</item><item parent="Technical_Verbs">TV_3_Descriptions</item><item parent="Technical_Verbs">TV_Unclassified</item><item>S1000D Bike Data Set</item><item>Dental Floss Tycoon</item></category><category name="status"><item default="true">proposed</item><item parent="proposed">proposed_from_search</item><item>deprecated</item><item>admitted</item><item>preferred</item><item>non-term</item><item parent="non-term">stopword</item><item parent="non-term">no-single-term</item></category><category name="weather"><item default="true">undefined</item><item>wam</item><item>cold</item><item>sunny</item><item>cloudy</item><item>foggy</item><item>rainy</item><item>hot</item></category><category name="process status"><item default="true">unprocessed</item><item>provisionally processed</item><item>finalized</item><item>review requested</item></category><category name="gender"><item default="true">undefined</item><item>masculine</item><item>feminine</item><item>neuter</item><item>other</item></category><category name="term type"><item default="true">undefined</item><item>full form</item><item>acronym</item><item>abbreviation</item><item>short form</item><item>variant</item><item>phrase</item></category><category name="color"><item default="true">undefined</item><item>red</item><item parent="red">light red</item><item parent="red">dark red</item><item parent="red">carmesin</item><item>green</item><item>blue</item><item>yellow</item></category><category name="emma"><item default="true">undefined</item></category></categories><fields><entry-level><field data-type="text" builtin="true" name="entry/id"/><field data-type="uuid" builtin="true" name="entry/uuid"/><field data-type="image" name="imageURL"/><field data-type="html" name="sourceOfDefinition"/><field data-type="text" name="definition"/><field data-type="list" set-valued="true" category="weather" name="weather"><default-value>hot</default-value></field><field data-type="text" name="subjectField"/><field data-type="list" set-valued="true" category="color" name="color_concept"><default-value>blue</default-value></field></entry-level><term-level><field mandatory="true" data-type="list" category="status" builtin="true" name="term/status"><default-value>proposed</default-value></field><field mandatory="true" data-type="list" set-valued="true" category="domain" builtin="true" name="term/domain"><default-value>undefined domain</default-value></field><field data-type="complex" builtin="true" name="term/msr"/><field data-type="uuid" builtin="true" name="term/uuid"/><field data-type="text" builtin="true" name="term/id"/><field data-type="text" builtin="true" name="term/frequency"/><field data-type="complex" builtin="true" name="term/variants-settings"/><field data-type="dateTime" builtin="true" name="term/creation-date-time"/><field data-type="text" builtin="true" name="term/creator-user-name"/><field data-type="dateTime" builtin="true" name="term/last-modification-date-time"/><field data-type="text" builtin="true" name="term/last-modifier"/><field data-type="complex" set-valued="true" builtin="true" name="term/event"/><field data-type="text" name="customer"/><field data-type="text" name="note"/><field data-type="list" category="process status" name="processStatus"><default-value>unprocessed</default-value></field><field data-type="list" set-valued="true" category="color" name="color_ts"><default-value>dark red</default-value></field><field data-type="list" category="term type" name="termType"><default-value>undefined</default-value></field><field data-type="text" name="sourceOfTerm"/><field data-type="text" name="emma"/><field data-type="text" name="assignedTo"/><field data-type="html" name="context"/><field data-type="list" category="gender" name="gender"><default-value>undefined</default-value></field><field data-type="text" name="project"/><field data-type="text" name="crossReference"/><field data-type="text" name="externalCrossReference"/><field data-type="text" name="geographicalUsage"/><field data-type="list" category="part of speech" name="partOfSpeech"><default-value>undefined</default-value></field></term-level></fields></schema></actif>
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <actif xmlns="http://www.acrolinx.com" version="1.0">
+                <origin date="2025-03-10T14:06:11.978Z">
+                    <tool/>
+                </origin>
+                <schema>
+                    <categories>
+                        <category name="language">
+                            <item default="true">en</item>
+                            <item parent="en">en-JP</item>
+                            <item parent="en">en-US</item>
+                            <item parent="en">en-GB</item>
+                            <item>de</item>
+                            <item>ja</item>
+                            <item>zh</item>
+                            <item parent="zh">zh-CN</item>
+                            <item parent="zh">zh-TW</item>
+                            <item>ar</item>
+                            <item>fr</item>
+                            <item>it</item>
+                            <item>ko</item>
+                            <item>ru</item>
+                            <item>es</item>
+                            <item>sv</item>
+                            <item>mul</item>
+                            <item>no</item>
+                            <item>bg</item>
+                            <item>cs</item>
+                            <item>nl</item>
+                            <item>pt</item>
+                            <item>sprache</item>
+                            <item parent="sprache">sub1</item>
+                            <item parent="sprache">sub2</item>
+                        </category>
+                        <category name="boolean">
+                            <item>true</item>
+                            <item default="true">false</item>
+                        </category>
+                        <category name="lexical analysis mode">
+                            <item default="true">string</item>
+                            <item>base (analyzed)</item>
+                        </category>
+                        <category name="part of speech">
+                            <item>adjective</item>
+                            <item>adverb</item>
+                            <item>noun</item>
+                            <item>other</item>
+                            <item>proper noun</item>
+                            <item default="true">undefined</item>
+                            <item>verb</item>
+                        </category>
+                        <category name="morphosyntactic restriction">
+                            <item default="true">all</item>
+                            <item>noun</item>
+                            <item>verb</item>
+                            <item>adjective</item>
+                            <item>adverb</item>
+                            <item>adposition</item>
+                            <item>preposition</item>
+                            <item>determiner</item>
+                            <item>conjunction</item>
+                            <item>pronoun</item>
+                            <item>prefix</item>
+                            <item>suffix</item>
+                        </category>
+                        <category name="domain">
+                            <item>New_Words</item>
+                            <item>Plain_English</item>
+                            <item>Smart Tech</item>
+                            <item default="true">undefined domain</item>
+                            <item parent="undefined domain">even more undefined</item>
+                            <item>customer</item>
+                            <item parent="customer">ex customer</item>
+                            <item>Special Symbols</item>
+                            <item>Demo</item>
+                            <item parent="Demo">Switches</item>
+                            <item parent="Demo">Keitaidenwa</item>
+                            <item parent="Demo">KanaKanjiUsage</item>
+                            <item parent="Demo">ADSL</item>
+                            <item parent="Demo">MFP</item>
+                            <item parent="Demo">Drucker</item>
+                            <item parent="Demo">Acrolinx</item>
+                            <item parent="Demo">Standard_Terminology</item>
+                            <item parent="Demo">Routers</item>
+                            <item parent="Routers">Belkin</item>
+                            <item parent="Routers">D-Link</item>
+                            <item parent="Routers">Cisco</item>
+                            <item parent="Demo">Phone</item>
+                            <item>ASD-STE100</item>
+                            <item parent="ASD-STE100">Technical_Names</item>
+                            <item parent="Technical_Names">TN_1_Official_Parts_Information</item>
+                            <item parent="Technical_Names">TN_2_Locations_On_Machines_Vehicles_Or_Equipment</item>
+                            <item parent="Technical_Names">TN_3_Tools_Or_Equipment</item>
+                            <item parent="Technical_Names">TN_4_Materials_Consumables_Or_Unwanted_Matter</item>
+                            <item parent="Technical_Names">TN_5_Facilities_And_Infrastructure</item>
+                            <item parent="Technical_Names">TN_6_Circuits_Or_Systems</item>
+                            <item parent="Technical_Names">TN_7_Mathematical_Scientific_Or_Engineering_Terms</item>
+                            <item parent="Technical_Names">TN_8_Navigation</item>
+                            <item parent="Technical_Names">TN_9_Numbers_Units_Of_Measurement_Or_Dial_Markings</item>
+                            <item parent="Technical_Names">TN_10_Quoted_Text</item>
+                            <item parent="Technical_Names">TN_11_Persons_Groups_Or_Bodies</item>
+                            <item parent="Technical_Names">TN_12_Body_Parts</item>
+                            <item parent="Technical_Names">TN_13_Common_Personal_Effects</item>
+                            <item parent="Technical_Names">TN_14_Medical_Terms</item>
+                            <item parent="Technical_Names">TN_15_Documents_Or_Manuals</item>
+                            <item parent="Technical_Names">TN_16_Names_Headings_And_Topics_In_Specifications</item>
+                            <item parent="Technical_Names">TN_17_Technical_Records_Standards_Specifications_Or_Regulations</item>
+                            <item parent="Technical_Names">TN_18_Environmental_Conditions</item>
+                            <item parent="Technical_Names">TN_19_Colors</item>
+                            <item parent="Technical_Names">TN_20_Damage_Terms</item>
+                            <item parent="Technical_Names">TN_Unclassified</item>
+                            <item parent="ASD-STE100">Technical_Verbs</item>
+                            <item parent="Technical_Verbs">TV_1_Manufacturing_Processes</item>
+                            <item parent="Technical_Verbs">TV_2_Computer_Processes_And_Applications</item>
+                            <item parent="Technical_Verbs">TV_3_Descriptions</item>
+                            <item parent="Technical_Verbs">TV_Unclassified</item>
+                            <item>S1000D Bike Data Set</item>
+                            <item>Dental Floss Tycoon</item>
+                        </category>
+                        <category name="status">
+                            <item default="true">proposed</item>
+                            <item parent="proposed">proposed_from_search</item>
+                            <item>deprecated</item>
+                            <item>admitted</item>
+                            <item>preferred</item>
+                            <item>non-term</item>
+                            <item parent="non-term">stopword</item>
+                            <item parent="non-term">no-single-term</item>
+                        </category>
+                        <category name="weather">
+                            <item default="true">undefined</item>
+                            <item>wam</item>
+                            <item>cold</item>
+                            <item>sunny</item>
+                            <item>cloudy</item>
+                            <item>foggy</item>
+                            <item>rainy</item>
+                            <item>hot</item>
+                        </category>
+                        <category name="process status">
+                            <item default="true">unprocessed</item>
+                            <item>provisionally processed</item>
+                            <item>finalized</item>
+                            <item>review requested</item>
+                        </category>
+                        <category name="gender">
+                            <item default="true">undefined</item>
+                            <item>masculine</item>
+                            <item>feminine</item>
+                            <item>neuter</item>
+                            <item>other</item>
+                        </category>
+                        <category name="term type">
+                            <item default="true">undefined</item>
+                            <item>full form</item>
+                            <item>acronym</item>
+                            <item>abbreviation</item>
+                            <item>short form</item>
+                            <item>variant</item>
+                            <item>phrase</item>
+                        </category>
+                        <category name="color">
+                            <item default="true">undefined</item>
+                            <item>red</item>
+                            <item parent="red">light red</item>
+                            <item parent="red">dark red</item>
+                            <item parent="red">carmesin</item>
+                            <item>green</item>
+                            <item>blue</item>
+                            <item>yellow</item>
+                        </category>
+                        <category name="emma">
+                            <item default="true">undefined</item>
+                        </category>
+                    </categories>
+                    <fields>
+                        <entry-level>
+                            <field data-type="text" builtin="true" name="entry/id"/>
+                            <field data-type="uuid" builtin="true" name="entry/uuid"/>
+                            <field data-type="image" name="imageURL"/>
+                            <field data-type="html" name="sourceOfDefinition"/>
+                            <field data-type="text" name="definition"/>
+                            <field data-type="list" set-valued="true" category="weather" name="weather">
+                                <default-value>hot</default-value>
+                            </field>
+                            <field data-type="text" name="subjectField"/>
+                            <field data-type="list" set-valued="true" category="color" name="color_concept">
+                                <default-value>blue</default-value>
+                            </field>
+                        </entry-level>
+                        <term-level>
+                            <field mandatory="true" data-type="list" category="status" builtin="true" name="term/status">
+                                <default-value>proposed</default-value>
+                            </field>
+                            <field mandatory="true" data-type="list" set-valued="true" category="domain" builtin="true" name="term/domain">
+                                <default-value>undefined domain</default-value>
+                            </field>
+                            <field data-type="complex" builtin="true" name="term/msr"/>
+                            <field data-type="uuid" builtin="true" name="term/uuid"/>
+                            <field data-type="text" builtin="true" name="term/id"/>
+                            <field data-type="text" builtin="true" name="term/frequency"/>
+                            <field data-type="complex" builtin="true" name="term/variants-settings"/>
+                            <field data-type="dateTime" builtin="true" name="term/creation-date-time"/>
+                            <field data-type="text" builtin="true" name="term/creator-user-name"/>
+                            <field data-type="dateTime" builtin="true" name="term/last-modification-date-time"/>
+                            <field data-type="text" builtin="true" name="term/last-modifier"/>
+                            <field data-type="complex" set-valued="true" builtin="true" name="term/event"/>
+                            <field data-type="text" name="customer"/>
+                            <field data-type="text" name="note"/>
+                            <field data-type="list" category="process status" name="processStatus">
+                                <default-value>unprocessed</default-value>
+                            </field>
+                            <field data-type="list" set-valued="true" category="color" name="color_ts">
+                                <default-value>dark red</default-value>
+                            </field>
+                            <field data-type="list" category="term type" name="termType">
+                                <default-value>undefined</default-value>
+                            </field>
+                            <field data-type="text" name="sourceOfTerm"/>
+                            <field data-type="text" name="emma"/>
+                            <field data-type="text" name="assignedTo"/>
+                            <field data-type="html" name="context"/>
+                            <field data-type="list" category="gender" name="gender">
+                                <default-value>undefined</default-value>
+                            </field>
+                            <field data-type="text" name="project"/>
+                            <field data-type="text" name="crossReference"/>
+                            <field data-type="text" name="externalCrossReference"/>
+                            <field data-type="text" name="geographicalUsage"/>
+                            <field data-type="list" category="part of speech" name="partOfSpeech">
+                                <default-value>undefined</default-value>
+                            </field>
+                        </term-level>
+                    </fields>
+                </schema>
+            </actif>
 
 ## Filters [/iq/services/v9/rest/terminology/filters]
 
@@ -8179,16 +8769,16 @@ next section.
 
     + Body
 
-        {
-            "user": "admin",
-            "filters": [{
-                "id": "Preferred Technical Names"
+            {
+                "user": "admin",
+                "filters": [{
+                    "id": "Preferred Technical Names"
                 }, {
-                "id": "SEO"
+                    "id": "SEO"
                 }, {
-                "id": "Images"
-            }]
-        }
+                    "id": "Images"
+                }]
+            }
 
 ## Search terms [/iq/services/v9/rest/terminology/searchTerms]
 
@@ -8274,47 +8864,49 @@ server will respond with a 400 (Bad Request).
     + Attributes (SearchRequest)
 
     + Body
-      {}
+
+            {}
 
 + Response 200 (application/json)
 
     + Attributes (SearchResult)
 
     + Body
-        {
-            "terms": [{
-                "name": "debit d\u0027air repris",
-                "status": "preferred",
-                "domains": ["Technical_Names", "undefined domain"],
-                "uuid": "5334a674-848b-44a3-8b42-1756d38717ef",
-                "entry": {
-                    "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
-                    "id": "13"
-                }
-            }, {
-                "name": "debit d\u0027évacuation",
-                "status": "deprecated",
-                "domains": ["Technical_Names", "undefined domain"],
-                "uuid": "38e4ce12-4175-465e-a26f-4bb6d8a7ea15",
-                "entry": {
-                    "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
-                    "id": "13"
-                }
-            }],
-            "search": {
-                "pagination": {
-                    "offset": 0,
-                    "limit": -1
-                },
-                "criteria": {
-                    "name": "d%",
-                    "language": "fr",
-                    "filter": null,
-                    "domains": ["undefined domain","Technical Names"]
-                }
+
+            {
+                "terms": [{
+                    "name": "debit d\u0027air repris",
+                    "status": "preferred",
+                    "domains": ["Technical_Names", "undefined domain"],
+                    "uuid": "5334a674-848b-44a3-8b42-1756d38717ef",
+                    "entry": {
+                        "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
+                        "id": "13"
+                    }
+                }, {
+                    "name": "debit d\u0027évacuation",
+                    "status": "deprecated",
+                    "domains": ["Technical_Names", "undefined domain"],
+                    "uuid": "38e4ce12-4175-465e-a26f-4bb6d8a7ea15",
+                    "entry": {
+                        "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
+                        "id": "13"
+                    }
+                }],
+                "search": {
+                    "pagination": {
+                        "offset": 0,
+                        "limit": -1
                     },
-            "totalResultCount": 2
-        }
+                    "criteria": {
+                        "name": "d%",
+                        "language": "fr",
+                        "filter": null,
+                        "domains": ["undefined domain","Technical Names"]
+                    }
+                },
+                "totalResultCount": 2
+            }
 
 
 ## Find terms [/iq/services/v9/rest/terminology/findTerms/{sessionId}]
@@ -8385,49 +8977,49 @@ true.
 
     + Body
 
-        <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<actif xmlns="http://www.acrolinx.com" version="1.0">
-    <origin date="2025-03-11T10:19:38.949Z"><tool/></origin>
-    <data>
-        <source-languages><lang>en</lang></source-languages>
-        <entry>
-            <value field="subjectField">undefined</value>
-            <value field="entry/id">1307356662917</value>
-            <value field="entry/uuid">ff61f9ce-9c23-4874-bb98-cc58456b8734</value>
-            <head>
-                <term>
-                    <name>2-Loch-Buchse</name>
-                    <language>de</language>
-                    <value field="term/status">preferred</value>
-                    <value field="term/domain">ADSL</value>
-                    <value field="term/uuid">6c2b681c-0d2f-4820-9833-8b2d35ab6fe8</value>
-                    <value field="term/id">22946</value>
-                    <value field="term/frequency">0</value>
-                    <value field="term/creation-date-time">2011-06-06T10:37:42.963Z</value>
-                    <value field="term/creator-user-name">admin</value>
-                    <value field="term/last-modification-date-time">2024-06-26T14:38:51.282Z</value>
-                    <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
-                    <value field="processStatus">finalized</value>
-                    <value field="gender">undefined</value>
-                    <value field="partOfSpeech">undefined</value>
-                    <value field="termType">undefined</value>
-                    <complex-value field="term/msr">
-                        <attribute name="analysisMode">base (analyzed)</attribute>
-                        <attribute name="token">2-Loch-Buchse</attribute>
-                        <attribute name="occurrence">1</attribute>
-                        <attribute name="mcat">noun</attribute>
-                    </complex-value>
-                    <complex-value field="term/event">
-                        <attribute name="user">peter.bernds@acrolinx.com</attribute>
-                        <attribute name="date">2024-06-25T13:51:47.671Z</attribute>
-                        <attribute name="type">COMMENT</attribute>
-                        <attribute name="text">Test</attribute>
-                    </complex-value>
-                </term>
-            </head>
-        </entry>
-    </data>
-</actif>
+            <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <actif xmlns="http://www.acrolinx.com" version="1.0">
+                <origin date="2025-03-11T10:19:38.949Z"><tool/></origin>
+                <data>
+                    <source-languages><lang>en</lang></source-languages>
+                    <entry>
+                        <value field="subjectField">undefined</value>
+                        <value field="entry/id">1307356662917</value>
+                        <value field="entry/uuid">ff61f9ce-9c23-4874-bb98-cc58456b8734</value>
+                        <head>
+                            <term>
+                                <name>2-Loch-Buchse</name>
+                                <language>de</language>
+                                <value field="term/status">preferred</value>
+                                <value field="term/domain">ADSL</value>
+                                <value field="term/uuid">6c2b681c-0d2f-4820-9833-8b2d35ab6fe8</value>
+                                <value field="term/id">22946</value>
+                                <value field="term/frequency">0</value>
+                                <value field="term/creation-date-time">2011-06-06T10:37:42.963Z</value>
+                                <value field="term/creator-user-name">admin</value>
+                                <value field="term/last-modification-date-time">2024-06-26T14:38:51.282Z</value>
+                                <value field="term/last-modifier">peter.bernds@acrolinx.com</value>
+                                <value field="processStatus">finalized</value>
+                                <value field="gender">undefined</value>
+                                <value field="partOfSpeech">undefined</value>
+                                <value field="termType">undefined</value>
+                                <complex-value field="term/msr">
+                                    <attribute name="analysisMode">base (analyzed)</attribute>
+                                    <attribute name="token">2-Loch-Buchse</attribute>
+                                    <attribute name="occurrence">1</attribute>
+                                    <attribute name="mcat">noun</attribute>
+                                </complex-value>
+                                <complex-value field="term/event">
+                                    <attribute name="user">peter.bernds@acrolinx.com</attribute>
+                                    <attribute name="date">2024-06-25T13:51:47.671Z</attribute>
+                                    <attribute name="type">COMMENT</attribute>
+                                    <attribute name="text">Test</attribute>
+                                </complex-value>
+                            </term>
+                        </head>
+                    </entry>
+                </data>
+            </actif>
 
 ## Search entries [POST /iq/services/v9/rest/terminology/searchEntries]
 
@@ -8468,7 +9060,7 @@ The response is a JSON object with the following attributes:
 
     + Body
 
-        {"criteria":{"domains":["undefined domain", "Technical_Names"]}}
+            {"criteria":{"domains":["undefined domain", "Technical_Names"]}}
 
 + Response 200 (application/json)
 
@@ -8476,27 +9068,21 @@ The response is a JSON object with the following attributes:
 
     + Body
 
-        {
-    "entries": [
-        {
-            "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
-            "id": "13"
-        },
-        {
-            "uuid": "ee1c8221-5ac2-465a-bcb8-2f329ba0da8a",
-            "id": "1391421694240"
-        }
-    ],
-    "search": {
-        "criteria": {
-            "domains": [
-                "undefined domain",
-                "Technical_Names"
-            ]
-        }
-    },
-    "totalResultCount": 2
-}
+            {
+                "entries": [{
+                    "uuid": "a918fccf-4a94-4398-b260-4d792289952c",
+                    "id": "13"
+                }, {
+                    "uuid": "ee1c8221-5ac2-465a-bcb8-2f329ba0da8a",
+                    "id": "1391421694240"
+                }],
+                "search": {
+                    "criteria": {
+                        "domains": ["undefined domain", "Technical_Names"]
+                    }
+                },
+                "totalResultCount": 2
+            }
 
 ## Deployment of Terminology [PUT /iq/services/v9/rest/terminology/deployTerminology]
 
