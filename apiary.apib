@@ -7859,7 +7859,7 @@ correct setting of the standard HTTP `Content-Type` header.
 
 The supported media types are listed where applicable.
 
-## Authentication and Authorization
+## Authentication and Authorization [/iq/services/v3/rest/core]
 
 Before invoking any Terminology API, the Acrolinx Integration must
 authorize and acquire a session. The authorization itself isn’t part
@@ -7880,7 +7880,7 @@ response:
 For all terminology service API methods, the user must have at least
 the `Access API-based terminology applications` privilege.
 
-### Acquiring a Session [POST /iq/services/v3/rest/core/requestSession]
+### Acquiring a Session [POST /requestSession]
 
 Using the authentication token, the integration now needs to open a
 session, specifying the session-type (always `TERMINOLOGY` for usage
@@ -7919,7 +7919,7 @@ release a session before acquiring a new session token.
         56429c06fbd5da74
 
 
-### Releasing a Session [DELETE /iq/services/v3/rest/core/requestSession/{id}]
+### Releasing a Session [DELETE /requestSession/{id}]
 
 A session can be released by a `DELETE` on
 `/iq/services/v3/rest/core/releaseSession`, providing the session as
@@ -7950,7 +7950,7 @@ Supported media types:
 
 Required privilege:
 
-- Terminology - View Terms
+- Terminology View Terms
 
 This functionality is provided by `GET` `/entries`. There are two variants of this operation:
 
