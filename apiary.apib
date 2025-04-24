@@ -3965,20 +3965,6 @@ To read more about managing users and built-in users, see [User Management](http
             }
         }
 
-+ Response 404 (application/json)
-
-        // when the user wasn't found in the database based on its *id*
-        {
-        "links": {},
-            "error": {
-                "reference": "e49d3cd5-330a-408d-84a1-e9ecf20677bf",
-                "detail": "An unspecific client error occurred.",
-                "type": "client",
-                "title": "Not Found",
-                "status": 404
-            }
-        }
-
 + Response 409 (application/json)
 
         // when you can't delete a user
