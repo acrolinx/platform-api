@@ -791,7 +791,7 @@ If you don't want to view detailed check results, you can use `HEAD` requests to
 202. There will also be a `Retry-After` header with a suggested retry delay.
 
 + Parameters
-    + id: `AB-153` (required, string) - the check id
+    + id: `AB-153` (string, required) - the check id
 
 + Request
 
@@ -1325,7 +1325,7 @@ For response status codes and headers, visit the section [GET](#reference/checki
 
 + Parameters
 
-    + id: `AB-153` (required, string) - the check id
+    + id: `AB-153` (string, required) - the check id
 
 + Request
 
@@ -1366,7 +1366,7 @@ For response status codes and headers, visit the section [GET](#reference/checki
         Cancels a check. Users can only cancel checks that they submitted. The URL for the request is in the "cancel" link of the submitted check.
 
 + Parameters
-    + id: `AB-153` (required, string) - the check id
+    + id: `AB-153` (string, required) - the check id
 
 + Request
 
@@ -1389,7 +1389,7 @@ For response status codes and headers, visit the section [GET](#reference/checki
 Returns the links to the human readable Content Analytics Dashboard, which aggregates information of all checks belonging to the given batch id. Requires the reporting read-only privilege. The link with an API token contains a new token with the reporting read-only privilege.
 
 + Parameters
-    + batchId: `XYZ-10-22-33` (required, string) - the batch check id
+    + batchId: `XYZ-10-22-33` (string, required) - the batch check id
 
 + Request
 
@@ -1559,6 +1559,7 @@ To exclude all custom fields, use the parameter `&excludeCustomFields=true`. Thi
     + page (number, optional) - Optional query parameter for pagination
     + per_page (number, optional) - Optional query parameter for sizing a page
         + Default: `10`
+    + roles (array[string], optional) - Optional query parameter to filter by multiple role ids
 
 + Request Get a list of all users (application/json)
 
@@ -1571,7 +1572,7 @@ To exclude all custom fields, use the parameter `&excludeCustomFields=true`. Thi
     + Attributes (object)
         + links (Pagination)
         + data (array[User])
-    
+
     + Body
 
             {
@@ -1964,13 +1965,13 @@ To exclude all custom fields, use the parameter `&excludeCustomFields=true`. Thi
 
 ### Get a user [GET /api/v1/user/{id}]
 
-This request returns information about a user. 
+This request returns information about a user.
 The information includes the user id, username, the user's full name, the date the user was created, the last time the user accessed an integration, checking frequency, tenant ID, token ID, license type, and license status.
 You'll also see properties, roles, and custom fields.
 
 + Parameters
 
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, required) - UUID of the user, unique identifier
 
 + Request Get specified user by id (application/json)
 
@@ -1983,7 +1984,7 @@ You'll also see properties, roles, and custom fields.
     + Attributes (object)
         + links (object)
         + data (User)
-    
+
     + Body
 
             {
@@ -2071,7 +2072,7 @@ You'll also see properties, roles, and custom fields.
 
 ### Get a user (self) [GET /api/v1/user/self]
 
-This is an alternative way to get information about the current user (authorized in the request). 
+This is an alternative way to get information about the current user (authorized in the request).
 
 + Request Get current user (application/json)
 
@@ -2084,7 +2085,7 @@ This is an alternative way to get information about the current user (authorized
     + Attributes (object)
         + links (object)
         + data (User)
-    
+
     + Body
 
             {
@@ -2178,7 +2179,7 @@ Your password needs to meet the following requirements:
 - At least 10 characters long
 - No more than 64 characters long
 
-**Be very careful in the following cases:** 
+**Be very careful in the following cases:**
 - Federated authentication is enabled:
   - Users are created automatically with federated authentication.
   - Only users created by the identity provider can sign in to Acrolinx.
@@ -2187,7 +2188,7 @@ Your password needs to meet the following requirements:
 
 + Request Create a user (application/json)
 
-     This will create a new user if you add a username, fullName, and password to the request. 
+     This will create a new user if you add a username, fullName, and password to the request.
 
     **Note:** By default, Acrolinx will automatically assign the user the license type `named` and the role `Author`.
 
@@ -2196,7 +2197,7 @@ Your password needs to meet the following requirements:
             X-Acrolinx-Auth: your_access_token
 
     + Attributes (CreateUser)
-    
+
     + Body
 
             {
@@ -2210,7 +2211,7 @@ Your password needs to meet the following requirements:
     + Attributes (object)
         + links (object)
         + data (User)
-    
+
     + Body
 
             {
@@ -2254,7 +2255,7 @@ Your password needs to meet the following requirements:
 
 + Response 400 (application/json)
 
-        // when the request format is invalid 
+        // when the request format is invalid
         {
             "links": {},
             "error": {
@@ -2418,8 +2419,8 @@ Your password needs to meet the following requirements:
 
 + Request Create a user with specified license type (application/json)
 
-    This request will create a new user with the `named` license type explicitly specified in the request model. 
-    
+    This request will create a new user with the `named` license type explicitly specified in the request model.
+
     **Note:** Acrolinx will automatically assign the default role `Author` to the user.
 
     + Headers
@@ -2442,7 +2443,7 @@ Your password needs to meet the following requirements:
     + Attributes (object)
         + links (object)
         + data (User)
-    
+
     + Body
 
             {
@@ -2486,7 +2487,7 @@ Your password needs to meet the following requirements:
 
 + Response 400 (application/json)
 
-        // when the request format is invalid 
+        // when the request format is invalid
         {
             "links": {},
             "error": {
@@ -2652,7 +2653,7 @@ Your password needs to meet the following requirements:
     This request will create a new user with specified roles.
 
     + Attributes (CreateUser)
-    
+
     + Body
 
             {
@@ -2676,7 +2677,7 @@ Your password needs to meet the following requirements:
     + Attributes (object)
         + links (object)
         + data (User)
-    
+
     + Body
 
             {
@@ -2724,7 +2725,7 @@ Your password needs to meet the following requirements:
 
 + Response 400 (application/json)
 
-        // when the request format is invalid 
+        // when the request format is invalid
         {
             "links": {},
             "error": {
@@ -2903,7 +2904,7 @@ Your password needs to meet the following requirements:
     This request will create a new user with specified custom field values.
 
     + Attributes (CreateUser)
-    
+
     + Body
 
             {
@@ -2923,7 +2924,7 @@ Your password needs to meet the following requirements:
     + Attributes (object)
         + links (object)
         + data (User)
-    
+
     + Body
 
             {
@@ -2971,7 +2972,7 @@ Your password needs to meet the following requirements:
 
 + Response 400 (application/json)
 
-        // when the request format is invalid 
+        // when the request format is invalid
         {
             "links": {},
             "error": {
@@ -3236,7 +3237,7 @@ Your password needs to meet the following requirements:
 ### Update a user [PUT /api/v1/user/{id}]
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, required) - UUID of the user, unique identifier
 
 + Request Update fullName attribute (application/json)
 
@@ -3376,7 +3377,7 @@ Your password needs to meet the following requirements:
         + data (User)
 
     + Body
-    
+
             {
                 "links": {},
                 "data": {
@@ -3547,7 +3548,7 @@ Your password needs to meet the following requirements:
     + Attributes (object)
         + links (object)
         + data (User)
-    
+
     + Body
 
             {
@@ -3632,7 +3633,7 @@ Your password needs to meet the following requirements:
     + Attributes (object)
         + links (object)
         + data (User)
-    
+
     + Body
 
             {
@@ -3915,7 +3916,7 @@ This method deletes a specified user based on its *id*.
 To read more about managing users and built-in users, see [User Management](https://support.acrolinx.com/hc/en-us/sections/10210965582994-User-Management) in the Acrolinx documentation.
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, required) - UUID of the user, unique identifier
 
 + Request Delete user by id
 
@@ -4035,7 +4036,12 @@ Returns the total number of users who are missing one or more required user cust
 
 Returns a list of users who are missing one or more required user custom fields.
 
-**Note:** Similar to the User Resource > Get All Users request, it supports pagination. [See more details there](### Get all users). 
+**Note:** Similar to the User Resource > Get All Users request, it supports pagination. [See more details there](### Get all users).
+
++ Parameters
+
+    + page: `5` (number, optional) - Optional query parameter for pagination
+    + per_page: `20` (number, optional) - Optional query parameter for sizing a page
 
 + Request
 
@@ -4224,10 +4230,10 @@ Use this method to create an API token for the current user.
 **Note:** This endpoint lets users use Basic authentication to avoid reusing an existing API token.
 
 + Request Create an API token using Basic authentication
-    
-    To authenticate using Basic authentication, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`. 
 
-    * **Important:** 
+    To authenticate using Basic authentication, provide your username and password in the `X-Acrolinx-Auth` request header in the format `Basic username:password`.
+
+    * **Important:**
         * This request needs to have the prefix `Basic`.
         * Your credentials (`username:password`) must be base64 encoded.
 
@@ -4240,7 +4246,7 @@ Use this method to create an API token for the current user.
     + Attributes (object)
         + links (object)
         + data (UserApiTokenCreateResponse)
-    
+
     + Body
 
             {
@@ -4277,7 +4283,7 @@ Use this method to create an API token for the current user.
     + Attributes (object)
         + links (object)
         + data (UserApiTokenCreateResponse)
-    
+
     + Body
 
             {
@@ -4317,17 +4323,17 @@ Typical use cases for this API:
     - 2.2. Enter the other user's *id* as a parameter.
     - 2.3. Give the API token to the user securely.
 
-**Note:** You can only create an API token if you have the appropriate privileges: 
+**Note:** You can only create an API token if you have the appropriate privileges:
 * To create an API token for yourself, you need to be authorized with a valid access token.
 * To create an API token for someone else, you need the privilege `UserAndRoles.setApiTokensForOthers` and you need to be authorized with a valid access token.
 
 **Alternative use case:** Create an API token to impersonate a user
 
-    Sometimes an admin might want to impersonate a user to help troubleshoot. 
+    Sometimes an admin might want to impersonate a user to help troubleshoot.
     If a user comes across a bug, for example, an admin may want to impersonate the user to try and duplicate the problem.
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, required) - UUID of the user, unique identifier
 
 + Request Create an API token for someone by user id
 
@@ -4340,7 +4346,7 @@ Typical use cases for this API:
     + Attributes (object)
         + links (object)
         + data (UserApiTokenCreateResponse)
-    
+
     + Body
 
             {
@@ -4506,11 +4512,11 @@ A password needs to meet the following requirements:
 
 ## User commands [/api/v1/user/{id}/_{command}]
 
-The APIs in this group follow the API design command style.   
+The APIs in this group follow the API design command style.
 
-Use these administrative commands to manage users in your Acrolinx instance. The commands can do more than simply (re)send the new state of a single resource. 
+Use these administrative commands to manage users in your Acrolinx instance. The commands can do more than simply (re)send the new state of a single resource.
 
-**Note:** You can apply these requests multiple times without changing the result (idempotent). 
+**Note:** You can apply these requests multiple times without changing the result (idempotent).
 
 ### Release an active named user license [PUT /api/v1/user/{id}/_release]
 
@@ -4524,7 +4530,7 @@ This method uses the *id* to release an active license consumed by a user.
 **Result:** User's `licenseStatus` changed from `active` to `inactive`.
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, required) - UUID of the user, unique identifier
 
 + Request Release an Active Named User License by user id
 
@@ -4585,7 +4591,7 @@ The user specified by the *id* in this request will be asked to update their use
 - To request a user information update, you need the `UserAndRoles.editUser` privilege.
 
 + Parameters
-    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (required, string) - UUID of the user, unique identifier
+    + id: `eb323701-839f-4998-b56e-3e20c70259c5` (string, required) - UUID of the user, unique identifier
 
 + Request Ask one user to update their user information
 
@@ -4649,7 +4655,7 @@ The endpoint uses content negotiation to determine the format of the export. To 
 
 **Content Disposition:**
 
-The API also returns the `Content-Disposition` response header to give information about the returned content. 
+The API also returns the `Content-Disposition` response header to give information about the returned content.
 With this information, browsers can recognize downloadable attachments that users can save locally.
 
 Set the header parameters as follows:
@@ -4671,12 +4677,12 @@ Set the header parameters as follows:
     + **Last integration access**: Indicates when the user last accessed an integration. If the user hasn't accessed an integration, the default value is `Never`.
     + **Checking frequency**: Gives a rough idea of the pattern of checking frequency across a user's lifetime in days. Its value can be [ "frequent", "infrequent', "regular" ].
     + **License type**: Indicates the type of license. Its value can be ["named", "concurrent", "builtin"].
-    + **{Custom Field name}**: Users can have multiple (0...N) custom fields that are also attached to the schema. 
-        + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be dynamically added to the end of the sheet. 
+    + **{Custom Field name}**: Users can have multiple (0...N) custom fields that are also attached to the schema.
+        + For custom fields, the column name is mapped from the custom field's name (specified when you create it). The column will be dynamically added to the end of the sheet.
 
-    **Notes about the CSV file and data formatting:** 
+    **Notes about the CSV file and data formatting:**
     + Column headers are also written in the first row of the file.
-    + Fields are separated by a semicolon `;` (as column delimiter). 
+    + Fields are separated by a semicolon `;` (as column delimiter).
     + Date and time values are exported in `UTC`, for example `2021-05-12T15:40:00.876Z`.
         + When there's no stored value for a given Date time type field, the cell should contain `Never` or an empty value.
     + Values of a list type field are separated by a colon `:` (as the "in-cell" delimiter).
@@ -4754,8 +4760,8 @@ Set the header parameters as follows:
 ## User bulk operations [/api/v1/user/bulk]
 
 Use these APIs to perform bulk operations. Bulk operations follow the multi-status request and response model.
-In this model, the incoming bulk request includes a list of objects that need to be processed (as opposed to using the same API many times). 
-The response to the request is `207 Multi-Status`. The response includes a list of `results` for the objects that were processed successfully 
+In this model, the incoming bulk request includes a list of objects that need to be processed (as opposed to using the same API many times).
+The response to the request is `207 Multi-Status`. The response includes a list of `results` for the objects that were processed successfully
 and a list of `errors` for the objects that couldn't be processed.
 
 **Note:** Each API has a limit for bulk requests. User creation is an atomic operation, but the bulk request is nontransactional.
@@ -4778,7 +4784,7 @@ noted in the Create User API section.
             X-Acrolinx-Auth: your_access_token
 
     + Attributes (BulkCreateUser)
-    
+
     + Body
 
             [
@@ -4928,7 +4934,7 @@ noted in the Create User API section.
             }
         }
 
-        // when a bulk request includes validation errors such as an empty password 
+        // when a bulk request includes validation errors such as an empty password
         {
             "links": {},
             "error": {
@@ -5557,13 +5563,13 @@ The following table describes the statistics attributes:
 
 # Group Role API
 
-In the Role API, a role is an entity that has an id, a name and list of privileges, and information about whether this role is a default role. 
+In the Role API, a role is an entity that has an id, a name and list of privileges, and information about whether this role is a default role.
 You can use roles to group sets of privileges and assign them to different users.
 Mark roles as default if you want to automatically assign at least one default role to all new users.
 
 To read more about role-based access control in Acrolinx, see [User Roles](https://support.acrolinx.com/hc/en-us/articles/10210994316562-User-Roles).
 
-**Note:** Before you start using the Role API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements. 
+**Note:** Before you start using the Role API, review the [authentication and authorization](https://acrolinxapi.docs.apiary.io/#introduction/authentication-and-authorization) requirements.
 
 ## Roles [/api/v1/roles/]
 
@@ -5582,7 +5588,7 @@ Returns a list of all roles including the associated privileges.
     + Attributes (object)
         + links (object)
         + data (array[Role])
-    
+
     + Body
 
             {
@@ -5728,8 +5734,8 @@ Privileges determine if a user can perform an action with the API or Acrolinx UI
 
 Returns a list of all supported privileges.
 
-**Note:** In newer Acrolinx versions, we may introduce or remove privileges. 
-To find out which privileges come with your instance, submit this request and compare it to the example response.  
+**Note:** In newer Acrolinx versions, we may introduce or remove privileges.
+To find out which privileges come with your instance, submit this request and compare it to the example response.
 
 + Request
 
@@ -5855,7 +5861,7 @@ Adds new roles.
                     "Dashboard.logon"
                 ]
             }
-    
+
 + Response 201 (application/json)
 
     + Attributes (object)
@@ -5908,7 +5914,7 @@ Adds new roles.
 
 + Response 400 (application/json)
 
-            // when empty privileges were provided 
+            // when empty privileges were provided
             {
                 "links": {},
                 "error": {
@@ -6033,7 +6039,7 @@ Adds new roles.
                 ],
                 "default": true
             }
-    
+
 + Response 201 (application/json)
 
     + Attributes (object)
@@ -6086,7 +6092,7 @@ Adds new roles.
 
 + Response 400 (application/json)
 
-            // when empty privileges were provided 
+            // when empty privileges were provided
             {
                 "links": {},
                 "error": {
@@ -6176,7 +6182,7 @@ Adds new roles.
 Returns a role that Acrolinx identified by its *id* in the database.
 
 + Parameters
-    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (string, required) - UUID of the role, unique identifier
 
 + Request
 
@@ -6236,14 +6242,14 @@ Returns a role that Acrolinx identified by its *id* in the database.
 
 Updates a role that Acrolinx identified by its *id* in the database.
 
-**Note:** 
+**Note:**
 - To update roles, you need the privilege `UserAndRoles.editUser`.
 - You can't edit preconfigured roles!
     - Acrolinx comes with a number of preconfigured roles that many customers use.
 - You can use one request to update role attributes individually or completely. The request will ignore missing attributes or attributes with `null` values.
 
 + Parameters
-    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (string, required) - UUID of the role, unique identifier
 
 + Request Update entire model (application/json)
 
@@ -6266,7 +6272,7 @@ Updates a role that Acrolinx identified by its *id* in the database.
                 ],
                 "default": false
             }
-    
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -6337,7 +6343,7 @@ Updates a role that Acrolinx identified by its *id* in the database.
             {
                 "name": "Preferred name"
             }
-    
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -6460,7 +6466,7 @@ Updates a role that Acrolinx identified by its *id* in the database.
 
     You can use roles to update the privileges that are assigned to a user.
 
-    In this example, the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole`. The role was identified by its *id* in the database. 
+    In this example, the `UserAndRoles.read` privilege will be assigned to the role `ExampleRole`. The role was identified by its *id* in the database.
 
     **Note:**
     - A role needs to have at least one privilege assigned.
@@ -6469,7 +6475,7 @@ Updates a role that Acrolinx identified by its *id* in the database.
     - All users with that particular role will automatically inherit any changes to that role.
     - You need to reference existing privileges. See [Get All Privileges](###Get_all_privileges).
 
-    **Warning:** This action **permanently** updates the privileges that belong to a role. 
+    **Warning:** This action **permanently** updates the privileges that belong to a role.
     When you change the privileges for a role, all users with that role will get the updated set of privileges.
 
     + Headers
@@ -6631,7 +6637,7 @@ Updates a role that Acrolinx identified by its *id* in the database.
             {
                 "default": true
             }
-    
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -6711,7 +6717,7 @@ Updates a role that Acrolinx identified by its *id* in the database.
             {
                 "default": false
             }
-    
+
 + Response 200 (application/json)
 
     + Attributes (object)
@@ -6771,7 +6777,7 @@ This method lets you delete a specified role based on its *id*.
 - The role isn't currently assigned to one or more users.
 
 + Parameters
-    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (required, string) - UUID of the role, unique identifier
+    + id: `f608876c-a943-4ad2-82c1-e59df943ce41` (string, required) - UUID of the role, unique identifier
 
 + Request Delete by id
 
@@ -6890,6 +6896,10 @@ This method provides Document which was found in the database.
         }
 
 ### Update custom document fields [PUT]
+
++ Parameters
+
+    + id: `99576707-ed8c-44b6-82b8-c3ced8f349d1` (string, required) - custom document field id to update
 
 + Request (application/json)
 
@@ -7154,7 +7164,7 @@ you'll see a response other than `200`.
 + domain (string)
 + entryId (string)
 + customCriteria (array[string])
-+ format (required, string)
++ format (string, required)
 + withSchema (boolean)
 
 ## SearchEntriesRequest
@@ -7927,7 +7937,7 @@ path parameter.
 
 + Parameters
 
-    + id: `56429c06fbd5da74z` (required, string) - session ID
+    + id: `56429c06fbd5da74z` (string, required) - session ID
 
 + Request
 
@@ -7968,7 +7978,7 @@ value of 4000 characters.
 
 + Parameters
 
-    + id: `7bd1ee3f-8e46-4a1f-bd45-a3c18981f731`  (required, string)
+    + id: `7bd1ee3f-8e46-4a1f-bd45-a3c18981f731`  (string, required)
 
         Either a single term entry ID or a comma-separated list of entry IDs.
 
@@ -8446,6 +8456,10 @@ there’s no entry under the specified UUID, the service returns 410
 Required Privilege
 
 Terminology - Edit Terms
+
++ Parameters
+
+    + id: `a918fccf-4a94-4398-b260-4d792289952c` (string, required) - the UUID of the term to delete
 
 + Response 410
 
@@ -8961,7 +8975,7 @@ true.
 
 + Parameters
 
-    + sessionId (string,required)
+    + sessionId: `56429c06fbd5da74z` (string, required) - session ID
 
         The current session ID
 
@@ -9134,6 +9148,10 @@ Return codes:
 201 (Created) in the case of success. The Location header contains the URL of the uploaded content.
 404 (Not Found) if the filename contains a /.
 
++ Parameters
+
+    + filename: `document.pdf` (string, required) - The filename to upload
+
 + Request
 
     + Headers
@@ -9160,6 +9178,10 @@ Return codes:
 
 In case of success, 200 (OK) and the response body contains the media file.
 404 (Not Found) if the filename doesn't exist.
+
++ Parameters
+
+    + filename: `document.pdf` (string, required) - The filename to download
 
 + Request
 
