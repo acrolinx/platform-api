@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
-        uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
+        uses: ruby/setup-ruby@e34163cd15f4bb403dcd72d98e295997e6a55798
         with:
           ruby-version: 3.3.5
       - name: Install apiary gem
