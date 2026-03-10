@@ -787,6 +787,8 @@ Note that not all occurrences of an issue always have the same suggestions. When
 
 Polls the check result. Acrolinx either returns a progress response or the completed result. The URL for the request is in the "result" link of the submitted check.
 
+NOTE: To optimize server memory, check results are removed from the server immediately after they are successfully retrieved. Ensure your integration stores the result locally if needed, as a second attempt to fetch the same Check ID will result in a `404 Not Found`.
+
 If you don't want to view detailed check results, you can use `HEAD` requests to poll the check status. While the check is in progress, you'll receive the status code
 202. There will also be a `Retry-After` header with a suggested retry delay.
 
